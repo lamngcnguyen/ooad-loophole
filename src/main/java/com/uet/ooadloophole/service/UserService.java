@@ -1,8 +1,7 @@
-package com.uet.ooadloophole.services;
+package com.uet.ooadloophole.service;
 
-
-import com.uet.ooadloophole.models.User;
-import com.uet.ooadloophole.repositorys.UserRepository;
+import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.repository.UserRepository;
 import com.uet.ooadloophole.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,8 +32,5 @@ public class UserService implements UserDetailsService {
 
         }
         return new CustomUserDetails(user);
-
     }
-
-
 }
