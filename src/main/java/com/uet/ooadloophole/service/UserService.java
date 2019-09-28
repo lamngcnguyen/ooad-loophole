@@ -1,6 +1,5 @@
 package com.uet.ooadloophole.service;
 
-
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.repository.UserRepository;
 import com.uet.ooadloophole.security.CustomUserDetails;
@@ -33,8 +32,5 @@ public class UserService implements UserDetailsService {
 
         }
         return new CustomUserDetails(user);
-
     }
-
-
 }

@@ -1,18 +1,17 @@
 package com.uet.ooadloophole.model;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "user")
+import org.springframework.data.annotation.Id;
 
 public class User {
     @Id
-    @GeneratedValue
-    private Long id;
+    private Long _id;
 
-    @Column(nullable = false, unique = true)
     private String username;
     private String password;
+    private String email;
+    private String admin;
+    private String firstName;
+    private String lastName;
 
     public String getPassword() {
         return password;
@@ -23,11 +22,11 @@ public class User {
     }
 
     public Long getId() {
-        return id;
+        return _id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this._id = id;
     }
 
     public void setPassword(String password) {
