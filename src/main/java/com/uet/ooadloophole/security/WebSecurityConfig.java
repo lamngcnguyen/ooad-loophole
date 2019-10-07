@@ -29,12 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors() // Ngăn chặn request từ một domain khác
+        http  .csrf().disable()
+                .cors()
+                // Ngăn chặn request từ một domain khác
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/createtestuser").permitAll()// api ko van cap quyen
-                .antMatchers("/api/resouce").authenticated();
+                .antMatchers("/api/login","/api/upload").permitAll(); // api ko van cap quyen
+                // nhung api can cap quyen
                 // nhung api can cap quyen
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
