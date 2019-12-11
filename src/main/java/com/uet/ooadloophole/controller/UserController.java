@@ -51,8 +51,9 @@ public class UserController {
     public String userInfo(Model model, Principal principal) {
         String userName = principal.getName();
         System.out.println("User Name: " + userName);
-        User loggedUser = (User) ((Authentication) principal).getPrincipal();
-        String userInfo = loggedUser.getEmail();
+        org.springframework.security.core.userdetails.User loggedUser =
+                (org.springframework.security.core.userdetails.User) ((Authentication) principal).getPrincipal();
+        String userInfo = loggedUser.getUsername();
         model.addAttribute("userInfo", userInfo);
         return "userInfoPage";
     }
