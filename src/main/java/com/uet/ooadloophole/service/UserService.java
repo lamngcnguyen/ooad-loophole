@@ -1,36 +1,53 @@
 package com.uet.ooadloophole.service;
 
+import com.uet.ooadloophole.database.RoleRepository;
+import com.uet.ooadloophole.database.UserRepository;
+import com.uet.ooadloophole.model.Role;
 import com.uet.ooadloophole.model.User;
-import com.uet.ooadloophole.repository.UserRepository;
-import com.uet.ooadloophole.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
-
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        // Kiểm tra xem user có tồn tại trong database không?
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new CustomUserDetails(user);
+    public User saveUser(User user, String role) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        Role userRole = roleRepository.findByRole(role);
+        user.setRole(new HashSet<>(Collections.singletonList(userRole)));
+        userRepository.save(user);
+        return user;
     }
 
-    public UserDetails loadUserById(long userId){
-        // Kiểm tra xem user có tồn tại trong database không?
-        User user = userRepository.findById(userId);
-        if (user == null) {
+    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true, true, true, true, authorities);
+    }
 
-        }
-        return new CustomUserDetails(user);
+    private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
+        Set<GrantedAuthority> roles = new HashSet<>();
+        userRoles.forEach((role) -> roles.add(new SimpleGrantedAuthority(role.getRole())));
+        return new ArrayList<>(roles);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("email:" + email);
+        User user = userRepository.findByEmail(email);
+        System.out.println(user.getRole());
+        List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
+        return buildUserForAuthentication(user, authorities);
     }
 }
