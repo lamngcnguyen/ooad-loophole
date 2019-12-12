@@ -11,6 +11,7 @@ public class Group {
     private String topic;
     private String iteration; //this is a schema [module: String, dueDate: Date]
     private String repoId;
+    private String classId;
 
     public String get_id() {
         return _id;
@@ -50,5 +51,13 @@ public class Group {
 
     public void setRepoId(String repoId) {
         this.repoId = repoId;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
     }
 }

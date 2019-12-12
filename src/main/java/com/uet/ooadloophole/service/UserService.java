@@ -38,15 +38,16 @@ public class UserService implements UserDetailsService {
 
     private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
         Set<GrantedAuthority> roles = new HashSet<>();
+        userRoles.forEach((role) -> {
+            System.out.println(new SimpleGrantedAuthority(role.getRole()));
+        });
         userRoles.forEach((role) -> roles.add(new SimpleGrantedAuthority(role.getRole())));
         return new ArrayList<>(roles);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("email:" + email);
         User user = userRepository.findByEmail(email);
-        System.out.println(user.getRole());
         List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
     }
