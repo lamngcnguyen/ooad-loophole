@@ -8,6 +8,7 @@ public class Student {
     private String userId;
     private String classId;
     private String groupId;
+    private String studentId;
 
     public String get_id() {
         return _id;
@@ -39,5 +40,13 @@ public class Student {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 }

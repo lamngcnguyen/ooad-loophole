@@ -1,16 +1,27 @@
 package com.uet.ooadloophole.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Set;
 
 public class User {
+    @Id
+    private String _id;
     private String firstName;
     private String lastName;
     private String password;
     private String email;
     @DBRef
     private Set<Role> role;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getFirstName() {
         return firstName;
