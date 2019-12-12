@@ -7,10 +7,12 @@ import com.uet.ooadloophole.model.Group;
 import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.UserService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,8 @@ import java.util.Map;
 public class ClassController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private SecureUserDetailService secureUserDetailService;
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -67,5 +71,18 @@ public class ClassController {
                 studentRepository.save(student);
             }
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String createClass(String name, String startDate, String endDate){
+        String teacherId = secureUserDetailService.getCurrentUser().get_id();
+        Class ooadClass = new com.uet.ooadloophole.model.Class();
+        ooadClass.setClassName(name);
+        ooadClass.setStartDate(startDate);
+        ooadClass.setEndDate(endDate);
+        ooadClass.setTeacherId(teacherId);
+        classRepository.save(ooadClass);
+        return "created";
     }
 }

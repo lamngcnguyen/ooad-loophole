@@ -4,6 +4,7 @@ import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,9 +56,9 @@ public class UserController {
     public String userInfo(Model model, Principal principal) {
         String userName = principal.getName();
         System.out.println("User Name: " + userName);
-        org.springframework.security.core.userdetails.User loggedUser =
-                (org.springframework.security.core.userdetails.User) ((Authentication) principal).getPrincipal();
-        String userInfo = loggedUser.getUsername();
+        org.springframework.security.core.userdetails.User loggedInUser =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userInfo = loggedInUser.getUsername();
         model.addAttribute("userInfo", userInfo);
         return "userInfoPage";
     }
