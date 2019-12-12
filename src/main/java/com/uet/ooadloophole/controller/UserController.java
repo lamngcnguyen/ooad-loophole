@@ -39,10 +39,14 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(String email, String password, String role) {
+    public String register(String fullName, String email, String password, String role) {
         User newUser = new User();
+        newUser.setFullName(fullName);
         newUser.setEmail(email);
         newUser.setPassword(password);
+        if(role == null){
+            role = "USER";
+        }
         userService.saveUser(newUser, role);
         return "created";
     }

@@ -1,8 +1,10 @@
 html {
-    font-size: 100% !important;
-}
 
+    font-size: 100% !important;
+
+}
 .btn {
+
     display: inline-block;
     font-weight: 400;
     color: #212529;
@@ -25,7 +27,6 @@ html {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
 }
-
 .btn-primary {
 
     color: #000 !important;
@@ -45,7 +46,7 @@ html {
 }
 
 button.close {
-    padding: 0 !important;
+    padding: 0  !important;
     background-color: transparent !important;
     border: 0 !important;
     appearance: none !important;
@@ -103,7 +104,7 @@ button.close {
 }
 
 .modal.show .modal-dialog {
-    -webkit-transform: none !important;
+    -webkit-transform: none  !important;
     transform: none !important
 }
 
@@ -158,6 +159,7 @@ button.close {
 }
 
 .modal-content {
+
     margin: 0 !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
     font-size: 1rem !important;
@@ -302,12 +304,14 @@ button.close {
 
 }
 
+
+
 body {
     background: #FF5F6D; /* fallback for old browsers */
     background: -webkit-linear-gradient(to top, #FF5F6D, #FFC371); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to top, #FF5F6D, #FFC371); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background-repeat: none;
-    height: 100vh;
+    height: 100vh
 }
 
 body a {
@@ -316,7 +320,7 @@ body a {
 
 .card {
     width: 500px;
-    height: 470px;
+    height: 550px;
     top: 50%;
     left: 50%;
     position: relative;
@@ -359,4 +363,3 @@ body a {
     margin: 20px;
     text-transform: uppercase;
 }
-

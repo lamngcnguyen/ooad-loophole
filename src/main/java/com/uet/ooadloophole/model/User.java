@@ -8,8 +8,7 @@ import java.util.Set;
 public class User {
     @Id
     private String _id;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String password;
     private String email;
     @DBRef
@@ -23,20 +22,12 @@ public class User {
         this._id = _id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPassword() {

@@ -47,8 +47,7 @@ public class ClassController {
                 Student student = new Student();
                 Group group = new Group();
 
-                user.setFirstName((String) object.get("firstName"));
-                user.setLastName((String) object.get("lastName"));
+                user.setFullName((String) object.get("fullName"));
                 user.setPassword((String) object.get("studentId"));
                 user.setEmail((String) object.get("email"));
                 userService.saveUser(user, "USER");

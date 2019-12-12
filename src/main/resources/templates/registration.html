@@ -1,38 +1,78 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
-<h1 th:text="#{label.form.title}">form</h1>
-<form action="/" th:object="${user}" method="POST" enctype="utf8">
-    <div>
-        <label th:text="#{label.user.firstName}">first</label>
-        <input th:field="*{firstName}"/>
-        <p th:each="error: ${#fields.errors('firstName')}"
-           th:text="${error}">Validation error</p>
-    </div>
-    <div>
-        <label th:text="#{label.user.lastName}">last</label>
-        <input th:field="*{lastName}"/>
-        <p th:each="error : ${#fields.errors('lastName')}"
-           th:text="${error}">Validation error</p>
-    </div>
-    <div>
-        <label th:text="#{label.user.email}">email</label>
-        <input type="email" th:field="*{email}"/>
-        <p th:each="error : ${#fields.errors('email')}"
-           th:text="${error}">Validation error</p>
-    </div>
-    <div>
-        <label th:text="#{label.user.password}">password</label>
-        <input type="password" th:field="*{password}"/>
-        <p th:each="error : ${#fields.errors('password')}"
-           th:text="${error}">Validation error</p>
-    </div>
-    <div>
-        <label th:text="#{label.user.confirmPass}">confirm</label>
-        <input type="password" th:field="*{matchingPassword}"/>
-    </div>
-    <button type="submit" th:text="#{label.form.submit}">submit</button>
-</form>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/images/logo.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/mdb.min.css" rel="stylesheet">
+    <link href="/css/newsignup-style.css" rel="stylesheet">
+    <script src="/js/libraries/jquery.min.js"></script>
+    <!--<script src="/js/libraries/popper.min.js"></script>-->
+    <script src="/js/libraries/bootstrap.min.js"></script>
+    <script src="/js/validate.js"></script>
+</head>
 
-<a th:href="@{/login.html}" th:text="#{label.form.loginLink}">login</a>
+<body>
+<div class="card">
+    <h5 class="card-header white-text text-center py-4">
+        <div class="row">
+            <div class="column">
+                <img src="/images/logo.png">
+            </div>
+            <div class="column">
+                <h2><strong>Sign up</strong></h2>
+            </div>
+        </div>
+    </h5>
+    <div class="card-body px-lg-5 pt-0">
+        <script src="/js/libraries/bootbox.min.js"></script>
+        <!--        <span th:if="${err_exist}">-->
+        <!--            <script>bootbox.alert({-->
+        <!--                size: "small",-->
+        <!--                title: "Error",-->
+        <!--                message: "There is already a user registered with the email provided",-->
+        <!--                callback: function () { /* your callback code */-->
+        <!--                }-->
+        <!--            })</script>-->
+        <!--           </span>-->
+        <form class="text-center" style="color: #757575;" action="/register" method="post">
+            <div class="md-form">
+                <input pattern=".{1,30}" type="text" id="fullname" name="fullname" class="form-control" required
+                       title="Type your full name from 1 to 30 character" autocomplete="off">
+                <label for="fullname">Full Name</label>
+            </div>
+
+            <div class="md-form">
+                <input pattern=".{5,32}" type="email" id="email" name="email" class="form-control" required
+                       title=" Format of an email address: abc@xyz.com with 32 character maximum" autocomplete="off">
+                <label for="email">E-mail</label>
+            </div>
+
+            <div class="md-form">
+                <input pattern=".{8,64}" type="password" id="password" name="password" class="form-control"
+                       required title=" Type from 8 to 64 character" onchange='return check_pass();'>
+                <label for="password">Password</label>
+            </div>
+
+            <div class="md-form">
+                <input pattern=".{8,64}" type="password" id="retype-password" name="retype-password"
+                       class="form-control"
+                       required onkeyup='return check_pass();'>
+                <label for="retype-password">Retype Password</label>
+            </div>
+
+            <button class="btn btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Sign Up</button>
+
+            <p>Already a member?
+                <a th:href="@{/templates/login}">Sign in</a>
+            </p>
+        </form>
+    </div>
+
+</div>
+<script src="/js/libraries/mdb.min.js"></script>
 </body>
 </html>
