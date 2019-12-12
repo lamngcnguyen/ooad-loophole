@@ -1,15 +1,14 @@
 package com.uet.ooadloophole.service;
 
-import com.uet.ooadloophole.payload.FileStorageProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
+//import com.uet.ooadloophole.payload.FileStorageProperties;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -19,35 +18,53 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileStorageService {
+    //    private final Path fileStorageLocation;
+//
+//    @Autowired
+//    public FileStorageService(FileStorageProperties fileStorageProperties) {
+//        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+//        try {
+//            Files.createDirectories(this.fileStorageLocation);
+//        } catch (Exception ex) {
+//            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+//        }
+//    }
+    private Path fileStorageLocation;
+    private String pathString;
 
-    private final Path fileStorageLocation;
+    public Path getFileStorageLocation() {
+        return fileStorageLocation;
+    }
 
-    @Autowired
-    public FileStorageService(FileStorageProperties fileStorageProperties) {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
-
+    private void setFileStorageLocation() {
         try {
-            Files.createDirectories(this.fileStorageLocation);
-        } catch (Exception ex) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+            Files.createDirectories(Paths.get(getPathString()).toAbsolutePath().normalize());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        this.fileStorageLocation = Paths.get(getPathString()).toAbsolutePath().normalize();
+    }
+
+    public String getPathString() {
+        return pathString;
+    }
+
+    public void setPathString(String pathString) {
+        this.pathString = pathString;
     }
 
     public String storeFile(MultipartFile file) {
+        setFileStorageLocation();
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
         try {
             // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
+            if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
-
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Path targetLocation = getFileStorageLocation().resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
             return fileName;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
@@ -55,10 +72,11 @@ public class FileStorageService {
     }
 
     public Resource loadFileAsResource(String fileName) {
+        setFileStorageLocation();
         try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Path filePath = getFileStorageLocation().resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists()) {
                 return resource;
             } else {
                 throw new MyFileNotFoundException("File not found " + fileName);
@@ -66,25 +84,5 @@ public class FileStorageService {
         } catch (MalformedURLException ex) {
             throw new MyFileNotFoundException("File not found " + fileName, ex);
         }
-    }
-}
-class FileStorageException extends RuntimeException {
-    public FileStorageException(String message) {
-        super(message);
-    }
-
-    public FileStorageException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
-
-@ResponseStatus(HttpStatus.NOT_FOUND)
-class MyFileNotFoundException extends RuntimeException {
-    public MyFileNotFoundException(String message) {
-        super(message);
-    }
-
-    public MyFileNotFoundException(String message, Throwable cause) {
-        super(message, cause);
     }
 }
