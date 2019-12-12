@@ -3,10 +3,11 @@ package com.uet.ooadloophole.controller;
 import com.uet.ooadloophole.database.ClassRepository;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.database.StudentRepository;
+import com.uet.ooadloophole.model.Class;
 import com.uet.ooadloophole.model.Group;
 import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.User;
-import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.UserService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class ClassController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private SecureUserDetailService secureUserDetailService;
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
@@ -47,8 +50,7 @@ public class ClassController {
                 Student student = new Student();
                 Group group = new Group();
 
-                user.setFirstName((String) object.get("firstName"));
-                user.setLastName((String) object.get("lastName"));
+                user.setFullName((String) object.get("fullName"));
                 user.setPassword((String) object.get("studentId"));
                 user.setEmail((String) object.get("email"));
                 userService.saveUser(user, "USER");
@@ -68,5 +70,18 @@ public class ClassController {
                 studentRepository.save(student);
             }
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String createClass(String name, String startDate, String endDate){
+        String teacherId = secureUserDetailService.getCurrentUser().get_id();
+        Class ooadClass = new com.uet.ooadloophole.model.Class();
+        ooadClass.setClassName(name);
+        ooadClass.setStartDate(startDate);
+        ooadClass.setEndDate(endDate);
+        ooadClass.setTeacherId(teacherId);
+        classRepository.save(ooadClass);
+        return "created";
     }
 }

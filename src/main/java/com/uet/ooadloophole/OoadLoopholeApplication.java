@@ -1,13 +1,18 @@
 package com.uet.ooadloophole;
 
 import com.uet.ooadloophole.database.RoleRepository;
+import com.uet.ooadloophole.payload.FileStorageProperties;
 import com.uet.ooadloophole.model.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@EnableConfigurationProperties({
+        FileStorageProperties.class
+})
 public class OoadLoopholeApplication {
 
     public static void main(String[] args) {
