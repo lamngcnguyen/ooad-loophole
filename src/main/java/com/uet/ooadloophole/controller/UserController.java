@@ -1,9 +1,12 @@
 package com.uet.ooadloophole.controller;
 
+import com.uet.ooadloophole.database.StudentRepository;
+import com.uet.ooadloophole.database.TeacherRepository;
+import com.uet.ooadloophole.model.Student;
+import com.uet.ooadloophole.model.Teacher;
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +21,10 @@ import java.security.Principal;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexView(){
@@ -42,6 +49,8 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(String fullName, String email, String password, String role) {
         User newUser = new User();
+        Student student = new Student();
+
         newUser.setFullName(fullName);
         newUser.setEmail(email);
         newUser.setPassword(password);
@@ -49,6 +58,25 @@ public class UserController {
             role = "USER";
         }
         userService.saveUser(newUser, role);
+
+        student.setUserId(newUser.get_id());
+        studentRepository.save(student);
+        return "created";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
+    public String teacherRegistration(String fullName, String email, String password) {
+        User newUser = new User();
+        Teacher teacher = new Teacher();
+
+        newUser.setFullName(fullName);
+        newUser.setEmail(email);
+        newUser.setPassword(password);
+        userService.saveUser(newUser, "USER");
+
+        teacher.setUserId(newUser.get_id());
+        teacherRepository.save(teacher);
         return "created";
     }
 
