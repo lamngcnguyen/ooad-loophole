@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileStorageService {
-    private Path createPath(String dir) {
+    public Path createPath(String dir) {
         try {
             Path path = Paths.get(dir).toAbsolutePath().normalize();
             Files.createDirectories(path);

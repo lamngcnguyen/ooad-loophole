@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -151,7 +152,7 @@ public class GroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/uploadMultipleFiles", method = RequestMethod.POST)
+    @RequestMapping(value = "/file/multipleUpload", method = RequestMethod.POST)
     public ResponseEntity uploadMultipleFiles(@RequestParam("files") List<MultipartFile> files, String path) {
         for (MultipartFile file : files) {
             uploadFile(file, path);
@@ -183,5 +184,16 @@ public class GroupController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/file/newFolder", method = RequestMethod.POST)
+    public ResponseEntity createNewFolder(@CookieValue String groupId, @CookieValue String classId, String directory) {
+        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/" + directory);
+        if (newPath != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Folder not created");
+        }
     }
 }
