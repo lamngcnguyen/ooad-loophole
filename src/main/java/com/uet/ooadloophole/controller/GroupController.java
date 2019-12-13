@@ -66,6 +66,15 @@ public class GroupController {
         return gson.toJson(students);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/{groupId}/selectTopic", method = RequestMethod.POST)
+    public ResponseEntity selectTopic(@PathVariable String groupId, String topicId) {
+        Group group = groupRepository.findBy_id(groupId);
+        group.setTopicId(topicId);
+        groupRepository.save(group);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
     //========================= File Operations ==========================
 
     @ResponseBody
