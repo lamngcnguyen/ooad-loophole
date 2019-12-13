@@ -1,10 +1,7 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
-import com.uet.ooadloophole.database.ClassRepository;
-import com.uet.ooadloophole.database.GroupRepository;
-import com.uet.ooadloophole.database.StudentRepository;
-import com.uet.ooadloophole.database.TopicRepository;
+import com.uet.ooadloophole.database.*;
 import com.uet.ooadloophole.model.Class;
 import com.uet.ooadloophole.model.*;
 import com.uet.ooadloophole.service.FileStorageService;
@@ -39,6 +36,8 @@ public class ClassController {
     private ClassRepository classRepository;
     @Autowired
     private TopicRepository topicRepository;
+    @Autowired
+    private DeadlineRepository deadlineRepository;
     @Autowired
     private FileStorageService fileStorageService;
 
@@ -128,20 +127,19 @@ public class ClassController {
 
     @ResponseBody
     @RequestMapping(value = "/{classId}/add/deadlines", method = RequestMethod.POST)
-    public ResponseEntity addDeadline(@PathVariable String classId, String deadline) {
-        Class ooadClass = classRepository.findBy_id(classId);
-        ArrayList<String> deadlineList = ooadClass.getDeadline();
-        deadlineList.add(deadline);
-        ooadClass.setDeadline(deadlineList);
-        classRepository.save(ooadClass);
+    public ResponseEntity addDeadline(@PathVariable String classId, String deadlineTime, String message) {
+        Deadline deadline = new Deadline();
+        deadline.setClassId(classId);
+        deadline.setDate(deadlineTime);
+        deadline.setMessage(message);
+        deadlineRepository.save(deadline);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
     @ResponseBody
     @RequestMapping(value = "/{classId}/deadlines", method = RequestMethod.GET)
     public String getDeadlines(@PathVariable String classId) {
-        Class ooadClass = classRepository.findBy_id(classId);
-        ArrayList<String> deadlineList = ooadClass.getDeadline();
+        List<Deadline> deadlineList = deadlineRepository.findAllByClassId(classId);
         return new Gson().toJson(deadlineList);
     }
 
