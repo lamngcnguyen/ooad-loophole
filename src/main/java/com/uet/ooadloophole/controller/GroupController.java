@@ -50,7 +50,7 @@ public class GroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{groupId}/addStudent", method = RequestMethod.POST)
+    @RequestMapping(value = "/{groupId}/members", method = RequestMethod.POST)
     public ResponseEntity addStudentToGroup(@PathVariable String groupId, String _id) {
         Student student = studentRepository.findBy_id(_id);
         student.setGroupId(groupId);
@@ -59,7 +59,7 @@ public class GroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{groupId}/getAllStudents", method = RequestMethod.GET)
+    @RequestMapping(value = "/{groupId}/students", method = RequestMethod.GET)
     public String getAllStudents(@PathVariable String groupId) {
         Gson gson = new Gson();
         List<Student> students = studentRepository.findAllByGroupId(groupId);
@@ -69,7 +69,7 @@ public class GroupController {
     //========================= File Operations ==========================
 
     @ResponseBody
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/file/upload", method = RequestMethod.POST)
     public String uploadFile(@RequestParam("file") MultipartFile file, String path) {
         ArrayList<UserFile> repoUserFiles;
         String saveLocation;
@@ -108,7 +108,7 @@ public class GroupController {
 
     //TODO: className, groupName
     @ResponseBody
-    @RequestMapping(value = {"/searchDirectory/{dir}", "/searchDirectory"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/file/list/{dir}", "/file/list"}, method = RequestMethod.GET, produces = "application/json")
     public String searchDirectory(@CookieValue String groupId, @CookieValue String classId, @PathVariable Optional<String> dir) {
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonObject();
@@ -150,7 +150,7 @@ public class GroupController {
 //    }
 
     @ResponseBody
-    @RequestMapping(value = "/downloadFile/{directory}/{fileName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/download/{directory}/{fileName}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadFile(@CookieValue String groupId, @CookieValue String classId, @PathVariable String directory, @PathVariable String fileName, HttpServletRequest request) {
         String path = "repo/" + classId + "/" + groupId + "/" + directory;
         // Load file as Resource

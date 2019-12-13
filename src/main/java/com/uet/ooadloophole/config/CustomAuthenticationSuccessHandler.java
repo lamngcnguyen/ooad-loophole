@@ -31,7 +31,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         httpServletResponse.addCookie(new Cookie("userId", userDetailService.getCurrentUser().get_id()));
-        if(userDetailService.getStudentId() != null) {
+        if(userDetailService.isStudent()) {
             Student currentStudent = studentRepository.findBy_id(userDetailService.getStudentId());
             httpServletResponse.addCookie(new Cookie("classId", currentStudent.getClassId()));
             httpServletResponse.addCookie(new Cookie("groupId", currentStudent.getGroupId()));
@@ -42,13 +42,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 //        }
         for (GrantedAuthority auth : authentication.getAuthorities()) {
             if ("USER".equals(auth.getAuthority())) {
+                httpServletResponse.sendRedirect("/student/my-group");
+            }
+            else if ("ADMIN".equals(auth.getAuthority())) {
                 httpServletResponse.sendRedirect("/userInfo");
             }
-            if ("ADMIN".equals(auth.getAuthority())) {
-                httpServletResponse.sendRedirect("/userInfo");
-            }
-            if ("TEACHER".equals(auth.getAuthority())) {
-                httpServletResponse.sendRedirect("/userInfo");
+            else if ("TEACHER".equals(auth.getAuthority())) {
+                httpServletResponse.sendRedirect("/teacher/class");
             }
         }
     }

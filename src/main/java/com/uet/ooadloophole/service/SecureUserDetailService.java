@@ -30,8 +30,8 @@ public class SecureUserDetailService {
     }
 
     public com.uet.ooadloophole.model.User getCurrentUser() {
-        System.out.println(getUsername());
-        return userRepository.findByEmail(getUsername());
+        com.uet.ooadloophole.model.User user = userRepository.findByEmail(getUsername());
+        return user;
     }
 
     public boolean isTeacher() {

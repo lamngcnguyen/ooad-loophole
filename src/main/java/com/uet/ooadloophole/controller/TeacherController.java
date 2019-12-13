@@ -16,7 +16,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/class/{id}")
     public ModelAndView classSettingView(@PathVariable String id) {
-        System.out.println("Class ID: " + id);
+        //System.out.println("Class ID: " + id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("title", "Course " + id);
         modelAndView.setViewName("teacher/class_setting");

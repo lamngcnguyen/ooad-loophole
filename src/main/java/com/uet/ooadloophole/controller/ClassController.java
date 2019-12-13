@@ -38,12 +38,10 @@ public class ClassController {
     private TopicRepository topicRepository;
 
     @ResponseBody
-    @RequestMapping(value = "/import", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/students/import", method = RequestMethod.POST, consumes = "application/json")
     public void importClass(@RequestBody Map<String, Object> payload) {
         JSONObject jsonObject = new JSONObject(payload);
-        Class ooadClass = new com.uet.ooadloophole.model.Class();
-        ooadClass.setClassName((String) jsonObject.get("name"));
-        classRepository.save(ooadClass);
+        Class ooadClass = classRepository.findClassByClassName((String) jsonObject.get("name"));
 
         JSONArray array = jsonObject.getJSONArray("students");
         for (Object o : array) {
@@ -92,7 +90,7 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/addStudent", method = RequestMethod.POST)
+    @RequestMapping(value = "/{classId}/students", method = RequestMethod.POST)
     public ResponseEntity addStudent(@PathVariable String classId, String studentId) {
         Student student = studentRepository.findBy_id(studentId);
         student.setClassId(classId);
@@ -101,7 +99,7 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/allGroups", method = RequestMethod.GET)
+    @RequestMapping(value = "/{classId}/groups", method = RequestMethod.GET)
     public String getAllGroups(@PathVariable String classId) {
         Gson gson = new Gson();
         List<Group> groups = groupRepository.findAllByClassId(classId);
@@ -109,7 +107,7 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/allStudents", method = RequestMethod.GET)
+    @RequestMapping(value = "/{classId}/students", method = RequestMethod.GET)
     public String getAllStudents(@PathVariable String classId) {
         Gson gson = new Gson();
         List<Student> students = studentRepository.findAllByClassId(classId);
@@ -117,8 +115,8 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/setDeadline", method = RequestMethod.POST)
-    public ResponseEntity setDeadline(String deadline, String classId){
+    @RequestMapping(value = "/deadlines", method = RequestMethod.POST)
+    public ResponseEntity addDeadline(String deadline, String classId){
         Class ooadClass = classRepository.findBy_id(classId);
         ArrayList<String> deadlineList = ooadClass.getDeadline();
         deadlineList.add(deadline);
@@ -128,7 +126,7 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/deadline", method = RequestMethod.GET)
+    @RequestMapping(value = "/{classId}/deadlines", method = RequestMethod.GET)
     public String getDeadlines(@PathVariable String classId) {
         Class ooadClass = classRepository.findBy_id(classId);
         ArrayList<String> deadlineList = ooadClass.getDeadline();
@@ -136,7 +134,7 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/createTopic", method = RequestMethod.POST)
+    @RequestMapping(value = "/{classId}/topics", method = RequestMethod.POST)
     public ResponseEntity createNewTopic(@PathVariable String classId, String topicName, String groupId) {
         Topic topic = new Topic();
         topic.setName(topicName);

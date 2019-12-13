@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping(value = "/")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -28,7 +29,7 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexView(){
-        return "index";
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -47,17 +48,14 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(String fullName, String email, String password, String role) {
+    public ResponseEntity register(String fullName, String email, String password) {
         User newUser = new User();
         Student student = new Student();
 
         newUser.setFullName(fullName);
         newUser.setEmail(email);
         newUser.setPassword(password);
-        if(role == null){
-            role = "USER";
-        }
-        userService.saveUser(newUser, role);
+        userService.saveUser(newUser, "USER");
 
         student.setUserId(newUser.get_id());
         studentRepository.save(student);
@@ -80,7 +78,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
-    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/info", method = RequestMethod.GET)
     public String userInfo(Model model) {
         org.springframework.security.core.userdetails.User loggedInUser =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
