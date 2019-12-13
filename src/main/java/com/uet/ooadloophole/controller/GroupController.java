@@ -22,9 +22,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 @Controller
 @RequestMapping(value = "/group")
@@ -114,13 +116,15 @@ public class GroupController {
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String path;
         if (dir == null) {
             jsonObject.addProperty("name", groupId);
-            path = "/Users/dhungc3/IdeaProjects/ooad-loophole/repo/" + groupId;
+            path = "repo/" + groupId;
         } else {
             jsonObject.addProperty("name", dir.substring(dir.lastIndexOf("/") + 1));
-            path = "/Users/dhungc3/IdeaProjects/ooad-loophole/repo/" + groupId + "/" + dir;
+            path = "repo/" + groupId + "/" + dir;
         }
         jsonObject.addProperty("type", "folder");
 
@@ -128,6 +132,7 @@ public class GroupController {
         for (File fileEntry : Objects.requireNonNull(folder.listFiles())) {
             JsonObject child = new JsonObject();
             child.addProperty("name", fileEntry.getName());
+            child.addProperty("lastModified", sdf.format(fileEntry.lastModified()));
             if (fileEntry.isDirectory()) {
                 child.addProperty("type", "folder");
             } else {
