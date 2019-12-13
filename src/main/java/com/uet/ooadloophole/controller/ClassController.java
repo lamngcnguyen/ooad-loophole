@@ -1,5 +1,6 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
 import com.uet.ooadloophole.database.ClassRepository;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.database.StudentRepository;
@@ -13,11 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -34,6 +33,7 @@ public class ClassController {
     @Autowired
     private ClassRepository classRepository;
 
+    //
     @ResponseBody
     @RequestMapping(value = "/import", method = RequestMethod.POST, consumes = "application/json")
     public void importClass(@RequestBody Map<String, Object> payload){
@@ -83,5 +83,21 @@ public class ClassController {
         ooadClass.setTeacherId(teacherId);
         classRepository.save(ooadClass);
         return "created";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAllGroups/{classId}", method = RequestMethod.GET)
+    public String getAllGroups(@PathVariable String classId){
+        Gson gson = new Gson();
+        List<Group> groups = groupRepository.findAllByClassId(classId);
+        return gson.toJson(groups);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAllStudents/{classId}", method = RequestMethod.GET)
+    public String getAllStudents(@PathVariable String classId){
+        Gson gson = new Gson();
+        List<Student> students = studentRepository.findAllByClassId(classId);
+        return gson.toJson(students);
     }
 }
