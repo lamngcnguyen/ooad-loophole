@@ -1,8 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>My group</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/master.css}">
+    <link rel="stylesheet" th:href="@{/css/popup.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+    <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/master.js}"></script>
 </head>
 <body>
 <div class="my-container">
@@ -24,14 +30,14 @@
             </table>
         </div>
         <div class="my-header">
-            <h1>My Header</h1>
+            <h1>My Group</h1>
         </div>
     </div>
     <div class="my-sidebar">
         <div class="app-title">OOAD<br>Loophole</div>
         <div class="navigation-menu">
-            <div class="navigation-item selected"><i class="fa fa-home fa-fw"></i>Courses</div>
-            <div class="navigation-item"><i class="fa fa-cog fa-fw"></i>Settings</div>
+            <div class="navigation-item selected"><i class="fa fa-home fa-fw"></i>&nbspMy Group</div>
+            <div class="navigation-item"><i class="fa fa-cog fa-fw"></i>&nbspSettings</div>
         </div>
     </div>
 </div>

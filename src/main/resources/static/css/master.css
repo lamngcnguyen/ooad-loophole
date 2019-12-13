@@ -30,7 +30,7 @@ html, body {
     color: black;
     background-color: white;
     float: right;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .menu-bar {
