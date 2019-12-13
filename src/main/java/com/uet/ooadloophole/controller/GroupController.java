@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.TimeZone;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/group")
@@ -111,20 +108,21 @@ public class GroupController {
 
     //TODO: className, groupName
     @ResponseBody
-    @RequestMapping(value = "/searchDirectory/{dir}", method = RequestMethod.GET, produces = "application/json")
-    public String searchDirectory(@CookieValue String groupId, @PathVariable String dir) {
+    @RequestMapping(value = {"/searchDirectory/{dir}", "/searchDirectory"}, method = RequestMethod.GET, produces = "application/json")
+    public String searchDirectory(@CookieValue String groupId, @CookieValue String classId, @PathVariable Optional<String> dir) {
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String path;
-        if (dir == null) {
+        String path = "repo/" + classId + "/";
+
+        if (!dir.isPresent()) {
             jsonObject.addProperty("name", groupId);
-            path = "repo/" + groupId;
+            path = path + groupId;
         } else {
-            jsonObject.addProperty("name", dir.substring(dir.lastIndexOf("/") + 1));
-            path = "repo/" + groupId + "/" + dir;
+            jsonObject.addProperty("name", dir.get().substring(dir.get().lastIndexOf("/") + 1));
+            path = path + groupId + "/" + dir;
         }
         jsonObject.addProperty("type", "folder");
 
