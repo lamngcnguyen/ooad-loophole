@@ -117,16 +117,10 @@ public class ClassController {
 
     @ResponseBody
     @RequestMapping(value = "/setDeadline", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity setDeadline(@RequestBody Map<String, Object> payload){
-        JSONObject jsonObject = new JSONObject(payload);
-        String classId = jsonObject.getString("classId");
+    public ResponseEntity setDeadline(String deadline, String classId){
         Class ooadClass = classRepository.findBy_id(classId);
         ArrayList<String> deadlineList = ooadClass.getDeadline();
-        JSONArray jsonArray = jsonObject.getJSONArray("deadlines");
-        for(Object o : jsonArray){
-            String deadline = (String) o;
-            deadlineList.add(deadline);
-        }
+        deadlineList.add(deadline);
         ooadClass.setDeadline(deadlineList);
         classRepository.save(ooadClass);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
