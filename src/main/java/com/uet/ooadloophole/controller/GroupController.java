@@ -50,8 +50,8 @@ public class GroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/addStudent", method = RequestMethod.POST)
-    public ResponseEntity addStudentToGroup(String _id, String groupId) {
+    @RequestMapping(value = "/{groupId}/addStudent", method = RequestMethod.POST)
+    public ResponseEntity addStudentToGroup(@PathVariable String groupId, String _id) {
         Student student = studentRepository.findBy_id(_id);
         student.setGroupId(groupId);
         studentRepository.save(student);
@@ -59,7 +59,7 @@ public class GroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getAllStudents/{groupId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{groupId}/getAllStudents", method = RequestMethod.GET)
     public String getAllStudents(@PathVariable String groupId) {
         Gson gson = new Gson();
         List<Student> students = studentRepository.findAllByGroupId(groupId);
