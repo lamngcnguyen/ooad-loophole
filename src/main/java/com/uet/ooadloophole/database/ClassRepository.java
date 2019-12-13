@@ -4,5 +4,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.uet.ooadloophole.model.Class;
 
 public interface ClassRepository extends MongoRepository<com.uet.ooadloophole.model.Class, String> {
-
+    Class findBy_id(String _id);
+    Class findByTeacherId(String teacherId);
 }

@@ -15,30 +15,6 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileStorageService {
-//    private Path fileStorageLocation;
-//    private String pathString;
-//
-//    public Path getFileStorageLocation() {
-//        return fileStorageLocation;
-//    }
-//
-//    private void setFileStorageLocation() {
-//        try {
-//            Files.createDirectories(Paths.get(getPathString()).toAbsolutePath().normalize());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        this.fileStorageLocation = Paths.get(getPathString()).toAbsolutePath().normalize();
-//    }
-//
-//    public String getPathString() {
-//        return pathString;
-//    }
-//
-//    public void setPathString(String pathString) {
-//        this.pathString = pathString;
-//    }
-
     private Path createPath(String dir) {
         try {
             Path path = Paths.get(dir).toAbsolutePath().normalize();
@@ -74,6 +50,7 @@ public class FileStorageService {
         try {
             assert path != null;
             Path filePath = path.resolve(fileName).normalize();
+            System.out.println(filePath.toAbsolutePath());
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;

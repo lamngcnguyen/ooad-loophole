@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.config;
 
 import com.uet.ooadloophole.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 @EnableScheduling
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -56,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/class/**").hasRole("TEACHER")
                 .antMatchers("/register", "/", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -67,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .failureUrl("/login.html?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
+                .successHandler(customAuthenticationSuccessHandler)
 ////                .failureHandler(authenticationFailureHandler())
                 .and()
                 .logout()

@@ -33,6 +33,13 @@ public class OoadLoopholeApplication {
                 newUserRole.setRole("USER");
                 roleRepository.save(newUserRole);
             }
+
+            Role teacherRole = roleRepository.findByRole("TEACHER");
+            if (teacherRole == null) {
+                Role newUserRole = new Role();
+                newUserRole.setRole("TEACHER");
+                roleRepository.save(newUserRole);
+            }
         };
 
     }

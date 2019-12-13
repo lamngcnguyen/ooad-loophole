@@ -1,14 +1,24 @@
 package com.uet.ooadloophole.model;
 
-import org.springframework.data.annotation.Id;
-
-import java.util.List;
+import java.util.ArrayList;
 
 public class Repository {
-    @Id
-    private String _id;
-    private String classId;
-    private String groupId;
-    private List<String> files;
+    private ArrayList<UserFile> userFiles;
+    private ArrayList<String> filesToReview;
 
+    public ArrayList<UserFile> getUserFiles() {
+        return userFiles;
+    }
+
+    public void setUserFiles(ArrayList<UserFile> userFiles) {
+        this.userFiles = userFiles;
+    }
+
+    public ArrayList<String> getFilesToReview() {
+        return filesToReview;
+    }
+
+    public void setFilesToReview(ArrayList<String> filesToReview) {
+        this.filesToReview = filesToReview;
+    }
 }
