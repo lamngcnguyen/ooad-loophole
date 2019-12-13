@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Courses</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/master.css}">
+    <link rel="stylesheet" th:href="@{/css/popup.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+    <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/master.js}"></script>
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">-->
+</head>
+<body>
+<div class="my-container">
+    <div class="my-main">
+        <div class="menu-bar">
+            <table style="margin-left: 16px; height: 100%;">
+                <tbody>
+                <tr>
+                    <td style="padding-right: 8px">
+                        <div class="user-logo" style="text-align: center; vertical-align: middle">
+                            <i class="fa fa-user" style="font-size: 24px; margin-top: 6px; color: white"></i>
+                        </div>
+                    </td>
+                    <td>
+                        <div>Ha Tuan Phong</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="my-header">
+            <h1>Courses</h1>
+        </div>
+        <div class="btn-add-class">
+            <button class="btn my-btn my-btn-blue"><i class="fa fa-plus fa-fw"></i>&nbspAdd new course</button>
+        </div>
+        <div class="course-view">
+            <table class="my-table">
+                <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Course Name</td>
+                    <td></td>
+                    <td>Number of Students</td>
+                    <td>Start Date</td>
+                    <td>End Date</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td class="class-ref">Fuck this shit im out</td>
+                    <td>
+                        <i class="fa fa-ellipsis-h td-action-icon"></i>&nbsp
+                    </td>
+                    <td>3</td>
+                    <td>12/12/2019</td>
+                    <td>12/5/2020</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="class-ref">Can i shoot myself?</td>
+                    <td>
+                        <i class="fa fa-ellipsis-h td-action-icon"></i>&nbsp
+                    </td>
+                    <td>10</td>
+                    <td>12/12/2020</td>
+                    <td>12/5/2021</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="my-sidebar">
+        <div class="app-title">OOAD<br>Loophole</div>
+        <div class="navigation-menu">
+            <div class="navigation-item selected"><i class="fa fa-home fa-fw"></i>&nbspCourses</div>
+            <div class="navigation-item"><i class="fa fa-cog fa-fw"></i>&nbspSettings</div>
+        </div>
+    </div>
+</div>
+<div class="popup add-class-popup">
+    <div class="popup-header">
+        <span class="popup-close">
+            <button><i class="fa fa-close"></i>&nbsp</button>
+        </span>
+        <span class="popup-title">New Course</span>
+    </div>
+    <form action="/class" method="post">
+        <table class="form-table">
+            <tbody>
+            <tr>
+                <td class="my-label"><label for="firstName">Course Name</label>
+                </td>
+                <td>
+                    <input class="my-input" type="text" id="firstName">
+                </td>
+            </tr>
+            <tr>
+                <td class="my-label"><label for="startDate">Start Date</label>
+                </td>
+                <td><input class="my-input" type="date" id="startDate" placeholder="Start date">
+                </td>
+            </tr>
+            <tr>
+                <td class="my-label"><label for="endDate">Start Date</label>
+                </td>
+                <td><input class="my-input" type="date" id="endDate" placeholder="End date">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit" id="submitClass" class="my-btn my-btn-green">Create</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="loader-container">
+    <div class="loader"></div>
+</div>
+</body>
+<script type="text/javascript">
+    $('.btn-add-class button').on('click', function (e) {
+        // $('.add-class-popup').fadeIn();
+        // $('.my-container').css('filter', 'brightness(80%)');
+        showPopup('.add-class-popup');
+    });
+
+    $('.popup-close').on('click', function (e) {
+        // $('.add-class-popup').fadeOut();
+        // $('.my-container').css('filter', 'brightness(100%)');
+        hidePopup('.add-class-popup');
+    })
+</script>
+<style>
+    .course-view {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .btn-add-class {
+        padding-left: 16px;
+        margin-bottom: 16px;
+    }
+
+    .btn-add-class button {
+        width: 180px;
+    }
+
+    .add-class-popup {
+        width: 400px;
+        height: 230px;
+    }
+
+    #submitClass {
+        width: 100px;
+        float: right;
+    }
+</style>
+</html>
