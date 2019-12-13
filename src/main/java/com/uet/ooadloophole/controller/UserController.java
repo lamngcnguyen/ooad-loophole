@@ -7,6 +7,8 @@ import com.uet.ooadloophole.model.Teacher;
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -47,7 +47,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(String fullName, String email, String password, String role) {
+    public ResponseEntity register(String fullName, String email, String password, String role) {
         User newUser = new User();
         Student student = new Student();
 
@@ -61,12 +61,12 @@ public class UserController {
 
         student.setUserId(newUser.get_id());
         studentRepository.save(student);
-        return "created";
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
     @ResponseBody
     @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
-    public String teacherRegistration(String fullName, String email, String password) {
+    public ResponseEntity teacherRegistration(String fullName, String email, String password) {
         User newUser = new User();
         Teacher teacher = new Teacher();
 
@@ -77,13 +77,11 @@ public class UserController {
 
         teacher.setUserId(newUser.get_id());
         teacherRepository.save(teacher);
-        return "created";
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
-    public String userInfo(Model model, Principal principal) {
-        String userName = principal.getName();
-        System.out.println("User Name: " + userName);
+    public String userInfo(Model model) {
         org.springframework.security.core.userdetails.User loggedInUser =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userInfo = loggedInUser.getUsername();

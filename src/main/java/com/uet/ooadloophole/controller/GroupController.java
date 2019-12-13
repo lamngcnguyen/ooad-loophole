@@ -3,15 +3,13 @@ package com.uet.ooadloophole.controller;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.database.StudentRepository;
-import com.uet.ooadloophole.model.Group;
-import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.*;
 import com.uet.ooadloophole.service.FileStorageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
-import com.uet.ooadloophole.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,23 +33,26 @@ public class GroupController {
     private FileStorageService fileStorageService;
     @Autowired
     private SecureUserDetailService secureUserDetailService;
+
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createNewGroup(String name, String classId) {
+    public ResponseEntity createNewGroup(String name, String classId) {
         Group group = new Group();
+        Repository repo = new Repository();
         group.setGroupName(name);
         group.setClassId(classId);
+        group.setRepo(repo);
         groupRepository.save(group);
-        return "created";
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
     @ResponseBody
     @RequestMapping(value = "/addStudent", method = RequestMethod.POST)
-    public String addStudentToGroup(String studentId, String groupId) {
-        Student student = studentRepository.findBy_id(studentId);
+    public ResponseEntity addStudentToGroup(String _id, String groupId) {
+        Student student = studentRepository.findBy_id(_id);
         student.setGroupId(groupId);
         studentRepository.save(student);
-        return "added";
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
     @ResponseBody
@@ -64,13 +66,28 @@ public class GroupController {
     @ResponseBody
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public String uploadFile(@RequestParam("file") MultipartFile file) {
+        ArrayList<File> repoFiles;
         String userId = secureUserDetailService.getCurrentUser().get_id();
-        Student currentStudent = studentRepository.findBy_id(userId);
+        Student currentStudent = studentRepository.findByUserId(userId);
+        Group currentGroup = groupRepository.findBy_id(currentStudent.getGroupId());
+        Repository repo = currentGroup.getRepo();
         String groupId = currentStudent.getGroupId();
         String classId = currentStudent.getClassId();
         String saveLocation = "repo/" + classId + "/" + groupId;
 
         String fileName = fileStorageService.storeFile(file, saveLocation);
+        File uploadedFile = new File();
+        uploadedFile.setFileName(fileName);
+        uploadedFile.setUploaderId(userId);
+        if (repo.getFiles() == null) {
+            repoFiles = new ArrayList<>();
+        } else {
+            repoFiles = repo.getFiles();
+        }
+        repoFiles.add(uploadedFile);
+        repo.setFiles(repoFiles);
+        currentGroup.setRepo(repo);
+        groupRepository.save(currentGroup);
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)

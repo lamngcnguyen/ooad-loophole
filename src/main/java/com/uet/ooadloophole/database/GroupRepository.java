@@ -8,4 +8,5 @@ import java.util.List;
 public interface GroupRepository extends MongoRepository<Group, String> {
     Group findByGroupName(String name);
     List<Group> findAllByClassId(String classId);
+    Group findBy_id(String _id);
 }
