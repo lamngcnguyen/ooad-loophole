@@ -1,11 +1,14 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.database.StudentRepository;
 import com.uet.ooadloophole.model.Group;
 import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.payload.UploadFileResponse;
+import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.FileStorageService;
+import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/group")
@@ -28,7 +32,8 @@ public class GroupController {
     private StudentRepository studentRepository;
     @Autowired
     private FileStorageService fileStorageService;
-
+    @Autowired
+    private SecureUserDetailService secureUserDetailService;
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createNewGroup(String name, String classId) {
@@ -49,17 +54,26 @@ public class GroupController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public String uploadFile(@RequestParam("file") MultipartFile file, String uploadDir) {
-        fileStorageService.setPathString(uploadDir);
-        String fileName = fileStorageService.storeFile(file);
+    @RequestMapping(value = "/getAllStudents/{groupId}", method = RequestMethod.GET)
+    public String getAllStudents(@PathVariable String groupId) {
+        Gson gson = new Gson();
+        List<Student> students = studentRepository.findAllByGroupId(groupId);
+        return gson.toJson(students);
+    }
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+    @ResponseBody
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public String uploadFile(@RequestParam("file") MultipartFile file) {
+        String userId = secureUserDetailService.getCurrentUser().get_id();
+        Student currentStudent = studentRepository.findBy_id(userId);
+        String groupId = currentStudent.getGroupId();
+        String classId = currentStudent.getClassId();
+
+        String fileName = fileStorageService.storeFile(file, "placeholder");
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
-
-        return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()).toString();
     }
 
 //    @ResponseBody
@@ -73,9 +87,9 @@ public class GroupController {
     @ResponseBody
     @RequestMapping(value = "/downloadFile/{saveLocation}/{fileName:.+}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadFile(@PathVariable String saveLocation, @PathVariable String fileName, HttpServletRequest request) {
-        fileStorageService.setPathString(saveLocation);
+//        fileStorageService.setPathString(saveLocation);
         // Load file as Resource
-        Resource resource = fileStorageService.loadFileAsResource(fileName);
+        Resource resource = fileStorageService.loadFileAsResource(fileName, "placeholder");
 
         // Try to determine file's content type
         String contentType = null;

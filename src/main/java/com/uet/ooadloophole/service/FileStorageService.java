@@ -1,8 +1,5 @@
 package com.uet.ooadloophole.service;
 
-//import com.uet.ooadloophole.payload.FileStorageProperties;
-//import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,43 +15,43 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileStorageService {
-    //    private final Path fileStorageLocation;
+//    private Path fileStorageLocation;
+//    private String pathString;
 //
-//    @Autowired
-//    public FileStorageService(FileStorageProperties fileStorageProperties) {
-//        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
-//        try {
-//            Files.createDirectories(this.fileStorageLocation);
-//        } catch (Exception ex) {
-//            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
-//        }
+//    public Path getFileStorageLocation() {
+//        return fileStorageLocation;
 //    }
-    private Path fileStorageLocation;
-    private String pathString;
+//
+//    private void setFileStorageLocation() {
+//        try {
+//            Files.createDirectories(Paths.get(getPathString()).toAbsolutePath().normalize());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        this.fileStorageLocation = Paths.get(getPathString()).toAbsolutePath().normalize();
+//    }
+//
+//    public String getPathString() {
+//        return pathString;
+//    }
+//
+//    public void setPathString(String pathString) {
+//        this.pathString = pathString;
+//    }
 
-    public Path getFileStorageLocation() {
-        return fileStorageLocation;
-    }
-
-    private void setFileStorageLocation() {
+    private Path createPath(String dir) {
         try {
-            Files.createDirectories(Paths.get(getPathString()).toAbsolutePath().normalize());
+            Path path = Paths.get(dir).toAbsolutePath().normalize();
+            Files.createDirectories(path);
+            return path;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        this.fileStorageLocation = Paths.get(getPathString()).toAbsolutePath().normalize();
     }
 
-    public String getPathString() {
-        return pathString;
-    }
-
-    public void setPathString(String pathString) {
-        this.pathString = pathString;
-    }
-
-    public String storeFile(MultipartFile file) {
-        setFileStorageLocation();
+    public String storeFile(MultipartFile file, String saveLocation) {
+        Path savePath = createPath(saveLocation);
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
@@ -63,7 +60,8 @@ public class FileStorageService {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = getFileStorageLocation().resolve(fileName);
+            assert savePath != null;
+            Path targetLocation = savePath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return fileName;
         } catch (IOException ex) {
@@ -71,10 +69,11 @@ public class FileStorageService {
         }
     }
 
-    public Resource loadFileAsResource(String fileName) {
-        setFileStorageLocation();
+    public Resource loadFileAsResource(String fileName, String saveLocation) {
+        Path path = createPath(saveLocation);
         try {
-            Path filePath = getFileStorageLocation().resolve(fileName).normalize();
+            assert path != null;
+            Path filePath = path.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;

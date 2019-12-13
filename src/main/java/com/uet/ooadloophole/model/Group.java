@@ -13,7 +13,7 @@ public class Group {
     private String repoId;
     private String classId;
     private String topicId;
-    private String repoPath;
+    private Repository repo;
 
     public String get_id() {
         return _id;
@@ -71,11 +71,11 @@ public class Group {
         this.topicId = topicId;
     }
 
-    public String getRepoPath() {
-        return repoPath;
+    public Repository getRepo() {
+        return repo;
     }
 
-    public void setRepoPath(String repoPath) {
-        this.repoPath = repoPath;
+    public void setRepo(Repository repo) {
+        this.repo = repo;
     }
 }
