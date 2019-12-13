@@ -116,7 +116,7 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/setDeadline", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/setDeadline", method = RequestMethod.POST)
     public ResponseEntity setDeadline(String deadline, String classId){
         Class ooadClass = classRepository.findBy_id(classId);
         ArrayList<String> deadlineList = ooadClass.getDeadline();
@@ -124,5 +124,13 @@ public class ClassController {
         ooadClass.setDeadline(deadlineList);
         classRepository.save(ooadClass);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{classId}/deadline", method = RequestMethod.GET)
+    public String getDeadlines(@PathVariable String classId) {
+        Class ooadClass = classRepository.findBy_id(classId);
+        ArrayList<String> deadlineList = ooadClass.getDeadline();
+        return new Gson().toJson(deadlineList);
     }
 }
