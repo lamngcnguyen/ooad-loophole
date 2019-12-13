@@ -5,7 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.database.StudentRepository;
-import com.uet.ooadloophole.model.*;
+import com.uet.ooadloophole.model.Group;
+import com.uet.ooadloophole.model.Repository;
+import com.uet.ooadloophole.model.Student;
+import com.uet.ooadloophole.model.UserFile;
 import com.uet.ooadloophole.service.FileStorageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -79,7 +81,7 @@ public class GroupController {
 
     @ResponseBody
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST)
-    public String uploadFile(@RequestParam("file") MultipartFile file, String path) {
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file, String path) {
         ArrayList<UserFile> repoUserFiles;
         String saveLocation;
         UserFile uploadedUserFile = new UserFile();
@@ -109,10 +111,7 @@ public class GroupController {
         repo.setUserFiles(repoUserFiles);
         currentGroup.setRepo(repo);
         groupRepository.save(currentGroup);
-        return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
     //TODO: className, groupName
@@ -150,13 +149,15 @@ public class GroupController {
         jsonObject.add("children", jsonArray);
         return gson.toJson(jsonObject);
     }
-//    @ResponseBody
-//    @RequestMapping(value = "/uploadMultipleFiles", method = RequestMethod.POST)
-//    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-//        return Arrays.stream(files)
-//                .map(this::uploadFile)
-//                .collect(Collectors.toList());
-//    }
+
+    @ResponseBody
+    @RequestMapping(value = "/uploadMultipleFiles", method = RequestMethod.POST)
+    public ResponseEntity uploadMultipleFiles(@RequestParam("files") List<MultipartFile> files, String path) {
+        for (MultipartFile file : files) {
+            uploadFile(file, path);
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/file/download/{directory}/{fileName}", method = RequestMethod.GET)
