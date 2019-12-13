@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/master.css}">
+    <link rel="stylesheet" th:href="@{/css/popup.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+    <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/master.js}"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="my-container">
+    <div class="my-main">
+        <div class="menu-bar">
+            <table style="margin-left: 16px; height: 100%;">
+                <tbody>
+                <tr>
+                    <td style="padding-right: 8px">
+                        <div class="user-logo" style="text-align: center; vertical-align: middle">
+                            <i class="fa fa-user" style="font-size: 24px; margin-top: 6px; color: white"></i>
+                        </div>
+                    </td>
+                    <td>
+                        <div>Ha Tuan Phong</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="my-header">
+            <h1 th:text="${title}"></h1>
+        </div>
+        <div class="student-management">
+            <h2>Students</h2>
+            <table style="margin-bottom: 16px">
+                <tbody>
+                <tr>
+                    <td>
+                        <div style="padding-right: 8px">
+                            <button class="my-btn my-btn-green" id="importStudents"><i class="fa fa-file fa-fw"></i>&nbspImport
+                                Students
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="padding-right: 8px">
+                            <button class="my-btn my-btn-blue" id="addStudent"><i class="fa fa-user fa-fw"></i>&nbspAdd
+                                Student
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="my-table student-table">
+                <thead>
+                <tr>
+                    <td class="num-cell">#</td>
+                    <td>Full Name</td>
+                    <td>Student ID</td>
+                    <td>Email</td>
+                    <td>Group ID</td>
+                    <td>Actions</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="num-cell">1</td>
+                    <td class="class-ref">Ha Tuan Phong</td>
+                    <td>16020263</td>
+                    <td>phonghatuan1998@gmail.com</td>
+                    <td>F & Đồng bọn</td>
+                    <td><i class="fa fa-pencil fa-fw td-action-icon"></i>&nbsp<i
+                            class="fa fa-trash fa-fw td-action-icon"></i>&nbsp
+                    </td>
+                </tr>
+                <tr>
+                    <td class="num-cell">2</td>
+                    <td class="class-ref">Nguyen Ngoc Lam</td>
+                    <td>16022408</td>
+                    <td>lamsuckmydick@gmail.com</td>
+                    <td>F & Đồng bọn</td>
+                    <td><i class="fa fa-pencil fa-fw td-action-icon"></i>&nbsp<i
+                            class="fa fa-trash fa-fw td-action-icon"></i>&nbsp
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="topic-management">
+            <h2>Topics</h2>
+            <div style="margin-bottom: 16px">
+                <button class="my-btn my-btn-blue" id="addTopic"><i class="fa fa-plus fa-fw"></i>&nbspAdd topic</button>
+            </div>
+            <table class="my-table topic-table">
+                <thead>
+                <tr>
+                    <td class="num-cell">#</td>
+                    <td>Topic</td>
+                    <td>Group ID</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="num-cell">1</td>
+                    <td class="class-ref">OOAD Loophole</td>
+                    <td>F & Đồng bọn</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="deadline-management">
+            <h2>Deadlines</h2>
+            <table class="deadline-table my-table">
+                <thead>
+                <tr>
+                    <td class="num-cell">#</td>
+                    <td>Datetime</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="num-cell">1</td>
+                    <td>23:59 13/12/2019</td>
+                </tr>
+                <tr class="tr-button">
+                    <td class="num-cell"></td>
+                    <td>
+                       <button class="my-btn-blue my-btn" id="addDeadline">Add deadline</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="my-sidebar">
+        <div class="app-title">OOAD<br>Loophole</div>
+        <div class="navigation-menu">
+            <div class="navigation-item selected"><i class="fa fa-home fa-fw"></i>&nbspCourses</div>
+            <div class="navigation-item"><i class="fa fa-cog fa-fw"></i>&nbspSettings</div>
+        </div>
+    </div>
+</div>
+<div class="popup import-student-popup">
+    <div class="popup-header">
+        <span class="popup-close">
+            <button><i class="fa fa-close"></i>&nbsp</button>
+        </span>
+        <span class="popup-title">Import students</span>
+    </div>
+    <div class="import-xlsx">
+        <table style="direction: rtl; width: 100%; margin-bottom: 16px">
+            <tbody>
+            <tr>
+                <!--                <td style="padding-right: 8px">-->
+                <!--                    <div class="xlsx-path my-btn">XLSX path</div>-->
+                <!--                </td>-->
+                <td>
+                    <button class="my-btn my-btn-red" id="downloadTemplate">Get template</button>
+                    <button class="my-btn my-btn-blue" id="importXLSX">Upload XLSX</button>
+                    <input type="file" style="display: none" id="xlsxUpload">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="import-student-list">
+        <table class="my-table import-student-table">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>Full Name</td>
+                <td>Email</td>
+                <td>Group</td>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div style="margin-top: 16px">
+        <button class="my-btn my-btn-green" id="saveStudents">
+            Save
+        </button>
+    </div>
+</div>
+<div class="popup add-topic-popup">
+    <div class="popup-header">
+        <span class="popup-close">
+            <button><i class="fa fa-close"></i>&nbsp</button>
+        </span>
+        <span class="popup-title">New topic</span>
+    </div>
+    <table class="form-table">
+        <tbody>
+        <tr>
+            <td class="my-label"><label for="topicName">Topic Name</label>
+            </td>
+            <td>
+                <input class="my-input" type="text" id="topicName">
+            </td>
+        </tr>
+        <tr>
+            <td class="my-label"><label for="groupId">Group</label>
+            </td>
+            <td>
+                <select class="my-input" id="groupId">
+                    <option value="0">Not set</option>
+                    <option value="1">Avengers</option>
+                    <option value="0">Justice League</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit" id="submitTopic" class="my-btn my-btn-green">Add</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    $('#importStudents').on('click', function (e) {
+        showPopup('.import-student-popup');
+    });
+
+    $('.import-student-popup .popup-close').on('click', function (e) {
+        hidePopup('.import-student-popup');
+    });
+
+    $('#addTopic').on('click', function () {
+        showPopup('.add-topic-popup');
+    });
+
+    $('.add-topic-popup .popup-close').on('click', function () {
+        hidePopup('.add-topic-popup');
+    });
+
+    $('#downloadTemplate').on('click', function () {
+        createStudentListTemplate();
+    });
+
+    $('#importXLSX').on('click', function () {
+        $('#xlsxUpload').click()
+    });
+
+    $('#addDeadline').on('click', function() {
+      var table = $('.deadline-table');
+      var newRowId = $('.deadline-table tbody tr').length;
+
+      var newRow = $('<tr class="tr-button"></tr>');
+      var numCell = $('<td class="num-cell"></td>').text(newRowId);
+      var deadlineCell = $('<td></td>');
+      var dateInput = $('<input type="date" class="deadline-date-input my-input">');
+      var timeInput = $('<input type="time" class="deadline-time-input my-input" style="margin-left: 8px">');
+      var confirmBtn = $('<button class="my-btn my-btn-green" style="width: 80px; margin-left: 8px">Save</button>').on('click', function () {
+          var value = timeInput.val() + ' ' + dateInput.val();
+          console.log(timeInput.val());
+          dateInput.remove();
+          timeInput.remove();
+          this.remove();
+          deadlineCell.text(value);
+      });
+
+      deadlineCell.append(dateInput, timeInput, confirmBtn);
+      newRow.append(numCell, deadlineCell);
+
+      table.find('tr:last').prev().after(newRow);
+    });
+
+    document.getElementById('xlsxUpload').addEventListener('change', function (e) {
+        parseStudents(e);
+        this.value = '';
+    }, false);
+
+    function parseStudents(evt) {
+        var file = evt.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var data = e.target.result;
+            try {
+                var workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
+            } catch (ex) {
+                showMessageSuccess('Unable to process file!');
+                return;
+            }
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]]);
+            XL_row_object.forEach(function (em) {
+                console.log(em);
+                var values = Object.values(em);
+                var row = $('<tr></tr>');
+                var numCell = $('<td></td>').text(values[0]);
+                var nameCell = $('<td></td>').text(values[1]);
+                var emailCell = $('<td></td>').text(values[2]);
+                var groupCell = $('<td></td>').text(values[3]);
+                row.append(numCell, nameCell, emailCell, groupCell);
+                $('.import-student-table tbody').append(row);
+            })
+        };
+
+        reader.onerror = function () {
+            showMessageSuccess('Unable to process file!')
+        };
+
+        reader.readAsBinaryString(file);
+    }
+
+    function createStudentListTemplate() {
+        var wb = XLSX.utils.book_new();
+        var ws_name = "students";
+        var ws_data = [
+            ['#', 'Full name', 'Email', 'Group'],
+            ['1', 'Phong Ha Tuan', '16020263@vnu.edu.vn', 'F & Đồng bọn'],
+            ['2', 'Nguyen Ngoc Lam', '16022408@vnu.edu.vn', 'F & Đồng bọn']
+        ];
+        var ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, ws_name);
+        XLSX.writeFile(wb, 'students.xlsx');
+    }
+</script>
+<style>
+    .student-management, .deadline-management, .topic-management {
+        padding: 0 16px;
+    }
+
+    #addTopic {
+        width: 120px;
+    }
+
+    #addStudent {
+        width: 160px;
+    }
+
+    #importStudents {
+        width: 180px;
+    }
+
+    .import-student-popup {
+        width: 1000px;
+        height: 450px;
+    }
+
+    .add-topic-popup {
+        width: 400px;
+        height: 180px;
+    }
+
+    .xlsx-path {
+        width: 500px;
+        border: 1px solid lightgrey;
+        color: grey;
+        font-size: 18px;
+        padding-left: 16px;
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    #downloadTemplate {
+        width: 150px;
+    }
+
+    .import-student-list {
+        height: 300px;
+        border-bottom: 1px solid lightgrey;
+        border-top: 1px solid lightgrey;
+        overflow-y: scroll;
+    }
+
+    #saveStudents {
+        width: 120px;
+        float: right;
+    }
+
+    #importXLSX {
+        width: 120px;
+        margin-right: 8px;
+    }
+
+    #submitTopic {
+        width: 100px;
+        float: right;
+    }
+
+    #addDeadline {
+        width: 120px;
+    }
+
+    .deadline-date-input {
+        width: 200px;
+    }
+
+    .deadline-time-input {
+        width: 120px;
+    }
+
+    .readonly-input {
+        padding-left: 0;
+        border: none;
+        cursor: context-menu;
+    }
+</style>
+</html>

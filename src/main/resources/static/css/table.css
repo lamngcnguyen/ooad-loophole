@@ -1,0 +1,41 @@
+.my-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.my-table thead tr {
+    border-bottom: 1px solid grey;
+}
+
+.my-table thead tr td {
+    text-align: start;
+    font-weight: bold;
+}
+
+.my-table tbody tr:hover:not(.tr-button) {
+    background-color: #B3E5FC;
+    cursor: pointer;
+}
+
+.my-table tbody tr:hover .class-ref {
+    color: #03A9F4;
+    text-decoration: underline;
+}
+
+.my-table td {
+    padding: 16px;
+}
+
+.td-action-icon {
+    color: grey;
+    cursor: pointer;
+}
+
+.td-action-icon:hover {
+    color: white;
+    font-size: 20px;
+}
+
+.num-cell {
+    width: 30px;
+}

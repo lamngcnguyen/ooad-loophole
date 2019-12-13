@@ -1,0 +1,122 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.my-container {
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+}
+
+.my-sidebar {
+    height: 100%;
+    width: 15%;
+    background-image: linear-gradient(to right, #141E30, #243B55);
+    color: white;
+}
+
+.app-title {
+    padding-top: 16px;
+    padding-left: 16px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.my-main {
+    height: 100%;
+    width: 85%;
+    color: black;
+    background-color: white;
+    float: right;
+    overflow-y: scroll;
+}
+
+.menu-bar {
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid lightgrey;
+}
+
+.my-header {
+    padding-left: 16px;
+}
+
+.loader-container {
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    animation: spin 2s linear infinite;
+    z-index: 10;
+    display: none;
+}
+
+.my-btn {
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    font-size: 16px;
+    height: 40px;
+}
+
+.my-btn-green {
+    background-color: #00E676;
+}
+
+.my-btn-blue {
+    background-color: #03A9F4;
+}
+
+.my-btn-red {
+    background-color: #F44336;
+}
+
+.user-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid grey;
+    background-color: grey;
+}
+
+.navigation-menu {
+    margin-top: 16px;
+}
+
+.navigation-item {
+    width: 100%;
+    padding: 16px;
+    color: white;
+}
+
+.navigation-item:hover {
+    background-color: #4FC3F7;
+}
+
+.selected {
+    background-color: #03A9F4;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

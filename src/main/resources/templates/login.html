@@ -1,139 +1,21 @@
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8">
-    <link rel="shortcut icon" href="/images/logo.png" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/mdb.min.css">
-    <link rel="stylesheet" href="/css/newsignin-style.css">
-    <script src="/js/libraries/jquery.min.js"></script>
-    <script src="/js/libraries/bootstrap.min.js"></script>
-    <script src="/js/libraries/popper.min.js"></script>
-    <script src="/js/libraries/bootbox.min.js"></script>
-</head>
-
+<html lang="en">
+<head><title>Login</title></head>
 <body>
-
-<div class="card">
-    <h5 class="card-header white-text text-center py-4">
-        <div class="row">
-            <div class="column">
-                <img src="/images/logo.png">
-            </div>
-            <div class="column">
-                <h2><strong>Login</strong></h2>
-            </div>
-        </div>
-    </h5>
-
-    <!--    <div class="card-body px-lg-5 pt-0">-->
-    <!--           <span th:if="${signup_confirm}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "One More Step!",-->
-    <!--                message: "Open your Email to finish registering within 24 hours!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <!--        <span th:if="${successMessage}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "Congratulation!",-->
-    <!--                message: "Login with your account to chat now!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <!--        <span th:if="${success_reset}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "Hurray!",-->
-    <!--                message: "You back with us!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <!--        <span th:if="${login_error}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "Try again!",-->
-    <!--                message: "Email or password is wrong!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <!--        <span th:if="${login_blocked}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "Oops!",-->
-    <!--                message: "You are blocked for typing wrong information more than 5 times! Please try again after 1 hour!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <!--        <span th:if="${login_inactive}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "Hmm!",-->
-    <!--                message: "Your account is not verified or deactivated! Check your email to continue!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <!--        <span th:if="${errorMessage_token}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "Oops!",-->
-    <!--                message: "The link is expired!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <!--        <span th:if="${warning}">-->
-    <!--            <script>bootbox.alert({-->
-    <!--                size: "small",-->
-    <!--                title: "Hold on!",-->
-    <!--                message: "You must log in to do that!",-->
-    <!--                callback: function () { /* your callback code */-->
-    <!--                }-->
-    <!--            })</script>-->
-    <!--           </span>-->
-    <form class="text-center" style="color: #757575;" action="/login" method="post">
-        <div class="md-form">
-            <input type="email" name="email" id="materialLoginFormEmail" class="form-control" required>
-            <label for="materialLoginFormEmail">E-mail</label>
-        </div>
-
-        <div class="md-form">
-            <input type="password" name="password" id="materialLoginFormPassword" class="form-control" required>
-            <label for="materialLoginFormPassword">Password</label>
-        </div>
-
-        <div class="d-flex justify-content-around">
-            <div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="materialLoginFormRemember">
-                    <label class="form-check-label" for="materialLoginFormRemember">Remember me</label>
-                </div>
-            </div>
-            <div>
-                <a href="/forgot-password">Forgot password?</a>
-            </div>
-        </div>
-
-        <button class="btn btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Sign in</button>
-
-        <p>Not a member?
-            <a href="/register">Register</a>
-        </p>
-    </form>
-</div>
-<!--</div>-->
-<script src="/js/libraries/mdb.min.js"></script>
+<h1>Login</h1>
+<form name='f' action="/login" method='POST'>
+    <table>
+        <tr>
+            <td>User:</td>
+            <td><input type='text' name='email' value=''></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type='password' name='password'/></td>
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="submit"/></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>
