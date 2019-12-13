@@ -68,8 +68,9 @@ public class GroupController {
         Student currentStudent = studentRepository.findBy_id(userId);
         String groupId = currentStudent.getGroupId();
         String classId = currentStudent.getClassId();
+        String saveLocation = "repo/" + classId + "/" + groupId;
 
-        String fileName = fileStorageService.storeFile(file, "placeholder");
+        String fileName = fileStorageService.storeFile(file, saveLocation);
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
