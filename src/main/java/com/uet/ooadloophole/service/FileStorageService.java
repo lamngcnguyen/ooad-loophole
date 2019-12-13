@@ -50,6 +50,7 @@ public class FileStorageService {
         try {
             assert path != null;
             Path filePath = path.resolve(fileName).normalize();
+            System.out.println(filePath.toAbsolutePath());
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;

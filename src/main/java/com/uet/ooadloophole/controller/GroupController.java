@@ -150,11 +150,11 @@ public class GroupController {
 //    }
 
     @ResponseBody
-    @RequestMapping(value = "/downloadFile/{saveLocation}/{fileName:.+}", method = RequestMethod.GET)
-    public ResponseEntity<Resource> downloadFile(@PathVariable String saveLocation, @PathVariable String fileName, HttpServletRequest request) {
-//        fileStorageService.setPathString(saveLocation);
+    @RequestMapping(value = "/downloadFile/{directory}/{fileName}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadFile(@CookieValue String groupId, @CookieValue String classId, @PathVariable String directory, @PathVariable String fileName, HttpServletRequest request) {
+        String path = "repo/" + classId + "/" + groupId + "/" + directory;
         // Load file as Resource
-        Resource resource = fileStorageService.loadFileAsResource(fileName, "placeholder");
+        Resource resource = fileStorageService.loadFileAsResource(fileName, path);
 
         // Try to determine file's content type
         String contentType = null;
