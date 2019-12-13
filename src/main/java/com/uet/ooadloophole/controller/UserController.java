@@ -73,7 +73,7 @@ public class UserController {
         newUser.setFullName(fullName);
         newUser.setEmail(email);
         newUser.setPassword(password);
-        userService.saveUser(newUser, "USER");
+        userService.saveUser(newUser, "TEACHER");
 
         teacher.setUserId(newUser.get_id());
         teacherRepository.save(teacher);

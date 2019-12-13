@@ -47,6 +47,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             if ("ADMIN".equals(auth.getAuthority())) {
                 httpServletResponse.sendRedirect("/userInfo");
             }
+            if ("TEACHER".equals(auth.getAuthority())) {
+                httpServletResponse.sendRedirect("/userInfo");
+            }
         }
     }
 }

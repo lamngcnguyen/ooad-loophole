@@ -4,9 +4,10 @@ import com.google.gson.Gson;
 import com.uet.ooadloophole.database.ClassRepository;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.database.StudentRepository;
-import com.uet.ooadloophole.database.TeacherRepository;
-import com.uet.ooadloophole.model.*;
 import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.model.Group;
+import com.uet.ooadloophole.model.Student;
+import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.UserService;
 import org.json.JSONArray;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +35,6 @@ public class ClassController {
     private StudentRepository studentRepository;
     @Autowired
     private ClassRepository classRepository;
-    @Autowired
-    private TeacherRepository teacherRepository;
 
     @ResponseBody
     @RequestMapping(value = "/import", method = RequestMethod.POST, consumes = "application/json")
@@ -113,5 +113,22 @@ public class ClassController {
         Gson gson = new Gson();
         List<Student> students = studentRepository.findAllByClassId(classId);
         return gson.toJson(students);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/setDeadline", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity setDeadline(@RequestBody Map<String, Object> payload){
+        JSONObject jsonObject = new JSONObject(payload);
+        String classId = jsonObject.getString("classId");
+        Class ooadClass = classRepository.findBy_id(classId);
+        ArrayList<String> deadlineList = ooadClass.getDeadline();
+        JSONArray jsonArray = jsonObject.getJSONArray("deadlines");
+        for(Object o : jsonArray){
+            String deadline = (String) o;
+            deadlineList.add(deadline);
+        }
+        ooadClass.setDeadline(deadlineList);
+        classRepository.save(ooadClass);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 }

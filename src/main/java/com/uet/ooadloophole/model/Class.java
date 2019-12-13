@@ -2,6 +2,8 @@ package com.uet.ooadloophole.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+
 public class Class {
     @Id
     private String _id;
@@ -12,6 +14,7 @@ public class Class {
     //The day of week the class supposed to take place
     //This variable's name might be changed later
     private String scheduledDayOfWeek;
+    private ArrayList<String> deadline;
 
     public String get_id() {
         return _id;
@@ -59,5 +62,13 @@ public class Class {
 
     public void setScheduledDayOfWeek(String scheduledDayOfWeek) {
         this.scheduledDayOfWeek = scheduledDayOfWeek;
+    }
+
+    public ArrayList<String> getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(ArrayList<String> deadline) {
+        this.deadline = deadline;
     }
 }
