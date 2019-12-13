@@ -3,13 +3,13 @@ package com.uet.ooadloophole.model;
 import java.util.ArrayList;
 
 public class Repository {
-    private ArrayList<File> files;
+    private ArrayList<UserFile> userFiles;
 
-    public ArrayList<File> getFiles() {
-        return files;
+    public ArrayList<UserFile> getUserFiles() {
+        return userFiles;
     }
 
-    public void setFiles(ArrayList<File> files) {
-        this.files = files;
+    public void setUserFiles(ArrayList<UserFile> userFiles) {
+        this.userFiles = userFiles;
     }
 }

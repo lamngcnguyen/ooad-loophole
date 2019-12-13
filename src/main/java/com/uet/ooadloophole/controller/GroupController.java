@@ -1,6 +1,8 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.database.StudentRepository;
 import com.uet.ooadloophole.model.*;
@@ -18,9 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/group")
@@ -63,29 +67,38 @@ public class GroupController {
         return gson.toJson(students);
     }
 
+    //========================= File Operations ==========================
+
     @ResponseBody
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-        ArrayList<File> repoFiles;
+    public String uploadFile(@RequestParam("file") MultipartFile file, String path) {
+        ArrayList<UserFile> repoUserFiles;
+        String saveLocation;
+        UserFile uploadedUserFile = new UserFile();
         String userId = secureUserDetailService.getCurrentUser().get_id();
         Student currentStudent = studentRepository.findByUserId(userId);
         Group currentGroup = groupRepository.findBy_id(currentStudent.getGroupId());
         Repository repo = currentGroup.getRepo();
         String groupId = currentStudent.getGroupId();
         String classId = currentStudent.getClassId();
-        String saveLocation = "repo/" + classId + "/" + groupId;
+        if (path == null) {
+            uploadedUserFile.setPath("");
+            saveLocation = "repo/" + classId + "/" + groupId;
+        } else {
+            uploadedUserFile.setPath(path);
+            saveLocation = "repo/" + classId + "/" + groupId + "/" + path;
+        }
 
         String fileName = fileStorageService.storeFile(file, saveLocation);
-        File uploadedFile = new File();
-        uploadedFile.setFileName(fileName);
-        uploadedFile.setUploaderId(userId);
-        if (repo.getFiles() == null) {
-            repoFiles = new ArrayList<>();
+        uploadedUserFile.setFileName(fileName);
+        uploadedUserFile.setUploaderId(userId);
+        if (repo.getUserFiles() == null) {
+            repoUserFiles = new ArrayList<>();
         } else {
-            repoFiles = repo.getFiles();
+            repoUserFiles = repo.getUserFiles();
         }
-        repoFiles.add(uploadedFile);
-        repo.setFiles(repoFiles);
+        repoUserFiles.add(uploadedUserFile);
+        repo.setUserFiles(repoUserFiles);
         currentGroup.setRepo(repo);
         groupRepository.save(currentGroup);
         return ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -94,6 +107,37 @@ public class GroupController {
                 .toUriString();
     }
 
+    //TODO: className, groupName
+    @ResponseBody
+    @RequestMapping(value = "/searchDirectory/{dir}", method = RequestMethod.GET, produces = "application/json")
+    public String searchDirectory(@CookieValue String groupId, @PathVariable String dir) {
+        Gson gson = new Gson();
+        JsonObject jsonObject = new JsonObject();
+        JsonArray jsonArray = new JsonArray();
+        String path;
+        if (dir == null) {
+            jsonObject.addProperty("name", groupId);
+            path = "/Users/dhungc3/IdeaProjects/ooad-loophole/repo/" + groupId;
+        } else {
+            jsonObject.addProperty("name", dir.substring(dir.lastIndexOf("/") + 1));
+            path = "/Users/dhungc3/IdeaProjects/ooad-loophole/repo/" + groupId + "/" + dir;
+        }
+        jsonObject.addProperty("type", "folder");
+
+        File folder = new File(path);
+        for (File fileEntry : Objects.requireNonNull(folder.listFiles())) {
+            JsonObject child = new JsonObject();
+            child.addProperty("name", fileEntry.getName());
+            if (fileEntry.isDirectory()) {
+                child.addProperty("type", "folder");
+            } else {
+                child.addProperty("type", "file");
+            }
+            jsonArray.add(child);
+        }
+        jsonObject.add("children", jsonArray);
+        return gson.toJson(jsonObject);
+    }
 //    @ResponseBody
 //    @RequestMapping(value = "/uploadMultipleFiles", method = RequestMethod.POST)
 //    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {

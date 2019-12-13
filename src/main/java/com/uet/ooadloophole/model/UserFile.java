@@ -2,13 +2,14 @@ package com.uet.ooadloophole.model;
 
 import org.springframework.data.annotation.Id;
 
-public class File {
+public class UserFile {
     @Id
     private String _id;
     private String fileName;
     private long score;
     private String timeStamp;
     private String uploaderId;
+    private String path;
 
     public String get_id() {
         return _id;
@@ -48,5 +49,13 @@ public class File {
 
     public void setUploaderId(String uploaderId) {
         this.uploaderId = uploaderId;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
