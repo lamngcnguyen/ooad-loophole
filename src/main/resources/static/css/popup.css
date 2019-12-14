@@ -12,6 +12,7 @@
     border: 1px solid lightgrey;
     z-index: 2;
     display: none;
+    overflow: auto;
 }
 
 .popup-header {

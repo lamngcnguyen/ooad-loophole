@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title}"></title>
+    <title th:text="${className}"></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" th:href="@{/css/master.css}">
     <link rel="stylesheet" th:href="@{/css/popup.css}">
@@ -15,23 +15,21 @@
 <div class="my-container">
     <div class="my-main">
         <div class="menu-bar">
-            <table style="margin-left: 16px; height: 100%;">
+            <table style="height: 100%; width: 100%">
                 <tbody>
                 <tr>
-                    <td style="padding-right: 8px">
-                        <div class="user-logo" style="text-align: center; vertical-align: middle">
-                            <i class="fa fa-user" style="font-size: 24px; margin-top: 6px; color: white"></i>
-                        </div>
-                    </td>
-                    <td>
-                        <div>Ha Tuan Phong</div>
+                    <td style="text-align: end;">
+                        <span th:text="${userFullName}" th:remove="tag"></span>
+                        <img src="https://i.pinimg.com/originals/d1/1a/45/d11a452f5ce6ab534e083cdc11e8035e.png"
+                             class="user-logo">
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="my-header">
-            <h1 th:text="${title}"></h1>
+            <h1 th:text="${className}"></h1>
+            <span th:text="${startDate}"></span><span>&nbsp-&nbsp</span><span th:text="${endDate}"></span>
         </div>
         <div class="student-management">
             <h2>Students</h2>
@@ -58,35 +56,17 @@
             <table class="my-table student-table">
                 <thead>
                 <tr>
+                    <td class="id-cell"></td>
                     <td class="num-cell">#</td>
                     <td>Full Name</td>
                     <td>Student ID</td>
                     <td>Email</td>
-                    <td>Group ID</td>
+                    <td class="id-cell group-id"></td>
+                    <td>Group</td>
                     <td>Actions</td>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td class="num-cell">1</td>
-                    <td class="class-ref">Ha Tuan Phong</td>
-                    <td>16020263</td>
-                    <td>phonghatuan1998@gmail.com</td>
-                    <td>F & Đồng bọn</td>
-                    <td><i class="fa fa-pencil fa-fw td-action-icon"></i>&nbsp<i
-                            class="fa fa-trash fa-fw td-action-icon"></i>&nbsp
-                    </td>
-                </tr>
-                <tr>
-                    <td class="num-cell">2</td>
-                    <td class="class-ref">Nguyen Ngoc Lam</td>
-                    <td>16022408</td>
-                    <td>lamsuckmydick@gmail.com</td>
-                    <td>F & Đồng bọn</td>
-                    <td><i class="fa fa-pencil fa-fw td-action-icon"></i>&nbsp<i
-                            class="fa fa-trash fa-fw td-action-icon"></i>&nbsp
-                    </td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -100,6 +80,7 @@
                 <tr>
                     <td class="num-cell">#</td>
                     <td>Topic</td>
+                    <td>Attachments</td>
                     <td>Group ID</td>
                 </tr>
                 </thead>
@@ -107,6 +88,12 @@
                 <tr>
                     <td class="num-cell">1</td>
                     <td class="class-ref">OOAD Loophole</td>
+                    <td>
+                        <ul style="list-style-type: none; margin: 0; padding: 0">
+                            <li><img class="attachment-icon" th:src="@{/images/repo-icons/zip.png}">specs.zip</li>
+                            <li><img class="attachment-icon" th:src="@{/images/repo-icons/pdf.png}">brief.pdf</li>
+                        </ul>
+                    </td>
                     <td>F & Đồng bọn</td>
                 </tr>
                 </tbody>
@@ -119,17 +106,33 @@
                 <tr>
                     <td class="num-cell">#</td>
                     <td>Datetime</td>
+                    <td>Message</td>
+                    <td>Status</td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td class="num-cell">1</td>
                     <td>23:59 13/12/2019</td>
+                    <td>Initialize project</td>
+                    <td class="status status-finish">FINISHED</td>
+                </tr>
+                <tr>
+                    <td class="num-cell">2</td>
+                    <td>23:59 20/12/2019</td>
+                    <td>Prototype 1</td>
+                    <td class="status status-in-progress">IN PROGRESS</td>
+                </tr>
+                <tr>
+                    <td class="num-cell">3</td>
+                    <td>23:59 27/12/2019</td>
+                    <td>Prototype 2</td>
+                    <td class="status status-waiting">WAITING</td>
                 </tr>
                 <tr class="tr-button">
                     <td class="num-cell"></td>
                     <td>
-                       <button class="my-btn-blue my-btn" id="addDeadline">Add deadline</button>
+                        <button class="my-btn-blue my-btn" id="addDeadline">Add deadline</button>
                     </td>
                 </tr>
                 </tbody>
@@ -173,6 +176,7 @@
             <tr>
                 <td>#</td>
                 <td>Full Name</td>
+                <td>Student ID</td>
                 <td>Email</td>
                 <td>Group</td>
             </tr>
@@ -181,7 +185,7 @@
         </table>
     </div>
     <div style="margin-top: 16px">
-        <button class="my-btn my-btn-green" id="saveStudents">
+        <button class="my-btn my-btn-green" id="saveImportStudents">
             Save
         </button>
     </div>
@@ -222,13 +226,22 @@
         </tbody>
     </table>
 </div>
+<div class="loader-container">
+    <div class="loader"></div>
+</div>
+<!--<div class="class-id" style="display: none" th:text="${classId}"></div>-->
 </body>
 <script>
-    $('#importStudents').on('click', function (e) {
+    var studentTable = $('.student-table tbody');
+    var importStudentTable = $('.import-student-table tbody');
+    var importStudents;
+
+    $('#importStudents').on('click', function () {
+        clearImportTable();
         showPopup('.import-student-popup');
     });
 
-    $('.import-student-popup .popup-close').on('click', function (e) {
+    $('.import-student-popup .popup-close').on('click', function () {
         hidePopup('.import-student-popup');
     });
 
@@ -248,28 +261,32 @@
         $('#xlsxUpload').click()
     });
 
-    $('#addDeadline').on('click', function() {
-      var table = $('.deadline-table');
-      var newRowId = $('.deadline-table tbody tr').length;
+    $('#saveImportStudents').on('click', function () {
+        saveImportStudents()
+    });
 
-      var newRow = $('<tr class="tr-button"></tr>');
-      var numCell = $('<td class="num-cell"></td>').text(newRowId);
-      var deadlineCell = $('<td></td>');
-      var dateInput = $('<input type="date" class="deadline-date-input my-input">');
-      var timeInput = $('<input type="time" class="deadline-time-input my-input" style="margin-left: 8px">');
-      var confirmBtn = $('<button class="my-btn my-btn-green" style="width: 80px; margin-left: 8px">Save</button>').on('click', function () {
-          var value = timeInput.val() + ' ' + dateInput.val();
-          console.log(timeInput.val());
-          dateInput.remove();
-          timeInput.remove();
-          this.remove();
-          deadlineCell.text(value);
-      });
+    $('#addDeadline').on('click', function () {
+        var table = $('.deadline-table');
+        var newRowId = $('.deadline-table tbody tr').length;
 
-      deadlineCell.append(dateInput, timeInput, confirmBtn);
-      newRow.append(numCell, deadlineCell);
+        var newRow = $('<tr class="tr-button"></tr>');
+        var numCell = $('<td class="num-cell"></td>').text(newRowId);
+        var deadlineCell = $('<td></td>');
+        var dateInput = $('<input type="date" class="deadline-date-input my-input">');
+        var timeInput = $('<input type="time" class="deadline-time-input my-input" style="margin-left: 8px">');
+        var confirmBtn = $('<button class="my-btn my-btn-green" style="width: 80px; margin-left: 8px">Save</button>').on('click', function () {
+            var value = timeInput.val() + ' ' + dateInput.val();
+            console.log(timeInput.val());
+            dateInput.remove();
+            timeInput.remove();
+            this.remove();
+            deadlineCell.text(value);
+        });
 
-      table.find('tr:last').prev().after(newRow);
+        deadlineCell.append(dateInput, timeInput, confirmBtn);
+        newRow.append(numCell, deadlineCell);
+
+        table.find('tr:last').prev().after(newRow);
     });
 
     document.getElementById('xlsxUpload').addEventListener('change', function (e) {
@@ -278,9 +295,9 @@
     }, false);
 
     function parseStudents(evt) {
+        clearImportTable();
         var file = evt.target.files[0];
         var reader = new FileReader();
-
         reader.onload = function (e) {
             var data = e.target.result;
             try {
@@ -288,25 +305,32 @@
                     type: 'binary'
                 });
             } catch (ex) {
-                showMessageSuccess('Unable to process file!');
+                alert('Unable to process file!');
                 return;
             }
             var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]]);
             XL_row_object.forEach(function (em) {
-                console.log(em);
+                // console.log(em);
                 var values = Object.values(em);
                 var row = $('<tr></tr>');
-                var numCell = $('<td></td>').text(values[0]);
-                var nameCell = $('<td></td>').text(values[1]);
-                var emailCell = $('<td></td>').text(values[2]);
-                var groupCell = $('<td></td>').text(values[3]);
-                row.append(numCell, nameCell, emailCell, groupCell);
-                $('.import-student-table tbody').append(row);
-            })
+                var num = $('<td></td>').text(values[0]);
+                var name = $('<td></td>').text(values[1]);
+                var studentId = $('<td></td>').text(values[2]);
+                var email = $('<td></td>').text(values[3]);
+                var group = $('<td></td>').text(values[4]);
+                row.append(num, name, studentId, email, group);
+                importStudentTable.append(row);
+                importStudents.push({
+                    'fullName': values[1],
+                    'studentId': values[2],
+                    'email': values[3],
+                    'groupName': values[4]
+                });
+            });
         };
 
         reader.onerror = function () {
-            showMessageSuccess('Unable to process file!')
+            alert('Unable to process file!')
         };
 
         reader.readAsBinaryString(file);
@@ -316,16 +340,80 @@
         var wb = XLSX.utils.book_new();
         var ws_name = "students";
         var ws_data = [
-            ['#', 'Full name', 'Email', 'Group'],
-            ['1', 'Phong Ha Tuan', '16020263@vnu.edu.vn', 'F & Đồng bọn'],
-            ['2', 'Nguyen Ngoc Lam', '16022408@vnu.edu.vn', 'F & Đồng bọn']
+            ['#', 'Full name', 'Student ID', 'Email', 'Group'],
+            ['1', 'Phong Ha Tuan', '16020263', '16020263@vnu.edu.vn', 'F & Đồng bọn'],
+            ['2', 'Nguyen Ngoc Lam', '16022408', '16022408@vnu.edu.vn', 'F & Đồng bọn']
         ];
         var ws = XLSX.utils.aoa_to_sheet(ws_data);
         XLSX.utils.book_append_sheet(wb, ws, ws_name);
         XLSX.writeFile(wb, 'students.xlsx');
     }
+
+    function getStudents() {
+        $.ajax({
+            url: '/class/students',
+            method: 'GET',
+            success: function (jqXHR) {
+                jqXHR.forEach(function (s, index) {
+                    insertStudent(s, index + 1);
+                })
+            },
+            error: function () {
+                alert('Cannot get student list!');
+            }
+        });
+    }
+
+    function insertStudent(s, index) {
+        var id = $('<td class="id-cell"></td>').text(s.userId);
+        var num = $('<td class="num-cell"></td>').text(index);
+        var fullName = $('<td></td>').text(s.fullName);
+        var studentId = $('<td></td>').text(s.studentId);
+        var email = $('<td></td>').text(s.email);
+        var groupId = $('<td class="id-cell group-id"></td>').text(s.groupId);
+        var groupName = $('<td></td>').text(s.groupName);
+        var actions = $('<td><i class="fa fa-pencil fa-fw td-action-icon"></i>&nbsp<i class="fa fa-trash fa-fw td-action-icon"></i>&nbsp</td>');
+        var row = $('<tr></tr>').append(id, num, fullName, studentId, email, groupId, groupName, actions);
+
+        studentTable.append(row);
+    }
+
+    function saveImportStudents() {
+        showSpinner();
+        $.ajax({
+            url: '/class/students/import',
+            method: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                'students': importStudents
+            }),
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                alert('Cannot update student list!');
+            }
+        })
+    }
+
+    function clearImportTable() {
+        importStudentTable.empty();
+        importStudents = [];
+    }
+
+    $(document).ready(function () {
+        showSpinner();
+        $.when(getStudents()).done(function () {
+            hideSpinner();
+        });
+    });
 </script>
 <style>
+    .my-header span {
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
     .student-management, .deadline-management, .topic-management {
         padding: 0 16px;
     }
@@ -343,23 +431,13 @@
     }
 
     .import-student-popup {
-        width: 1000px;
+        width: 75%;
         height: 450px;
     }
 
     .add-topic-popup {
         width: 400px;
         height: 180px;
-    }
-
-    .xlsx-path {
-        width: 500px;
-        border: 1px solid lightgrey;
-        color: grey;
-        font-size: 18px;
-        padding-left: 16px;
-        vertical-align: middle;
-        display: table-cell;
     }
 
     #downloadTemplate {
@@ -373,7 +451,7 @@
         overflow-y: scroll;
     }
 
-    #saveStudents {
+    #saveImportStudents {
         width: 120px;
         float: right;
     }
@@ -400,10 +478,30 @@
         width: 120px;
     }
 
-    .readonly-input {
-        padding-left: 0;
-        border: none;
-        cursor: context-menu;
+    .attachment-icon {
+        width: 24px;
+        height: 24px;
+        max-height: 100%;
+        max-width: 100%;
+        vertical-align: middle;
+        margin-right: 4px;
+        padding-bottom: 4px;
+    }
+
+    .status {
+        font-weight: bold;
+    }
+
+    .status-in-progress {
+        color: #F9A825;
+    }
+
+    .status-finish {
+        color: #00C853;
+    }
+
+    .status-waiting {
+        color: #F44336;
     }
 </style>
 </html>

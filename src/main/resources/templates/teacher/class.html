@@ -15,16 +15,13 @@
 <div class="my-container">
     <div class="my-main">
         <div class="menu-bar">
-            <table style="margin-left: 16px; height: 100%;">
+            <table style="height: 100%; width: 100%">
                 <tbody>
                 <tr>
-                    <td style="padding-right: 8px">
-                        <div class="user-logo" style="text-align: center; vertical-align: middle">
-                            <i class="fa fa-user" style="font-size: 24px; margin-top: 6px; color: white"></i>
-                        </div>
-                    </td>
-                    <td>
-                        <div>Ha Tuan Phong</div>
+                    <td style="text-align: end;">
+                        <span th:text="${userFullName}" th:remove="tag"></span>
+                        <img src="https://i.pinimg.com/originals/d1/1a/45/d11a452f5ce6ab534e083cdc11e8035e.png"
+                             class="user-logo">
                     </td>
                 </tr>
                 </tbody>
@@ -37,9 +34,10 @@
             <button class="btn my-btn my-btn-blue"><i class="fa fa-plus fa-fw"></i>&nbspAdd new course</button>
         </div>
         <div class="course-view">
-            <table class="my-table">
+            <table class="my-table class-table">
                 <thead>
                 <tr>
+                    <td class="id-cell"></td>
                     <td>#</td>
                     <td>Course Name</td>
                     <td></td>
@@ -49,26 +47,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td class="class-ref">Fuck this shit im out</td>
-                    <td>
-                        <i class="fa fa-ellipsis-h td-action-icon"></i>&nbsp
-                    </td>
-                    <td>3</td>
-                    <td>12/12/2019</td>
-                    <td>12/5/2020</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td class="class-ref">Can i shoot myself?</td>
-                    <td>
-                        <i class="fa fa-ellipsis-h td-action-icon"></i>&nbsp
-                    </td>
-                    <td>10</td>
-                    <td>12/12/2020</td>
-                    <td>12/5/2021</td>
-                </tr>
                 </tbody>
             </table>
         </div>
@@ -88,7 +66,7 @@
         </span>
         <span class="popup-title">New Course</span>
     </div>
-    <form action="/class" method="post">
+    <form>
         <table class="form-table">
             <tbody>
             <tr>
@@ -113,7 +91,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <button type="submit" id="submitClass" class="my-btn my-btn-green">Create</button>
+                    <button type="button" id="submitClass" class="my-btn my-btn-green">Create</button>
                 </td>
             </tr>
             </tbody>
@@ -125,17 +103,73 @@
 </div>
 </body>
 <script type="text/javascript">
-    $('.btn-add-class button').on('click', function (e) {
-        // $('.add-class-popup').fadeIn();
-        // $('.my-container').css('filter', 'brightness(80%)');
+    var classTable = $('.class-table tbody');
+
+    $('.btn-add-class button').on('click', function () {
         showPopup('.add-class-popup');
     });
 
-    $('.popup-close').on('click', function (e) {
-        // $('.add-class-popup').fadeOut();
-        // $('.my-container').css('filter', 'brightness(100%)');
+    $('.popup-close').on('click', function () {
         hidePopup('.add-class-popup');
-    })
+    });
+
+    $('#submitClass').on('click', function () {
+        createNewClass();
+    });
+
+    function getMyClasses() {
+        $.ajax({
+            url: '/class/my-class',
+            method: 'GET',
+            success: function (jqXHR) {
+                jqXHR.forEach(function (c, i) {
+                    addClass(c, i + 1);
+                })
+            },
+            error: function () {
+                alert('oof');
+            }
+        })
+    }
+
+    function addClass(c, index) {
+        var idCell = $('<td class="id-cell"></td>').text(c.classId);
+        var numCell = $('<td></td>').text(index);
+        var nameCell = $('<td class="class-ref"></td>').text(c.className).click(function () {
+            window.location.href = '/teacher/class/' + c.className;
+        });
+        var actionCell = $('<td><i class="fa fa-ellipsis-h td-action-icon"></i>&nbsp</td>');
+        var studentCell = $('<td></td>').text(c.numberOfStudents);
+        var startDateCell = $('<td></td>').text(c.startDate);
+        var endDateCell = $('<td></td>').text(c.endDate);
+
+        var row = $('<tr></tr>')
+            .append(idCell, numCell, nameCell, actionCell, studentCell, startDateCell, endDateCell);
+        classTable.append(row);
+    }
+
+    function createNewClass() {
+        showSpinner();
+        var className = $('input#firstName').val();
+        var startDate = $('input#startDate').val().split('-').join('/');
+        var endDate = $('input#endDate').val().split('-').join('/');
+
+        $.ajax({
+            url: '/class?name=' + className + '&startDate=' + startDate + '&endDate=' + endDate,
+            method: 'post',
+            success: function () {
+                window.location.href = '/teacher/class/' + className;
+            },
+            error: function () {
+                alert('Cannot create new class!');
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        getMyClasses();
+    });
+
 </script>
 <style>
     .course-view {

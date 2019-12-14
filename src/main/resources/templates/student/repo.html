@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>My group</title>
+    <title>Files</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" th:href="@{/css/master.css}">
     <link rel="stylesheet" th:href="@{/css/popup.css}">
@@ -19,16 +19,13 @@
 <div class="my-container">
     <div class="my-main">
         <div class="menu-bar">
-            <table style="margin-left: 16px; height: 100%;">
+            <table style="height: 100%; width: 100%">
                 <tbody>
                 <tr>
-                    <td style="padding-right: 8px">
-                        <div class="user-logo" style="text-align: center; vertical-align: middle">
-                            <i class="fa fa-user" style="font-size: 24px; margin-top: 6px; color: white"></i>
-                        </div>
-                    </td>
-                    <td>
-                        <div>Ha Tuan Phong</div>
+                    <td style="text-align: end;">
+                        <span th:text="${userFullName}" th:remove="tag"></span>
+                        <img src="https://i.pinimg.com/originals/d1/1a/45/d11a452f5ce6ab534e083cdc11e8035e.png"
+                             class="user-logo">
                     </td>
                 </tr>
                 </tbody>
@@ -43,7 +40,7 @@
                 <tr>
                     <td class="repo-current-path"><label><img class="repo-content-icon"
                                                               th:src="@{/images/repo-icons/directory.png}">Root <span
-                            style="color: lightgrey">/</span> Folder 1</label></td>
+                            style="color: lightgrey">/</span> Create User</label></td>
                     <td style="align-items: end; text-align: end">
                         <label for="searchInput"><i class="fa fa-search"></i>&nbspSearch</label>
                         <input class="search-input" type="text" placeholder="Enter text..." id="searchInput">
@@ -54,7 +51,7 @@
         </div>
         <div class="repo-container">
             <div class="repo-content">
-                <div class="repo-menu-bar">
+                <div class="use-case-menu-bar">
                     <table class="my-table" style="height: 100%; display: flex; flex-flow: row">
                         <tbody>
                         <tr class="tr-button" style="overflow-y: scroll">
@@ -64,20 +61,20 @@
                             <td class="my-separator">
                                 <div>&nbsp</div>
                             </td>
-                            <td class="repo-menu-bar-item">
-                                <i class="fa fa-plus fa-fw"></i>&nbspNew folder
+                            <td class="menu-bar-item">
+                                <i class="fa fa-plus fa-fw"></i>&nbspNew specification
                             </td>
                             <td class="my-separator">
                                 <div>&nbsp</div>
                             </td>
-                            <td class="repo-menu-bar-item">
-                                <i class="fa fa-arrow-up fa-fw"></i>&nbspUpload file(s)
+                            <td class="menu-bar-item">
+                                <i class="fa fa-arrow-up fa-fw"></i>&nbspNew class diagram
                             </td>
                             <td class="my-separator">
                                 <div>&nbsp</div>
                             </td>
-                            <td class="repo-menu-bar-item">
-                                <i class="fa fa-history fa-fw"></i>&nbspHistory
+                            <td class="menu-bar-item">
+                                <i class="fa fa-history fa-fw"></i>&nbspNew sequence diagram
                             </td>
                             <td style="flex: 1 1 auto"></td>
                         </tr>
@@ -132,8 +129,8 @@
                     <li><span class="caret" id="node_root"><img class="repo-content-icon folder-icon"
                                                                 th:src="@{/images/repo-icons/folder.png}">Root</span>
                         <ul class="nested">
-                            <li><span class="caret" id="node_folder1"><img class="repo-content-icon folder-icon"
-                                                                           th:src="@{/images/repo-icons/folder.png}">Folder 1</span>
+                            <li><span class="caret" id="node_createuser"><img class="repo-content-icon folder-icon"
+                                                                           th:src="@{/images/repo-icons/folder.png}">Create User</span>
                                 <ul class="nested">
                                     <li><span><img class="repo-content-icon" th:src="@{/images/repo-icons/document.png}"
                                                    id="node_wallpaperpng">wallpaper.png</span>
@@ -152,6 +149,8 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li><span class="caret" id="node_deleteuser"><img class="repo-content-icon folder-icon"
+                                                                           th:src="@{/images/repo-icons/folder.png}">Delete User</span>
                         </ul>
                     </li>
                 </ul>
@@ -161,8 +160,10 @@
     <div class="my-sidebar">
         <div class="app-title">OOAD<br>Loophole</div>
         <div class="navigation-menu">
-            <div class="navigation-item selected"><i class="fa fa-home fa-fw"></i>&nbspMy Group</div>
-            <div class="navigation-item"><i class="fa fa-cog fa-fw"></i>&nbspSettings</div>
+            <div class="navigation-item selected"><i class="fa fa-home fa-fw"></i>&nbspFiles</div>
+            <div class="navigation-item"><i class="fa fa-arrow-up fa-fw"></i>&nbspSubmit Assignment</div>
+            <div class="navigation-item"><i class="fa fa-comments fa-fw"></i>&nbspFeedback Assignment</div>
+            <div class="navigation-item"><i class="fa fa-users fa-fw"></i>&nbspGroup Settings</div>
         </div>
     </div>
 </div>
@@ -237,11 +238,11 @@
         float: right;
     }
 
-    .repo-menu-bar {
+    .use-case-menu-bar {
         padding: 4px 0;
     }
 
-    .repo-menu-bar-item {
+    .menu-bar-item {
         height: 30px;
         padding: 0 8px !important;
         color: #2196F3;
@@ -249,7 +250,7 @@
         border-radius: 4px;
     }
 
-    .repo-menu-bar-item:hover {
+    .menu-bar-item:hover {
         background-color: #BBDEFB;
         color: white;
         cursor: pointer;

@@ -14,16 +14,12 @@
 <div class="my-container">
     <div class="my-main">
         <div class="menu-bar">
-            <table style="margin-left: 16px; height: 100%;">
+            <table style="height: 100%; width: 100%">
                 <tbody>
                 <tr>
-                    <td style="padding-right: 8px">
-                        <div class="user-logo" style="text-align: center; vertical-align: middle">
-                            <i class="fa fa-user" style="font-size: 24px; margin-top: 6px; color: white"></i>
-                        </div>
-                    </td>
-                    <td>
-                        <div>Ha Tuan Phong</div>
+                    <td style="text-align: end;">
+                        <span th:text="${userFullName}" th:remove="tag"></span>
+                        <img src="https://i.pinimg.com/originals/d1/1a/45/d11a452f5ce6ab534e083cdc11e8035e.png" class="user-logo">
                     </td>
                 </tr>
                 </tbody>

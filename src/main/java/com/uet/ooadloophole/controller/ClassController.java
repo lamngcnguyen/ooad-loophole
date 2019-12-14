@@ -16,9 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @SuppressWarnings("ALL")
 @Controller
@@ -40,20 +42,31 @@ public class ClassController {
     private DeadlineRepository deadlineRepository;
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private UserRepository userRepository;
+
+    @ResponseBody
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity createClass(String name, String startDate, String endDate) {
+        if (secureUserDetailService.isTeacher()) {
+            Class ooadClass = new com.uet.ooadloophole.model.Class();
+            ooadClass.setClassName(name);
+            ooadClass.setStartDate(startDate);
+            ooadClass.setEndDate(endDate);
+            ooadClass.setTeacherId(secureUserDetailService.getTeacherId());
+            classRepository.save(ooadClass);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    }
 
     @ResponseBody
     @RequestMapping(value = "/students/import", method = RequestMethod.POST, consumes = "application/json")
-    public void importClass(@RequestBody Map<String, Object> payload) {
+    public void importClass(@CookieValue String classId, @RequestBody Map<String, Object> payload) throws Exception {
         JSONObject jsonObject = new JSONObject(payload);
-        Class ooadClass;
-        if (classRepository.findClassByClassName((String) jsonObject.get("name")) == null) {
-            ooadClass = new Class();
-            ooadClass.setClassName((String) jsonObject.get("name"));
-            classRepository.save(ooadClass);
-        } else {
-            ooadClass = classRepository.findClassByClassName((String) jsonObject.get("name"));
-        }
-
+        Class ooadClass = classRepository.findBy_id(classId);
+        if (ooadClass == null) throw new Exception("Class not found!");
         JSONArray array = jsonObject.getJSONArray("students");
         for (Object o : array) {
             JSONObject object = (JSONObject) o;
@@ -85,48 +98,56 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity createClass(String name, String startDate, String endDate) {
-        if(secureUserDetailService.isTeacher()) {
-            Class ooadClass = new com.uet.ooadloophole.model.Class();
-            ooadClass.setClassName(name);
-            ooadClass.setStartDate(startDate);
-            ooadClass.setEndDate(endDate);
-            ooadClass.setTeacherId(secureUserDetailService.getTeacherId());
-            classRepository.save(ooadClass);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    @RequestMapping(value = "/students", method = RequestMethod.POST)
+    public ResponseEntity addStudent(@CookieValue String classId, String fullName, String studentId, String email, String groupName) {
+        if (studentRepository.findBy_id(studentId) != null)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        User user = new User();
+        Group group = new Group();
+        Student student = new Student();
+        user.setFullName(fullName);
+        user.setPassword(studentId);
+        user.setEmail(email);
+        userService.saveUser(user, "USER");
+        if (groupRepository.findByGroupName(groupName) == null) {
+            group.setGroupName(groupName);
+            group.setClassId(classId);
+            groupRepository.save(group);
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            group = groupRepository.findByGroupName(groupName);
         }
+        student.setUserId(user.get_id());
+        student.setClassId(classId);
+        student.setGroupId(group.get_id());
+        student.setStudentId(studentId);
+        studentRepository.save(student);
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(new StudentDTO(user.get_id(), fullName, email,
+                        studentId, group.get_id(), groupName));
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/add/students", method = RequestMethod.POST)
-    public ResponseEntity addStudent(@PathVariable String classId, String studentId) {
-        Student student = studentRepository.findBy_id(studentId);
-        student.setClassId(classId);
-        studentRepository.save(student);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    @RequestMapping(value = "/students", method = RequestMethod.GET)
+    public List<StudentDTO> getAllStudents(@CookieValue("classId") String classId) {
+        List<StudentDTO> students = new ArrayList<>();
+        studentRepository.findAllByClassId(classId).forEach(student -> {
+            String groupName = groupRepository.findBy_id(student.getGroupId()).getGroupName();
+            User user = userRepository.findBy_id(student.getUserId());
+            students.add(new StudentDTO(user.get_id(), user.getFullName(), user.getEmail(),
+                    student.getStudentId(), student.getGroupId(), groupName));
+        });
+        return students;
     }
 
     @ResponseBody
     @RequestMapping(value = "/{classId}/groups", method = RequestMethod.GET)
-    public String getAllGroups(@PathVariable String classId) {
-        Gson gson = new Gson();
+    public List<Group> getAllGroups(@PathVariable String classId) {
         List<Group> groups = groupRepository.findAllByClassId(classId);
-        return gson.toJson(groups);
+        return groups;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/students", method = RequestMethod.GET)
-    public String getAllStudents(@PathVariable String classId) {
-        Gson gson = new Gson();
-        List<Student> students = studentRepository.findAllByClassId(classId);
-        return gson.toJson(students);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/{classId}/add/deadlines", method = RequestMethod.POST)
+    @RequestMapping(value = "/{classId}/deadlines", method = RequestMethod.POST)
     public ResponseEntity addDeadline(@PathVariable String classId, String deadlineTime, String message) {
         Deadline deadline = new Deadline();
         deadline.setClassId(classId);
@@ -138,19 +159,19 @@ public class ClassController {
 
     @ResponseBody
     @RequestMapping(value = "/{classId}/deadlines", method = RequestMethod.GET)
-    public String getDeadlines(@PathVariable String classId) {
+    public List<Deadline> getDeadlines(@PathVariable String classId) {
         List<Deadline> deadlineList = deadlineRepository.findAllByClassId(classId);
-        return new Gson().toJson(deadlineList);
+        return deadlineList;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/topics/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/{classId}/topics", method = RequestMethod.POST)
     public ResponseEntity createNewTopic(@PathVariable String classId, String topicName, String groupId) {
         Topic topic = new Topic();
         topic.setName(topicName);
         topic.setClassId(classId);
         topicRepository.save(topic);
-        if(groupId != null) {
+        if (groupId != null) {
             Group group = groupRepository.findBy_id(groupId);
             group.setTopicId(topic.get_id());
         }
@@ -158,19 +179,11 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/topics/{topicId}/edit/name", method = RequestMethod.POST)
-    public ResponseEntity editTopicName(@PathVariable String topicId, String topicName) {
+    @RequestMapping(value = "/topics/{topicId}", method = RequestMethod.PUT)
+    public ResponseEntity updateTopic(@PathVariable String topicId, Optional<String> topicName, Optional<String> details) {
         Topic topic = topicRepository.findBy_id(topicId);
-        topic.setName(topicName);
-        topicRepository.save(topic);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/topics/{topicId}/edit/details", method = RequestMethod.POST)
-    public ResponseEntity editTopicDetails(@PathVariable String topicId, String topicDetails) {
-        Topic topic = topicRepository.findBy_id(topicId);
-        topic.setDetails(topicDetails);
+        if (topicName.isPresent()) topic.setName(topicName.get());
+        if (details.isPresent()) topic.setDetails(details.get());
         topicRepository.save(topic);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
@@ -199,5 +212,14 @@ public class ClassController {
         topic.setSpecificationFiles(specificationList);
         topicRepository.save(topic);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/my-class", method = RequestMethod.GET)
+    public List<ClassDTO> getClassByTeacherId(@CookieValue("teacherId") String teacherId, HttpServletResponse response) {
+        List<ClassDTO> myClasses = new ArrayList<>();
+        classRepository.findAllByTeacherId(teacherId).forEach(c ->
+                myClasses.add(new ClassDTO(c, studentRepository.findAllByClassId(c.get_id()).size())));
+        return myClasses;
     }
 }

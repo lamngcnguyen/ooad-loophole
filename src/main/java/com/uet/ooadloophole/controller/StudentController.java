@@ -10,11 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
-    @RequestMapping(value = "/my-group", method = RequestMethod.GET)
+    @RequestMapping(value = "/repo", method = RequestMethod.GET)
     public ModelAndView groupView() {
         ModelAndView modelAndView = new ModelAndView();
 //        if (!new SecureUserDetailService().isStudent()) modelAndView.setViewName("/forbidden");
-        modelAndView.setViewName("/student/group");
+        modelAndView.setViewName("/student/repo");
         return modelAndView;
     }
 }
