@@ -4,12 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-class MyFileNotFoundException extends RuntimeException {
-    public MyFileNotFoundException(String message) {
+class CustomFileNotFoundException extends RuntimeException {
+    CustomFileNotFoundException(String message) {
         super(message);
     }
 
-    public MyFileNotFoundException(String message, Throwable cause) {
+    CustomFileNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }

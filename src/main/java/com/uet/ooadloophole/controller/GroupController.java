@@ -186,14 +186,111 @@ public class GroupController {
                 .body(resource);
     }
 
+    //======================= Iteration CRUD =======================
     @ResponseBody
-    @RequestMapping(value = "/file/newFolder", method = RequestMethod.POST)
-    public ResponseEntity createNewFolder(@CookieValue String groupId, @CookieValue String classId, String directory) {
-        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/" + directory);
+    @RequestMapping(value = "/file/create/iteration", method = RequestMethod.POST)
+    public ResponseEntity createNewFolder(@CookieValue String groupId, @CookieValue String classId, String iteration) {
+        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/code/" + iteration);
         if (newPath != null) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Folder not created");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/file/edit/iteration", method = RequestMethod.PUT)
+    public ResponseEntity editIteration(@CookieValue String groupId, @CookieValue String classId, String oldName, String newName) {
+        String path = "repo/" + classId + "/" + groupId + "/code/";
+        boolean edit = fileStorageService.editFileName(path + oldName, path + newName);
+        if (edit) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Iteration name not changed");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/file/delete/iteration", method = RequestMethod.PUT)
+    public ResponseEntity deleteIteration(@CookieValue String groupId, @CookieValue String classId, String iteration) throws IOException {
+        String path = "repo/" + classId + "/" + groupId + "/code/";
+        boolean edit = fileStorageService.deleteFile(path + iteration);
+        if (edit) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Iteration name not changed");
+        }
+    }
+
+    //======================= Actor CRUD =======================
+    @ResponseBody
+    @RequestMapping(value = "/file/create/actor", method = RequestMethod.POST)
+    public ResponseEntity createNewActor(@CookieValue String groupId, @CookieValue String classId, String actor) {
+        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/docs/" + actor);
+        if (newPath != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Folder not created");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/file/edit/actor", method = RequestMethod.PUT)
+    public ResponseEntity editActor(@CookieValue String groupId, @CookieValue String classId, String oldName, String newName) {
+        String path = "repo/" + classId + "/" + groupId + "/docs/";
+        boolean edit = fileStorageService.editFileName(path + oldName, path + newName);
+        if (edit) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Actor name not changed");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/file/delete/actor", method = RequestMethod.PUT)
+    public ResponseEntity deleteActor(@CookieValue String groupId, @CookieValue String classId, String actor) throws IOException {
+        String path = "repo/" + classId + "/" + groupId + "/docs/";
+        boolean edit = fileStorageService.deleteFile(path + actor);
+        if (edit) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Iteration name not changed");
+        }
+    }
+
+    //======================= Use Case CRUD =======================
+    @ResponseBody
+    @RequestMapping(value = "/file/create/useCase", method = RequestMethod.POST)
+    public ResponseEntity createUseCase(@CookieValue String groupId, @CookieValue String classId, String actor, String useCase) {
+        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/docs/" + actor + "/" + useCase);
+        if (newPath != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Folder not created");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/file/edit/useCase", method = RequestMethod.PUT)
+    public ResponseEntity editUseCase(@CookieValue String groupId, @CookieValue String classId, String actor, String oldName, String newName) {
+        String path = "repo/" + classId + "/" + groupId + "/docs/" + actor + "/";
+        boolean edit = fileStorageService.editFileName(path + oldName, path + newName);
+        if (edit) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Use case name not changed");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/file/delete/useCase", method = RequestMethod.PUT)
+    public ResponseEntity deleteUseCase(@CookieValue String groupId, @CookieValue String classId, String actor, String useCase) throws IOException {
+        String path = "repo/" + classId + "/" + groupId + "/docs/" + actor + "/";
+        boolean edit = fileStorageService.deleteFile(path + useCase);
+        if (edit) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Iteration name not changed");
         }
     }
 }

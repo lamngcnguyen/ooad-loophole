@@ -1,17 +1,16 @@
 package com.uet.ooadloophole.service;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 
 @Service
 public class FileStorageService {
@@ -23,6 +22,21 @@ public class FileStorageService {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean editFileName(String oldFilePath, String newFilePath) {
+        File file = new File(oldFilePath);
+        return file.renameTo(new File(file.getParentFile(), newFilePath));
+    }
+
+    public boolean deleteFile(String filePath) throws IOException {
+        File fileToDelete = new File(filePath);
+        if (fileToDelete.isDirectory()) {
+            FileUtils.deleteDirectory(fileToDelete);
+            return true;
+        } else {
+            return fileToDelete.delete();
         }
     }
 
@@ -55,10 +69,10 @@ public class FileStorageService {
             if (resource.exists()) {
                 return resource;
             } else {
-                throw new MyFileNotFoundException("File not found " + fileName);
+                throw new CustomFileNotFoundException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
+            throw new CustomFileNotFoundException("File not found " + fileName, ex);
         }
     }
 }
