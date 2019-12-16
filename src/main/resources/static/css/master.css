@@ -30,7 +30,8 @@ html, body {
     color: black;
     background-color: white;
     float: right;
-    overflow-y: auto;
+    display: flex;
+    flex-flow: column;
 }
 
 .menu-bar {
@@ -72,6 +73,8 @@ html, body {
     border: none;
     font-size: 16px;
     height: 40px;
+    padding: 0 24px;
+    cursor: pointer ;
 }
 
 .my-btn-green {
@@ -114,6 +117,12 @@ html, body {
     background-color: #03A9F4;
 }
 
+.my-disabled-input {
+    border: none !important;
+    background-color: transparent;
+    color: black;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -121,4 +130,14 @@ html, body {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.file-type-icon {
+    width: 24px;
+    height: 24px;
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
+    margin-right: 4px;
+    padding-bottom: 4px;
 }

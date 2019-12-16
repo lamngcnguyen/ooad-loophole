@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 @EnableScheduling
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Bean

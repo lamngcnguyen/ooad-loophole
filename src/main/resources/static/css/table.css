@@ -43,3 +43,7 @@
 .id-cell {
     display: none;
 }
+
+.file-type-cell {
+    width: 120px;
+}

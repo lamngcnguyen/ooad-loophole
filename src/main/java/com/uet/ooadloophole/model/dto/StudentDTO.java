@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.model;
+package com.uet.ooadloophole.model.dto;
 
 public class StudentDTO {
     public String userId;
