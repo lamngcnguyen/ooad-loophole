@@ -2,6 +2,7 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.database.ClassRepository;
 import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.model.dto.ClassDTO;
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.CookieService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping(value = "/teacher")
@@ -49,8 +51,10 @@ public class TeacherController {
         } else response.addCookie(CookieService.updateCookie(request, "classId", myClass.get_id(), "/class"));
         modelAndView.addObject("className", myClass.getClassName());
         modelAndView.addObject("classId", myClass.get_id());
-        modelAndView.addObject("startDate", myClass.getStartDate());
-        modelAndView.addObject("endDate", myClass.getEndDate());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        modelAndView.addObject("startDate", dateTimeFormatter.format(myClass.getStartDate()));
+        modelAndView.addObject("endDate", dateTimeFormatter.format(myClass.getEndDate()));
+        modelAndView.addObject("dayOfWeek", ClassDTO.getDayOfWeek(myClass.getScheduledDayOfWeek()));
         modelAndView.addObject("userFullName", user.getFullName());
         modelAndView.addObject("userEmail", user.getEmail());
         modelAndView.setViewName("teacher/class_setting");

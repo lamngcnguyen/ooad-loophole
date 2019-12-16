@@ -66,7 +66,7 @@
         </span>
         <span class="popup-title">New Course</span>
     </div>
-    <form>
+    <div class="popup-body">
         <table class="form-table">
             <tbody>
             <tr>
@@ -83,10 +83,23 @@
                 </td>
             </tr>
             <tr>
-                <td class="my-label"><label for="endDate">Start Date</label>
+                <td class="my-label"><label for="endDate">End Date</label>
                 </td>
                 <td><input class="my-input" type="date" id="endDate" placeholder="End date">
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="dayOfWeek">Day of Week</label>
+                </td>
+                <td><select class="my-input" id="dayOfWeek">
+                    <option value="2">Monday</option>
+                    <option value="3">Tuesday</option>
+                    <option value="4">Wednesday</option>
+                    <option value="5">Thursday</option>
+                    <option value="6">Friday</option>
+                    <option value="7">Saturday</option>
+                </select></td>
             </tr>
             <tr>
                 <td></td>
@@ -96,7 +109,7 @@
             </tr>
             </tbody>
         </table>
-    </form>
+    </div>
 </div>
 <div class="loader-container">
     <div class="loader"></div>
@@ -151,11 +164,12 @@
     function createNewClass() {
         showSpinner();
         var className = $('input#firstName').val();
-        var startDate = $('input#startDate').val().split('-').join('/');
-        var endDate = $('input#endDate').val().split('-').join('/');
+        var startDate = $('input#startDate').val();
+        var endDate = $('input#endDate').val();
+        var dayOfWeek = $('select#dayOfWeek option:selected').val();
 
         $.ajax({
-            url: '/class?name=' + className + '&startDate=' + startDate + '&endDate=' + endDate,
+            url: '/class?name=' + className + '&startDate=' + startDate + '&endDate=' + endDate + '&dayOfWeek=' + dayOfWeek,
             method: 'post',
             success: function () {
                 window.location.href = '/teacher/class/' + className;
@@ -182,17 +196,12 @@
         margin-bottom: 16px;
     }
 
-    .btn-add-class button {
-        width: 180px;
-    }
-
     .add-class-popup {
         width: 400px;
-        height: 230px;
+        height: 280px;
     }
 
     #submitClass {
-        width: 100px;
         float: right;
     }
 </style>

@@ -1,20 +1,19 @@
 package com.uet.ooadloophole.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class Class {
     @Id
     private String _id;
     private String className;
     private String teacherId;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     //The day of week the class supposed to take place
     //This variable's name might be changed later
-    private String scheduledDayOfWeek;
+    private int scheduledDayOfWeek;
 
     public String get_id() {
         return _id;
@@ -40,27 +39,27 @@ public class Class {
         this.teacherId = teacherId;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    public String getScheduledDayOfWeek() {
+    public int getScheduledDayOfWeek() {
         return scheduledDayOfWeek;
     }
 
-    public void setScheduledDayOfWeek(String scheduledDayOfWeek) {
+    public void setScheduledDayOfWeek(int scheduledDayOfWeek) {
         this.scheduledDayOfWeek = scheduledDayOfWeek;
     }
 }

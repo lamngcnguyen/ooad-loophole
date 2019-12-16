@@ -1,9 +1,12 @@
 package com.uet.ooadloophole.controller;
 
-import com.google.gson.Gson;
 import com.uet.ooadloophole.database.*;
 import com.uet.ooadloophole.model.Class;
 import com.uet.ooadloophole.model.*;
+import com.uet.ooadloophole.model.dto.ClassDTO;
+import com.uet.ooadloophole.model.dto.IterationDTO;
+import com.uet.ooadloophole.model.dto.StudentDTO;
+import com.uet.ooadloophole.model.dto.TopicDTO;
 import com.uet.ooadloophole.service.FileStorageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.UserService;
@@ -17,6 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,20 +51,54 @@ public class ClassController {
     private FileStorageService fileStorageService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private IterationRepository iterationRepository;
+    @Autowired
+    private UserFileRepository userFileRepository;
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity createClass(String name, String startDate, String endDate) {
+    public ResponseEntity createClass(String name, String startDate, String endDate, int dayOfWeek) throws ParseException {
         if (secureUserDetailService.isTeacher()) {
             Class ooadClass = new com.uet.ooadloophole.model.Class();
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate myStartDate = LocalDate.parse(startDate, dateTimeFormatter);
+            LocalDate myEndDate = LocalDate.parse(endDate, dateTimeFormatter);
             ooadClass.setClassName(name);
-            ooadClass.setStartDate(startDate);
-            ooadClass.setEndDate(endDate);
+            ooadClass.setStartDate(myStartDate);
+            ooadClass.setEndDate(myEndDate);
+            ooadClass.setScheduledDayOfWeek(dayOfWeek);
             ooadClass.setTeacherId(secureUserDetailService.getTeacherId());
             classRepository.save(ooadClass);
+
+            LocalDateTime startDateTime = myStartDate.atStartOfDay();
+            while (!myStartDate.isAfter(myEndDate)) {
+                if (myStartDate.getDayOfWeek().getValue() == dayOfWeek - 1) {
+                    Iteration iteration = new Iteration();
+                    iteration.setClassId(ooadClass.get_id());
+                    iteration.setStartDateTime(startDateTime);
+                    iteration.setEndDateTime(myStartDate.atStartOfDay().minusMinutes(1));
+                    iterationRepository.save(iteration);
+
+                    startDateTime = myStartDate.atStartOfDay();
+                }
+                myStartDate = myStartDate.plusDays(1);
+            }
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    public ResponseEntity deleteClass(@CookieValue String classId) {
+        try {
+            classRepository.deleteById(classId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } finally {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
         }
     }
 
@@ -80,7 +121,7 @@ public class ClassController {
                 user.setEmail((String) object.get("email"));
                 userService.saveUser(user, "USER");
 
-                if (groupRepository.findByGroupName((String) object.get("groupName")) == null) {
+                if (groupRepository.findByClassIdAndGroupName(classId, (String) object.get("groupName")) == null) {
                     group.setGroupName((String) object.get("groupName"));
                     group.setClassId(ooadClass.get_id());
                     groupRepository.save(group);
@@ -140,78 +181,85 @@ public class ClassController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/groups", method = RequestMethod.GET)
-    public List<Group> getAllGroups(@PathVariable String classId) {
-        List<Group> groups = groupRepository.findAllByClassId(classId);
+    @RequestMapping(value = "/unassigned-groups", method = RequestMethod.GET)
+    public List<Group> getUnassignedGroups(@CookieValue String classId) {
+        List<Group> groups = groupRepository.findAllByClassIdAndTopicIdIsNull(classId);
         return groups;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/deadlines", method = RequestMethod.POST)
-    public ResponseEntity addDeadline(@PathVariable String classId, String deadlineTime, String message) {
-        Deadline deadline = new Deadline();
-        deadline.setClassId(classId);
-        deadline.setDate(deadlineTime);
-        deadline.setMessage(message);
-        deadlineRepository.save(deadline);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    @RequestMapping(value = "/iterations", method = RequestMethod.GET)
+    public List<IterationDTO> getIterations(@CookieValue String classId) {
+        List<IterationDTO> iterations = new ArrayList<>();
+        iterationRepository.findAllByClassId(classId).forEach((i) -> {
+            iterations.add(new IterationDTO(i));
+        });
+        return iterations;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/deadlines", method = RequestMethod.GET)
-    public List<Deadline> getDeadlines(@PathVariable String classId) {
-        List<Deadline> deadlineList = deadlineRepository.findAllByClassId(classId);
-        return deadlineList;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/{classId}/topics", method = RequestMethod.POST)
-    public ResponseEntity createNewTopic(@PathVariable String classId, String topicName, String groupId) {
+    @RequestMapping(value = "/topics", method = RequestMethod.POST)
+    public ResponseEntity createNewTopic(@CookieValue String classId, String topicName, Optional<String> description, Optional<String> groupId,
+                                         Optional<MultipartFile[]> files) {
         Topic topic = new Topic();
+
         topic.setName(topicName);
         topic.setClassId(classId);
+        if (description.isPresent())
+            topic.setDescriptions(description.get());
         topicRepository.save(topic);
-        if (groupId != null) {
-            Group group = groupRepository.findBy_id(groupId);
+
+        String groupName = "";
+        if (groupId.isPresent()) {
+            Group group = groupRepository.findBy_id(groupId.get());
             group.setTopicId(topic.get_id());
+            groupRepository.save(group);
+            groupName = group.getGroupName();
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+
+        if (files.isPresent()) {
+            String userId = secureUserDetailService.getCurrentUser().get_id();
+            List<UserFile> specFiles = new ArrayList<>();
+            for (MultipartFile file : files.get()) {
+                String saveLocation = "repo/" + classId + "/topic/" + topic.get_id();
+                UserFile newFile = new UserFile();
+                String fileName = fileStorageService.storeFile(file, saveLocation);
+                newFile.setFileName(fileName);
+                newFile.setUploaderId(userId);
+                newFile.setTimeStamp(LocalDateTime.now());
+                newFile.setPath(saveLocation + '/' + fileName);
+                newFile.setScore(0);
+                userFileRepository.save(newFile);
+                specFiles.add(newFile);
+            }
+            topic.setSpecificationFiles(specFiles);
+            topicRepository.save(topic);
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new TopicDTO(topic,
+                (groupId.isPresent()) ? groupId.get() : "", groupName));
     }
 
     @ResponseBody
     @RequestMapping(value = "/topics/{topicId}", method = RequestMethod.PUT)
-    public ResponseEntity updateTopic(@PathVariable String topicId, Optional<String> topicName, Optional<String> details) {
+    public ResponseEntity updateTopic(@PathVariable String topicId, Optional<String> topicName, Optional<String> description) {
         Topic topic = topicRepository.findBy_id(topicId);
         if (topicName.isPresent()) topic.setName(topicName.get());
-        if (details.isPresent()) topic.setDetails(details.get());
+        if (description.isPresent()) topic.setDescriptions(description.get());
         topicRepository.save(topic);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{classId}/topics", method = RequestMethod.GET)
-    public String getAllTopics(@PathVariable String classId) {
-        List<Topic> topics = topicRepository.findAllByClassId(classId);
-        return new Gson().toJson(topics);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/{classId}/topics/{topicId}/upload", method = RequestMethod.POST)
-    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file, @PathVariable String topicId, @PathVariable String classId) {
-        Topic topic = topicRepository.findBy_id(topicId);
-        ArrayList<UserFile> specificationList = topic.getSpecificationFiles();
-        String saveLocation = "repo/" + classId + "/topic/" + topicId;
-        UserFile uploadedUserFile = new UserFile();
-        String userId = secureUserDetailService.getCurrentUser().get_id();
-
-        String fileName = fileStorageService.storeFile(file, saveLocation);
-        uploadedUserFile.setFileName(fileName);
-        uploadedUserFile.setUploaderId(userId);
-
-        specificationList.add(uploadedUserFile);
-        topic.setSpecificationFiles(specificationList);
-        topicRepository.save(topic);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    @RequestMapping(value = "/topics", method = RequestMethod.GET)
+    public List<TopicDTO> getAllTopics(@CookieValue String classId) {
+        List<TopicDTO> topics = new ArrayList<>();
+        topicRepository.findAllByClassId(classId).forEach(topic -> {
+            Group assignedGroup = groupRepository.findByTopicId(topic.get_id());
+            String groupId = (assignedGroup == null) ? "0" : assignedGroup.get_id();
+            String groupName = (assignedGroup == null) ? "Unset" : assignedGroup.getGroupName();
+            topics.add(new TopicDTO(topic, groupId, groupName));
+        });
+        return topics;
     }
 
     @ResponseBody

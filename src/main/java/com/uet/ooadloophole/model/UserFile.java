@@ -2,12 +2,14 @@ package com.uet.ooadloophole.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
+
 public class UserFile {
     @Id
     private String _id;
     private String fileName;
     private long score;
-    private String timeStamp;
+    private LocalDateTime timeStamp;
     private String uploaderId;
     private String path;
 
@@ -35,11 +37,11 @@ public class UserFile {
         this.score = score;
     }
 
-    public String getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 
