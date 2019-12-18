@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Topic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/master.css}">
+    <link rel="stylesheet" th:href="@{/css/popup.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+    <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/master.js}"></script>
+</head>
+<body>
+<div class="my-container">
+    <div class="my-main">
+        <div class="menu-bar">
+            <table style="height: 100%; width: 100%">
+                <tbody>
+                <tr>
+                    <td style="text-align: end;">
+                        <span th:text="${userFullName}" th:remove="tag"></span>
+                        <img src="https://i.pinimg.com/originals/d1/1a/45/d11a452f5ce6ab534e083cdc11e8035e.png" class="user-logo">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="my-header">
+            <h1>Topic</h1>
+        </div>
+    </div>
+    <div class="my-sidebar">
+        <div class="app-title">OOAD<br>Loophole</div>
+        <div class="navigation-menu">
+            <a class="navigation-item selected" href="/student/topic"><i class="fa fa-tasks fa-fw"></i>&nbspTopic</a>
+            <a class="navigation-item" href="/student/repo"><i class="fa fa-file fa-fw"></i>&nbspFiles</a>
+            <a class="navigation-item" href="#"><i class="fa fa-users fa-fw"></i>&nbspGroup Settings</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebResourceConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
+        registry.addResourceHandler("/assets/**")
+                .addResourceLocations("classpath:/assets/");
     }
 }

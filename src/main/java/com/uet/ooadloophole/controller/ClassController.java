@@ -8,6 +8,7 @@ import com.uet.ooadloophole.model.dto.IterationDTO;
 import com.uet.ooadloophole.model.dto.StudentDTO;
 import com.uet.ooadloophole.model.dto.TopicDTO;
 import com.uet.ooadloophole.service.FileStorageService;
+import com.uet.ooadloophole.service.GroupRepoService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.UserService;
 import org.json.JSONArray;
@@ -46,8 +47,6 @@ public class ClassController {
     @Autowired
     private TopicRepository topicRepository;
     @Autowired
-    private DeadlineRepository deadlineRepository;
-    @Autowired
     private FileStorageService fileStorageService;
     @Autowired
     private UserRepository userRepository;
@@ -55,6 +54,8 @@ public class ClassController {
     private IterationRepository iterationRepository;
     @Autowired
     private UserFileRepository userFileRepository;
+    @Autowired
+    private GroupRepoService groupRepoService;
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -95,6 +96,21 @@ public class ClassController {
     public ResponseEntity deleteClass(@CookieValue String classId) {
         try {
             classRepository.deleteById(classId);
+
+            List<Student> students = studentRepository.deleteAllByClassId(classId);
+            students.forEach(student -> userRepository.deleteById(student.getUserId()));
+
+            groupRepository.deleteAllByClassId(classId);
+
+            List<Topic> topics = topicRepository.deleteAllByClassId(classId);
+            topics.forEach(topic -> {
+                topic.getSpecificationFiles().forEach(userFile -> {
+                    userFileRepository.deleteById(userFile.get_id());
+                });
+            });
+
+            iterationRepository.deleteAllByClassId(classId);
+            fileStorageService.deleteDirectory("repo/" + classId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         } finally {
@@ -104,7 +120,7 @@ public class ClassController {
 
     @ResponseBody
     @RequestMapping(value = "/students/import", method = RequestMethod.POST, consumes = "application/json")
-    public void importClass(@CookieValue String classId, @RequestBody Map<String, Object> payload) throws Exception {
+    public void importStudents(@CookieValue String classId, @RequestBody Map<String, Object> payload) throws Exception {
         JSONObject jsonObject = new JSONObject(payload);
         Class ooadClass = classRepository.findBy_id(classId);
         if (ooadClass == null) throw new Exception("Class not found!");
@@ -125,6 +141,7 @@ public class ClassController {
                     group.setGroupName((String) object.get("groupName"));
                     group.setClassId(ooadClass.get_id());
                     groupRepository.save(group);
+                    groupRepoService.initializeRepo(group.get_id(), classId);
                 } else {
                     group = groupRepository.findByGroupName((String) object.get("groupName"));
                 }
