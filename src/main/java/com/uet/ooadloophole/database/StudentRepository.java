@@ -11,4 +11,5 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     List<Student> findAllByClassId(String classId);
     List<Student> findAllByGroupId(String groupId);
     Student findByUserId(String userId);
+    List<Student> deleteAllByClassId(String classId);
 }

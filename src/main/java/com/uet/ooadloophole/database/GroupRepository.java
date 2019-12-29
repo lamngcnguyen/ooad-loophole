@@ -12,4 +12,5 @@ public interface GroupRepository extends MongoRepository<Group, String> {
     List<Group> findAllByClassId(String classId);
     List<Group> findAllByClassIdAndTopicIdIsNull(String classId);
     Group findBy_id(String _id);
+    List<Group> deleteAllByClassId(String classId);
 }

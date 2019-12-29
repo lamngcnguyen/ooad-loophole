@@ -75,4 +75,21 @@ public class FileStorageService {
             throw new CustomFileNotFoundException("File not found " + fileName, ex);
         }
     }
+
+    public void deleteDirectory(String dir) {
+        Path path = Paths.get(dir).toAbsolutePath();
+        boolean success = deleteDirectory(new File(path.toString()));
+        if (!success) System.out.println("Unable to delete directory: " + dir);
+    }
+
+    private boolean deleteDirectory(File dir) {
+        if (dir.isDirectory()) {
+            File[] children = dir.listFiles();
+            for (File child : children) {
+                boolean success = deleteDirectory(child);
+                if (!success) return false;
+            }
+        }
+        return dir.delete();
+    }
 }

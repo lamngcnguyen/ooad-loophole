@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TopicRepository extends MongoRepository<Topic, String> {
     Topic findBy_id(String _id);
-
     List<Topic> findAllByClassId(String classId);
+    List<Topic> deleteAllByClassId(String classId);
 }

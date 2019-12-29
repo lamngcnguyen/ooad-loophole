@@ -107,10 +107,13 @@ html, body {
     width: 100%;
     padding: 16px;
     color: white;
+    display: block;
+    text-decoration: none !important;
 }
 
 .navigation-item:hover {
     background-color: #4FC3F7;
+    cursor: pointer;
 }
 
 .selected {
