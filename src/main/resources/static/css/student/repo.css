@@ -1,0 +1,154 @@
+
+.my-main {
+    display: flex;
+    flex-flow: column;
+}
+
+.repo-container {
+    width: 100%;
+    flex: 1 1 auto;
+    border-top: 2px solid lightgrey;
+}
+
+.repo-explorer {
+    width: 25%;
+    height: 100%;
+    border-right: 2px solid lightgrey;
+    box-sizing: border-box;
+    padding: 16px;
+    overflow: auto;
+}
+
+.repo-content {
+    width: 75%;
+    height: 100%;
+    float: right;
+}
+
+.use-case-menu-bar {
+    padding: 4px 0;
+}
+
+.menu-bar-item {
+    height: 30px;
+    padding: 0 8px !important;
+    color: #2196F3;
+    font-weight: lighter;
+    border-radius: 4px;
+}
+
+.menu-bar-item:hover {
+    background-color: #BBDEFB;
+    color: white;
+    cursor: pointer;
+}
+
+.my-separator {
+    width: 1px;
+    height: 100%;
+    padding: 0 4px !important;
+}
+
+.my-separator div {
+    border-right: 1px solid lightgrey;
+    border-left: 1px solid lightgrey;
+}
+
+.repo-content-table thead td {
+    font-weight: lighter !important;
+    padding: 8px;
+}
+
+.repo-content-table thead tr {
+    border-bottom: 1px solid lightgrey;
+}
+
+.repo-content-table tbody td {
+    padding: 8px;
+}
+
+.search-input {
+    width: 200px;
+    border-radius: 16px;
+    border: 0.5px solid lightgrey;
+    height: 32px;
+    padding-left: 16px;
+    box-sizing: border-box;
+    margin-left: 8px;
+}
+
+.repo-content-icon {
+    width: 24px;
+    height: 24px;
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
+    margin-right: 4px;
+    padding-bottom: 4px;
+}
+
+.cell-file-type {
+    width: 50px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.repo-tree {
+    margin: 0;
+    padding: 0;
+}
+
+.repo-tree li {
+    cursor: pointer;
+    user-select: none;
+}
+
+.caret::before {
+    content: "\203A";
+    color: black;
+    display: inline-block;
+    margin-right: 8px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.folder-icon {
+    /*padding-bottom: 6px;*/
+}
+
+.nested li {
+    margin: 8px 0;
+}
+
+.repo-tree span {
+    padding: 8px;
+}
+
+.hovered-node {
+    color: #03A9F4;
+    text-decoration: underline;
+}
+
+.pdf-viewer {
+    width: 90%;
+    height: 90%;
+}
+
+.pdf-viewer .my-viewport {
+    width: 100%;
+    flex: 1 1 auto;
+}

@@ -1,0 +1,18 @@
+.course-view {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.btn-add-class {
+    padding-left: 16px;
+    margin-bottom: 16px;
+}
+
+.add-class-popup {
+    width: 400px;
+    height: 280px;
+}
+
+#submitClass {
+    float: right;
+}
