@@ -180,7 +180,7 @@ public class ClassController {
         student.setStudentId(studentId);
         studentRepository.save(student);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(new StudentDTO(user.get_id(), fullName, email,
+                .body(new StudentDTO(student.get_id(), fullName, email,
                         studentId, group.get_id(), groupName));
     }
 
@@ -191,7 +191,7 @@ public class ClassController {
         studentRepository.findAllByClassId(classId).forEach(student -> {
             String groupName = groupRepository.findBy_id(student.getGroupId()).getGroupName();
             User user = userRepository.findBy_id(student.getUserId());
-            students.add(new StudentDTO(user.get_id(), user.getFullName(), user.getEmail(),
+            students.add(new StudentDTO(student.get_id(), user.getFullName(), user.getEmail(),
                     student.getStudentId(), student.getGroupId(), groupName));
         });
         return students;

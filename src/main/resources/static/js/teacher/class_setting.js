@@ -1,9 +1,9 @@
-var studentTable = $('.student-table tbody');
-var importStudentTable = $('.import-student-table tbody');
-var importStudents;
-var iterationTable = $('.iteration-table tbody');
-var attachmentTable = $('.attachment-table tbody');
-var topicTable = $('.topic-table tbody');
+const studentTable = $('.student-table tbody');
+const importStudentTable = $('.import-student-table tbody');
+let importStudents;
+const iterationTable = $('.iteration-table tbody');
+const attachmentTable = $('.attachment-table tbody');
+const topicTable = $('.topic-table tbody');
 
 $('#classSetting').on('click', function () {
     showPopup('.class-setting-popup');
@@ -35,15 +35,19 @@ $('.add-student-popup .popup-close').on('click', function () {
     hidePopup('.add-student-popup')
 });
 
+$('.edit-student-popup .popup-close').on('click', function () {
+    hidePopup('.edit-student-popup')
+});
+
 $('#addTopic').on('click', function () {
     showSpinner();
     $.when($.ajax({
         url: '/class/unassigned-groups',
         method: 'get',
         success: function (jqXHR) {
-            var groupSelect = $('select#groupId').empty().append($('<option value="0">Not set</option>'));
+            const groupSelect = $('select#groupId').empty().append($('<option value="0">Not set</option>'));
             jqXHR.forEach(function (g) {
-                var option = $('<option></option>').val(g._id).text(g.groupName);
+                const option = $('<option></option>').val(g._id).text(g.groupName);
                 groupSelect.append(option);
             });
         },
@@ -62,12 +66,12 @@ $('.add-topic-popup .popup-close').on('click', function () {
 });
 
 $('#submitTopic').on('click', function () {
-    var groupName = $('input#topicName').val();
-    var description = $('textarea#topicDescription').val();
-    var groupId = $('select#groupId option:selected').val();
-    var files = $('input#inputAddAttachments').get(0).files;
+    const groupName = $('input#topicName').val();
+    const description = $('textarea#topicDescription').val();
+    const groupId = $('select#groupId option:selected').val();
+    const files = $('input#inputAddAttachments').get(0).files;
 
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append('topicName', groupName);
     if (description.length > 0)
         formData.append('description', description);
@@ -114,12 +118,12 @@ $('#addAttachments').on('click', function () {
 });
 
 $('#inputAddAttachments').on('change', function () {
-    var files = $(this).get(0).files;
+    const files = $(this).get(0).files;
     console.log(files);
-    for (var i = 0; i < files.length; i++) {
-        var value = files[i];
-        var fileType = $('<td></td>').append(getFileTypeIcon(value.name));
-        var name = $('<td></td>').text(value.name);
+    for (let i = 0; i < files.length; i++) {
+        const value = files[i];
+        const fileType = $('<td></td>').append(getFileTypeIcon(value.name));
+        const name = $('<td></td>').text(value.name);
         attachmentTable.append($('<tr></tr>').append(fileType, name));
     }
 });
@@ -131,28 +135,28 @@ document.getElementById('xlsxUpload').addEventListener('change', function (e) {
 
 function parseStudents(evt) {
     clearImportTable();
-    var file = evt.target.files[0];
-    var reader = new FileReader();
+    const file = evt.target.files[0];
+    const reader = new FileReader();
     reader.onload = function (e) {
-        var data = e.target.result;
+        const data = e.target.result;
         try {
-            var workbook = XLSX.read(data, {
+            const workbook = XLSX.read(data, {
                 type: 'binary'
             });
         } catch (ex) {
             alert('Unable to process file!');
             return;
         }
-        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]]);
+        const XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[workbook.SheetNames[0]]);
         XL_row_object.forEach(function (em) {
             // console.log(em);
-            var values = Object.values(em);
-            var row = $('<tr></tr>');
-            var num = $('<td></td>').text(values[0]);
-            var name = $('<td></td>').text(values[1]);
-            var studentId = $('<td></td>').text(values[2]);
-            var email = $('<td></td>').text(values[3]);
-            var group = $('<td></td>').text(values[4]);
+            const values = Object.values(em);
+            const row = $('<tr></tr>');
+            const num = $('<td></td>').text(values[0]);
+            const name = $('<td></td>').text(values[1]);
+            const studentId = $('<td></td>').text(values[2]);
+            const email = $('<td></td>').text(values[3]);
+            const group = $('<td></td>').text(values[4]);
             row.append(num, name, studentId, email, group);
             importStudentTable.append(row);
             importStudents.push({
@@ -172,14 +176,14 @@ function parseStudents(evt) {
 }
 
 function createStudentListTemplate() {
-    var wb = XLSX.utils.book_new();
-    var ws_name = "students";
-    var ws_data = [
+    const wb = XLSX.utils.book_new();
+    const ws_name = "students";
+    const ws_data = [
         ['#', 'Full name', 'Student ID', 'Email', 'Group'],
         ['1', 'Phong Ha Tuan', '16020263', '16020263@vnu.edu.vn', 'F & Đồng bọn'],
         ['2', 'Nguyen Ngoc Lam', '16022408', '16022408@vnu.edu.vn', 'F & Đồng bọn']
     ];
-    var ws = XLSX.utils.aoa_to_sheet(ws_data);
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
     XLSX.utils.book_append_sheet(wb, ws, ws_name);
     XLSX.writeFile(wb, 'students.xlsx');
 }
@@ -200,16 +204,15 @@ function getStudents() {
 }
 
 function insertStudent(s, index) {
-    var id = $('<td class="id-cell"></td>').text(s.userId);
-    var num = $('<td class="num-cell"></td>').text(index);
-    var fullName = $('<td></td>').text(s.fullName);
-    var studentId = $('<td></td>').text(s.studentId);
-    var email = $('<td></td>').text(s.email);
-    var groupId = $('<td class="id-cell group-id"></td>').text(s.groupId);
-    var groupName = $('<td></td>').text(s.groupName);
-    var actions = $('<td><i class="fa fa-pencil fa-fw td-action-icon"></i>&nbsp<i class="fa fa-trash fa-fw td-action-icon"></i>&nbsp</td>');
-    var row = $('<tr></tr>').append(id, num, fullName, studentId, email, groupId, groupName, actions);
-
+    // const id = $('<td class="id-cell"></td>').text(s.userId);
+    const num = $('<td class="num-cell"></td>').text(index);
+    const fullName = $('<td></td>').text(s.fullName);
+    const studentId = $('<td></td>').text(s.studentId);
+    const email = $('<td></td>').text(s.email);
+    const groupId = $('<td class="id-cell group-id"></td>').text(s.groupId);
+    const groupName = $('<td></td>').text(s.groupName);
+    const actions = $('<td><i class="fa fa-pencil fa-fw td-action-icon" id="edit-student" onclick="return openStudentEditor(\'' + s.userId + '\')"></i>&nbsp<i class="fa fa-trash fa-fw td-action-icon"></i>&nbsp</td>');
+    const row = $('<tr data-id="' + s.userId + '"></tr>').append(num, fullName, studentId, email, groupId, groupName, actions);
     studentTable.append(row);
 }
 
@@ -255,16 +258,16 @@ function getIterations() {
         method: 'get',
         success: function (jqXHR) {
             jqXHR.forEach(function (i, index) {
-                var row = $('<tr></tr>');
-                var num = $('<td class="num-cell"></td>').text(index + 1);
-                var startDateTime = $('<td></td>').text(i.startDateTime);
-                var endDateTime = $('<td></td>').text(i.endDateTime);
-                var message = $('<td></td>').text(i.message);
+                const row = $('<tr></tr>');
+                const num = $('<td class="num-cell"></td>').text(index + 1);
+                const startDateTime = $('<td></td>').text(i.startDateTime);
+                const endDateTime = $('<td></td>').text(i.endDateTime);
+                const message = $('<td></td>').text(i.message);
 
-                var status;
-                var today = new Date();
-                var sd = new Date(i.startDateTime);
-                var ed = new Date(i.endDateTime);
+                let status;
+                const today = new Date();
+                const sd = new Date(i.startDateTime);
+                const ed = new Date(i.endDateTime);
                 if (sd.getTime() > today.getTime()) {
                     status = $('<td class="status status-waiting"></td>').text("WAITING");
                 } else if (ed.getTime() <= today.getTime()) {
@@ -298,37 +301,37 @@ function getTopics() {
 }
 
 function insertTopic(topic, index) {
-    var num = $('<td class="num-cell"></td>').text(index);
-    var description = $('<td></td>').text(topic.descriptions);
-    var name = $('<td></td>').text(topic.name);
-    var group = $('<td></td>').text(topic.groupName);
-    var list = $('<ul style="list-style-type: none; margin: 0; padding: 0;"></ul>');
+    const num = $('<td class="num-cell"></td>').text(index);
+    const description = $('<td></td>').text(topic.descriptions);
+    const name = $('<td></td>').text(topic.name);
+    const group = $('<td></td>').text(topic.groupName);
+    const list = $('<ul style="list-style-type: none; margin: 0; padding: 0;"></ul>');
     if (topic.specificationFiles != null)
         topic.specificationFiles.forEach(function (f) {
-            var fileName = f.fileName;
-            var fileTypeIcon = getFileTypeIcon(fileName);
-            var link = $('<a></a>')
+            const fileName = f.fileName;
+            const fileTypeIcon = getFileTypeIcon(fileName);
+            const link = $('<a></a>')
                 .attr('href', '/file/download?filePath=' + encodeURIComponent(f.path))
                 .attr('target', '_blank')
                 .append(fileTypeIcon).append(fileName);
             list.append($('<li></li>').append(link));
         });
-    var specFiles = $('<td></td>').append(list);
+    const specFiles = $('<td></td>').append(list);
     topicTable.append($('<tr></tr>').append(num, name, description, specFiles, group));
 }
 
 $('#submitStudent').on('click', function () {
     showSpinner();
-    var studentName = $('input#studentName').val();
-    var studentId = $('input#studentId').val();
-    var studentGroup = $('input#studentGroup').val();
-    var studentEmail = $('input#studentEmail').val();
+    const studentName = $('input#studentName');
+    const studentId = $('input#studentId');
+    const studentGroup = $('input#studentGroup');
+    const studentEmail = $('input#studentEmail');
 
-    var formData = new FormData();
-    formData.append('fullName', studentName);
-    formData.append("studentId", studentId);
-    formData.append("email", studentEmail);
-    formData.append("groupName", studentGroup);
+    const formData = new FormData();
+    formData.append('fullName', studentName.val());
+    formData.append("studentId", studentId.val());
+    formData.append("email", studentEmail.val());
+    formData.append("groupName", studentGroup.val());
     $.when($.ajax({
         url: '/class/students',
         data: formData,
@@ -337,7 +340,11 @@ $('#submitStudent').on('click', function () {
         type: 'POST',
         success: function (student) {
             insertStudent(student, $('.student-table').find('tr').length);
-            hidePopup('.add-student-popup')
+            hidePopup('.add-student-popup');
+            studentName.val("");
+            studentId.val("");
+            studentEmail.val("");
+            studentGroup.val("");
         },
         error: function () {
             alert('Unable to add student!')
@@ -346,6 +353,69 @@ $('#submitStudent').on('click', function () {
         hideSpinner();
     })
 });
+
+function openStudentEditor(studentId) {
+    const data = $('.student-table tbody tr[data-id="' + studentId + '"]').map(function () {
+        const array = [];
+        $('td', this).each(function () {
+            const d = $(this).val() || $(this).text();
+            array.push(d);
+        });
+        return array;
+    });
+    showPopup('.edit-student-popup');
+    editStudent(data, studentId);
+}
+
+function editStudent(dataArray, _id) {
+    $('#editStudentName').val(dataArray[1]);
+    $('#editStudentId').val(dataArray[2]);
+    $('#editStudentEmail').val(dataArray[3]);
+    $('#editStudentGroup').val(dataArray[5]);
+    $('#editStudent').off().on('click', function () {
+        console.log("click");
+        if ($('#editStudentName').val() === dataArray[1] &&
+            $('#editStudentId').val() === dataArray[2] &&
+            $('#editStudentEmail').val() === dataArray[3] &&
+            $('#editStudentGroup').val() === dataArray[5]) {
+            hidePopup('.edit-student-popup')
+        } else {
+            showSpinner();
+            const studentName = $('input#editStudentName');
+            const studentId = $('input#editStudentId');
+            const studentGroup = $('input#editStudentGroup');
+            const studentEmail = $('input#editStudentEmail');
+
+            console.log("submitting");
+            const formData = new FormData();
+            formData.append('fullName', studentName.val());
+            formData.append("studentId", studentId.val());
+            formData.append("email", studentEmail.val());
+            formData.append("groupName", studentGroup.val());
+            $.when($.ajax({
+                url: '/student/' + _id,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'PUT',
+                success: function () {
+                    studentName.val("");
+                    studentId.val("");
+                    studentEmail.val("");
+                    studentGroup.val("");
+                    $('.student-table tbody').empty();
+                    getStudents();
+                    hidePopup('.edit-student-popup')
+                },
+                error: function () {
+                    alert('Unable to edit student info!')
+                }
+            })).done(function () {
+                hideSpinner();
+            })
+        }
+    })
+}
 
 $(document).ready(function () {
     showSpinner();

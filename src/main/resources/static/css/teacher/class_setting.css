@@ -17,6 +17,11 @@
     height: 300px;
 }
 
+.edit-student-popup {
+    width: 550px;
+    height: 300px;
+}
+
 .import-student-list {
     border-bottom: 1px solid lightgrey;
     border-top: 1px solid lightgrey;
