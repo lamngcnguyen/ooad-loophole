@@ -27,6 +27,14 @@ $('.import-student-popup .popup-close').on('click', function () {
     hidePopup('.import-student-popup');
 });
 
+$('#addStudent').on('click', function () {
+    showPopup('.add-student-popup');
+});
+
+$('.add-student-popup .popup-close').on('click', function () {
+    hidePopup('.add-student-popup')
+});
+
 $('#addTopic').on('click', function () {
     showSpinner();
     $.when($.ajax({
@@ -308,6 +316,36 @@ function insertTopic(topic, index) {
     var specFiles = $('<td></td>').append(list);
     topicTable.append($('<tr></tr>').append(num, name, description, specFiles, group));
 }
+
+$('#submitStudent').on('click', function () {
+    showSpinner();
+    var studentName = $('input#studentName').val();
+    var studentId = $('input#studentId').val();
+    var studentGroup = $('input#studentGroup').val();
+    var studentEmail = $('input#studentEmail').val();
+
+    var formData = new FormData();
+    formData.append('fullName', studentName);
+    formData.append("studentId", studentId);
+    formData.append("email", studentEmail);
+    formData.append("groupName", studentGroup);
+    $.when($.ajax({
+        url: '/class/students',
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function (student) {
+            insertStudent(student, $('.student-table').find('tr').length);
+            hidePopup('.add-student-popup')
+        },
+        error: function () {
+            alert('Unable to add student!')
+        }
+    })).done(function () {
+        hideSpinner();
+    })
+});
 
 $(document).ready(function () {
     showSpinner();

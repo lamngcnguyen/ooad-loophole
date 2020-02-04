@@ -138,6 +138,8 @@
         </div>
     </div>
 </div>
+
+<!-- Import student popup  -->
 <div class="popup import-student-popup">
     <div class="popup-header">
         <span class="popup-close">
@@ -178,6 +180,8 @@
         </button>
     </div>
 </div>
+
+<!-- Add topic popup -->
 <div class="popup add-topic-popup">
     <div class="popup-header">
         <span class="popup-close">
@@ -241,6 +245,8 @@
         <button type="submit" id="submitTopic" class="my-btn my-btn-green">Add</button>
     </div>
 </div>
+
+<!--Class setting popup-->
 <div class="popup class-setting-popup">
     <div class="popup-header">
         <span class="popup-close">
@@ -273,11 +279,61 @@
         </table>
     </div>
 </div>
+
+<!--Add student popup-->
+<div class="popup add-student-popup">
+    <div class="popup-header">
+        <span class="popup-close">
+            <button><i class="fa fa-close"></i>&nbsp</button>
+        </span>
+        <span class="popup-title">Add student</span>
+    </div>
+    <div class="popup-body">
+        <table class="form-table">
+            <tr>
+                <td class="my-label">
+                    <label for="studentName">Full Name</label>
+                </td>
+                <td>
+                    <input id="studentName" class="my-input" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="my-label">
+                    <label for="studentId">Student ID</label>
+                </td>
+                <td>
+                    <input id="studentId" class="my-input" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="my-label">
+                    <label for="studentEmail">Email</label>
+                </td>
+                <td>
+                    <input id="studentEmail" class="my-input" type="text">
+                </td>
+            </tr>
+            <tr>
+                <td class="my-label">
+                    <label for="studentGroup">Group</label>
+                </td>
+                <td>
+                    <input id="studentGroup" class="my-input" type="text">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="text-align: right; margin-top: 16px">
+        <button type="submit" id="submitStudent" class="my-btn my-btn-green">Add</button>
+    </div>
+</div>
+
 <div class="loader-container">
     <div class="loader"></div>
 </div>
 <!--<div class="class-id" style="display: none" th:text="${classId}"></div>-->
 </body>
-<script type="text/javascript" src="js/teacher/class_setting.js"></script>
-<link rel="stylesheet" href="css/teacher/class_setting.css">
+<script type="text/javascript" th:src="@{/js/teacher/class_setting.js}"></script>
+<link rel="stylesheet" th:href="@{/css/teacher/class_setting.css}">
 </html>
