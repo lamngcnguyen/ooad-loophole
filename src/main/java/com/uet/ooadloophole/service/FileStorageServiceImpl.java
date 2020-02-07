@@ -3,17 +3,19 @@ package com.uet.ooadloophole.service;
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
-@Service
-public class FileStorageService {
+public class FileStorageServiceImpl implements FileService {
+    @Override
     public Path createPath(String dir) {
         try {
             Path path = Paths.get(dir).toAbsolutePath().normalize();
@@ -25,11 +27,13 @@ public class FileStorageService {
         }
     }
 
+    @Override
     public boolean editFileName(String oldFilePath, String newFilePath) {
         File file = new File(oldFilePath);
         return file.renameTo(new File(file.getParentFile(), newFilePath));
     }
 
+    @Override
     public boolean deleteFile(String filePath) throws IOException {
         File fileToDelete = new File(filePath);
         if (fileToDelete.isDirectory()) {
@@ -40,6 +44,7 @@ public class FileStorageService {
         }
     }
 
+    @Override
     public String storeFile(MultipartFile file, String saveLocation) {
         Path savePath = createPath(saveLocation);
         // Normalize file name
@@ -59,6 +64,7 @@ public class FileStorageService {
         }
     }
 
+    @Override
     public Resource loadFileAsResource(String fileName, String saveLocation) {
         Path path = createPath(saveLocation);
         try {
@@ -76,15 +82,16 @@ public class FileStorageService {
         }
     }
 
-    public void deleteDirectory(String dir) {
+    @Override
+    public boolean deleteDirectory(String dir) {
         Path path = Paths.get(dir).toAbsolutePath();
-        boolean success = deleteDirectory(new File(path.toString()));
-        if (!success) System.out.println("Unable to delete directory: " + dir);
+        return deleteDirectory(new File(path.toString()));
     }
 
     private boolean deleteDirectory(File dir) {
         if (dir.isDirectory()) {
             File[] children = dir.listFiles();
+            assert children != null;
             for (File child : children) {
                 boolean success = deleteDirectory(child);
                 if (!success) return false;

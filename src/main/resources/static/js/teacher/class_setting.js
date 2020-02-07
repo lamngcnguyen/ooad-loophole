@@ -75,7 +75,7 @@ $('#submitTopic').on('click', function () {
     formData.append('topicName', groupName);
     if (description.length > 0)
         formData.append('description', description);
-    if (groupId != 0)
+    if (groupId !== 0)
         formData.append('groupId', groupId);
     $.each(files, function (i, f) {
         formData.append('files', f);

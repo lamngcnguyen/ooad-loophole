@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GroupRepoService {
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileService fileService;
     @Value("${repo.dir}")
     private String REPO_DIR;
     @Value("${group.dir}")
@@ -15,7 +15,7 @@ public class GroupRepoService {
 
     public void initializeRepo(String groupId, String classId) {
         String groupDir = REPO_DIR + "/" + classId + "/" + GROUP_DIR + "/" + groupId;
-        fileStorageService.createPath(groupDir + "/Docs");
-        fileStorageService.createPath(groupDir + "/Source");
+        fileService.createPath(groupDir + "/Docs");
+        fileService.createPath(groupDir + "/Source");
     }
 }

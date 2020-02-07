@@ -13,8 +13,8 @@ public class ClassDTO {
     public ClassDTO(Class data, int numberOfStudents) {
         this.classId = data.get_id();
         this.className = data.getClassName();
-        this.startDate = data.getStartDate().toString();
-        this.endDate = data.getEndDate().toString();
+//        this.startDate = data.getStartDate().toString();
+//        this.endDate = data.getEndDate().toString();
         this.numberOfStudents = numberOfStudents;
         this.dayOfWeek = getDayOfWeek(data.getScheduledDayOfWeek());
     }

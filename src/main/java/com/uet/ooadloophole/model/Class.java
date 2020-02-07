@@ -8,9 +8,8 @@ public class Class {
     @Id
     private String _id;
     private String className;
-    private String teacherId;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String teacherId; //Points to User
+    private String semesterId;
     //The day of week the class supposed to take place
     //This variable's name might be changed later
     private int scheduledDayOfWeek;
@@ -39,27 +38,19 @@ public class Class {
         this.teacherId = teacherId;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public int getScheduledDayOfWeek() {
         return scheduledDayOfWeek;
     }
 
     public void setScheduledDayOfWeek(int scheduledDayOfWeek) {
         this.scheduledDayOfWeek = scheduledDayOfWeek;
+    }
+
+    public String getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(String semesterId) {
+        this.semesterId = semesterId;
     }
 }

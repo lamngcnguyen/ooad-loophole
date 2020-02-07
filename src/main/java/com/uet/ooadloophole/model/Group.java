@@ -10,7 +10,6 @@ public class Group {
     private String repoId;
     private String classId;
     private String topicId;
-    private Repository repo;
 
     public String get_id() {
         return _id;
@@ -60,11 +59,4 @@ public class Group {
         this.topicId = topicId;
     }
 
-    public Repository getRepo() {
-        return repo;
-    }
-
-    public void setRepo(Repository repo) {
-        this.repo = repo;
-    }
 }

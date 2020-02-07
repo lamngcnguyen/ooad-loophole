@@ -8,7 +8,6 @@ public class UserFile {
     @Id
     private String _id;
     private String fileName;
-    private long score;
     private LocalDateTime timeStamp;
     private String uploaderId;
     private String path;
@@ -27,14 +26,6 @@ public class UserFile {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public long getScore() {
-        return score;
-    }
-
-    public void setScore(long score) {
-        this.score = score;
     }
 
     public LocalDateTime getTimeStamp() {

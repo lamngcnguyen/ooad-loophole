@@ -8,9 +8,9 @@ import java.util.Set;
 public class User {
     @Id
     private String _id;
-    private String fullName;
-    private String password;
     private String email;
+    private String password;
+    private String fullName;
     @DBRef
     private Set<Role> role;
 

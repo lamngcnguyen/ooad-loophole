@@ -41,10 +41,15 @@ public class StudentController {
     public ModelAndView repoView(@CookieValue String groupId, @CookieValue String userId) {
         Group group = groupRepository.findBy_id(groupId);
         ModelAndView modelAndView = new ModelAndView();
-        if (group.getTopicId() == null) modelAndView.setViewName("/student/unassigned");
-        else {
-            modelAndView.setViewName("/student/repo");
-            modelAndView.addObject("groupName", group.getGroupName());
+        try {
+            if (group.getTopicId() == null) modelAndView.setViewName("/student/unassigned");
+            else {
+                modelAndView.setViewName("/student/repo");
+                modelAndView.addObject("groupName", group.getGroupName());
+            }
+        } catch (NullPointerException e) {
+            //TODO: make a no group assigned page (choose a group)
+            modelAndView.setViewName("/student/unassigned");
         }
         User user = userDetailService.getCurrentUser();
         modelAndView.addObject("userFullName", user.getFullName());
@@ -55,29 +60,25 @@ public class StudentController {
     @RequestMapping(value = "/{_id}", method = RequestMethod.PUT)
     public ResponseEntity editStudent(@CookieValue String classId, @PathVariable String _id, Optional<String> fullName, Optional<String> studentId, Optional<String> email, Optional<String> groupName) {
         Student student = studentRepository.findBy_id(_id);
+        User user = userRepository.findBy_id(student.getUserId());
 
         System.out.println("classId: " + classId);
         System.out.println("_id: " + _id);
 
         if (fullName.isPresent()) {
-            System.out.println("fullName: " + fullName.get());
-            User user = userRepository.findBy_id(student.getUserId());
             user.setFullName(fullName.get());
             userRepository.save(user);
         }
         if (studentId.isPresent()) {
-            System.out.println("studentId: " + studentId.get());
             student.setStudentId(studentId.get());
+            user.setPassword(studentId.get());
             studentRepository.save(student);
         }
         if (email.isPresent()) {
-            System.out.println("email: " + email.get());
-            User user = userRepository.findBy_id(student.getUserId());
             user.setEmail(email.get());
             userRepository.save(user);
         }
         if (groupName.isPresent()) {
-            System.out.println("groupName: " + groupName.get());
             Group group = new Group();
             if (groupRepository.findByGroupName(groupName.get()) == null) {
                 group.setGroupName(groupName.get());
