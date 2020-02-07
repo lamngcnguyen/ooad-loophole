@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.*;
-import com.uet.ooadloophole.model.*;
+import com.uet.ooadloophole.database.ClassRepository;
 import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.interface_model.IClass;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -10,12 +10,9 @@ import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Map;
 
 public class ClassServiceImpl implements ClassService {
     @Autowired
@@ -24,14 +21,6 @@ public class ClassServiceImpl implements ClassService {
     private SecureUserDetailService secureUserDetailService;
     @Autowired
     private StudentService studentService;
-    @Autowired
-    private GroupRepository groupRepository;
-    @Autowired
-    private TopicRepository topicRepository;
-    @Autowired
-    private UserFileRepository userFileRepository;
-    @Autowired
-    private IterationRepository iterationRepository;
     @Autowired
     private FileService fileService;
     @Autowired
@@ -52,7 +41,7 @@ public class ClassServiceImpl implements ClassService {
         ooadClass.setClassName(iClass.getClassName());
         ooadClass.setScheduledDayOfWeek(iClass.getScheduledDayOfWeek());
         ooadClass.setSemesterId(iClass.getSemesterId());
-        ooadClass.setTeacherId(secureUserDetailService.getTeacherId());
+        ooadClass.setTeacherId(iClass.getTeacherId());
         classRepository.save(ooadClass);
         return ooadClass;
     }
@@ -62,73 +51,36 @@ public class ClassServiceImpl implements ClassService {
         try {
             Class classToDelete = getById(classId);
             classRepository.delete(classToDelete);
-
-            //TODO: Delete Student by classId
-//        List<Student> students = studentRepository.deleteAllByClassId(classId);
-//        students.forEach(student -> userRepository.deleteById(student.getUserId()));
-
-            groupRepository.deleteAllByClassId(classId);
-
-            List<Topic> topics = topicRepository.deleteAllByClassId(classId);
-            topics.forEach(topic -> {
-                topic.getSpecificationFiles().forEach(userFile -> {
-                    userFileRepository.deleteById(userFile.get_id());
-                });
-            });
-
-            iterationRepository.deleteAllByClassId(classId);
-            fileService.deleteDirectory("repo/" + classId);
         } catch (Exception e) {
-            throw new BusinessServiceException("Unable to delete class. " + e.getMessage());
+            throw new BusinessServiceException("Unable to delete class: " + e.getMessage());
         }
     }
 
     @Override
     public Class update(Class ooadClass) throws BusinessServiceException {
-        Class dbClass = getById(ooadClass.get_id());
-        dbClass.setClassName(ooadClass.getClassName());
-        dbClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
-        dbClass.setSemesterId(ooadClass.getSemesterId());
-        dbClass.setTeacherId(ooadClass.getTeacherId());
-        classRepository.save(dbClass);
-        return dbClass;
+        try {
+            Class dbClass = getById(ooadClass.get_id());
+            dbClass.setClassName(ooadClass.getClassName());
+            dbClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
+            dbClass.setSemesterId(ooadClass.getSemesterId());
+            dbClass.setTeacherId(ooadClass.getTeacherId());
+            classRepository.save(dbClass);
+            return dbClass;
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to update class: " + e.getMessage());
+        }
     }
 
     @Override
-    public void importStudents(String classId, Map<String, Object> payload) throws BusinessServiceException {
-        try {
-            JSONObject jsonObject = new JSONObject(payload);
-            Class ooadClass = getById(classId);
-            JSONArray array = jsonObject.getJSONArray("students");
-            for (Object o : array) {
-                JSONObject object = (JSONObject) o;
-                if (studentService.getStudentById((String) object.get("studentId")) == null) {
-                    User user = new User();
-                    Student student = new Student();
-                    Group group = new Group();
-
-                    user.setFullName((String) object.get("fullName"));
-                    user.setPassword((String) object.get("studentId"));
-                    user.setEmail((String) object.get("email"));
-                    userService.createUser(user, "USER");
-
-                    if (groupRepository.findByClassIdAndGroupName(classId, (String) object.get("groupName")) == null) {
-                        group.setGroupName((String) object.get("groupName"));
-                        group.setClassId(ooadClass.get_id());
-                        groupRepository.save(group);
-                    } else {
-                        group = groupRepository.findByGroupName((String) object.get("groupName"));
-                    }
-
-                    student.setUserId(user.get_id());
-                    student.setClassId(ooadClass.get_id());
-                    student.setGroupId(group.get_id());
-                    student.setStudentId((String) object.get("studentId"));
-                    studentService.createStudent(student);
-                }
+    public List<Student> importStudents(String classId, List<Student> students) {
+        students.forEach(student -> {
+            try {
+                student.setClassId(classId);
+                studentService.create(student);
+            } catch (BusinessServiceException e) {
+                students.remove(student);
             }
-        } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Unable to import class. " + e.getMessage());
-        }
+        });
+        return students;
     }
 }

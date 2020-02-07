@@ -6,6 +6,7 @@ import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.model.dto.ClassDTO;
 import com.uet.ooadloophole.service.CookieService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-@RequestMapping(value = "/class")
-public class ClassController {
+@RequestMapping(value = "/teacher")
+public class TeacherController {
     @Autowired
     private SecureUserDetailService userDetailService;
 
@@ -31,33 +32,38 @@ public class ClassController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView classView() {
         ModelAndView modelAndView = new ModelAndView();
-        User user = userDetailService.getCurrentUser();
-        modelAndView.addObject("userFullName", user.getFullName());
-        modelAndView.addObject("userEmail", user.getEmail());
-        modelAndView.setViewName("teacher/class");
+        try {
+            User user = userDetailService.getCurrentUser();
+            modelAndView.addObject("userFullName", user.getFullName());
+            modelAndView.addObject("userEmail", user.getEmail());
+            modelAndView.setViewName("teacher/class");
+        } catch (BusinessServiceException e) {
+            modelAndView.setViewName("error");
+        }
         return modelAndView;
     }
 
     @RequestMapping(value = "/{className}")
     public ModelAndView classSettingView(@PathVariable String className, HttpServletResponse response, HttpServletRequest request, @CookieValue(name = "classId", defaultValue = "none") String classId) {
-        //System.out.println("Class ID: " + id);
         ModelAndView modelAndView = new ModelAndView();
         Class myClass = classRepository.findClassByClassName(className);
-        User user = userDetailService.getCurrentUser();
-        if (classId == null) {
-            response.addCookie(new Cookie("classId", myClass.get_id()) {{
-                setPath("/class");
-            }});
-        } else response.addCookie(CookieService.updateCookie(request, "classId", myClass.get_id(), "/class"));
-        modelAndView.addObject("className", myClass.getClassName());
-        modelAndView.addObject("classId", myClass.get_id());
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-//        modelAndView.addObject("startDate", dateTimeFormatter.format(myClass.getStartDate()));
-//        modelAndView.addObject("endDate", dateTimeFormatter.format(myClass.getEndDate()));
-        modelAndView.addObject("dayOfWeek", ClassDTO.getDayOfWeek(myClass.getScheduledDayOfWeek()));
-        modelAndView.addObject("userFullName", user.getFullName());
-        modelAndView.addObject("userEmail", user.getEmail());
-        modelAndView.setViewName("teacher/class_setting");
+        try {
+            User user = userDetailService.getCurrentUser();
+            if (classId == null) {
+                response.addCookie(new Cookie("classId", myClass.get_id()) {{
+                    setPath("/class");
+                }});
+            } else response.addCookie(CookieService.updateCookie(request, "classId", myClass.get_id(), "/class"));
+            modelAndView.addObject("className", myClass.getClassName());
+            modelAndView.addObject("classId", myClass.get_id());
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            modelAndView.addObject("dayOfWeek", ClassDTO.getDayOfWeek(myClass.getScheduledDayOfWeek()));
+            modelAndView.addObject("userFullName", user.getFullName());
+            modelAndView.addObject("userEmail", user.getEmail());
+            modelAndView.setViewName("teacher/class_setting");
+        } catch (BusinessServiceException e) {
+            modelAndView.setViewName("error");
+        }
         return modelAndView;
     }
 }

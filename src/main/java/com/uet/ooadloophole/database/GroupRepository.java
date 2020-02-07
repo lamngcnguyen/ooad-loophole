@@ -12,13 +12,9 @@ public interface GroupRepository extends MongoRepository<Group, String> {
 
     Group findByClassIdAndGroupName(String classId, String groupName);
 
-    Group findByTopicId(String topicId);
-
     Group findBy_idNotAndGroupName(String _id, String groupName);
 
     List<Group> findAllByClassId(String classId);
-
-    List<Group> findAllByClassIdAndTopicIdIsNull(String classId);
 
     List<Group> findAllByGroupNameLikeIgnoreCase(String groupName);
 
