@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.config;
 
-import com.uet.ooadloophole.service.UserService;
+import com.uet.ooadloophole.service.business_service_impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService mongoUserDetails() {
-        return new UserService();
+        return new UserServiceImpl();
     }
 
     @Bean

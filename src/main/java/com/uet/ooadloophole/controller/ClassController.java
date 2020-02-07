@@ -10,7 +10,7 @@ import com.uet.ooadloophole.model.dto.TopicDTO;
 import com.uet.ooadloophole.service.FileStorageService;
 import com.uet.ooadloophole.service.GroupRepoService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
-import com.uet.ooadloophole.service.UserService;
+import com.uet.ooadloophole.service.business_service_impl.UserServiceImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import java.util.Optional;
 @RequestMapping(value = "/class")
 public class ClassController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Autowired
     private SecureUserDetailService secureUserDetailService;
     @Autowired
@@ -135,7 +135,7 @@ public class ClassController {
                 user.setFullName((String) object.get("fullName"));
                 user.setPassword((String) object.get("studentId"));
                 user.setEmail((String) object.get("email"));
-                userService.saveUser(user, "USER");
+                userServiceImpl.saveUser(user, "USER");
 
                 if (groupRepository.findByClassIdAndGroupName(classId, (String) object.get("groupName")) == null) {
                     group.setGroupName((String) object.get("groupName"));
@@ -166,7 +166,7 @@ public class ClassController {
         user.setFullName(fullName);
         user.setPassword(studentId);
         user.setEmail(email);
-        userService.saveUser(user, "USER");
+        userServiceImpl.saveUser(user, "USER");
         if (groupRepository.findByGroupName(groupName) == null) {
             group.setGroupName(groupName);
             group.setClassId(classId);

@@ -3,8 +3,6 @@ package com.uet.ooadloophole.service;
 import com.uet.ooadloophole.database.StudentRepository;
 import com.uet.ooadloophole.database.TeacherRepository;
 import com.uet.ooadloophole.database.UserRepository;
-import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;

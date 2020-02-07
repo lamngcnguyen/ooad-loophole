@@ -5,7 +5,7 @@ import com.uet.ooadloophole.database.TeacherRepository;
 import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.Teacher;
 import com.uet.ooadloophole.model.User;
-import com.uet.ooadloophole.service.UserService;
+import com.uet.ooadloophole.service.business_service_impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
@@ -55,7 +55,7 @@ public class UserController {
         newUser.setFullName(fullName);
         newUser.setEmail(email);
         newUser.setPassword(password);
-        userService.saveUser(newUser, "USER");
+        userServiceImpl.saveUser(newUser, "USER");
 
         student.setUserId(newUser.get_id());
         studentRepository.save(student);
@@ -71,7 +71,7 @@ public class UserController {
         newUser.setFullName(fullName);
         newUser.setEmail(email);
         newUser.setPassword(password);
-        userService.saveUser(newUser, "TEACHER");
+        userServiceImpl.saveUser(newUser, "TEACHER");
 
         teacher.setUserId(newUser.get_id());
         teacherRepository.save(teacher);
