@@ -5,7 +5,6 @@ import org.springframework.data.annotation.Id;
 public class RepoFile extends UserFile {
     @Id
     private String _id;
-    private String fileId;
     private int score;
     private String groupId;
 
@@ -17,14 +16,6 @@ public class RepoFile extends UserFile {
     @Override
     public void set_id(String _id) {
         this._id = _id;
-    }
-
-    public String getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
     }
 
     public int getScore() {

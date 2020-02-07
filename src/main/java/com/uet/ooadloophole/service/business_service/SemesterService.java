@@ -2,9 +2,9 @@ package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.Semester;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
-@Controller
+@Service
 public interface SemesterService {
     Semester getById(String id) throws BusinessServiceException;
 

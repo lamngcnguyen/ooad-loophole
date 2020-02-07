@@ -7,7 +7,7 @@ import com.uet.ooadloophole.model.interface_model.IClass;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
-import com.uet.ooadloophole.service.business_service.FileService;
+import com.uet.ooadloophole.service.business_service.FileStorageService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.json.JSONArray;
@@ -29,11 +29,9 @@ public class ClassServiceImpl implements ClassService {
     @Autowired
     private TopicRepository topicRepository;
     @Autowired
-    private UserFileRepository userFileRepository;
-    @Autowired
     private IterationRepository iterationRepository;
     @Autowired
-    private FileService fileService;
+    private FileStorageService fileStorageService;
     @Autowired
     private UserService userService;
 
@@ -69,15 +67,15 @@ public class ClassServiceImpl implements ClassService {
 
             groupRepository.deleteAllByClassId(classId);
 
-            List<Topic> topics = topicRepository.deleteAllByClassId(classId);
-            topics.forEach(topic -> {
-                topic.getSpecificationFiles().forEach(userFile -> {
-                    userFileRepository.deleteById(userFile.get_id());
-                });
-            });
+//            List<Topic> topics = topicRepository.deleteAllByClassId(classId);
+//            topics.forEach(topic -> {
+//                topic.getSpecificationFiles().forEach(userFile -> {
+//                    userFileRepository.deleteById(userFile.get_id());
+//                });
+//            });
 
             iterationRepository.deleteAllByClassId(classId);
-            fileService.deleteDirectory("repo/" + classId);
+            fileStorageService.deleteDirectory("repo/" + classId);
         } catch (Exception e) {
             throw new BusinessServiceException("Unable to delete class. " + e.getMessage());
         }

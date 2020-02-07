@@ -2,9 +2,11 @@ package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface UserService {
     User getUserById(String id) throws BusinessServiceException;
 

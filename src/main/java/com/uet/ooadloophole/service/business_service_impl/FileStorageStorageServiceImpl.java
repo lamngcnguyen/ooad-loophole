@@ -1,9 +1,12 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.model.UserFile;
+import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
-import com.uet.ooadloophole.service.business_service.FileService;
+import com.uet.ooadloophole.service.business_service.FileStorageService;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.StringUtils;
@@ -17,7 +20,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-public class FileStorageServiceImpl implements FileService {
+public class FileStorageStorageServiceImpl implements FileStorageService {
+    @Autowired
+    private SecureUserDetailService secureUserDetailService;
+
     @Override
     public Path createPath(String dir) {
         try {
@@ -48,7 +54,10 @@ public class FileStorageServiceImpl implements FileService {
     }
 
     @Override
-    public String storeFile(MultipartFile file, String saveLocation) {
+    public UserFile storeFile(MultipartFile file, String saveLocation) throws FileStorageException {
+        UserFile uploadedUserFile = new UserFile();
+        String userId = secureUserDetailService.getCurrentUser().get_id();
+
         Path savePath = createPath(saveLocation);
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -61,14 +70,18 @@ public class FileStorageServiceImpl implements FileService {
             assert savePath != null;
             Path targetLocation = savePath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return fileName;
+
+            uploadedUserFile.setFileName(fileName);
+            uploadedUserFile.setUploaderId(userId);
+            return uploadedUserFile;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
+
     }
 
     @Override
-    public Resource loadFileAsResource(String fileName, String saveLocation) {
+    public Resource loadFileAsResource(String fileName, String saveLocation) throws CustomFileNotFoundException {
         Path path = createPath(saveLocation);
         try {
             assert path != null;

@@ -9,7 +9,7 @@ import com.uet.ooadloophole.model.Group;
 //import com.uet.ooadloophole.model.Repository;
 import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.UserFile;
-import com.uet.ooadloophole.service.business_service.FileService;
+import com.uet.ooadloophole.service.business_service.FileStorageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -36,7 +36,7 @@ public class GroupController {
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
-    private FileService fileService;
+    private FileStorageService fileStorageService;
     @Autowired
     private SecureUserDetailService secureUserDetailService;
 
@@ -83,35 +83,7 @@ public class GroupController {
     @ResponseBody
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST)
     public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file, String path) {
-//        ArrayList<UserFile> repoUserFiles;
-        String saveLocation;
-        UserFile uploadedUserFile = new UserFile();
-        String userId = secureUserDetailService.getCurrentUser().get_id();
-        Student currentStudent = studentRepository.findByUserId(userId);
-        Group currentGroup = groupRepository.findBy_id(currentStudent.getGroupId());
-//        Repository repo = currentGroup.getRepo();
-        String groupId = currentStudent.getGroupId();
-        String classId = currentStudent.getClassId();
-        if (path == null) {
-            uploadedUserFile.setPath("");
-            saveLocation = "repo/" + classId + "/" + groupId;
-        } else {
-            uploadedUserFile.setPath(path);
-            saveLocation = "repo/" + classId + "/" + groupId + "/" + path;
-        }
 
-        String fileName = fileService.storeFile(file, saveLocation);
-        uploadedUserFile.setFileName(fileName);
-        uploadedUserFile.setUploaderId(userId);
-//        if (repo.getUserFiles() == null) {
-//            repoUserFiles = new ArrayList<>();
-//        } else {
-//            repoUserFiles = repo.getUserFiles();
-//        }
-//        repoUserFiles.add(uploadedUserFile);
-//        repo.setUserFiles(repoUserFiles);
-//        currentGroup.setRepo(repo);
-        groupRepository.save(currentGroup);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
@@ -165,7 +137,7 @@ public class GroupController {
     public ResponseEntity<Resource> downloadFile(@CookieValue String groupId, @CookieValue String classId, @PathVariable String directory, @PathVariable String fileName, HttpServletRequest request) {
         String path = "repo/" + classId + "/" + groupId + "/" + directory;
         // Load file as Resource
-        Resource resource = fileService.loadFileAsResource(fileName, path);
+        Resource resource = fileStorageService.loadFileAsResource(fileName, path);
 
         // Try to determine file's content type
         String contentType = null;
@@ -190,7 +162,7 @@ public class GroupController {
     @ResponseBody
     @RequestMapping(value = "/file/create/iteration", method = RequestMethod.POST)
     public ResponseEntity createNewFolder(@CookieValue String groupId, @CookieValue String classId, String iteration) {
-        Path newPath = fileService.createPath("repo/" + classId + "/" + groupId + "/code/" + iteration);
+        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/code/" + iteration);
         if (newPath != null) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -202,7 +174,7 @@ public class GroupController {
     @RequestMapping(value = "/file/edit/iteration", method = RequestMethod.PUT)
     public ResponseEntity editIteration(@CookieValue String groupId, @CookieValue String classId, String oldName, String newName) {
         String path = "repo/" + classId + "/" + groupId + "/code/";
-        boolean edit = fileService.editFileName(path + oldName, path + newName);
+        boolean edit = fileStorageService.editFileName(path + oldName, path + newName);
         if (edit) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -214,7 +186,7 @@ public class GroupController {
     @RequestMapping(value = "/file/delete/iteration", method = RequestMethod.PUT)
     public ResponseEntity deleteIteration(@CookieValue String groupId, @CookieValue String classId, String iteration) throws IOException {
         String path = "repo/" + classId + "/" + groupId + "/code/";
-        boolean edit = fileService.deleteFile(path + iteration);
+        boolean edit = fileStorageService.deleteFile(path + iteration);
         if (edit) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -226,7 +198,7 @@ public class GroupController {
     @ResponseBody
     @RequestMapping(value = "/file/create/actor", method = RequestMethod.POST)
     public ResponseEntity createNewActor(@CookieValue String groupId, @CookieValue String classId, String actor) {
-        Path newPath = fileService.createPath("repo/" + classId + "/" + groupId + "/docs/" + actor);
+        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/docs/" + actor);
         if (newPath != null) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -238,7 +210,7 @@ public class GroupController {
     @RequestMapping(value = "/file/edit/actor", method = RequestMethod.PUT)
     public ResponseEntity editActor(@CookieValue String groupId, @CookieValue String classId, String oldName, String newName) {
         String path = "repo/" + classId + "/" + groupId + "/docs/";
-        boolean edit = fileService.editFileName(path + oldName, path + newName);
+        boolean edit = fileStorageService.editFileName(path + oldName, path + newName);
         if (edit) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -250,7 +222,7 @@ public class GroupController {
     @RequestMapping(value = "/file/delete/actor", method = RequestMethod.PUT)
     public ResponseEntity deleteActor(@CookieValue String groupId, @CookieValue String classId, String actor) throws IOException {
         String path = "repo/" + classId + "/" + groupId + "/docs/";
-        boolean edit = fileService.deleteFile(path + actor);
+        boolean edit = fileStorageService.deleteFile(path + actor);
         if (edit) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -262,7 +234,7 @@ public class GroupController {
     @ResponseBody
     @RequestMapping(value = "/file/create/useCase", method = RequestMethod.POST)
     public ResponseEntity createUseCase(@CookieValue String groupId, @CookieValue String classId, String actor, String useCase) {
-        Path newPath = fileService.createPath("repo/" + classId + "/" + groupId + "/docs/" + actor + "/" + useCase);
+        Path newPath = fileStorageService.createPath("repo/" + classId + "/" + groupId + "/docs/" + actor + "/" + useCase);
         if (newPath != null) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -274,7 +246,7 @@ public class GroupController {
     @RequestMapping(value = "/file/edit/useCase", method = RequestMethod.PUT)
     public ResponseEntity editUseCase(@CookieValue String groupId, @CookieValue String classId, String actor, String oldName, String newName) {
         String path = "repo/" + classId + "/" + groupId + "/docs/" + actor + "/";
-        boolean edit = fileService.editFileName(path + oldName, path + newName);
+        boolean edit = fileStorageService.editFileName(path + oldName, path + newName);
         if (edit) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
@@ -286,7 +258,7 @@ public class GroupController {
     @RequestMapping(value = "/file/delete/useCase", method = RequestMethod.PUT)
     public ResponseEntity deleteUseCase(@CookieValue String groupId, @CookieValue String classId, String actor, String useCase) throws IOException {
         String path = "repo/" + classId + "/" + groupId + "/docs/" + actor + "/";
-        boolean edit = fileService.deleteFile(path + useCase);
+        boolean edit = fileStorageService.deleteFile(path + useCase);
         if (edit) {
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } else {
