@@ -14,7 +14,7 @@ public class RoleServiceImpl implements RoleService {
     private RoleRepository roleRepository;
 
     @Override
-    public Role getRoleByName(String roleName) throws BusinessServiceException {
+    public Role getByName(String roleName) throws BusinessServiceException {
         Role result = roleRepository.findByRole(roleName.toUpperCase());
         if(result == null) {
             throw new BusinessServiceException("No role found");
