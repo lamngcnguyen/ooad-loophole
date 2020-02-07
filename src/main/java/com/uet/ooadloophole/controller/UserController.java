@@ -5,6 +5,7 @@ import com.uet.ooadloophole.database.TeacherRepository;
 import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.Teacher;
 import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service_impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,33 +50,42 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity register(String fullName, String email, String password) {
-        User newUser = new User();
-        Student student = new Student();
+        try {
 
-        newUser.setFullName(fullName);
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        userServiceImpl.saveUser(newUser, "USER");
+            User newUser = new User();
+            Student student = new Student();
 
-        student.setUserId(newUser.get_id());
-        studentRepository.save(student);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+            newUser.setFullName(fullName);
+            newUser.setEmail(email);
+            newUser.setPassword(password);
+            userServiceImpl.createUser(newUser, "USER");
+
+            student.setUserId(newUser.get_id());
+            studentRepository.save(student);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @ResponseBody
     @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
     public ResponseEntity teacherRegistration(String fullName, String email, String password) {
-        User newUser = new User();
-        Teacher teacher = new Teacher();
+        try {
+            User newUser = new User();
+            Teacher teacher = new Teacher();
 
-        newUser.setFullName(fullName);
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        userServiceImpl.saveUser(newUser, "TEACHER");
+            newUser.setFullName(fullName);
+            newUser.setEmail(email);
+            newUser.setPassword(password);
+            userServiceImpl.createUser(newUser, "TEACHER");
 
-        teacher.setUserId(newUser.get_id());
-        teacherRepository.save(teacher);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+            teacher.setUserId(newUser.get_id());
+            teacherRepository.save(teacher);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.GET)

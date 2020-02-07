@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.model.Class;
-import com.uet.ooadloophole.model.implement_model.IClass;
-import com.uet.ooadloophole.service.ClassService;
+import com.uet.ooadloophole.model.interface_model.IClass;
+import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/api/class")
-public class APIClassController {
+public class ApiClassController {
     @Autowired
     private SecureUserDetailService secureUserDetailService;
     @Autowired
@@ -24,7 +24,7 @@ public class APIClassController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity createClass(IClass iClass) {
         if (secureUserDetailService.isTeacher()) {
-            Class ooadClass = classService.createClass(iClass);
+            Class ooadClass = classService.create(iClass);
             return ResponseEntity.status(HttpStatus.OK).body(ooadClass);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -35,7 +35,7 @@ public class APIClassController {
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     public ResponseEntity deleteClass(@CookieValue String classId) {
         try {
-            classService.deleteClass(classId);
+            classService.delete(classId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         } finally {

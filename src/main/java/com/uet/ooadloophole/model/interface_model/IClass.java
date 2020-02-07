@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.model.implement_model;
+package com.uet.ooadloophole.model.interface_model;
 
 public class IClass {
     private String className;

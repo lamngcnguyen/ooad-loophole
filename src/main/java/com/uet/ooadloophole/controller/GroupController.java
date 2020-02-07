@@ -9,7 +9,7 @@ import com.uet.ooadloophole.model.Group;
 //import com.uet.ooadloophole.model.Repository;
 import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.UserFile;
-import com.uet.ooadloophole.service.FileService;
+import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
