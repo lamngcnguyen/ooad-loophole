@@ -1,6 +1,6 @@
-package com.uet.ooadloophole.service;
+package com.uet.ooadloophole.service.business_exceptions;
 
-class FileStorageException extends RuntimeException {
+public class FileStorageException extends RuntimeException {
     public FileStorageException(String message) {
         super(message);
     }

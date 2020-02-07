@@ -10,11 +10,13 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     Student findByStudentId(String studentId);
 
+    Student findByUserId(String userId);
+
     List<Student> findAllByClassId(String classId);
 
     List<Student> findAllByGroupId(String groupId);
 
-    Student findByUserId(String userId);
-
     List<Student> deleteAllByClassId(String classId);
+
+    List<Student> findAllByFullNameLikeIgnoreCase(String fullName);
 }
