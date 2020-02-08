@@ -8,21 +8,23 @@ import java.util.List;
 
 @Service
 public interface StudentService {
-    Student getStudentById(String studentId) throws BusinessServiceException;
+    Student getById(String studentId) throws BusinessServiceException;
 
-    Student getStudentByStudentId(String studentId) throws BusinessServiceException;
+    Student getByStudentId(String studentId) throws BusinessServiceException;
 
-    Student getStudentByUserId(String userId) throws BusinessServiceException;
+    Student getByUserId(String userId) throws BusinessServiceException;
 
-    List<Student> searchStudentByFullName(String keyword);
+    List<Student> searchByFullNameOrStudentId(String keyword);
 
-    List<Student> getStudentByClass(String classId);
+    List<Student> getByClass(String classId);
 
-    List<Student> getStudentByGroup(String groupId);
+    List<Student> getByGroup(String groupId);
 
-    Student createStudent(Student student) throws BusinessServiceException;
+    Student create(Student student) throws BusinessServiceException;
 
-    Student updateStudent(Student student) throws BusinessServiceException;
+    List<Student> importStudents(List<Student> students);
 
-    void deleteStudent(String studentId) throws BusinessServiceException;
+    Student update(Student student) throws BusinessServiceException;
+
+    void delete(String studentId) throws BusinessServiceException;
 }

@@ -6,10 +6,7 @@ public class Group {
     @Id
     private String _id;
     private String groupName;
-    private String topic;
-    private String repoId;
     private String classId;
-    private String topicId;
 
     public String get_id() {
         return _id;
@@ -27,22 +24,6 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getRepoId() {
-        return repoId;
-    }
-
-    public void setRepoId(String repoId) {
-        this.repoId = repoId;
-    }
-
     public String getClassId() {
         return classId;
     }
@@ -50,13 +31,4 @@ public class Group {
     public void setClassId(String classId) {
         this.classId = classId;
     }
-
-    public String getTopicId() {
-        return topicId;
-    }
-
-    public void setTopicId(String topicId) {
-        this.topicId = topicId;
-    }
-
 }

@@ -1,11 +1,12 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.interface_model.IClass;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
 
 @Service
 public interface ClassService {
@@ -17,5 +18,5 @@ public interface ClassService {
 
     Class update(Class ooadClass) throws BusinessServiceException;
 
-    void importStudents(String classId, Map<String, Object> payload) throws Exception;
+    List<Student> importStudents(String classId, List<Student> payload);
 }

@@ -2,15 +2,13 @@ package com.uet.ooadloophole.model;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.List;
-
 public class Topic {
     @Id
     private String _id;
     private String name;
     private String descriptions;
     private String classId;
-    private List<UserFile> specificationFiles;
+    private String groupId;
 
     public String get_id() {
         return _id;
@@ -44,11 +42,11 @@ public class Topic {
         this.classId = classId;
     }
 
-    public List<UserFile> getSpecificationFiles() {
-        return specificationFiles;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setSpecificationFiles(List<UserFile> specificationFiles) {
-        this.specificationFiles = specificationFiles;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

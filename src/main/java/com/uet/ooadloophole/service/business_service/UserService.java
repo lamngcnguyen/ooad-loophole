@@ -8,17 +8,17 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    User getUserById(String id) throws BusinessServiceException;
+    User getById(String id) throws BusinessServiceException;
 
-    User getUserByEmail(String email) throws BusinessServiceException;
+    User getByEmail(String email) throws BusinessServiceException;
 
-    List<User> searchUserByFullName(String fullName);
+    List<User> searchByFullName(String fullName);
 
-    User createUser(User user, String roleName) throws BusinessServiceException;
+    User create(User user, String roleName) throws BusinessServiceException;
 
-    User updateUser(User user) throws BusinessServiceException;
+    User update(User user) throws BusinessServiceException;
 
-    void deleteUser(String userId) throws BusinessServiceException;
+    void delete(String userId) throws BusinessServiceException;
 
     void changePassword(String userId, String newPassword) throws BusinessServiceException;
 

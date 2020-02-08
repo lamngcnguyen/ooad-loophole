@@ -1,18 +1,14 @@
 package com.uet.ooadloophole.controller;
 
-import com.uet.ooadloophole.database.StudentRepository;
-import com.uet.ooadloophole.database.TeacherRepository;
-import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.Teacher;
 import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service_impl.UserServiceImpl;
+import com.uet.ooadloophole.service.business_service.StudentService;
+import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,19 +18,19 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/")
 public class UserController {
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentService studentService;
     @Autowired
-    private TeacherRepository teacherRepository;
+    private SecureUserDetailService secureUserDetailService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String indexView(){
+    public String indexView() {
         return "redirect:/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginView(){
+    public String loginView() {
         return "login";
     }
 
@@ -48,52 +44,29 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(String fullName, String email, String password) {
-        try {
-
-            User newUser = new User();
-            Student student = new Student();
-
-            newUser.setFullName(fullName);
-            newUser.setEmail(email);
-            newUser.setPassword(password);
-            userServiceImpl.createUser(newUser, "USER");
-
-            student.setUserId(newUser.get_id());
-            studentRepository.save(student);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
     public ResponseEntity teacherRegistration(String fullName, String email, String password) {
+        User newUser = new User();
+        newUser.setFullName(fullName);
+        newUser.setEmail(email);
+        newUser.setPassword(password);
         try {
-            User newUser = new User();
-            Teacher teacher = new Teacher();
-
-            newUser.setFullName(fullName);
-            newUser.setEmail(email);
-            newUser.setPassword(password);
-            userServiceImpl.createUser(newUser, "TEACHER");
-
-            teacher.setUserId(newUser.get_id());
-            teacherRepository.save(teacher);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+            userService.create(newUser, "TEACHER");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(newUser);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.GET)
-    public String userInfo(Model model) {
-        org.springframework.security.core.userdetails.User loggedInUser =
-                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userInfo = loggedInUser.getUsername();
-        model.addAttribute("userInfo", userInfo);
-        return "userInfoPage";
+    public ModelAndView userInfo() {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.addObject("userInfo", secureUserDetailService.getUsername());
+            modelAndView.setViewName("user_info");
+        } catch (BusinessServiceException e) {
+            modelAndView.setViewName("error");
+        }
+        return modelAndView;
     }
 }
