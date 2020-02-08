@@ -1,18 +1,18 @@
 package com.uet.ooadloophole.config;
 
-import com.uet.ooadloophole.database.ClassRepository;
-import com.uet.ooadloophole.database.StudentRepository;
-import com.uet.ooadloophole.database.TeacherRepository;
 import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.Teacher;
+import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.ClassService;
+import com.uet.ooadloophole.service.business_service.RoleService;
+import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,30 +23,40 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private SecureUserDetailService userDetailService;
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentService studentService;
     @Autowired
-    private TeacherRepository teacherRepository;
+    private ClassService classService;
     @Autowired
-    private ClassRepository classRepository;
+    private RoleService roleService;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        httpServletResponse.addCookie(new Cookie("userId", userDetailService.getCurrentUser().get_id()));
-        if (userDetailService.isStudent()) {
-            Student currentStudent = studentRepository.findBy_id(userDetailService.getStudentId());
-            httpServletResponse.addCookie(new Cookie("classId", currentStudent.getClassId()));
-            httpServletResponse.addCookie(new Cookie("groupId", currentStudent.getGroupId()));
-        } else if (userDetailService.getTeacherId() != null) {
-            Teacher currentTeacher = teacherRepository.findBy_id(userDetailService.getTeacherId());
-            httpServletResponse.addCookie(new Cookie("teacherId", currentTeacher.get_id()));
+    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
+        try {
+            User currentUser = userDetailService.getCurrentUser();
+            httpServletResponse.addCookie(new Cookie("userId", currentUser.get_id()));
+            if (userDetailService.isStudent()) {
+                Student currentStudent = studentService.getByUserId(currentUser.get_id());
+                httpServletResponse.addCookie(new Cookie("classId", currentStudent.getClassId()));
+                httpServletResponse.addCookie(new Cookie("groupId", currentStudent.getGroupId()));
+            }
+        } catch (BusinessServiceException e) {
+            httpServletResponse.sendRedirect("/error");
+            e.printStackTrace();
+            return;
         }
         for (GrantedAuthority auth : authentication.getAuthorities()) {
-            if ("USER".equals(auth.getAuthority())) {
-                httpServletResponse.sendRedirect("/student/repo");
-            } else if ("ADMIN".equals(auth.getAuthority())) {
-                httpServletResponse.sendRedirect("/userInfo");
-            } else if ("TEACHER".equals(auth.getAuthority())) {
-                httpServletResponse.sendRedirect("/teacher/class");
+            switch (auth.getAuthority()) {
+                case "USER":
+                    httpServletResponse.sendRedirect("/student/repo");
+                    break;
+                case "ADMIN":
+                    httpServletResponse.sendRedirect("/userInfo");
+                    break;
+                case "TEACHER":
+                    httpServletResponse.sendRedirect("/teacher/class");
+                    break;
+                default:
+                    break;
             }
         }
     }

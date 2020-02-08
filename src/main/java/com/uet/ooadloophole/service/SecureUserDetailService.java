@@ -24,7 +24,7 @@ public class SecureUserDetailService {
 
     private static final String ROLE_TEACHER = "TEACHER";
     private static final String ROLE_ADMIN = "ADMIN";
-    private static final String ROLE_STUDENT = "STUDENT";
+    private static final String ROLE_STUDENT = "USER";
 
     private User getCurrentSecureUser() throws BusinessServiceException {
         try {

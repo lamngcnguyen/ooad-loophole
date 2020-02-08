@@ -11,9 +11,11 @@ import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ClassServiceImpl implements ClassService {
     @Autowired
     private ClassRepository classRepository;

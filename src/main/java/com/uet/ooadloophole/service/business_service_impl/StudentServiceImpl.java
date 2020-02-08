@@ -20,7 +20,7 @@ public class StudentServiceImpl implements StudentService {
     private UserService userService;
 
     private static final String EMAIL_SUFFIX = "@vnu.edu.vn";
-    private static final String ROLE_STUDENT = "STUDENT";
+    private static final String ROLE_STUDENT = "USER";
 
     @Override
     public Student getById(String id) throws BusinessServiceException {

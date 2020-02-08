@@ -29,7 +29,7 @@ public class TeacherController {
     @Autowired
     private ClassRepository classRepository;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/class", method = RequestMethod.GET)
     public ModelAndView classView() {
         ModelAndView modelAndView = new ModelAndView();
         try {
@@ -43,7 +43,7 @@ public class TeacherController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/{className}")
+    @RequestMapping(value = "/class/{className}")
     public ModelAndView classSettingView(@PathVariable String className, HttpServletResponse response, HttpServletRequest request, @CookieValue(name = "classId", defaultValue = "none") String classId) {
         ModelAndView modelAndView = new ModelAndView();
         Class myClass = classRepository.findClassByClassName(className);

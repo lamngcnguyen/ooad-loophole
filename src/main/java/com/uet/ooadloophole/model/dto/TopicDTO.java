@@ -17,7 +17,6 @@ public class TopicDTO {
         this.id = data.get_id();
         this.name = data.getName();
         this.descriptions = data.getDescriptions();
-        this.specificationFiles = data.getSpecificationFiles();
         this.groupId = groupId;
         this.groupName = groupName;
     }
