@@ -21,7 +21,7 @@ public class ApiSemesterController {
 
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createSemester(String name, String startDate, String endDate) {
+    public ResponseEntity<Semester> createSemester(String name, String startDate, String endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
 
         Semester semester = new Semester();

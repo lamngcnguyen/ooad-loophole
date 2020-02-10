@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping(value = "/teacher")
@@ -56,7 +55,7 @@ public class TeacherController {
             } else response.addCookie(CookieService.updateCookie(request, "classId", myClass.get_id(), "/class"));
             modelAndView.addObject("className", myClass.getClassName());
             modelAndView.addObject("classId", myClass.get_id());
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+//            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             modelAndView.addObject("dayOfWeek", ClassDTO.getDayOfWeek(myClass.getScheduledDayOfWeek()));
             modelAndView.addObject("userFullName", user.getFullName());
             modelAndView.addObject("userEmail", user.getEmail());

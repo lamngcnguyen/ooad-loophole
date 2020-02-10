@@ -5,7 +5,6 @@ import com.uet.ooadloophole.database.IterationRepository;
 import com.uet.ooadloophole.model.Class;
 import com.uet.ooadloophole.model.Group;
 import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.interface_model.IClass;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.FileService;
@@ -49,12 +48,7 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public Class create(IClass iClass) {
-        Class ooadClass = new Class();
-        ooadClass.setClassName(iClass.getClassName());
-        ooadClass.setScheduledDayOfWeek(iClass.getScheduledDayOfWeek());
-        ooadClass.setSemesterId(iClass.getSemesterId());
-        ooadClass.setTeacherId(iClass.getTeacherId());
+    public Class create(Class ooadClass) {
         classRepository.save(ooadClass);
         return ooadClass;
     }

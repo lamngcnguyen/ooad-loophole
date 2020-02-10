@@ -2,8 +2,6 @@ package com.uet.ooadloophole.model;
 
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
-
 public class Class {
     @Id
     private String _id;
@@ -13,6 +11,17 @@ public class Class {
     //The day of week the class supposed to take place
     //This variable's name might be changed later
     private int scheduledDayOfWeek;
+
+    public Class() {
+
+    }
+
+    public Class(String className, String teacherId, String semesterId, int scheduledDayOfWeek) {
+        this.className = className;
+        this.teacherId = teacherId;
+        this.semesterId = semesterId;
+        this.scheduledDayOfWeek = scheduledDayOfWeek;
+    }
 
     public String get_id() {
         return _id;

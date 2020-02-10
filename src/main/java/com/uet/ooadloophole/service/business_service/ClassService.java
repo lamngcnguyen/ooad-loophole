@@ -2,8 +2,6 @@ package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.Class;
 import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.interface_model.IClass;
-import com.uet.ooadloophole.model.interface_model.IStudent;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +13,7 @@ public interface ClassService {
 
     Class getById(String id) throws BusinessServiceException;
 
-    Class create(IClass iClass);
+    Class create(Class ooadClass);
 
     Class create(String name, String teacherId, String semesterId, int scheduledDayOfWeek);
 

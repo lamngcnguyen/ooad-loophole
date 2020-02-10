@@ -50,7 +50,7 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/upload/repo", method = RequestMethod.POST)
-    public ResponseEntity uploadRepoFile(@RequestParam("file") MultipartFile file, String path) {
+    public ResponseEntity<String> uploadRepoFile(@RequestParam("file") MultipartFile file, String path) {
         try {
             repoFileService.upload(file, path);
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -60,7 +60,7 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/upload/spec/", method = RequestMethod.POST)
-    public ResponseEntity uploadSpecFile(@RequestParam("file") MultipartFile file, String path, String topicId) {
+    public ResponseEntity<String> uploadSpecFile(@RequestParam("file") MultipartFile file, String path, String topicId) {
         try {
             specFileService.upload(file, path, topicId);
             return ResponseEntity.status(HttpStatus.OK).build();

@@ -27,7 +27,7 @@ public class ApiGroupController {
     private TopicService topicService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity getGroupById(@PathVariable String id) {
+    public ResponseEntity<Group> getGroupById(@PathVariable String id) {
         try {
             Group result = groupService.getById(id);
             return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -37,13 +37,13 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/{id}/students", method = RequestMethod.GET)
-    public ResponseEntity getStudents(@PathVariable String id) {
+    public ResponseEntity<List<Student>> getStudents(@PathVariable String id) {
         List<Student> students = studentService.getByGroup(id);
         return ResponseEntity.status(HttpStatus.OK).body(students);
     }
 
     @RequestMapping(value = "/{id}/topic", method = RequestMethod.GET)
-    public ResponseEntity getTopic(@PathVariable String id) {
+    public ResponseEntity<Object> getTopic(@PathVariable String id) {
         try {
             Topic topic = topicService.getByGroupId(id);
             return ResponseEntity.status(HttpStatus.OK).body(topic);
@@ -53,7 +53,7 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createGroup(@RequestBody Group group) {
+    public ResponseEntity<Object> createGroup(@RequestBody Group group) {
         try {
             Group newGroup = groupService.create(group);
             return ResponseEntity.status(HttpStatus.OK).body(newGroup);
@@ -63,7 +63,7 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ResponseEntity updateGroup(@RequestBody Group group) {
+    public ResponseEntity<Object> updateGroup(@RequestBody Group group) {
         try {
             Group updatedGroup = groupService.update(group);
             return ResponseEntity.status(HttpStatus.OK).body(updatedGroup);
@@ -73,7 +73,7 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteGroup(@PathVariable String id) {
+    public ResponseEntity<String> deleteGroup(@PathVariable String id) {
         try {
             groupService.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -83,7 +83,7 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity searchGroup(@RequestParam String keyword) {
+    public ResponseEntity<List<Group>> searchGroup(@RequestParam String keyword) {
         List<Group> groups = groupService.searchByName(keyword);
         HttpStatus httpStatus = (groups.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
         return ResponseEntity.status(httpStatus).body(groups);

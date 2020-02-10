@@ -22,7 +22,7 @@ public class ApiTopicController {
     private GroupService groupService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity getTopicById(@PathVariable String id) {
+    public ResponseEntity<Object> getTopicById(@PathVariable String id) {
         try {
             Topic topic = topicService.getById(id);
             return ResponseEntity.status(HttpStatus.OK).body(topic);
@@ -33,7 +33,7 @@ public class ApiTopicController {
 
     @ResponseBody
     @RequestMapping(value = "/{id}/group", method = RequestMethod.GET)
-    public ResponseEntity getGroup(@PathVariable String id) {
+    public ResponseEntity<Object> getGroup(@PathVariable String id) {
         try {
             Topic topic = topicService.getById(id);
             Group group = groupService.getById(topic.getGroupId());
@@ -45,13 +45,13 @@ public class ApiTopicController {
 
     //TODO: create Spring Security Rules for these requests
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createTopic(@RequestBody Topic topic) {
+    public ResponseEntity<Topic> createTopic(@RequestBody Topic topic) {
         Topic newTopic = topicService.create(topic);
         return ResponseEntity.status(HttpStatus.OK).body(newTopic);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ResponseEntity updateTopic(@RequestBody Topic topic) {
+    public ResponseEntity<Object> updateTopic(@RequestBody Topic topic) {
         try {
             Topic updatedTopic = topicService.update(topic);
             return ResponseEntity.status(HttpStatus.OK).body(updatedTopic);
@@ -61,7 +61,7 @@ public class ApiTopicController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteTopic(@PathVariable String id) {
+    public ResponseEntity<String> deleteTopic(@PathVariable String id) {
         try {
             topicService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -71,7 +71,7 @@ public class ApiTopicController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity searchTopic(@RequestParam String keyword) {
+    public ResponseEntity<List<Topic>> searchTopic(@RequestParam String keyword) {
         List<Topic> result = topicService.searchByNameOrDescription(keyword);
         HttpStatus httpStatus = (result.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
         return ResponseEntity.status(httpStatus).body(result);

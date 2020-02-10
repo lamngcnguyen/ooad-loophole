@@ -2,8 +2,6 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.model.Class;
 import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.interface_model.IClass;
-import com.uet.ooadloophole.model.interface_model.IStudent;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping(value = "/api/classes")
 public class ApiClassController {
@@ -26,11 +23,11 @@ public class ApiClassController {
 
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity createClass(@RequestBody IClass iClass) {
+    public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
             if (!secureUserDetailService.isTeacher())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            Class newClass = classService.create(iClass);
+            Class newClass = classService.create(ooadClass);
             return ResponseEntity.status(HttpStatus.OK).body(newClass);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -52,7 +49,7 @@ public class ApiClassController {
 
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity getClassesByTeacherId(@CookieValue String userId) {
+    public ResponseEntity<Object> getClassesByTeacherId(@CookieValue String userId) {
         try {
             if (!secureUserDetailService.isTeacher())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -64,7 +61,7 @@ public class ApiClassController {
 
     @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteClass(@PathVariable String id) {
+    public ResponseEntity<Object> deleteClass(@PathVariable String id) {
         try {
             classService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -75,7 +72,7 @@ public class ApiClassController {
 
     @ResponseBody
     @RequestMapping(value = "/{id}/students/import", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity importStudents(@PathVariable String id, @RequestBody List<Student> students) {
+    public ResponseEntity<Object> importStudents(@PathVariable String id, @RequestBody List<Student> students) {
         try {
             for (Student student : students) {
                 System.out.println(student.getFullName());

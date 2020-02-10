@@ -20,8 +20,6 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private StudentService studentService;
-    @Autowired
     private SecureUserDetailService secureUserDetailService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -45,7 +43,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
-    public ResponseEntity teacherRegistration(String fullName, String email, String password) {
+    public ResponseEntity<Object> teacherRegistration(String fullName, String email, String password) {
         User newUser = new User();
         newUser.setFullName(fullName);
         newUser.setEmail(email);
