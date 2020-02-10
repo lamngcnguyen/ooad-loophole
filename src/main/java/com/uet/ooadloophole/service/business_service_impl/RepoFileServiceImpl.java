@@ -7,22 +7,24 @@ import com.uet.ooadloophole.model.UserFile;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;
-import com.uet.ooadloophole.service.business_service.FileStorageService;
+import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 
+@Service
 public class RepoFileServiceImpl implements RepoFileService {
     @Autowired
     private SecureUserDetailService secureUserDetailService;
     @Autowired
     private StudentService studentService;
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileService fileService;
     @Autowired
     private RepoFileRepository repoFileRepository;
 
@@ -32,7 +34,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             String saveLocation;
             RepoFile repoFile = new RepoFile();
             String userId = secureUserDetailService.getCurrentUser().get_id();
-            Student currentStudent = studentService.getStudentById(userId);
+            Student currentStudent = studentService.getById(userId);
 
             String groupId = currentStudent.getGroupId();
             String classId = currentStudent.getClassId();
@@ -42,7 +44,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             } else {
                 saveLocation = "repo/" + classId + "/" + groupId + "/" + path;
             }
-            UserFile userFile = fileStorageService.storeFile(file, saveLocation);
+            UserFile userFile = fileService.storeFile(file, saveLocation);
 
             repoFile.setFileName(userFile.getFileName());
             repoFile.setUploaderId(userFile.getUploaderId());
@@ -58,7 +60,7 @@ public class RepoFileServiceImpl implements RepoFileService {
 
     @Override
     public Resource download(String fileName, String path) throws CustomFileNotFoundException {
-        return fileStorageService.loadFileAsResource(fileName, path);
+        return fileService.loadFileAsResource(fileName, path);
     }
 
     @Override

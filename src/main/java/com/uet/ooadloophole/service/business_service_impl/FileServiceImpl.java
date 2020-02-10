@@ -1,9 +1,13 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.model.UserFile;
+import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,9 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileServiceImpl implements FileService {
+    @Autowired
+    private SecureUserDetailService secureUserDetailService;
+
     @Override
     public Path createPath(String dir) {
         try {
@@ -50,7 +57,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public String storeFile(MultipartFile file, String saveLocation) {
+    public UserFile storeFile(MultipartFile file, String saveLocation) throws FileStorageException, BusinessServiceException {
+        UserFile uploadedUserFile = new UserFile();
+        String userId = secureUserDetailService.getCurrentUser().get_id();
+
         Path savePath = createPath(saveLocation);
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -63,7 +73,10 @@ public class FileServiceImpl implements FileService {
             assert savePath != null;
             Path targetLocation = savePath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return fileName;
+
+            uploadedUserFile.setFileName(fileName);
+            uploadedUserFile.setUploaderId(userId);
+            return uploadedUserFile;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }

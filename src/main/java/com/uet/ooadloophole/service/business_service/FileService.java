@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.UserFile;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 @Service
-public interface FileStorageService {
+public interface FileService {
 
     Path createPath(String dir);
 
@@ -18,7 +19,7 @@ public interface FileStorageService {
 
     boolean deleteFile(String filePath) throws IOException;
 
-    UserFile storeFile(MultipartFile file, String saveLocation) throws FileStorageException;
+    UserFile storeFile(MultipartFile file, String saveLocation) throws FileStorageException, BusinessServiceException;
 
     Resource loadFileAsResource(String fileName, String saveLocation);
 

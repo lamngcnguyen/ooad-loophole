@@ -8,12 +8,10 @@ public class RepoFile extends UserFile {
     private int score;
     private String groupId;
 
-    @Override
     public String get_id() {
         return _id;
     }
 
-    @Override
     public void set_id(String _id) {
         this._id = _id;
     }

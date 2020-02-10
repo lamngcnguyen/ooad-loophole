@@ -3,20 +3,11 @@ package com.uet.ooadloophole.model;
 import org.springframework.data.annotation.Id;
 
 public class UserFile {
-    @Id
-    private String _id;
+
     private String fileName;
     private String timeStamp;
     private String uploaderId;
     private String path;
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
 
     public String getFileName() {
         return fileName;

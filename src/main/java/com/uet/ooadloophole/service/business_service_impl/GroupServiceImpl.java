@@ -34,6 +34,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public Group findOneByName(String name) {
+        return groupRepository.findByGroupName(name);
+    }
+
+    @Override
     public Group create(Group group) throws BusinessServiceException {
         try {
             if (groupNameExists(group.getGroupName())) {
@@ -47,7 +52,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private boolean groupNameExists(String name) {
-        return groupRepository.findByGroupName(name) != null;
+        return findOneByName(name) != null;
     }
 
     @Override

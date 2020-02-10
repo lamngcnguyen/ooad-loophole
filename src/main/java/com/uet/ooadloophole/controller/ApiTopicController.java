@@ -31,6 +31,7 @@ public class ApiTopicController {
         }
     }
 
+    @ResponseBody
     @RequestMapping(value = "/{id}/group", method = RequestMethod.GET)
     public ResponseEntity getGroup(@PathVariable String id) {
         try {
@@ -42,6 +43,7 @@ public class ApiTopicController {
         }
     }
 
+    //TODO: create Spring Security Rules for these requests
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity createTopic(@RequestBody Topic topic) {
         Topic newTopic = topicService.create(topic);

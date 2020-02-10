@@ -12,6 +12,8 @@ public interface GroupService {
 
     List<Group> getAllByClassId(String classId);
 
+    Group findOneByName(String name);
+
     Group create(Group group) throws BusinessServiceException;
 
     Group update(Group group) throws BusinessServiceException;

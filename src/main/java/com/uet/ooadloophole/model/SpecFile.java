@@ -8,12 +8,10 @@ public class SpecFile extends UserFile {
     private String fileId;
     private String topicId;
 
-    @Override
     public String get_id() {
         return _id;
     }
 
-    @Override
     public void set_id(String _id) {
         this._id = _id;
     }

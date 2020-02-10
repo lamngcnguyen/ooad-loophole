@@ -2,6 +2,7 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.interface_model.IStudent;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
@@ -82,6 +83,6 @@ public class ApiStudentController {
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     public ResponseEntity importStudents(@RequestBody List<Student> students) {
         List<Student> newStudents = studentService.importStudents(students);
-        return ResponseEntity.status(HttpStatus.OK).body(students);
+        return ResponseEntity.status(HttpStatus.OK).body(newStudents);
     }
 }

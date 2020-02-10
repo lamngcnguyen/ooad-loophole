@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.FileStorageService;
+import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.SpecFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,10 @@ import java.io.IOException;
 
 
 @RestController
-@RequestMapping(value = "/api/file")
+@RequestMapping(value = "/api/files")
 public class ApiFileController {
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileService fileService;
     @Autowired
     private RepoFileService repoFileService;
     @Autowired
@@ -35,7 +35,7 @@ public class ApiFileController {
         String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
         String path = filePath.substring(0, filePath.lastIndexOf('/'));
 
-        Resource resource = fileStorageService.loadFileAsResource(fileName, path);
+        Resource resource = fileService.loadFileAsResource(fileName, path);
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());

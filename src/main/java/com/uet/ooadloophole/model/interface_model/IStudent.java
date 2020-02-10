@@ -3,14 +3,14 @@ package com.uet.ooadloophole.model.interface_model;
 public class IStudent {
     private String fullName;
     private String classId;
+    private String groupName;
     private String groupId;
     private String studentId;
     private String email;
 
-    public IStudent(String fullName, String classId, String groupId, String studentId, String email) {
+    public IStudent(String fullName, String groupName, String studentId, String email) {
         this.fullName = fullName;
-        this.classId = classId;
-        this.groupId = groupId;
+        this.groupName = groupName;
         this.studentId = studentId;
         this.email = email;
     }
@@ -29,6 +29,14 @@ public class IStudent {
 
     public void setClassId(String classId) {
         this.classId = classId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getGroupId() {

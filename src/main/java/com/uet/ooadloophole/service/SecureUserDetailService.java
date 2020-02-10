@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 
 public class SecureUserDetailService {
@@ -53,9 +55,12 @@ public class SecureUserDetailService {
 
     public boolean isTeacher() throws BusinessServiceException {
         try {
-            Role roleTeacher = roleService.getByName(ROLE_TEACHER);
+            ArrayList<String> roleList = new ArrayList<>();
             com.uet.ooadloophole.model.User currentUser = getCurrentUser();
-            return currentUser.getRole().contains(roleTeacher);
+            for (Role role : currentUser.getRole()) {
+                roleList.add(role.getRole());
+            }
+            return roleList.contains(ROLE_TEACHER);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to check user role:" + e.getMessage());
         }
@@ -63,9 +68,12 @@ public class SecureUserDetailService {
 
     public boolean isStudent() throws BusinessServiceException {
         try {
-            Role roleStudent = roleService.getByName(ROLE_STUDENT);
+            ArrayList<String> roleList = new ArrayList<>();
             com.uet.ooadloophole.model.User currentUser = getCurrentUser();
-            return currentUser.getRole().contains(roleStudent);
+            for (Role role : currentUser.getRole()) {
+                roleList.add(role.getRole());
+            }
+            return roleList.contains(ROLE_STUDENT);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to check user role: " + e.getMessage());
         }

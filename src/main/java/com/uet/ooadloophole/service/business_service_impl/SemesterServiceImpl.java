@@ -5,7 +5,9 @@ import com.uet.ooadloophole.model.Semester;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SemesterServiceImpl implements SemesterService {
     @Autowired
     private SemesterRepository semesterRepository;
