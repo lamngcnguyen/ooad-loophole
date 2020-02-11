@@ -3,7 +3,6 @@ package com.uet.ooadloophole.controller;
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,11 +42,12 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
-    public ResponseEntity<Object> teacherRegistration(String fullName, String email, String password) {
+    public ResponseEntity<Object> teacherRegistration(String username, String email, String password, String fullName) {
         User newUser = new User();
-        newUser.setFullName(fullName);
+        newUser.setUsername(username);
         newUser.setEmail(email);
         newUser.setPassword(password);
+        newUser.setFullName(fullName);
         try {
             userService.create(newUser, "TEACHER");
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(newUser);

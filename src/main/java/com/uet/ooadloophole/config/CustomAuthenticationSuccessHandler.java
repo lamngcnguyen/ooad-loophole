@@ -4,8 +4,6 @@ import com.uet.ooadloophole.model.Student;
 import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.ClassService;
-import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,10 +22,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private SecureUserDetailService userDetailService;
     @Autowired
     private StudentService studentService;
-    @Autowired
-    private ClassService classService;
-    @Autowired
-    private RoleService roleService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {

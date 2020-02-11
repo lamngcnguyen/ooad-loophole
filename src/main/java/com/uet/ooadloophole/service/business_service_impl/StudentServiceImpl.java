@@ -72,6 +72,7 @@ public class StudentServiceImpl implements StudentService {
             }
             User user = new User();
             user.setEmail(student.getStudentId() + EMAIL_SUFFIX);
+            user.setUsername(student.getStudentId());
             user.setFullName(student.getFullName());
             user.setPassword(student.getStudentId());
             user = userService.create(user, ROLE_STUDENT);

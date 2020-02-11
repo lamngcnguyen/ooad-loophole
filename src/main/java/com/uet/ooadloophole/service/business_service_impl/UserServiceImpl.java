@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true, true, true, true, authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true, authorities);
     }
 
     private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
@@ -84,6 +84,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             User dbUser = getById(user.get_id());
             dbUser.setFullName(user.getFullName());
+            dbUser.setUsername(user.getUsername());
             dbUser.setEmail(user.getEmail());
             userRepository.save(dbUser);
             return dbUser;
