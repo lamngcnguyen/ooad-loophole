@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="profile-modal" class="ui small modal profile">
+    <div class="ui large header">
+        Thông tin cá nhân
+    </div>
+    <div class="image content">
+        <div class="ui medium rounded image">
+            <img src="https://community.secondlife.com/applications/core/interface/imageproxy/imageproxy.php?img=https://pbs.twimg.com/profile_images/930690106842865664/0KvvEciA_400x400.jpg&key=98ee4236f2aba89273f61ff8fb575645d02ce874c0cc38974931669ae405b782"
+                 alt="profile-image">
+        </div>
+        <div class="description">
+            <div class="ui huge header" th:text="${user.getFullName()}"></div>
+            <div class="ui huge list">
+                <div class="item">
+                    <i class="icon mail"></i>
+                    <div class="content" th:text="${user.getEmail()}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <a class="ui green labeled icon button" href="/profile">
+            <i class="icon pencil"></i>
+            Chỉnh sửa thông tin
+        </a>
+        <div class="ui black labeled icon button" onclick="closeProfileModal()">
+            <i class="icon close"></i>
+            Đóng
+        </div>
+    </div>
+</div>
+</body>
+</html>

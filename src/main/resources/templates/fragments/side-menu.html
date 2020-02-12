@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="instance" class="my-side-menu">
+    <div class="ui grey huge menu vertical inverted attached full height">
+        <a href="/home" class="active item">
+            <i class="icon home nav-icon"></i>
+            Home
+        </a>
+        <div th:each="group: ${navGroups}" class="item">
+            <div class="header"><span th:text="${group.getName()}"></span></div>
+            <div class="menu">
+                <a th:each="item : ${group.getItems()}" class="item" th:text="${item.getName()}"
+                   th:href="${item.getUrl()}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
