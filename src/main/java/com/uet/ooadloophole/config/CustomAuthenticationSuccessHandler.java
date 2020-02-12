@@ -9,7 +9,6 @@ import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -39,25 +38,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 httpServletResponse.addCookie(new Cookie("classId", currentStudent.getClassId()));
                 httpServletResponse.addCookie(new Cookie("groupId", currentStudent.getGroupId()));
             }
+            httpServletResponse.sendRedirect("/home");
         } catch (BusinessServiceException e) {
             httpServletResponse.sendRedirect("/error");
             e.printStackTrace();
-            return;
-        }
-        for (GrantedAuthority auth : authentication.getAuthorities()) {
-            switch (auth.getAuthority()) {
-                case "USER":
-                    httpServletResponse.sendRedirect("/student/repo");
-                    break;
-                case "ADMIN":
-                    httpServletResponse.sendRedirect("/userInfo");
-                    break;
-                case "TEACHER":
-                    httpServletResponse.sendRedirect("/teacher/class");
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }

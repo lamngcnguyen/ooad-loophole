@@ -1,0 +1,64 @@
+.full.height {
+    height: 100%;
+}
+
+.full.width {
+    width: 100%;
+}
+
+.my-footer {
+}
+
+.my-header {
+}
+
+.my-main {
+}
+
+.my-side-menu {
+    width: 250px;
+}
+
+.my-center {
+    flex: 1;
+    padding: 1.5em;
+}
+
+.content-flex {
+    display: flex;
+}
+
+.content-flex.flex-column {
+    flex-flow: column;
+}
+
+.content-flex.flex-row {
+    flex-flow: row;
+}
+
+.flex {
+    flex: 1;
+}
+
+#toggleSidebar {
+    display: none;
+}
+
+.my-logo {
+    margin-right: 1.5em;
+}
+
+.nav-icon {
+    float: none !important;
+    margin: 0 0.5em 0 0 !important;
+}
+
+@media only screen and (max-width: 900px) {
+    div.my-side-menu {
+        display: none;
+    }
+
+    #toggleSidebar {
+        display: flex;
+    }
+}

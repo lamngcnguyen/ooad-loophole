@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="instance" class="my-header ui menu inverted attached">
+    <div class="header item" onclick="toggleSidebar()" id="toggleSidebar">
+        <i class="icon bars"></i>
+    </div>
+    <div class="header item logo-item borderless">
+        <a class="ui mini image my-logo" href="/home">
+            <img th:src="@{/images/logo.png}" alt="logo-uet">
+        </a>
+        <a class="middle aligned content" href="/home">
+            OOAD Loophole
+        </a>
+    </div>
+    <div class="menu right">
+        <div class="ui simple dropdown item content-flex flex-row" style="min-width: 200px">
+            <div class="ui mini circular image my-logo">
+                <img src="https://community.secondlife.com/applications/core/interface/imageproxy/imageproxy.php?img=https://pbs.twimg.com/profile_images/930690106842865664/0KvvEciA_400x400.jpg&key=98ee4236f2aba89273f61ff8fb575645d02ce874c0cc38974931669ae405b782">
+            </div>
+            <div class="content" th:text="${user.getFullName()}"></div>
+            <div class="flex"></div>
+            <i class="dropdown icon">
+            </i>
+            <div class="ui menu">
+                <a class="item" href="#" onclick="showProfileModal()">
+                    <i class="icon user"></i>
+                    <div class="description">Thông tin cá nhân</div>
+                </a>
+                <a class="item" href="/logout">
+                    <i class="icon logout"></i>
+                    <div class="description">Đăng xuất</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
