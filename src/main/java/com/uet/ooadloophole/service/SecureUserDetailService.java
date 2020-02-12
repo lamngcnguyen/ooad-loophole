@@ -2,8 +2,6 @@ package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.model.Role;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.RoleService;
-import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +15,6 @@ import java.util.ArrayList;
 public class SecureUserDetailService {
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private StudentService studentService;
 
     private static final String ROLE_TEACHER = "TEACHER";
     private static final String ROLE_ADMIN = "ADMIN";

@@ -76,11 +76,25 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User create(User user, String roleName) throws BusinessServiceException {
+    public User createActivatedUser(User user, String roleName) throws BusinessServiceException {
         try {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             Role dbRole = roleService.getByName(roleName);
             user.setRole(new HashSet<>(Collections.singletonList(dbRole)));
+            user.setStatus(true);
+            userRepository.save(user);
+            return user;
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to create user: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public User create(User user, String roleName) throws BusinessServiceException {
+        try {
+            Role dbRole = roleService.getByName(roleName);
+            user.setRole(new HashSet<>(Collections.singletonList(dbRole)));
+            user.setStatus(false);
             userRepository.save(user);
             return user;
         } catch (BusinessServiceException e) {
@@ -145,5 +159,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to remove role from user: " + e.getMessage());
         }
+    }
+
+    @Override
+    public User setStatus(User user, boolean status) {
+        user.setStatus(status);
+        return user;
+    }
+
+    @Override
+    public boolean getStatus(User user) {
+        return user.isStatus();
     }
 }

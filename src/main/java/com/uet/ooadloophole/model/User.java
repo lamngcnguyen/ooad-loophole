@@ -14,6 +14,7 @@ public class User {
     private String fullName;
     @DBRef
     private Set<Role> role;
+    private boolean status;
 
     public String get_id() {
         return _id;
@@ -61,5 +62,13 @@ public class User {
 
     public void setRole(Set<Role> role) {
         this.role = role;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

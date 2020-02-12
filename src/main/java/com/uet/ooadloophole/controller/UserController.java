@@ -49,7 +49,7 @@ public class UserController {
         newUser.setPassword(password);
         newUser.setFullName(fullName);
         try {
-            userService.create(newUser, "TEACHER");
+            userService.createActivatedUser(newUser, "TEACHER");
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(newUser);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

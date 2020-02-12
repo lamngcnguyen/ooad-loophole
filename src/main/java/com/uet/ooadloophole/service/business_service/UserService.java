@@ -16,7 +16,9 @@ public interface UserService {
 
     List<User> searchByFullName(String fullName);
 
-    User create(User user, String roleName) throws BusinessServiceException;
+    User createActivatedUser(User user, String roleName) throws BusinessServiceException; //create pre-activated user
+
+    User create(User user, String roleName) throws BusinessServiceException; //default create user method
 
     User update(User user) throws BusinessServiceException;
 
@@ -27,4 +29,8 @@ public interface UserService {
     void assignRole(String userId, String roleName) throws BusinessServiceException;
 
     void removeRole(String userId, String roleName) throws BusinessServiceException;
+
+    User setStatus(User user, boolean status);
+
+    boolean getStatus(User user);
 }
