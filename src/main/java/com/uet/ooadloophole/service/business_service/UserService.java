@@ -12,6 +12,8 @@ public interface UserService {
 
     User getByEmail(String email) throws BusinessServiceException;
 
+    User getByUsername(String username) throws BusinessServiceException;
+
     List<User> searchByFullName(String fullName);
 
     User create(User user, String roleName) throws BusinessServiceException;

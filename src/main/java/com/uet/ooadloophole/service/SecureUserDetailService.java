@@ -47,7 +47,7 @@ public class SecureUserDetailService {
 
     public com.uet.ooadloophole.model.User getCurrentUser() throws BusinessServiceException {
         try {
-            return userService.getByEmail(getUsername());
+            return userService.getByUsername(getUsername());
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to get current user: " + e.getMessage());
         }

@@ -114,6 +114,7 @@ public class StudentServiceImpl implements StudentService {
             Student dbStudent = getById(student.get_id());
             dbUser.setEmail(student.getStudentId() + EMAIL_SUFFIX);
             dbUser.setFullName(student.getFullName());
+            dbUser.setUsername(student.getStudentId());
             dbStudent.setGroupId(student.getGroupId());
             dbStudent.setStudentId(student.getStudentId());
             dbStudent.setFullName(student.getFullName());

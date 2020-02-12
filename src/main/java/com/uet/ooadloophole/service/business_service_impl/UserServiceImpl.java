@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
         List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
     }
@@ -57,6 +57,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         User result = userRepository.findByEmail(email);
         if (result == null) {
             throw new BusinessServiceException("No user found for this email");
+        }
+        return result;
+    }
+
+    @Override
+    public User getByUsername(String username) throws BusinessServiceException {
+        User result = userRepository.findByUsername(username);
+        if (result == null) {
+            throw new BusinessServiceException("No user found for this username");
         }
         return result;
     }
