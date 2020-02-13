@@ -29,6 +29,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Username not found on database");
+        }
         List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }
@@ -103,17 +106,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User update(User user) throws BusinessServiceException {
-        try {
-            User dbUser = getById(user.get_id());
-            dbUser.setFullName(user.getFullName());
-            dbUser.setUsername(user.getUsername());
-            dbUser.setEmail(user.getEmail());
-            userRepository.save(dbUser);
-            return dbUser;
-        } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Unable to update user: " + e.getMessage());
-        }
+    public User update(User user) {
+        //            User dbUser = getById(user.get_id());
+//            dbUser.setFullName(user.getFullName());
+//            dbUser.setUsername(user.getUsername());
+//            dbUser.setEmail(user.getEmail());
+        return userRepository.save(user);
     }
 
     @Override
@@ -170,5 +168,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public boolean getStatus(User user) {
         return user.isStatus();
+    }
+
+    @Override
+    public boolean matchPassword(User user, String password) {
+        return bCryptPasswordEncoder.matches(password, user.getPassword());
+    }
+
+    @Override
+    public void changePassword(User user, String password) {
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        update(user);
     }
 }

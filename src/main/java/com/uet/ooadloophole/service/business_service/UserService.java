@@ -33,4 +33,8 @@ public interface UserService {
     User setStatus(User user, boolean status);
 
     boolean getStatus(User user);
+
+    boolean matchPassword(User user, String password);
+
+    void changePassword(User user, String password) throws BusinessServiceException;
 }
