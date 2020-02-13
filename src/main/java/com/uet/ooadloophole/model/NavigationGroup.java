@@ -8,6 +8,7 @@ public class NavigationGroup {
     @Id
     private String _id;
     private String name;
+    private String url;
     private String roleId;
     private List<NavigationItem> items;
 
@@ -41,5 +42,13 @@ public class NavigationGroup {
 
     public void setItems(List<NavigationItem> items) {
         this.items = items;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

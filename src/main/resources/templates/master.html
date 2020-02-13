@@ -1,41 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <meta charset="UTF-8">
-    <title>My group</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" th:href="@{/css/master.css}">
-    <link rel="stylesheet" th:href="@{/css/popup.css}">
-    <link rel="stylesheet" th:href="@{/css/table.css}">
+    <title th:text="${pageTitle}"></title>
+    <link rel="stylesheet" th:href="@{/webjars/Semantic-UI/2.4.1/semantic.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
     <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/master.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/Semantic-UI/2.4.1/semantic.js}"></script>
+    <script type="text/javascript" th:src="@{/js/modals.js}"></script>
+    <script type="text/javascript" th:src="@{/js/home.js}"></script>
 </head>
-<body>
-<div class="my-container">
-    <div class="my-main">
-        <div class="menu-bar">
-            <table style="height: 100%; width: 100%">
-                <tbody>
-                <tr>
-                    <td style="text-align: end;">
-                        <span th:text="${userFullName}" th:remove="tag"></span>
-                        <img src="https://i.pinimg.com/originals/d1/1a/45/d11a452f5ce6ab534e083cdc11e8035e.png" class="user-logo">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="my-header">
-            <h1>My Group</h1>
+<body class="pushable">
+<div class="ui thin sidebar inverted vertical menu">
+    <a class="item">1</a>
+    <a class="item">2</a>
+</div>
+<div class="pusher content-flex flex-column">
+    <div th:replace="fragments/top-menu::instance"></div>
+    <div class="my-main flex content-flex flex-row">
+        <div th:replace="fragments/side-menu::instance"></div>
+        <div class="my-center flex" th:insert="${bodyFragment.getView()}::${bodyFragment.getFragment()}">
         </div>
     </div>
-    <div class="my-sidebar">
-        <div class="app-title">OOAD<br>Loophole</div>
-        <div class="navigation-menu">
-            <div class="navigation-item selected"><i class="fa fa-home fa-fw"></i>&nbspMy Group</div>
-            <div class="navigation-item"><i class="fa fa-cog fa-fw"></i>&nbspSettings</div>
+    <div>
+        <div class="my-footer ui inverted attached mini menu bottom borderless">
+            <div class="header item right">@Copyright UET 2020</div>
         </div>
     </div>
 </div>
+<div th:insert="fragments/modals::profile-modal"></div>
 </body>
+<script>
+    function toggleSidebar() {
+        $('.ui.sidebar')
+            .sidebar('toggle');
+    }
+</script>
 </html>

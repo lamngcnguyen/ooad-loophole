@@ -1,10 +1,10 @@
 package com.uet.ooadloophole.model;
 
-public class ViewFragment {
+public class BodyFragment {
     private String view;
     private String fragment;
 
-    public ViewFragment(String view, String fragment) {
+    public BodyFragment(String view, String fragment) {
         this.view = view;
         this.fragment = fragment;
     }

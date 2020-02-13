@@ -76,7 +76,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll()
 //                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/userInfo")
+                .defaultSuccessUrl("/home")
 //                .failureUrl("/login.html?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -94,6 +94,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/js/libraries/**", "/font/**", "/font/roboto/**");
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/js/libraries/**", "/font/**", "/font/roboto/**", "/webjars/**");
     }
 }

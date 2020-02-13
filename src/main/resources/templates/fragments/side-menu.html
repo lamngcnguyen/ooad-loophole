@@ -12,7 +12,7 @@
             Home
         </a>
         <div th:each="group: ${navGroups}" class="item">
-            <div class="header"><span th:text="${group.getName()}"></span></div>
+            <a class="header nav-group-item" th:href="${group.getUrl()}" th:text="${group.getName()}"></a>
             <div class="menu">
                 <a th:each="item : ${group.getItems()}" class="item" th:text="${item.getName()}"
                    th:href="${item.getUrl()}"></a>
@@ -21,4 +21,6 @@
     </div>
 </div>
 </body>
+<style>
+</style>
 </html>

@@ -53,6 +53,10 @@
     margin: 0 0.5em 0 0 !important;
 }
 
+.nav-group-item:hover {
+    color: #64B5F6 !important;
+}
+
 @media only screen and (max-width: 900px) {
     div.my-side-menu {
         display: none;

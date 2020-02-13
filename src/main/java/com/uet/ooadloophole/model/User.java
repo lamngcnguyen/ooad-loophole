@@ -13,7 +13,7 @@ public class User {
     private String password;
     private String fullName;
     @DBRef
-    private Set<Role> role;
+    private Set<Role> roles;
 
     public String get_id() {
         return _id;
@@ -55,11 +55,19 @@ public class User {
         this.email = email;
     }
 
-    public Set<Role> getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public boolean hasRole(String roleName) {
+        for (Role role : roles) {
+            if (role.getRole().toLowerCase().equals(roleName.toLowerCase()))
+                return true;
+        }
+        return false;
     }
 }

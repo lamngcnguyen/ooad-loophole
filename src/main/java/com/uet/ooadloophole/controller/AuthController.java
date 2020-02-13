@@ -15,11 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/")
-public class UserController {
+public class AuthController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private SecureUserDetailService secureUserDetailService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexView() {
@@ -54,17 +52,5 @@ public class UserController {
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-    }
-
-    @RequestMapping(value = "/user/info", method = RequestMethod.GET)
-    public ModelAndView userInfo() {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.addObject("userInfo", secureUserDetailService.getUsername());
-            modelAndView.setViewName("user_info");
-        } catch (BusinessServiceException e) {
-            modelAndView.setViewName("error");
-        }
-        return modelAndView;
     }
 }
