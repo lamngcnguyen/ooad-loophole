@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             Role dbRole = roleService.getByName(roleName);
             user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
-            user.setStatus(true);
+            user.setActive(true);
             userRepository.save(user);
             return user;
         } catch (BusinessServiceException e) {
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             Role dbRole = roleService.getByName(roleName);
             user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
-            user.setStatus(false);
+            user.setActive(false);
             userRepository.save(user);
             return user;
         } catch (BusinessServiceException e) {
@@ -166,13 +166,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User setStatus(User user, boolean status) {
-        user.setStatus(status);
+        user.setActive(status);
         return user;
     }
 
     @Override
     public boolean getStatus(User user) {
-        return user.isStatus();
+        return user.isActive();
     }
 
     @Override
