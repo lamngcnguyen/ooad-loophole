@@ -18,6 +18,10 @@
             <div class="ui huge header" th:text="${user.getFullName()}"></div>
             <div class="ui huge list">
                 <div class="item">
+                    <i class="icon user"></i>
+                    <div class="content" th:text="${user.getUsername()}"></div>
+                </div>
+                <div class="item">
                     <i class="icon mail"></i>
                     <div class="content" th:text="${user.getEmail()}"></div>
                 </div>

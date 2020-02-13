@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
+        List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }
 
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             Role dbRole = roleService.getByName(roleName);
-            user.setRole(new HashSet<>(Collections.singletonList(dbRole)));
+            user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
             user.setStatus(true);
             userRepository.save(user);
             return user;
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public User create(User user, String roleName) throws BusinessServiceException {
         try {
             Role dbRole = roleService.getByName(roleName);
-            user.setRole(new HashSet<>(Collections.singletonList(dbRole)));
+            user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
             user.setStatus(false);
             userRepository.save(user);
             return user;
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             User dbUser = getById(userId);
             Role dbRole = roleService.getByName(roleName);
-            dbUser.getRole().add(dbRole);
+            dbUser.getRoles().add(dbRole);
             userRepository.save(dbUser);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to assign role to user: " + e.getMessage());
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             User dbUser = getById(userId);
             Role dbRole = roleService.getByName(roleName);
-            dbUser.getRole().remove(dbRole);
+            dbUser.getRoles().remove(dbRole);
             userRepository.save(dbUser);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to remove role from user: " + e.getMessage());

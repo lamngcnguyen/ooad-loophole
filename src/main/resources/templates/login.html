@@ -1,21 +1,41 @@
-<html lang="en">
-<head><title>Login</title></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/webjars/Semantic-UI/2.4.1/semantic.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/Semantic-UI/2.4.1/semantic.js}"></script>
+</head>
 <body>
-<h1>Login</h1>
-<form name='f' action="/login" method='POST'>
-    <table>
-        <tr>
-            <td>User:</td>
-            <td><input type='text' name='username' value=''></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type='password' name='password'/></td>
-        </tr>
-        <tr>
-            <td><input name="submit" type="submit" value="submit"/></td>
-        </tr>
-    </table>
-</form>
+<div class="ui middle aligned center aligned black grid">
+    <div class="row">
+        <div class="column" style="width: 400px">
+            <h3 class="ui image header">
+                <img th:src="@{/images/logo.png}" class="tiny image">
+                <div class="content">
+                    Đăng nhập OOAD Loophole
+                </div>
+            </h3>
+            <form class="ui large form" action="/login" method="post">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="username" placeholder="Tên đăng nhập">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Mật khẩu">
+                        </div>
+                    </div>
+                    <button class="ui fluid large blue submit button" type="submit">Đăng nhập</button>
+                </div>
+                <div class="ui error visible message">Sai tên đăng nhập hoặc mật khẩu</div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

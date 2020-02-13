@@ -43,7 +43,7 @@ public class OoadLoopholeApplication {
                 NavigationItem itemUser = navigationItemRepository.findByName("Quản lý người dùng");
                 if (itemUser == null) {
                     itemUser = new NavigationItem();
-                    itemUser.setName("Người dùng");
+                    itemUser.setName("Quản lý người dùng");
                     itemUser.setUrl("/admin/user");
                     itemUser.setRoleId(adminRole.getId());
                     navigationItemRepository.save(itemUser);

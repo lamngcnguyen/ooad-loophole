@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/role")
 public class ApiRoleController {
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/assign/{userId}", method = RequestMethod.POST)

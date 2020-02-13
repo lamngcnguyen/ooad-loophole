@@ -2,6 +2,7 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.model.Class;
 import com.uet.ooadloophole.model.Student;
+import com.uet.ooadloophole.model.User;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
@@ -25,7 +26,7 @@ public class ApiClassController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
-            if (!secureUserDetailService.isTeacher())
+            if (userIsNotTeacher())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             Class newClass = classService.create(ooadClass);
             return ResponseEntity.status(HttpStatus.OK).body(newClass);
@@ -34,24 +35,11 @@ public class ApiClassController {
         }
     }
 
-//    @ResponseBody
-//    @RequestMapping(value = "/", method = RequestMethod.POST)
-//    public ResponseEntity createClass(String name, String teacherId, String semesterId, int scheduledDayOfWeek) {
-//        try {
-//            if (!secureUserDetailService.isTeacher())
-//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-//            Class newClass = classService.create(name, teacherId, semesterId, scheduledDayOfWeek);
-//            return ResponseEntity.status(HttpStatus.OK).body(newClass);
-//        } catch (BusinessServiceException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-//        }
-//    }
-
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<Object> getClassesByTeacherId(@CookieValue String userId) {
         try {
-            if (!secureUserDetailService.isTeacher())
+            if (userIsNotTeacher())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             return ResponseEntity.status(HttpStatus.OK).body(classService.getByTeacherId(userId));
         } catch (BusinessServiceException e) {
@@ -83,5 +71,10 @@ public class ApiClassController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    private boolean userIsNotTeacher() throws BusinessServiceException {
+        User user = secureUserDetailService.getCurrentUser();
+        return !user.hasRole("teacher");
     }
 }
