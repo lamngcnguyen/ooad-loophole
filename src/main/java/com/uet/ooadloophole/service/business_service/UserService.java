@@ -8,6 +8,8 @@ import java.util.List;
 
 @Service
 public interface UserService {
+    List<User> getAll();
+
     User getById(String id) throws BusinessServiceException;
 
     User getByEmail(String email) throws BusinessServiceException;

@@ -22,7 +22,7 @@ public class MasterPageService {
             modelAndView.addObject("navGroups", navigationGroupService.getByRoles(user.getRoles()));
             return modelAndView;
         } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Error creating master page: " + e.getMessage());
+            throw new BusinessServiceException("Error creating master-components page: " + e.getMessage());
         }
     }
 }

@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public User getById(String id) throws BusinessServiceException {
         User result = userRepository.findBy_id(id);
         if (result == null) {

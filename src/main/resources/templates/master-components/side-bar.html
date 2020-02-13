@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="instance" class="ui sidebar inverted vertical menu">
+    <a href="/home" class="item" th:classappend="${#httpServletRequest.requestURI == '/home'} ? active">
+        <i class="icon home nav-icon"></i>
+        Home
+    </a>
+    <div th:each="group: ${navGroups}" class="item" th:classappend="${#httpServletRequest.requestURI.contains(group.getUrl())} ? active">
+        <a class="header nav-group-item" th:href="${group.getUrl()}" th:text="${group.getName()}"></a>
+        <div class="menu">
+            <a th:each="item : ${group.getItems()}" class="item" th:text="${item.getName()}"
+               th:href="${item.getUrl()}"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

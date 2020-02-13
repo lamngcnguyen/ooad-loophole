@@ -1,67 +1,70 @@
 package com.uet.ooadloophole.controller;
 
-import com.uet.ooadloophole.database.ClassRepository;
-import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.model.BodyFragment;
 import com.uet.ooadloophole.model.User;
-import com.uet.ooadloophole.model.dto.ClassDTO;
-import com.uet.ooadloophole.service.CookieService;
+import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @Controller
 @RequestMapping(value = "/teacher")
 public class TeacherController {
     @Autowired
-    private SecureUserDetailService userDetailService;
+    private SecureUserDetailService secureUserDetailService;
 
     @Autowired
-    private ClassRepository classRepository;
+    private ClassService classService;
 
-    @RequestMapping(value = "/class", method = RequestMethod.GET)
-    public ModelAndView classView() {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            User user = userDetailService.getCurrentUser();
-            modelAndView.addObject("userFullName", user.getFullName());
-            modelAndView.addObject("userEmail", user.getEmail());
-            modelAndView.setViewName("teacher/class");
-        } catch (BusinessServiceException e) {
-            modelAndView.setViewName("error");
-        }
-        return modelAndView;
+    @Autowired
+    private MasterPageService masterPageService;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView getHomeView() {
+        String pageTitle = "Giảng viên";
+        return getTeacherView(pageTitle, new BodyFragment("teacher/home", "body-content"));
     }
 
-    @RequestMapping(value = "/class/{className}")
-    public ModelAndView classSettingView(@PathVariable String className, HttpServletResponse response, HttpServletRequest request, @CookieValue(name = "classId", defaultValue = "none") String classId) {
-        ModelAndView modelAndView = new ModelAndView();
-        Class myClass = classRepository.findClassByClassName(className);
+    @RequestMapping(value = "/class", method = RequestMethod.GET)
+    public ModelAndView getClassView() {
+        String pageTitle = "Lớp của tôi";
+        return getTeacherView(pageTitle, new BodyFragment("teacher/class", "body-content"));
+    }
+
+    @RequestMapping(value = "/class/{className}", method = RequestMethod.GET)
+    public ModelAndView getClassView(@PathVariable String className) {
+        return getTeacherView(className, new BodyFragment("teacher/class-setting", "body-content"));
+    }
+
+    @RequestMapping(value = "/evaluate", method = RequestMethod.GET)
+    public ModelAndView getEvaluateView() {
+        String pageTitle = "Chấm bài";
+        return getTeacherView(pageTitle, new BodyFragment("teacher/evaluate", "body-content"));
+    }
+
+    @RequestMapping(value = "/process", method = RequestMethod.GET)
+    public ModelAndView getProcessView() {
+        String pageTitle = "Thiết lập quy trình phát triển";
+        return getTeacherView(pageTitle, new BodyFragment("teacher/process", "body-content"));
+    }
+
+    private ModelAndView getTeacherView(String pageTitle, BodyFragment bodyFragment) {
+        ModelAndView modelAndView;
         try {
-            User user = userDetailService.getCurrentUser();
-            if (classId == null) {
-                response.addCookie(new Cookie("classId", myClass.get_id()) {{
-                    setPath("/class");
-                }});
-            } else response.addCookie(CookieService.updateCookie(request, "classId", myClass.get_id(), "/class"));
-            modelAndView.addObject("className", myClass.getClassName());
-            modelAndView.addObject("classId", myClass.get_id());
-//            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            modelAndView.addObject("dayOfWeek", ClassDTO.getDayOfWeek(myClass.getScheduledDayOfWeek()));
-            modelAndView.addObject("userFullName", user.getFullName());
-            modelAndView.addObject("userEmail", user.getEmail());
-            modelAndView.setViewName("teacher/class_setting");
+            User currentUser = secureUserDetailService.getCurrentUser();
+            if (currentUser.hasRole("teacher")) {
+                modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
+            } else {
+                modelAndView = new ModelAndView("unauthorized");
+            }
         } catch (BusinessServiceException e) {
-            modelAndView.setViewName("error");
+            modelAndView = new ModelAndView("error");
         }
         return modelAndView;
     }

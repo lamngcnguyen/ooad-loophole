@@ -7,11 +7,11 @@
 <body>
 <div th:fragment="instance" class="my-side-menu">
     <div class="ui grey huge menu vertical inverted attached full height">
-        <a href="/home" class="active item">
+        <a href="/home" class="item" th:classappend="${#httpServletRequest.requestURI == '/home'} ? active">
             <i class="icon home nav-icon"></i>
             Home
         </a>
-        <div th:each="group: ${navGroups}" class="item">
+        <div th:each="group: ${navGroups}" class="item" th:classappend="${#httpServletRequest.requestURI.contains(group.getUrl())} ? active">
             <a class="header nav-group-item" th:href="${group.getUrl()}" th:text="${group.getName()}"></a>
             <div class="menu">
                 <a th:each="item : ${group.getItems()}" class="item" th:text="${item.getName()}"

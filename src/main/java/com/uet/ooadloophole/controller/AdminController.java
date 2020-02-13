@@ -32,6 +32,12 @@ public class AdminController {
         return getAdminPage(pageTitle, new BodyFragment("admin/user", "body-content"));
     }
 
+    @RequestMapping(value = "/site-config", method = RequestMethod.GET)
+    public ModelAndView getSiteConfigView() {
+        String pageTitle = "Thiết lập hệ thống";
+        return getAdminPage(pageTitle, new BodyFragment("admin/site-config", "body-content"));
+    }
+
     private ModelAndView getAdminPage(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {

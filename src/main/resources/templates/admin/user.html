@@ -5,8 +5,127 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="body-content">
-    This is admin user management view
+<div th:fragment="body-content" class="ui stackable grid">
+    <link rel="stylesheet" th:href="@{/css/admin/user.css}">
+    <div class="row">
+        <div class="column"><h3 class="header"><i class="users icon nav-icon"></i><span>Quản lý người dùng</span></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <button type="button" class="ui labeled icon blue button" onclick="showCreateUserModal()">Thêm mới<i class="plus icon"></i></button>
+            <button type="button" class="ui labeled icon black button" onclick="showImportUserModal()">Nhập từ Excel<i class="file excel icon"></i></button>
+        </div>
+    </div>
+    <div class="row my-table-control">
+        <div class="eight wide column">
+            Hiển thị
+            &nbsp
+            <div class="ui compact selection dropdown" id="pageLengthSelect">
+                <input type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="text">10</div>
+                <div class="menu">
+                    <div class="item" data-value="10">10</div>
+                    <div class="item" data-value="25">25</div>
+                    <div class="item" data-value="50">50</div>
+                    <div class="item" data-value="100">100</div>
+                </div>
+            </div>
+            &nbsp
+            mục
+        </div>
+        <div class="right aligned eight wide column">
+            Tìm kiếm:&nbsp
+            <div class="ui icon input" id="searchTableInput">
+                <input type="text" placeholder="Search...">
+                <i class="search icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <table class="ui celled black sortable table" style="width: 100%">
+                <thead>
+                <tr>
+                    <th class="one wide">#</th>
+                    <th class="two wide">Thao tác</th>
+                    <th>Họ tên</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Email</th>
+                    <th class="one wide">Đang hoạt động</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="ui small modal create-user-modal">
+        <div class="ui large header">
+            Thêm mới
+        </div>
+        <div class="content"></div>
+        <div class="actions">
+            <div class="ui green labeled icon button">
+                <i class="plus icon"></i>
+                Tạo
+            </div>
+            <div class="ui grey labeled icon button" onclick="closeCreateUserModal()">
+                <i class="close icon"></i>
+                Hùy
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal edit-user-modal">
+        <div class="ui large header">
+            Chỉnh sửa
+        </div>
+        <div class="content"></div>
+        <div class="actions">
+            <div class="ui green labeled icon button">
+                <i class="save icon"></i>
+                Lưu
+            </div>
+            <div class="ui grey labeled icon button" onclick="closeEditUserModal()">
+                <i class="close icon"></i>
+                Hùy
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal delete-user-modal">
+        <div class="ui large header">
+            Cảnh báo
+        </div>
+        <div class="content"></div>
+        <div class="actions">
+            <div class="ui red labeled button">
+                <i class="trash icon"></i>
+                Có
+            </div>
+            <div class="ui grey icon button" onclick="closeDeleteUserModal()">
+                <i class="close icon"></i>
+                Không
+            </div>
+        </div>
+    </div
+    >
+    <div class="ui small modal import-user-modal">
+        <div class="ui large header">
+            Nhập từ Excel
+        </div>
+        <div class="content"></div>
+        <div class="actions">
+            <div class="ui green labeled icon button">
+                <i class="plus icon"></i>
+                Lưu
+            </div>
+            <div class="ui grey labeled icon button" onclick="closeImportUserModal()">
+                <i class="close icon"></i>
+                Hùy
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/table/datatables.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/user.js}"></script>
 </div>
 </body>
 </html>
