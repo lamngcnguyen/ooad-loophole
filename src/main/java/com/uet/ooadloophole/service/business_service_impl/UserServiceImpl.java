@@ -111,12 +111,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User update(User user) {
-        //            User dbUser = getById(user.get_id());
-//            dbUser.setFullName(user.getFullName());
-//            dbUser.setUsername(user.getUsername());
-//            dbUser.setEmail(user.getEmail());
-        return userRepository.save(user);
+    public User update(User user) throws BusinessServiceException {
+        try {
+            User dbUser = getById(user.get_id());
+            dbUser.setFullName(user.getFullName());
+            dbUser.setUsername(user.getUsername());
+            dbUser.setEmail(user.getEmail());
+            return userRepository.save(dbUser);
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to update user" + e.getMessage());
+        }
     }
 
     @Override
@@ -183,6 +187,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public void changePassword(User user, String password) {
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        update(user);
+        userRepository.save(user);
     }
 }
