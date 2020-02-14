@@ -58,6 +58,7 @@ public class OoadLoopholeApplication {
                     items.add(itemUser);
                     adminGroup.setItems(items);
                     adminGroup.setRoleId(adminRole.getId());
+                    adminGroup.setUrl("/admin");
                     navigationGroupRepository.save(adminGroup);
                 }
             }
@@ -110,6 +111,7 @@ public class OoadLoopholeApplication {
                     items.add(itemBusiness);
                     teacherGroup.setItems(items);
                     teacherGroup.setRoleId(teacherRole.getId());
+                    teacherGroup.setUrl("/teacher");
                     navigationGroupRepository.save(teacherGroup);
                 }
             }
