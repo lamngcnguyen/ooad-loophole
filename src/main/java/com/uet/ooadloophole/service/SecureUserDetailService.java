@@ -30,7 +30,7 @@ public class SecureUserDetailService {
         }
     }
 
-    public com.uet.ooadloophole.model.User getCurrentUser() throws BusinessServiceException {
+    public com.uet.ooadloophole.model.business.User getCurrentUser() throws BusinessServiceException {
         try {
             return userService.getByUsername(getUsername());
         } catch (BusinessServiceException e) {

@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.model;
+package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;

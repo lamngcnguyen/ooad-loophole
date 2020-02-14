@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.model.dto;
 
-import com.uet.ooadloophole.model.Class;
+import com.uet.ooadloophole.model.business.Class;
 
 public class ClassDTO {
     public String classId;

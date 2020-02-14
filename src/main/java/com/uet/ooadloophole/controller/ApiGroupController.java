@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.controller;
 
-import com.uet.ooadloophole.model.Group;
-import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.Topic;
+import com.uet.ooadloophole.model.business.Group;
+import com.uet.ooadloophole.model.business.Student;
+import com.uet.ooadloophole.model.business.Topic;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.StudentService;

@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.config;
 
-import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.business.Student;
+import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.StudentService;

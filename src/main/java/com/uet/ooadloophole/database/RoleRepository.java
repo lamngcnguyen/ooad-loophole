@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.database;
 
-import com.uet.ooadloophole.model.Role;
+import com.uet.ooadloophole.model.business.Role;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface RoleRepository extends MongoRepository<Role, String> {

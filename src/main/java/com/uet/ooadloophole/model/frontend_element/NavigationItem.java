@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.model;
+package com.uet.ooadloophole.model.frontend_element;
 
 import org.springframework.data.annotation.Id;
 

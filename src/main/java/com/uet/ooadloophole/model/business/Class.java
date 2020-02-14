@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.model;
+package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 
@@ -11,6 +11,7 @@ public class Class {
     //The day of week the class supposed to take place
     //This variable's name might be changed later
     private int scheduledDayOfWeek;
+    private boolean active;
 
     public Class() {
 
@@ -61,5 +62,13 @@ public class Class {
 
     public void setSemesterId(String semesterId) {
         this.semesterId = semesterId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

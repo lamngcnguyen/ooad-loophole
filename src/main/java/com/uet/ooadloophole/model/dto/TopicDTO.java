@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.model.dto;
 
-import com.uet.ooadloophole.model.Topic;
-import com.uet.ooadloophole.model.UserFile;
+import com.uet.ooadloophole.model.business.Topic;
+import com.uet.ooadloophole.model.business.UserFile;
 
 import java.util.List;
 

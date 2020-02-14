@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.model;
+package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,6 +15,15 @@ public class User {
     @DBRef
     private Set<Role> roles;
     private boolean active;
+
+    public User() {
+
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String get_id() {
         return _id;

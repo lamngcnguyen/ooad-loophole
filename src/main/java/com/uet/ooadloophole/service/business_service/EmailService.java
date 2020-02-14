@@ -1,10 +1,12 @@
 package com.uet.ooadloophole.service.business_service;
 
+import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface EmailService {
-    void sendActivationEmail(String email);
+    void sendActivationEmail(User user) throws BusinessServiceException;
 
-    void sendResetPasswordEmail(String email);
+    void sendResetPasswordEmail(User user);
 }

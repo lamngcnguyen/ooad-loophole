@@ -2,9 +2,9 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.ClassRepository;
 import com.uet.ooadloophole.database.IterationRepository;
-import com.uet.ooadloophole.model.Class;
-import com.uet.ooadloophole.model.Group;
-import com.uet.ooadloophole.model.Student;
+import com.uet.ooadloophole.model.business.Class;
+import com.uet.ooadloophole.model.business.Group;
+import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.FileService;

@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,8 @@ public interface UserService {
     User update(User user) throws BusinessServiceException;
 
     void delete(String userId) throws BusinessServiceException;
+
+    void setPassword(String userEmail, String password) throws BusinessServiceException;
 
     void changePassword(String userId, String newPassword) throws BusinessServiceException;
 

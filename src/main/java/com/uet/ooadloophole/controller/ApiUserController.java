@@ -1,10 +1,12 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
-import com.uet.ooadloophole.model.User;
-import com.uet.ooadloophole.model.ListJsonWrapper;
+import com.uet.ooadloophole.model.Token;
+import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.frontend_element.ListJsonWrapper;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.TokenService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -21,6 +24,8 @@ import java.util.List;
 public class ApiUserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenService tokenService;
     @Autowired
     private SecureUserDetailService secureUserDetailService;
 
@@ -49,13 +54,29 @@ public class ApiUserController {
     }
 
     @ResponseBody
-    @RequestMapping("/resetPassword")
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     private ResponseEntity<String> resetPassword(String password) {
         try {
             User user = secureUserDetailService.getCurrentUser();
             user.setPassword(password);
             userService.update(user);
             return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/activateAccount", method = RequestMethod.POST)
+    private ResponseEntity<String> activateAccount(String token, String email, String password) {
+        try {
+            if (tokenService.verifyToken(token)) {
+                userService.setPassword(email, password);
+                tokenService.deleteActiveToken(tokenService.getByTokenString(token));
+                return ResponseEntity.status(HttpStatus.OK).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid token");
+            }
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

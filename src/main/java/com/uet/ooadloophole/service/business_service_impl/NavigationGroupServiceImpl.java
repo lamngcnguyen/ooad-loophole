@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.NavigationGroupRepository;
-import com.uet.ooadloophole.model.NavigationGroup;
-import com.uet.ooadloophole.model.Role;
+import com.uet.ooadloophole.model.frontend_element.NavigationGroup;
+import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
 import org.springframework.beans.factory.annotation.Autowired;

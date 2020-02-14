@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.model.UserFile;
+import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;

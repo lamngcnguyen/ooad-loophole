@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service;
 
-import com.uet.ooadloophole.model.BodyFragment;
-import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.frontend_element.BodyFragment;
+import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
 import org.springframework.beans.factory.annotation.Autowired;

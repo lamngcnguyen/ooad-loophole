@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.controller;
 
-import com.uet.ooadloophole.model.BodyFragment;
-import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.frontend_element.BodyFragment;
+import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;

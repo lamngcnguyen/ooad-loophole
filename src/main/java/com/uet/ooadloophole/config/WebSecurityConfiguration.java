@@ -58,6 +58,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+
+                //Spring routing security rule set
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/teacher/**").hasAuthority("TEACHER")
                 .antMatchers("/api/classes/**").hasAuthority("TEACHER")
@@ -72,6 +74,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/**", "/", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
+
+                //Spring security filters
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+//                // this disables session creation on Spring Security
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+
+                //Login form
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()

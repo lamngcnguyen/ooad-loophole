@@ -1,9 +1,9 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.RepoFileRepository;
-import com.uet.ooadloophole.model.RepoFile;
-import com.uet.ooadloophole.model.Student;
-import com.uet.ooadloophole.model.UserFile;
+import com.uet.ooadloophole.model.business.RepoFile;
+import com.uet.ooadloophole.model.business.Student;
+import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;

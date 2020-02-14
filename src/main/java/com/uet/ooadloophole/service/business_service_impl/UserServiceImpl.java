@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.UserRepository;
-import com.uet.ooadloophole.model.Role;
-import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.UserService;
@@ -131,6 +131,18 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to delete user: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void setPassword(String userEmail, String password) throws BusinessServiceException {
+        try {
+            User user = getByEmail(userEmail);
+            user.setPassword(password);
+            userRepository.save(user);
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to set password: " + e.getMessage());
+        }
+
     }
 
     @Override

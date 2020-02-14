@@ -1,4 +1,6 @@
-package com.uet.ooadloophole.model;
+package com.uet.ooadloophole.model.frontend_element;
+
+import com.uet.ooadloophole.model.business.User;
 
 import java.util.List;
 

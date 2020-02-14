@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.controller;
 
-import com.uet.ooadloophole.model.User;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.TokenService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexView() {
@@ -51,6 +54,21 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(newUser);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/activateAccount", method = RequestMethod.POST)
+    private ModelAndView verifyToken(String token) {
+        if (tokenService.verifyToken(token)) {
+            //TODO: create activate account view
+            ModelAndView model = new ModelAndView();
+            model.setViewName("activate");
+            return model;
+        } else {
+            //TODO: create error view
+            ModelAndView errorView = new ModelAndView();
+            errorView.setViewName("error");
+            return errorView;
         }
     }
 }

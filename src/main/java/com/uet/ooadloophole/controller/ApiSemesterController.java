@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.controller;
 
-import com.uet.ooadloophole.model.Semester;
+import com.uet.ooadloophole.model.business.Semester;
 import com.uet.ooadloophole.service.business_service.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -2,8 +2,8 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.SpecFileRepository;
 import com.uet.ooadloophole.database.TopicRepository;
-import com.uet.ooadloophole.model.SpecFile;
-import com.uet.ooadloophole.model.UserFile;
+import com.uet.ooadloophole.model.business.SpecFile;
+import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
 import com.uet.ooadloophole.service.business_service.FileService;

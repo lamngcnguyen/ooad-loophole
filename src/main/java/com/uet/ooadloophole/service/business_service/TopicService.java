@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.Topic;
+import com.uet.ooadloophole.model.business.Topic;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 
 import java.util.List;

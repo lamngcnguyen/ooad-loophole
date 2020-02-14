@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.model.dto;
 
-import com.uet.ooadloophole.model.Iteration;
+import com.uet.ooadloophole.model.business.Iteration;
 
 import java.time.format.DateTimeFormatter;
 

@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.database;
 
-import com.uet.ooadloophole.model.User;
+import com.uet.ooadloophole.model.business.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
