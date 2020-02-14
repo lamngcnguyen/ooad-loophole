@@ -20,6 +20,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public String createToken(User user) {
         Token newToken = new Token(user);
+        tokenRepository.save(newToken);
         return newToken.getTokenString();
     }
 

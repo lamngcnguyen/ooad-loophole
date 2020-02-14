@@ -4,6 +4,7 @@ import com.uet.ooadloophole.database.UserRepository;
 import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.EmailService;
 import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private RoleService roleService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -104,6 +107,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
             user.setActive(false);
             userRepository.save(user);
+            emailService.sendActivationEmail(user);
             return user;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to create user: " + e.getMessage());
@@ -137,7 +141,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public void setPassword(String userEmail, String password) throws BusinessServiceException {
         try {
             User user = getByEmail(userEmail);
-            user.setPassword(password);
+            user.setPassword(bCryptPasswordEncoder.encode(password));
             userRepository.save(user);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to set password: " + e.getMessage());
