@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.model.frontend_element;
+package com.uet.ooadloophole.controller.interface_model;
 
 public class BodyFragment {
     private String view;

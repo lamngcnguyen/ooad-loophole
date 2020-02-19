@@ -11,6 +11,7 @@ public class Class {
     //The day of week the class supposed to take place
     //This variable's name might be changed later
     private int scheduledDayOfWeek;
+    private int limit;
     private boolean active;
 
     public Class() {
@@ -62,6 +63,14 @@ public class Class {
 
     public void setSemesterId(String semesterId) {
         this.semesterId = semesterId;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     public boolean isActive() {

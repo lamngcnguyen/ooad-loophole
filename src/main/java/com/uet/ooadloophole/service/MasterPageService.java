@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service;
 
-import com.uet.ooadloophole.model.frontend_element.BodyFragment;
+import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
