@@ -2,17 +2,15 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.EmailService;
 import com.uet.ooadloophole.service.business_service.TokenService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -60,8 +58,8 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/activateAccount{token}", method = RequestMethod.GET)
-    private ModelAndView activateAccount(@PathVariable String token) {
+    @RequestMapping(value = "/activateAccount", method = RequestMethod.GET)
+    private ModelAndView activateAccount(@RequestParam String token) {
         if (tokenService.isValid(token)) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
@@ -85,8 +83,8 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/resetAccount{token}", method = RequestMethod.GET)
-    private ModelAndView resetAccount(@PathVariable String token) {
+    @RequestMapping(value = "/resetAccount", method = RequestMethod.GET)
+    private ModelAndView resetAccount(@RequestParam String token) {
         if (tokenService.isValid(token)) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
