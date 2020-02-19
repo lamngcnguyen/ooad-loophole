@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.model.frontend_element;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class NavigationGroup {
     private String name;
     private String url;
     private String roleId;
+    @DBRef
     private List<NavigationItem> items;
 
     public String get_id() {

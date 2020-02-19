@@ -7,6 +7,7 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import com.uet.ooadloophole.service.business_service.EmailService;
 import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -84,6 +85,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public List<User> searchByFullName(String fullName) {
         return userRepository.findAllByFullNameIgnoreCase(fullName);
+    }
+
+    @Override
+    public List<User> getAllByRole(String roleName) throws BusinessServiceException {
+        try {
+            Role role = roleService.getByName(roleName);
+            return userRepository.findAllByRole(new ObjectId(role.getId()));
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to find users with role: " + e.getMessage());
+        }
     }
 
     @Override

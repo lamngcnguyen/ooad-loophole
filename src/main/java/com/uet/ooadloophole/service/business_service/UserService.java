@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public interface UserService {
     User getByUsername(String username) throws BusinessServiceException;
 
     List<User> searchByFullName(String fullName);
+
+    List<User> getAllByRole(String roleName) throws BusinessServiceException;
 
     User createActivatedUser(User user, String roleName) throws BusinessServiceException; //create pre-activated user
 
