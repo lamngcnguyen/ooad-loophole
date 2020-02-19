@@ -113,10 +113,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User create(User user, String roleName) throws BusinessServiceException {
+    public User create(User user) throws BusinessServiceException {
         try {
-            Role dbRole = roleService.getByName(roleName);
-            user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
             user.setActive(false);
             userRepository.save(user);
             emailService.sendActivationEmail(user);
@@ -127,12 +125,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User update(User user) throws BusinessServiceException {
+    public User update(String userId, User user) throws BusinessServiceException {
         try {
-            User dbUser = getById(user.get_id());
+            User dbUser = getById(userId);
             dbUser.setFullName(user.getFullName());
             dbUser.setUsername(user.getUsername());
             dbUser.setEmail(user.getEmail());
+            dbUser.setRoles(user.getRoles());
             return userRepository.save(dbUser);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to update user" + e.getMessage());
@@ -202,9 +201,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User setStatus(User user, boolean status) {
-        user.setActive(status);
-        return user;
+    public User setStatus(String userId, boolean status) throws BusinessServiceException {
+        try {
+            User user = getById(userId);
+            user.setActive(status);
+            userRepository.save(user);
+            return user;
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to set status: " + e.getMessage());
+        }
     }
 
     @Override

@@ -1,26 +1,33 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.config.Constant;
 import com.uet.ooadloophole.database.StudentRepository;
+import com.uet.ooadloophole.database.UserRepository;
+import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentRepository studentRepository;
-
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private UserService userService;
-
-    private static final String EMAIL_SUFFIX = "@vnu.edu.vn";
-    private static final String ROLE_STUDENT = "USER";
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public Student getById(String id) throws BusinessServiceException {
@@ -70,12 +77,16 @@ public class StudentServiceImpl implements StudentService {
             if (studentIdExists(student.getStudentId())) {
                 throw new BusinessServiceException("Student ID already exists");
             }
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.getByName(Constant.ROLE_STUDENT));
+
             User user = new User();
-            user.setEmail(student.getStudentId() + EMAIL_SUFFIX);
+            user.setEmail(student.getStudentId() + Constant.EMAIL_SUFFIX);
             user.setUsername(student.getStudentId());
             user.setFullName(student.getFullName());
             user.setPassword(student.getStudentId());
-            user = userService.create(user, ROLE_STUDENT);
+            user.setRoles(roles);
+            user = userService.create(user);
             student.setUserId(user.get_id());
             studentRepository.save(student);
             return student;
@@ -112,14 +123,14 @@ public class StudentServiceImpl implements StudentService {
             }
             User dbUser = userService.getById(student.getUserId());
             Student dbStudent = getById(student.get_id());
-            dbUser.setEmail(student.getStudentId() + EMAIL_SUFFIX);
+            dbUser.setEmail(student.getStudentId() + Constant.EMAIL_SUFFIX);
             dbUser.setFullName(student.getFullName());
             dbUser.setUsername(student.getStudentId());
             dbStudent.setGroupId(student.getGroupId());
             dbStudent.setStudentId(student.getStudentId());
             dbStudent.setFullName(student.getFullName());
 
-            userService.update(dbUser);
+            userRepository.save(dbUser);
             studentRepository.save(dbStudent);
             return dbStudent;
         } catch (BusinessServiceException e) {

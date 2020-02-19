@@ -1,5 +1,12 @@
 package com.uet.ooadloophole.controller.interface_model;
 
+import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.business.User;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class IUser {
     private String fullName;
     private String username;

@@ -5,6 +5,7 @@ import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,9 +24,9 @@ public interface UserService {
 
     User createActivatedUser(User user, String roleName) throws BusinessServiceException; //create pre-activated user
 
-    User create(User user, String roleName) throws BusinessServiceException; //default create user method
+    User create(User user) throws BusinessServiceException; //default create user method
 
-    User update(User user) throws BusinessServiceException;
+    User update(String userId, User user) throws BusinessServiceException;
 
     void delete(String userId) throws BusinessServiceException;
 
@@ -39,7 +40,7 @@ public interface UserService {
 
     void removeRole(String userId, String roleName) throws BusinessServiceException;
 
-    User setStatus(User user, boolean status);
+    User setStatus(String userId, boolean status) throws BusinessServiceException;
 
     boolean getStatus(User user);
 

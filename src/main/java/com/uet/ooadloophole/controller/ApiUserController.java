@@ -1,8 +1,10 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.controller.interface_model.IUser;
 import com.uet.ooadloophole.controller.interface_model.ListJsonWrapper;
+import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.service.InterfaceModelConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.TokenService;
@@ -22,6 +24,8 @@ public class ApiUserController {
     @Autowired
     private TokenService tokenService;
     @Autowired
+    private InterfaceModelConverterService interfaceModelConverterService;
+    @Autowired
     private SecureUserDetailService secureUserDetailService;
 
     private Gson gson = new Gson();
@@ -32,7 +36,7 @@ public class ApiUserController {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ListJsonWrapper(users)));
     }
 
-    @RequestMapping(value = "/role/{roleName}",method = RequestMethod.GET)
+    @RequestMapping(value = "/role/{roleName}", method = RequestMethod.GET)
     public ResponseEntity<String> getUsers(@PathVariable String roleName) {
         try {
             List<User> users = userService.getAllByRole(roleName);
@@ -85,6 +89,50 @@ public class ApiUserController {
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid token");
             }
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    private ResponseEntity<Object> createUser(IUser iUser) {
+        try {
+            User user = interfaceModelConverterService.convertUserInterface(iUser);
+            return ResponseEntity.status(HttpStatus.OK).body(userService.create(user));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    private ResponseEntity<Object> updateUser(@PathVariable String id, IUser iUser) {
+        try {
+            User user = interfaceModelConverterService.convertUserInterface(iUser);
+            return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, user));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    private ResponseEntity<String> deleteUser(@PathVariable String id) {
+        try {
+            userService.delete(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{id}/status", method = RequestMethod.POST)
+    private ResponseEntity<String> setStatus(@PathVariable String id, @RequestParam boolean status) {
+        try {
+            userService.setStatus(id, status);
+            return ResponseEntity.status(HttpStatus.OK).build();
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
