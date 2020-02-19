@@ -1,34 +1,38 @@
 var rowIndex = 0;
-var table = $(".ui.table").DataTable({
+var stringDom = "<'ui stackable grid'" +
+    "<'row dt-table'" +
+    "<'sixteen wide column'tr>" +
+    ">" +
+    "<'row'" +
+    "<'seven wide column'i>" +
+    "<'right aligned nine wide column'p>" +
+    ">" +
+    ">";
+
+var languageOption = {
+    "emptyTable": "Không có dữ liệu",
+    "info": "Hiển thị từ _START_ đến _END_ trong _TOTAL_ mục",
+    "infoEmpty": "Hiển thị từ 0 đến 0 trong 0 mục",
+    "infoFiltered": "(lọc từ tổng cộng _MAX_ mục)",
+    "loadingRecords": "Đang tải...",
+    "zeroRecords": "Không tìm thấy kết quả phù hợp",
+    "paginate": {
+        "first": "Đầu",
+        "last": "Cuối",
+        "next": "Tiếp",
+        "previous": "Trước"
+    }
+};
+
+var userTable = $(".teacher-admin .ui.table").DataTable({
     ordering: true,
     searching: true,
     paging: true,
     autoWidth: true,
     lengthChange: true,
-    ajax: "/api/users",
-    sDom: "<'ui stackable grid'" +
-        "<'row dt-table'" +
-        "<'sixteen wide column'tr>" +
-        ">" +
-        "<'row'" +
-        "<'seven wide column'i>" +
-        "<'right aligned nine wide column'p>" +
-        ">" +
-        ">",
-    language: {
-        "emptyTable": "Không có dữ liệu",
-        "info": "Hiển thị từ _START_ đến _END_ trong _TOTAL_ mục",
-        "infoEmpty": "Hiển thị từ 0 đến 0 trong 0 mục",
-        "infoFiltered": "(lọc từ tổng cộng _MAX_ mục)",
-        "loadingRecords": "Đang tải...",
-        "zeroRecords": "Không tìm thấy kết quả phù hợp",
-        "paginate": {
-            "first": "Đầu",
-            "last": "Cuối",
-            "next": "Tiếp",
-            "previous": "Trước"
-        }
-    },
+    ajax: "/api/users/role/admin",
+    sDom: stringDom,
+    language: languageOption,
     columns: [
         {
             data: null,
@@ -39,15 +43,14 @@ var table = $(".ui.table").DataTable({
         {
             data: null,
             render: function () {
-                return '<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>' +
-                    '&nbsp<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>'
+                return "";
             }
         },
         {data: "fullName"},
         {data: "username"},
         {data: "email"},
         {
-            data: "status",
+            data: "active",
             render: function (isActive) {
                 if (isActive) return "<i class='green check icon'></i>";
                 else return "<i class='red ban icon'></i>"
@@ -57,23 +60,26 @@ var table = $(".ui.table").DataTable({
     columnDefs: [
         {targets: [0, 1, -1], className: "center aligned"}
     ],
-    rowCallback: function (row, data) {
-        var buttons = $(row).find('button');
-        $(buttons[0]).click(function () {
-            showEditUserModal(data);
-        });
-        $(buttons[1]).click(function () {
-            showDeleteUserModal(data);
-        });
+    createdRow: function (row, data) {
+        var actionCell = $(row).children().eq(1);
+        var btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
+            .click(function () {
+                showEditUserModal(data);
+            });
+        var btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
+            .click(function () {
+                showDeleteUserModal(data);
+            });
+        actionCell.append(btnEdit, $('<span>&nbsp</span>'), btnDelete);
     }
 });
 
 $('#pageLengthSelect input').change(function () {
-    table.page.len(this.value).draw();
+    userTable.page.len(this.value).draw();
 });
 
 $('#searchTableInput input').keyup(function () {
-    table.search(this.value).draw();
+    userTable.search(this.value).draw();
 });
 
 function showCreateUserModal() {
@@ -102,10 +108,31 @@ function closeDeleteUserModal() {
     $('.delete-user-modal').modal('hide');
 }
 
-function showImportUserModal() {
-    $('.import-user-modal').modal('show');
+function showImportStudentModal() {
+    $('.import-student-modal').modal('show');
 }
 
 function closeImportUserModal() {
     $('.import-user-modal').modal('hide');
 }
+
+$('.item.teacher-admin').click(function () {
+    $(this).addClass('active');
+    $('.tab.teacher-admin').addClass('active');
+    $('.item.student').removeClass('active');
+    $('.tab.student').removeClass('active');
+});
+
+$('.item.student').click(function () {
+    $(this).addClass('active');
+    $('.tab.student').addClass('active');
+    $('.item.teacher-admin').removeClass('active');
+    $('.tab.teacher-admin').removeClass('active');
+});
+
+function filterRole(roleName) {
+    rowIndex = 0;
+    userTable.ajax.url('/api/users/role/' + roleName).load();
+    userTable.draw();
+}
+

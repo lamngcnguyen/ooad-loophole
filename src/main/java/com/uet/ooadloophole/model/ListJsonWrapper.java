@@ -1,11 +1,11 @@
 package com.uet.ooadloophole.model;
 
-import java.util.List;
+import java.util.Collection;
 
 public class ListJsonWrapper {
-    private List<User> data;
+    private Collection data;
 
-    public ListJsonWrapper(List data) {
+    public ListJsonWrapper(Collection data) {
         this.data = data;
     }
 }

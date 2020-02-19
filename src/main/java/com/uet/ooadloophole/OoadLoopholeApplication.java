@@ -34,8 +34,8 @@ public class OoadLoopholeApplication {
                 NavigationItem itemSiteConfig = navigationItemRepository.findByName("Cài đặt hệ thống");
                 if (itemSiteConfig == null) {
                     itemSiteConfig = new NavigationItem();
-                    itemSiteConfig.setName("Cài đặt hệ thống");
-                    itemSiteConfig.setUrl("/admin/semester");
+                    itemSiteConfig.setName("Thiết lập hệ thống");
+                    itemSiteConfig.setUrl("/admin/business");
                     itemSiteConfig.setRoleId(adminRole.getId());
                     itemSiteConfig.setDescription("Quản lý các thông tin chung của hệ thống, VD: học kỳ, bảng tin...");
                     navigationItemRepository.save(itemSiteConfig);
@@ -96,7 +96,7 @@ public class OoadLoopholeApplication {
                 if (itemBusiness == null) {
                     itemBusiness = new NavigationItem();
                     itemBusiness.setName("Thiết lập quy trình phát triển");
-                    itemBusiness.setUrl("/teacher/business");
+                    itemBusiness.setUrl("/teacher/process");
                     itemBusiness.setRoleId(teacherRole.getId());
                     navigationItemRepository.save(itemBusiness);
                 }
