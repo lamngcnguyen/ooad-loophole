@@ -1,18 +1,11 @@
 package com.uet.ooadloophole.controller.interface_model;
 
-import com.uet.ooadloophole.config.Constant;
-import com.uet.ooadloophole.model.business.Role;
-import com.uet.ooadloophole.model.business.User;
-
-import java.util.HashSet;
-import java.util.Set;
-
 public class IUser {
     private String fullName;
     private String username;
     private String email;
-    private boolean isAdmin;
-    private boolean isTeacher;
+    private Boolean isAdmin;
+    private Boolean isTeacher;
 
     public IUser(String fullName, String username, String email, boolean isAdmin, boolean isTeacher) {
         this.fullName = fullName;

@@ -96,7 +96,7 @@ public class ApiUserController {
 
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    private ResponseEntity<Object> createUser(IUser iUser) {
+    private ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
             User newUser = userService.create(user);
@@ -108,7 +108,7 @@ public class ApiUserController {
 
     @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    private ResponseEntity<Object> updateUser(@PathVariable String id, IUser iUser) {
+    private ResponseEntity<Object> updateUser(@PathVariable String id, @RequestBody IUser iUser) {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
             User updatedUser = userService.update(id, user);
