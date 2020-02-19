@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
 
             String subject = "Kích hoạt tài khoản OOAD Loophole";
             String confirmationUrl = "http://localhost:8080/activateAccount?token=" + token;
-            String message = "Click here to activate your account: ";
+            String message = "Bấm vào link để kích hoạt tài khoản: ";
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
@@ -42,7 +42,24 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendResetPasswordEmail(User user) {
+    public void sendResetPasswordEmail(User user) throws BusinessServiceException {
+        try {
+            String token = tokenService.createToken(user);
+            String recipientAddress = user.getEmail();
 
+            String subject = "Đặt lại mật khẩu tài khoản OOAD Loophole";
+            String confirmationUrl = "http://localhost:8080/resetPassword?token=" + token;
+            String message = "Bấm vào link để đặt lại mật khẩu: ";
+
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setTo(recipientAddress);
+            mimeMessageHelper.setText(message + confirmationUrl);
+
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw new BusinessServiceException("Unable to send confirmation email to: " + user.getEmail() + " " + e.getMessage());
+        }
     }
 }

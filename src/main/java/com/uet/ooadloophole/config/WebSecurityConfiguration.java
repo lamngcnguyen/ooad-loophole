@@ -72,6 +72,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/groups/**").hasAnyAuthority("TEACHER", "USER", "ADMIN")
                 .antMatchers("/student/**").hasAnyAuthority("USER", "TEACHER")
                 .antMatchers("/register/**", "/", "/login").permitAll()
+                .antMatchers("/reset", "/resetAccount**").permitAll()
+                .antMatchers("/activateAccount**").permitAll()
+                .antMatchers("/api/users/resetPassword", "/api/users/activateAccount").permitAll()
                 .anyRequest().authenticated()
                 .and()
 

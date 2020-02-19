@@ -103,8 +103,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             Role dbRole = roleService.getByName(roleName);
             user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
-            user.setActive(true);
+            user.setActive(false);
             userRepository.save(user);
+            emailService.sendActivationEmail(user);
             return user;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to create user: " + e.getMessage());
@@ -160,15 +161,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     }
 
+//    @Override
+//    public void changePassword(User user, String newPassword) {
+//        //            User dbUser = getById(userId);
+//        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+//        userRepository.save(user);
+//    }
+
     @Override
-    public void changePassword(String userId, String newPassword) throws BusinessServiceException {
-        try {
-            User dbUser = getById(userId);
-            dbUser.setPassword(bCryptPasswordEncoder.encode(newPassword));
-            userRepository.save(dbUser);
-        } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Unable to change password: " + e.getMessage());
-        }
+    public void resetAccount(String email) throws BusinessServiceException {
+        User user = getByEmail(email);
+        user.setPassword("");
+        user.setActive(false);
+        emailService.sendResetPasswordEmail(user);
+        userRepository.save(user);
     }
 
     @Override

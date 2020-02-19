@@ -35,7 +35,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public boolean verifyToken(String tokenString) {
+    public boolean isValid(String tokenString) {
         Token token = getByTokenString(tokenString);
         if (token == null) {
             return false;

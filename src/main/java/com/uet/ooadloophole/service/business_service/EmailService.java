@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 public interface EmailService {
     void sendActivationEmail(User user) throws BusinessServiceException;
 
-    void sendResetPasswordEmail(User user);
+    void sendResetPasswordEmail(User user) throws BusinessServiceException;
 }

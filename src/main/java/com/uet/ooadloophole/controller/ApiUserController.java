@@ -1,7 +1,6 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
-import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.model.frontend_element.ListJsonWrapper;
 import com.uet.ooadloophole.service.SecureUserDetailService;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -62,12 +60,15 @@ public class ApiUserController {
 
     @ResponseBody
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
-    private ResponseEntity<String> resetPassword(String password) {
+    private ResponseEntity<String> resetPassword(String token, String email, String password) {
         try {
-            User user = secureUserDetailService.getCurrentUser();
-            user.setPassword(password);
-            userService.update(user);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            if (tokenService.isValid(token)) {
+                userService.setPassword(email, password);
+                tokenService.deleteActiveToken(tokenService.getByTokenString(token));
+                return ResponseEntity.status(HttpStatus.OK).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid token");
+            }
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -77,7 +78,7 @@ public class ApiUserController {
     @RequestMapping(value = "/activateAccount", method = RequestMethod.POST)
     private ResponseEntity<String> activateAccount(String token, String email, String password) {
         try {
-            if (tokenService.verifyToken(token)) {
+            if (tokenService.isValid(token)) {
                 userService.setPassword(email, password);
                 tokenService.deleteActiveToken(tokenService.getByTokenString(token));
                 return ResponseEntity.status(HttpStatus.OK).build();

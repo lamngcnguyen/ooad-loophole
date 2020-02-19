@@ -31,7 +31,9 @@ public interface UserService {
 
     void setPassword(String userEmail, String password) throws BusinessServiceException;
 
-    void changePassword(String userId, String newPassword) throws BusinessServiceException;
+//    void changePassword(String userId, String newPassword) throws BusinessServiceException;
+
+    void resetAccount(String email) throws BusinessServiceException;
 
     void assignRole(String userId, String roleName) throws BusinessServiceException;
 
@@ -43,5 +45,5 @@ public interface UserService {
 
     boolean matchPassword(User user, String password);
 
-    void changePassword(User user, String password) throws BusinessServiceException;
+    void changePassword(User user, String password);
 }

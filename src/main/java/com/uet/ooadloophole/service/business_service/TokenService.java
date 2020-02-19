@@ -12,5 +12,5 @@ public interface TokenService {
 
     void deleteActiveToken(Token token);
 
-    boolean verifyToken(String tokenString);
+    boolean isValid(String tokenString);
 }
