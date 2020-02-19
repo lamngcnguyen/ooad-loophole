@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
             String recipientAddress = user.getEmail();
 
             String subject = "Kích hoạt tài khoản OOAD Loophole";
-            String confirmationUrl = "http://localhost:8080/activateAccount?token=" + token;
+            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activateAccount?token=" + token;
             String message = "Bấm vào link để kích hoạt tài khoản: ";
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
             String recipientAddress = user.getEmail();
 
             String subject = "Đặt lại mật khẩu tài khoản OOAD Loophole";
-            String confirmationUrl = "http://localhost:8080/resetPassword?token=" + token;
+            String confirmationUrl = "http://ooad-loophole.herokuapp.com/resetPassword?token=" + token;
             String message = "Bấm vào link để đặt lại mật khẩu: ";
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
