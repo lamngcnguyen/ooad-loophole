@@ -99,7 +99,8 @@ public class ApiUserController {
     private ResponseEntity<Object> createUser(IUser iUser) {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
-            return ResponseEntity.status(HttpStatus.OK).body(userService.create(user));
+            User newUser = userService.create(user);
+            return ResponseEntity.status(HttpStatus.OK).body(newUser);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -110,7 +111,8 @@ public class ApiUserController {
     private ResponseEntity<Object> updateUser(@PathVariable String id, IUser iUser) {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
-            return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, user));
+            User updatedUser = userService.update(id, user);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

@@ -116,13 +116,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student update(Student student) throws BusinessServiceException {
+    public Student update(String id, Student student) throws BusinessServiceException {
         try {
-            if (studentIdExists(student.get_id(), student.getStudentId())) {
-                throw new BusinessServiceException("Student ID already exists");
-            }
-            User dbUser = userService.getById(student.getUserId());
-            Student dbStudent = getById(student.get_id());
+            Student dbStudent = getById(id);
+            User dbUser = userService.getById(dbStudent.getUserId());
             dbUser.setEmail(student.getStudentId() + Constant.EMAIL_SUFFIX);
             dbUser.setFullName(student.getFullName());
             dbUser.setUsername(student.getStudentId());

@@ -1,8 +1,10 @@
 package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.controller.interface_model.IStudent;
 import com.uet.ooadloophole.controller.interface_model.IUser;
 import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RoleService;
@@ -33,5 +35,13 @@ public class InterfaceModelConverterService {
         }
         user.setRoles(roles);
         return user;
+    }
+
+    public Student convertStudentInterface(IStudent iStudent) {
+        Student student = new Student();
+        student.setFullName(iStudent.getFullName());
+        student.setStudentId(iStudent.getStudentId());
+        student.setClassId(iStudent.getClassId());
+        return student;
     }
 }

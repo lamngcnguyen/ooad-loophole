@@ -1,7 +1,9 @@
 package com.uet.ooadloophole.controller;
 
+import com.uet.ooadloophole.controller.interface_model.IStudent;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.service.InterfaceModelConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
@@ -16,8 +18,9 @@ import java.util.List;
 @RequestMapping(value = "/api/students")
 public class ApiStudentController {
     @Autowired
+    private InterfaceModelConverterService interfaceModelConverterService;
+    @Autowired
     private StudentService studentService;
-
     @Autowired
     private UserService userService;
 
@@ -49,8 +52,9 @@ public class ApiStudentController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<Object> createStudent(@RequestBody Student student) {
+    public ResponseEntity<Object> createStudent(@RequestBody IStudent iStudent) {
         try {
+            Student student = interfaceModelConverterService.convertStudentInterface(iStudent);
             Student newStudent = studentService.create(student);
             return ResponseEntity.status(HttpStatus.OK).body(newStudent);
         } catch (BusinessServiceException e) {
@@ -58,10 +62,11 @@ public class ApiStudentController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateStudent(@RequestBody Student student) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateStudent(@PathVariable String id, @RequestBody IStudent iStudent) {
         try {
-            Student updatedStudent = studentService.update(student);
+            Student student = interfaceModelConverterService.convertStudentInterface(iStudent);
+            Student updatedStudent = studentService.update(id, student);
             return ResponseEntity.status(HttpStatus.OK).body(updatedStudent);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

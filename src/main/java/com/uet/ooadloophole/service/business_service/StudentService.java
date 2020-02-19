@@ -24,7 +24,7 @@ public interface StudentService {
 
     List<Student> importStudents(List<Student> students);
 
-    Student update(Student student) throws BusinessServiceException;
+    Student update(String id, Student student) throws BusinessServiceException;
 
     void delete(String studentId) throws BusinessServiceException;
 }
