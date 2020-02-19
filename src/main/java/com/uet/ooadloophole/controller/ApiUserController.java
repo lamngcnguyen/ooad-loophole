@@ -1,7 +1,6 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
-import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.model.frontend_element.ListJsonWrapper;
 import com.uet.ooadloophole.service.SecureUserDetailService;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
 import java.util.List;
 
 @RestController

@@ -24,7 +24,8 @@
             <div class="ui active teacher-admin tab segment stackable grid">
                 <div class="row">
                     <div class="column">
-                        <button type="button" class="ui labeled icon blue button" onclick="showCreateUserModal()">
+                        <button type="button" class="ui labeled icon green button"
+                                onclick="showModal('.modal.create-user')">
                             Thêm mới<i
                                 class="plus icon"></i></button>
                     </div>
@@ -74,7 +75,7 @@
                             <thead>
                             <tr>
                                 <th class="one wide">#</th>
-                                <th class="two wide">Thao tác</th>
+                                <th class="three wide">Thao tác</th>
                                 <th>Họ tên</th>
                                 <th>Tên đăng nhập</th>
                                 <th>Email</th>
@@ -88,10 +89,12 @@
             <div class="ui student tab segment stackable grid">
                 <div class="row">
                     <div class="column">
-                        <button type="button" class="ui labeled icon blue button" onclick="showCreateUserModal()">
+                        <button type="button" class="ui labeled icon green button"
+                                onclick="showModal('.modal.create-student')">
                             Thêm mới<i
                                 class="plus icon"></i></button>
-                        <button type="button" class="ui labeled icon black button" onclick="showImportStudentModal()">
+                        <button type="button" class="ui labeled icon green button"
+                                onclick="showModal('.modal.import-student')">
                             Nhập từ Excel<i
                                 class="file excel icon"></i></button>
                     </div>
@@ -141,8 +144,68 @@
             </div>
         </div>
     </div>
-    <div class="ui small modal create-user-modal">
+    <div class="ui small modal create-user">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
         <div class="ui large header">
+            <i class="green user icon"></i>
+            Thêm mới
+        </div>
+        <div class="content">
+            <div class="ui form create-user">
+                <h4 class="ui dividing header">Thông tin cơ bản</h4>
+                <div class="required field">
+                    <label>Họ tên</label>
+                    <input type="text" name="fullName" placeholder="Full name">
+                </div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="seven wide required field">
+                            <label>Tên đăng nhập</label>
+                            <input type="text" name="username" placeholder="Username">
+                        </div>
+                        <div class="nine wide required field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                            <div class="ui pointing label">
+                                Email sẽ nhận được thông báo kích hoạt tài khoản
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="ui dividing header">Quyền</h4>
+                <div class="two fields">
+                    <div class="four wide field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="checkboxAdmin" name="isAdmin" tabindex="0"
+                                   class="hidden" data-validate="role-checkbox">
+                            <label for="checkboxAdmin">Admin</label>
+                        </div>
+                    </div>
+                    <div class="four wide field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="checkboxTeacher" name="isTeacher" tabindex="0"
+                                   class="hidden" data-validate="role-checkbox">
+                            <label for="checkboxTeacher">Giảng viên</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui green labeled icon submit button" onclick="validateForm('.form.create-user')">
+                    <i class="plus icon"></i>
+                    Tạo
+                </button>
+                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-user')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal create-student">
+        <div class="ui large header">
+            <i class="green student icon"></i>
             Thêm mới
         </div>
         <div class="content"></div>
@@ -151,79 +214,83 @@
                 <i class="plus icon"></i>
                 Tạo
             </div>
-            <div class="ui grey labeled icon button" onclick="closeCreateUserModal()">
+            <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-student')">
                 <i class="close icon"></i>
-                Hùy
+                Hủy
             </div>
         </div>
     </div>
-    <div class="ui small modal create-student-modal">
+    <div class="ui small modal edit-user">
         <div class="ui large header">
-            Thêm mới
-        </div>
-        <div class="content"></div>
-        <div class="actions">
-            <div class="ui green labeled icon button">
-                <i class="plus icon"></i>
-                Tạo
-            </div>
-            <div class="ui grey labeled icon button" onclick="closeCreateUserModal()">
-                <i class="close icon"></i>
-                Hùy
-            </div>
-        </div>
-    </div>
-    <div class="ui small modal edit-user-modal">
-        <div class="ui large header">
+            <i class="blue pencil icon"></i>
             Chỉnh sửa
         </div>
         <div class="content"></div>
         <div class="actions">
-            <div class="ui green labeled icon button">
+            <div class="ui blue labeled icon button">
                 <i class="save icon"></i>
                 Lưu
             </div>
-            <div class="ui grey labeled icon button" onclick="closeEditUserModal()">
+            <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-user')">
                 <i class="close icon"></i>
-                Hùy
+                Hủy
             </div>
         </div>
     </div>
-    <div class="ui small modal edit-student-modal">
+    <div class="ui small modal edit-student">
         <div class="ui large header">
+            <i class="blue pencil icon"></i>
             Chỉnh sửa
         </div>
         <div class="content"></div>
         <div class="actions">
-            <div class="ui green labeled icon button">
+            <div class="ui blue labeled icon button">
                 <i class="save icon"></i>
                 Lưu
             </div>
-            <div class="ui grey labeled icon button" onclick="closeEditUserModal()">
+            <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-student')">
                 <i class="close icon"></i>
-                Hùy
+                Hủy
             </div>
         </div>
     </div>
-    <div class="ui small modal delete-user-modal">
+    <div class="ui small modal delete-user">
         <div class="ui large header">
+            <i class="red trash icon"></i>
             Cảnh báo
         </div>
         <div class="content"></div>
         <div class="actions">
-            <div class="ui red labeled button">
-                <i class="trash icon"></i>
+            <div class="ui red labeled icon button">
+                <i class="check icon"></i>
                 Có
             </div>
-            <div class="ui grey icon button" onclick="closeDeleteUserModal()">
+            <div class="ui grey labeled icon button" onclick="hideModal('.modal.delete-user')">
                 <i class="close icon"></i>
                 Không
             </div>
         </div>
-    </div
-    >
-    <div class="ui small modal import-student-modal">
+    </div>
+    <div class="ui small modal deactivate-user">
         <div class="ui large header">
+            <i class="red ban icon"></i>
+            Cảnh báo
+        </div>
+        <div class="content"></div>
+        <div class="actions">
+            <div class="ui red labeled icon button">
+                <i class="check icon"></i>
+                Có
+            </div>
+            <div class="ui grey labeled icon button" onclick="hideModal('.modal.deactivate-user')">
+                <i class="close icon"></i>
+                Không
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal import-student">
+        <div class="ui large header">
+            <i class="green file excel icon"></i>
             Nhập từ Excel
         </div>
         <div class="content"></div>
@@ -232,14 +299,14 @@
                 <i class="plus icon"></i>
                 Lưu
             </div>
-            <div class="ui grey labeled icon button" onclick="closeImportUserModal()">
+            <div class="ui grey labeled icon button" onclick="hideModal('.modal.import-student')">
                 <i class="close icon"></i>
-                Hùy
+                Hủy
             </div>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/table/datatables.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/admin/user.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/user/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/user/user.js}"></script>
 </div>
 </body>
 </html>
