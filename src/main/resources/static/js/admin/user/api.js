@@ -1,10 +1,12 @@
 $.fn.api.settings.api = {
-    'create user': '/api/users',
+    'create user': '/api/users/',
     'delete user': '/api/users/{id}',
     'update user': '/api/users/{id}',
     'set user active': '/api/users/{id}/status?active={isActive}',
     'create student': '/api/students',
-    'update student': '/api/students/{id}'
+    'update student': '/api/students/{id}',
+    'search class': '/api/classes/search?keyword={query}',
+    'get classes': '/api/classes',
 };
 
 $.fn.form.settings.rules.oneRoleClaimed = function (value, formId) {
@@ -51,5 +53,21 @@ var validationRules = {
                 prompt: 'Vui lòng chọn ít nhất một quyền'
             }]
         }
+    },
+    studentId: {
+        identifier: 'studentId',
+        rules: [{
+            type: 'integer',
+            prompt: 'MSSV không hợp lệ'
+        }],
+    },
+    classId: {
+        identifier: 'classId',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Vui lòng chọn lớp học'
+            }
+        ]
     }
 };
