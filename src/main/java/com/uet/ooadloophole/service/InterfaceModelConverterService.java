@@ -1,16 +1,16 @@
 package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.controller.interface_model.DTOClass;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
 import com.uet.ooadloophole.controller.interface_model.IUser;
-import com.uet.ooadloophole.model.business.Role;
-import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.RoleService;
+import com.uet.ooadloophole.service.business_service.SemesterService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,8 @@ public class InterfaceModelConverterService {
     private ClassService classService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private SemesterService semesterService;
 
     public User convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -66,5 +68,18 @@ public class InterfaceModelConverterService {
         dtoStudent.setEmail(user.getEmail());
         dtoStudent.setActive(user.isActive());
         return dtoStudent;
+    }
+
+    public DTOClass convertToDTOClass(Class ooadClass) throws BusinessServiceException {
+        DTOClass dtoClass = new DTOClass();
+        User user = userService.getById(ooadClass.getTeacherId());
+        Semester semester = semesterService.getById(ooadClass.getSemesterId());
+        dtoClass.set_id(ooadClass.get_id());
+        dtoClass.setClassName(ooadClass.getClassName());
+        dtoClass.setTeacherName(user.getFullName());
+        dtoClass.setSemesterName(semester.getName());
+        dtoClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
+        dtoClass.setActive(ooadClass.isActive());
+        return dtoClass;
     }
 }

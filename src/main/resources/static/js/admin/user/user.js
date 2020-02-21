@@ -1,5 +1,5 @@
-var rowIndex = 0;
-var userTable = $(".teacher-admin .ui.table").DataTable({
+let rowIndex = 0;
+const userTable = $(".teacher-admin .ui.table").DataTable({
     ordering: true,
     searching: true,
     paging: true,
@@ -36,8 +36,8 @@ var userTable = $(".teacher-admin .ui.table").DataTable({
         {targets: [0, 1, -1], className: "center aligned"}
     ],
     createdRow: function (row, data) {
-        var actionCell = $(row).children().eq(1);
-        var btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
+        const actionCell = $(row).children().eq(1);
+        const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
             .click(function () {
                 $('.form.edit-user').form('set values', {
                     id: data._id,
@@ -49,14 +49,14 @@ var userTable = $(".teacher-admin .ui.table").DataTable({
                 });
                 showModal('.modal.edit-user');
             });
-        var btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
+        const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
             .click(function () {
                 $('.form.delete-user').form('set values', {
                     id: data._id
                 });
                 showModal('.modal.delete-user');
             });
-        var btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
+        const btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
             .click(function () {
                 $('.form.deactivate-user').form('set values', {
                     id: data._id
@@ -72,7 +72,7 @@ var userTable = $(".teacher-admin .ui.table").DataTable({
 });
 
 rowIndex = 0;
-var studentTable = $(".student .ui.table").DataTable({
+const studentTable = $(".student .ui.table").DataTable({
     ordering: true,
     searching: true,
     paging: true,
@@ -109,16 +109,16 @@ var studentTable = $(".student .ui.table").DataTable({
         {targets: [0, 1, -1], className: "center aligned"}
     ],
     createdRow: function (row, data) {
-        var actionCell = $(row).children().eq(1);
-        var btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
+        const actionCell = $(row).children().eq(1);
+        const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
             .click(function () {
                 showModal('.modal.edit-student');
             });
-        var btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
+        const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
             .click(function () {
                 showModal('.modal.delete-user');
             });
-        var btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
+        const btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
             .click(function () {
                 showModal('.modal.deactivate-user');
             });
@@ -234,7 +234,7 @@ function filterRole(roleName) {
 }
 
 function userHasRole(user, roleName) {
-    for (var i = 0; i < user.roles.length; i++) {
+    for (let i = 0; i < user.roles.length; i++) {
         if (user.roles[i].role.toLowerCase() === roleName.toLowerCase()) return true;
     }
     return false;

@@ -9,6 +9,8 @@ import java.util.List;
 
 @Service
 public interface ClassService {
+    List<Class> getAll();
+
     List<Class> getByTeacherId(String teacherId) throws BusinessServiceException;
 
     Class getById(String id) throws BusinessServiceException;
@@ -16,8 +18,6 @@ public interface ClassService {
     Class create(Class ooadClass);
 
     Class create(String name, String teacherId, String semesterId, int scheduledDayOfWeek);
-
-    List<Class> getAll();
 
     List<Student> getAllStudents(String classId);
 

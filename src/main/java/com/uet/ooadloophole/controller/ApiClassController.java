@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.DTOClass;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.SearchResultWrapper;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
@@ -31,13 +32,7 @@ public class ApiClassController {
 
     private Gson gson = new Gson();
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<String> getAllClasses() {
-        List<Class> classes = classService.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new SearchResultWrapper(classes)));
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
             if (userIsNotTeacher())
@@ -52,14 +47,38 @@ public class ApiClassController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<Object> getClassesByTeacherId(@CookieValue String userId) {
         try {
-            if (userIsNotTeacher())
+            if (userIsNotTeacher()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            return ResponseEntity.status(HttpStatus.OK).body(classService.getByTeacherId(userId));
+            } else {
+                List<DTOClass> dtoClasses = new ArrayList<>();
+                classService.getByTeacherId(userId).forEach(ooadClass -> {
+                    try {
+                        dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
+                    } catch (BusinessServiceException e) {
+                        e.printStackTrace();
+                        //TODO: add logger here
+                    }
+                });
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClasses)));
+            }
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<Object> getClasses() {
+        List<DTOClass> dtoClasses = new ArrayList<>();
+        classService.getAll().forEach(ooadClass -> {
+            try {
+                dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
+            } catch (BusinessServiceException e) {
+                e.printStackTrace();
+                //TODO: add logger here
+            }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClasses)));
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteClass(@PathVariable String id) {

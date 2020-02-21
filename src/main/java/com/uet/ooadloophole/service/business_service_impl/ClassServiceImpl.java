@@ -30,6 +30,11 @@ public class ClassServiceImpl implements ClassService {
     private GroupService groupService;
 
     @Override
+    public List<Class> getAll() {
+        return classRepository.findAll();
+    }
+
+    @Override
     public List<Class> getByTeacherId(String teacherId) throws BusinessServiceException {
         List<Class> result = classRepository.findAllByTeacherId(teacherId);
         if (result == null) {
@@ -62,11 +67,6 @@ public class ClassServiceImpl implements ClassService {
         ooadClass.setScheduledDayOfWeek(scheduledDayOfWeek);
         classRepository.save(ooadClass);
         return ooadClass;
-    }
-
-    @Override
-    public List<Class> getAll() {
-        return classRepository.findAll();
     }
 
     @Override
