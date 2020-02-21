@@ -65,6 +65,11 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    public List<Class> getAll() {
+        return classRepository.findAll();
+    }
+
+    @Override
     public List<Student> getAllStudents(String classId) {
         return studentService.getByClass(classId);
     }

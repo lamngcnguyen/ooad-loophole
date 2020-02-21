@@ -144,7 +144,7 @@
             </div>
         </div>
     </div>
-    <div class="ui small modal create-user">
+    <div class="ui tiny modal create-user">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -154,40 +154,43 @@
         </div>
         <div class="content">
             <div class="ui form create-user">
-                <h4 class="ui dividing header">Thông tin cơ bản</h4>
-                <div class="required field">
-                    <label>Họ tên</label>
-                    <input type="text" name="fullName" placeholder="Full name">
-                </div>
                 <div class="field">
                     <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Họ tên</label>
+                            <input type="text" name="fullName" placeholder="Full name">
+                        </div>
                         <div class="seven wide required field">
                             <label>Tên đăng nhập</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
-                        <div class="nine wide required field">
-                            <label>Email</label>
-                            <input type="email" name="email" placeholder="Email">
-                            <div class="ui pointing label">
-                                Email sẽ nhận được thông báo kích hoạt tài khoản
-                            </div>
+                    </div>
+                </div>
+                <div class="required field">
+                    <label>Email</label>
+                    <div class="inline field">
+                        <input type="email" name="email" placeholder="Email">
+                        <div class="ui left pointing small label">
+                            Email sẽ nhận được thông báo kích hoạt tài khoản
                         </div>
                     </div>
                 </div>
-                <h4 class="ui dividing header">Quyền</h4>
-                <div class="two fields">
-                    <div class="four wide field">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="checkboxAdmin" name="isAdmin" tabindex="0"
-                                   class="hidden" data-validate="role-checkbox">
-                            <label for="checkboxAdmin">Admin</label>
+                <div class="required field">
+                    <label class="ui dividing">Quyền</label>
+                    <div class="two fields">
+                        <div class="six wide field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="checkboxAdmin" name="isAdmin" tabindex="0"
+                                       class="hidden" data-validate="role-checkbox">
+                                <label for="checkboxAdmin">Admin</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="four wide field">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="checkboxTeacher" name="isTeacher" tabindex="0"
-                                   class="hidden" data-validate="role-checkbox">
-                            <label for="checkboxTeacher">Giảng viên</label>
+                        <div class="six wide field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="checkboxTeacher" name="isTeacher" tabindex="0"
+                                       class="hidden" data-validate="role-checkbox">
+                                <label for="checkboxTeacher">Giảng viên</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -197,50 +200,6 @@
                     Tạo
                 </button>
                 <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-user')">
-                    <i class="close icon"></i>
-                    Hủy
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ui tiny modal create-student">
-        <div class="ui dimmer">
-            <div class="ui loader"></div>
-        </div>
-        <div class="ui large header">
-            <i class="green student icon"></i>
-            Thêm mới
-        </div>
-        <div class="content">
-            <div class="ui form create-student">
-                <div class="required field">
-                    <label>Họ tên</label>
-                    <input type="text" name="fullName" placeholder="Full name">
-                </div>
-                <div class="field">
-                    <div class="fields">
-                        <div class="eight wide field">
-                            <label>MSSV</label>
-                            <input type="text" name="studentId" placeholder="Student ID">
-                        </div>
-                        <div class="eight wide field">
-                            <label>Lớp</label>
-                            <div class="ui search">
-                                <div class="ui icon input">
-                                    <input class="prompt" type="text" placeholder="Enter class name to search...">
-                                    <i class="search icon"></i>
-                                </div>
-                                <div class="results"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ui error message"></div>
-                <button class="ui green labeled icon submit button" onclick="validateForm('.form.create-student')">
-                    <i class="plus icon"></i>
-                    Tạo
-                </button>
-                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-student')">
                     <i class="close icon"></i>
                     Hủy
                 </div>
@@ -257,41 +216,38 @@
         </div>
         <div class="content">
             <div class="ui form edit-user">
-                <input type="hidden" name="id">
-                <h4 class="ui dividing header">Thông tin cơ bản</h4>
-                <div class="required field">
-                    <label>Họ tên</label>
-                    <input type="text" name="fullName" placeholder="Full name">
-                </div>
                 <div class="field">
                     <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Họ tên</label>
+                            <input type="text" name="fullName" placeholder="Full name">
+                        </div>
                         <div class="seven wide required field">
                             <label>Tên đăng nhập</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
-                        <div class="nine wide required field">
-                            <label>Email</label>
-                            <input type="email" name="email" placeholder="Email">
-                            <div class="ui pointing label">
-                                Email sẽ nhận được thông báo kích hoạt tài khoản
-                            </div>
-                        </div>
                     </div>
                 </div>
-                <h4 class="ui dividing header">Quyền</h4>
-                <div class="two fields">
-                    <div class="four wide field">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="checkboxEditAdmin" name="isAdmin" tabindex="0"
-                                   class="hidden" data-validate="role-checkbox">
-                            <label for="checkboxEditAdmin">Admin</label>
+                <div class="required field">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="required field">
+                    <label class="ui dividing">Quyền</label>
+                    <div class="two fields">
+                        <div class="six wide field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="checkboxEditAdmin" name="isAdmin" tabindex="0"
+                                       class="hidden" data-validate="role-checkbox">
+                                <label for="checkboxEditAdmin">Admin</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="four wide field">
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" id="checkboxEditTeacher" name="isTeacher" tabindex="0"
-                                   class="hidden" data-validate="role-checkbox">
-                            <label for="checkboxEditTeacher">Giảng viên</label>
+                        <div class="six wide field">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" id="checkboxEditTeacher" name="isTeacher" tabindex="0"
+                                       class="hidden" data-validate="role-checkbox">
+                                <label for="checkboxEditTeacher">Giảng viên</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -301,6 +257,48 @@
                     Lưu
                 </button>
                 <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.edit-user')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal create-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green student icon"></i>
+            Thêm mới
+        </div>
+        <div class="content">
+            <div class="ui form create-student">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Họ tên</label>
+                            <input type="text" name="fullName" placeholder="Full name">
+                        </div>
+                        <div class="seven wide required field">
+                            <label>MSSV</label>
+                            <input type="text" name="studentId" placeholder="Student ID">
+                        </div>
+                    </div>
+                </div>
+                <div class="ten wide required field">
+                    <label>Lớp</label>
+                    <div class="ui search selection dropdown assigned-class">
+                        <input type="hidden" name="classId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select class</div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui green labeled icon submit button" onclick="validateForm('.form.create-student')">
+                    <i class="plus icon"></i>
+                    Tạo
+                </button>
+                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-student')">
                     <i class="close icon"></i>
                     Hủy
                 </div>
@@ -393,20 +391,18 @@
                         <i class="upload icon"></i>
                         Chọn tệp Excel
                     </div>
-                    <div class="ui orange labeled icon mini button">
+                    <div class="ui orange labeled icon mini button" onclick="createStudentImportTemplate()">
                         <i class="download icon"></i>
                         Tải tệp mẫu
                     </div>
                 </div>
                 <div class="fields">
-                    <div class="eight wide field">
+                    <div class="eight wide required field">
                         <label>Nhập sinh viên cho lớp:</label>
-                        <div class="ui search">
-                            <div class="ui icon input">
-                                <input class="prompt" type="text" placeholder="Enter class name to search...">
-                                <i class="search icon"></i>
-                            </div>
-                            <div class="results"></div>
+                        <div class="ui search selection dropdown assigned-class">
+                            <input type="hidden" name="classId">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Select class</div>
                         </div>
                     </div>
                 </div>
@@ -434,6 +430,26 @@
     </div>
     <script type="text/javascript" th:src="@{/js/admin/user/api.js}"></script>
     <script type="text/javascript" th:src="@{/js/admin/user/user.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/github-com-SheetJS-js-xlsx/v0.11.17/dist/shim.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/github-com-SheetJS-js-xlsx/v0.11.17/dist/xlsx.full.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/user/import.js}"></script>
+    <script>
+        function createStudentImportTemplate() {
+            var wb = XLSX.utils.book_new();
+            var ws_name = "students";
+            var ws_data = [
+                ['#', 'Full name', 'Student ID', 'Email', 'Group'],
+                ['1', 'Phong Ha Tuan', '16020263', '16020263@vnu.edu.vn', 'F & Đồng bọn'],
+                ['2', 'Nguyen Ngoc Lam', '16022408', '16022408@vnu.edu.vn', 'F & Đồng bọn']
+                ['2', 'Nguyen Ngoc Lam', '16022408', '16022408@vnu.edu.vn', 'F & Đồng bọn']
+            ];
+
+
+            var ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, ws_name);
+            XLSX.writeFile(wb, 'students.xlsx');
+        }
+    </script>
 </div>
 </body>
 </html>

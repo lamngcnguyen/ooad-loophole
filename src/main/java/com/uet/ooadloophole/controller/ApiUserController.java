@@ -2,7 +2,7 @@ package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.IUser;
-import com.uet.ooadloophole.controller.interface_model.ListJsonWrapper;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.InterfaceModelConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
@@ -33,14 +33,14 @@ public class ApiUserController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getUsers() {
         List<User> users = userService.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ListJsonWrapper(users)));
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(users)));
     }
 
     @RequestMapping(value = "/role/{roleName}", method = RequestMethod.GET)
     public ResponseEntity<String> getUsers(@PathVariable String roleName) {
         try {
             List<User> users = userService.getAllByRole(roleName);
-            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ListJsonWrapper(users)));
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(users)));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

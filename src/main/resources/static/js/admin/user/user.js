@@ -140,11 +140,16 @@ $('.form.create-user').form({
             method: 'post',
             dataType: 'json',
             data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            },
             onFailure: function (response) {
                 $('.form.create-user').form('add errors', [response.message]);
             },
             onSuccess: function () {
-                userTable.ajax().reload();
+                hideDimmer('.modal.create-user');
+                hideModal('.modal.create-user');
+                userTable.ajax.reload();
             }
         });
     },
@@ -169,11 +174,16 @@ $('.form.edit-user').form({
             method: 'put',
             dataType: 'json',
             data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            },
             onFailure: function (response) {
                 $('.edit.create-user').form('add errors', [response.message]);
             },
             onSuccess: function () {
-                userTable.ajax().reload();
+                hideDimmer('.modal.edit-user');
+                hideModal('.modal.edit-user');
+                userTable.ajax.reload();
             }
         });
     },
@@ -229,3 +239,33 @@ function userHasRole(user, roleName) {
     }
     return false;
 }
+
+$('.dropdown.assigned-class').dropdown({
+    showOnFocus: false,
+}).api({
+    action: 'get classes',
+    on: 'now',
+    onSuccess(response, element, xhr) {
+        var values = [];
+        xhr.responseJSON.results.forEach(function (c) {
+            values.push({
+                value: c._id,
+                name: c.className,
+                text: c.className,
+            });
+        });
+        console.log(values);
+        $(element).dropdown('change values', values);
+    }
+});
+
+$('.form.create-student').form({
+    onSuccess: function (evt, data) {
+
+    },
+    fields: {
+        fullName: validationRules.fullName,
+        studentId: validationRules.studentId,
+        classId: validationRules.classId,
+    }
+});

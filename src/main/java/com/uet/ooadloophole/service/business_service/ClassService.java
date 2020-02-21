@@ -17,6 +17,8 @@ public interface ClassService {
 
     Class create(String name, String teacherId, String semesterId, int scheduledDayOfWeek);
 
+    List<Class> getAll();
+
     List<Student> getAllStudents(String classId);
 
     void delete(String classId) throws BusinessServiceException;

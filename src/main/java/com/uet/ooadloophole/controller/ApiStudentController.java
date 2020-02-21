@@ -3,7 +3,7 @@ package com.uet.ooadloophole.controller;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
-import com.uet.ooadloophole.controller.interface_model.ListJsonWrapper;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.InterfaceModelConverterService;
@@ -95,7 +95,7 @@ public class ApiStudentController {
         return ResponseEntity.status(HttpStatus.OK).body(newStudents);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<String> getAllStudents() {
         List<DTOStudent> dtoStudents = new ArrayList<>();
         studentService.getAll().forEach(student -> {
@@ -106,6 +106,6 @@ public class ApiStudentController {
                 //TODO: add logger here
             }
         });
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ListJsonWrapper(dtoStudents)));
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoStudents)));
     }
 }

@@ -2,7 +2,8 @@ package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
-import com.uet.ooadloophole.controller.interface_model.ListJsonWrapper;
+import com.uet.ooadloophole.controller.interface_model.SearchResultWrapper;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
@@ -30,7 +31,13 @@ public class ApiClassController {
 
     private Gson gson = new Gson();
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<String> getAllClasses() {
+        List<Class> classes = classService.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new SearchResultWrapper(classes)));
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
             if (userIsNotTeacher())
@@ -54,7 +61,6 @@ public class ApiClassController {
     }
 
 
-
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteClass(@PathVariable String id) {
         try {
@@ -76,7 +82,7 @@ public class ApiClassController {
                 e.printStackTrace();
             }
         });
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ListJsonWrapper(dtoStudents)));
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoStudents)));
     }
 
     @RequestMapping(value = "/{id}/students/import", method = RequestMethod.POST, consumes = "application/json")
@@ -99,9 +105,9 @@ public class ApiClassController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    private ResponseEntity<List<Class>> searchClass(@RequestParam String keyword) {
+    public ResponseEntity<String> searchClass(@RequestParam String keyword) {
         List<Class> classes = classService.searchByName(keyword);
         HttpStatus httpStatus = (classes.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
-        return ResponseEntity.status(httpStatus).body(classes);
+        return ResponseEntity.status(httpStatus).body(gson.toJson(new SearchResultWrapper(classes)));
     }
 }
