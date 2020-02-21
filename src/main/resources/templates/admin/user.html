@@ -34,7 +34,7 @@
                     <div class="four wide column">
                         Hiển thị
                         &nbsp
-                        <div class="ui compact selection dropdown" id="pageLengthSelect">
+                        <div class="ui compact selection dropdown page-length">
                             <input type="hidden">
                             <i class="dropdown icon"></i>
                             <div class="text">10</div>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="right aligned eight wide column">
                         Tìm kiếm:&nbsp
-                        <div class="ui icon input" id="searchTableInput">
+                        <div class="ui icon input table-search">
                             <input type="text" placeholder="Search...">
                             <i class="search icon"></i>
                         </div>
@@ -103,7 +103,7 @@
                     <div class="eight wide column">
                         Hiển thị
                         &nbsp
-                        <div class="ui compact selection dropdown" id="pageLengthSelect">
+                        <div class="ui compact selection dropdown page-length">
                             <input type="hidden">
                             <i class="dropdown icon"></i>
                             <div class="text">10</div>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="right aligned eight wide column">
                         Tìm kiếm:&nbsp
-                        <div class="ui icon input" id="searchTableInput">
+                        <div class="ui icon input table-search">
                             <input type="text" placeholder="Search...">
                             <i class="search icon"></i>
                         </div>
@@ -203,37 +203,107 @@
             </div>
         </div>
     </div>
-    <div class="ui small modal create-student">
+    <div class="ui tiny modal create-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
         <div class="ui large header">
             <i class="green student icon"></i>
             Thêm mới
         </div>
-        <div class="content"></div>
-        <div class="actions">
-            <div class="ui green labeled icon button">
-                <i class="plus icon"></i>
-                Tạo
-            </div>
-            <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-student')">
-                <i class="close icon"></i>
-                Hủy
+        <div class="content">
+            <div class="ui form create-student">
+                <div class="required field">
+                    <label>Họ tên</label>
+                    <input type="text" name="fullName" placeholder="Full name">
+                </div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="eight wide field">
+                            <label>MSSV</label>
+                            <input type="text" name="studentId" placeholder="Student ID">
+                        </div>
+                        <div class="eight wide field">
+                            <label>Lớp</label>
+                            <div class="ui search">
+                                <div class="ui icon input">
+                                    <input class="prompt" type="text" placeholder="Enter class name to search...">
+                                    <i class="search icon"></i>
+                                </div>
+                                <div class="results"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui green labeled icon submit button" onclick="validateForm('.form.create-student')">
+                    <i class="plus icon"></i>
+                    Tạo
+                </button>
+                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-student')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
             </div>
         </div>
     </div>
     <div class="ui small modal edit-user">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
         <div class="ui large header">
             <i class="blue pencil icon"></i>
             Chỉnh sửa
         </div>
-        <div class="content"></div>
-        <div class="actions">
-            <div class="ui blue labeled icon button">
-                <i class="save icon"></i>
-                Lưu
-            </div>
-            <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-user')">
-                <i class="close icon"></i>
-                Hủy
+        <div class="content">
+            <div class="ui form edit-user">
+                <input type="hidden" name="id">
+                <h4 class="ui dividing header">Thông tin cơ bản</h4>
+                <div class="required field">
+                    <label>Họ tên</label>
+                    <input type="text" name="fullName" placeholder="Full name">
+                </div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="seven wide required field">
+                            <label>Tên đăng nhập</label>
+                            <input type="text" name="username" placeholder="Username">
+                        </div>
+                        <div class="nine wide required field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                            <div class="ui pointing label">
+                                Email sẽ nhận được thông báo kích hoạt tài khoản
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="ui dividing header">Quyền</h4>
+                <div class="two fields">
+                    <div class="four wide field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="checkboxEditAdmin" name="isAdmin" tabindex="0"
+                                   class="hidden" data-validate="role-checkbox">
+                            <label for="checkboxEditAdmin">Admin</label>
+                        </div>
+                    </div>
+                    <div class="four wide field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="checkboxEditTeacher" name="isTeacher" tabindex="0"
+                                   class="hidden" data-validate="role-checkbox">
+                            <label for="checkboxEditTeacher">Giảng viên</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui blue labeled icon submit button" onclick="validateForm('.form.edit-user')">
+                    <i class="save icon"></i>
+                    Lưu
+                </button>
+                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.edit-user')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
             </div>
         </div>
     </div>
@@ -255,45 +325,102 @@
         </div>
     </div>
     <div class="ui small modal delete-user">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
             Cảnh báo
         </div>
-        <div class="content"></div>
-        <div class="actions">
-            <div class="ui red labeled icon button">
-                <i class="check icon"></i>
-                Có
-            </div>
-            <div class="ui grey labeled icon button" onclick="hideModal('.modal.delete-user')">
-                <i class="close icon"></i>
-                Không
+        <div class="content">
+            <div class="ui form delete-user">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Bạn có chắc chắn muốn xóa người dùng này không?</label>
+                </div>
+                <div class="ui red labeled icon button">
+                    <i class="check icon"></i>
+                    Có
+                </div>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-user')">
+                    <i class="close icon"></i>
+                    Không
+                </div>
             </div>
         </div>
     </div>
     <div class="ui small modal deactivate-user">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
         <div class="ui large header">
             <i class="red ban icon"></i>
             Cảnh báo
         </div>
-        <div class="content"></div>
-        <div class="actions">
-            <div class="ui red labeled icon button">
-                <i class="check icon"></i>
-                Có
-            </div>
-            <div class="ui grey labeled icon button" onclick="hideModal('.modal.deactivate-user')">
-                <i class="close icon"></i>
-                Không
+        <div class="content">
+            <div class="ui form deactivate-user">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>
+                        Bạn có chắc chắn muốn vô hiệu hóa người dùng này không?
+                    </label>
+                </div>
+                <div class="ui red labeled icon button">
+                    <i class="check icon"></i>
+                    Có
+                </div>
+                <div class="ui grey labeled right floated icon button"
+                     onclick="hideModal('.modal.deactivate-user')">
+                    <i class="close icon"></i>
+                    Không
+                </div>
             </div>
         </div>
     </div>
     <div class="ui small modal import-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
         <div class="ui large header">
             <i class="green file excel icon"></i>
             Nhập từ Excel
         </div>
-        <div class="content"></div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <input type="file" name="uploadExcel" hidden>
+                    <div class="ui green labeled icon mini button">
+                        <i class="upload icon"></i>
+                        Chọn tệp Excel
+                    </div>
+                    <div class="ui orange labeled icon mini button">
+                        <i class="download icon"></i>
+                        Tải tệp mẫu
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="eight wide field">
+                        <label>Nhập sinh viên cho lớp:</label>
+                        <div class="ui search">
+                            <div class="ui icon input">
+                                <input class="prompt" type="text" placeholder="Enter class name to search...">
+                                <i class="search icon"></i>
+                            </div>
+                            <div class="results"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th class="one wide">#</th>
+                    <th>Họ tên</th>
+                    <th>MSSV</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
         <div class="actions">
             <div class="ui green labeled icon button">
                 <i class="plus icon"></i>
