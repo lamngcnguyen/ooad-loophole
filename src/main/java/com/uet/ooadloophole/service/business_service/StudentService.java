@@ -8,6 +8,8 @@ import java.util.List;
 
 @Service
 public interface StudentService {
+    List<Student> getAll();
+
     Student getById(String studentId) throws BusinessServiceException;
 
     Student getByStudentId(String studentId) throws BusinessServiceException;

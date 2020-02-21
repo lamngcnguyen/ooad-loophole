@@ -63,10 +63,10 @@ public class OoadLoopholeApplication {
                 }
             }
 
-            Role userRole = roleRepository.findByRole("USER");
+            Role userRole = roleRepository.findByRole("STUDENT");
             if (userRole == null) {
                 Role newUserRole = new Role();
-                newUserRole.setRole("USER");
+                newUserRole.setRole("STUDENT");
                 roleRepository.save(newUserRole);
             }
 

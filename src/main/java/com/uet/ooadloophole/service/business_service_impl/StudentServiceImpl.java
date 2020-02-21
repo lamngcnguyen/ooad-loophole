@@ -30,6 +30,11 @@ public class StudentServiceImpl implements StudentService {
     private RoleService roleService;
 
     @Override
+    public List<Student> getAll() {
+        return studentRepository.findAll();
+    }
+
+    @Override
     public Student getById(String id) throws BusinessServiceException {
         Student result = studentRepository.findBy_id(id);
         if (result == null) {

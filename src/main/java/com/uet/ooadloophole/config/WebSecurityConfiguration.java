@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -65,12 +66,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/classes/**").hasAuthority("TEACHER")
                 .antMatchers("/api/students/**").hasAuthority("TEACHER")
                 .antMatchers("/api/semesters/**").hasAnyAuthority("ADMIN", "TEACHER")
-                .antMatchers("/api/topics/**").hasAnyAuthority("TEACHER", "USER", "ADMIN")
-                .antMatchers("/api/files/download").hasAnyAuthority("ADMIN", "TEACHER", "USER")
-                .antMatchers("/api/files/upload/repo").hasAuthority("USER")
+                .antMatchers("/api/topics/**").hasAnyAuthority("TEACHER", "STUDENT", "ADMIN")
+                .antMatchers("/api/files/download").hasAnyAuthority("ADMIN", "TEACHER", "STUDENT")
+                .antMatchers("/api/files/upload/repo").hasAuthority("STUDENT")
                 .antMatchers("/api/files/upload/spec").hasAuthority("TEACHER")
-                .antMatchers("/api/groups/**").hasAnyAuthority("TEACHER", "USER", "ADMIN")
-                .antMatchers("/student/**").hasAnyAuthority("USER", "TEACHER")
+                .antMatchers("/api/groups/**").hasAnyAuthority("TEACHER", "STUDENT", "ADMIN")
+                .antMatchers("/student/**").hasAnyAuthority("STUDENT", "TEACHER")
                 .antMatchers("/register/**", "/", "/login").permitAll()
                 .antMatchers("/reset", "/resetAccount**").permitAll()
                 .antMatchers("/activateAccount**").permitAll()
@@ -96,10 +97,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .successHandler(customAuthenticationSuccessHandler)
 ////                .failureHandler(authenticationFailureHandler())
                 .and()
-                .logout()
+                .logout().deleteCookies("JSESSIONID")
                 .permitAll()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/login")
+                .and()
+                .rememberMe().key("@]3eVHcKP~/ijFq6=q'PDonv=b;/[-%A\\}_").tokenValiditySeconds(7*24*60*60);
 //                .logoutSuccessHandler(logoutSuccessHandler());
     }
 

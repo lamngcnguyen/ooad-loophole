@@ -131,10 +131,10 @@ public class ApiUserController {
 
     @ResponseBody
     @RequestMapping(value = "/{id}/status", method = RequestMethod.POST)
-    private ResponseEntity<String> setStatus(@PathVariable String id, @RequestParam boolean status) {
+    private ResponseEntity<Object> setStatus(@PathVariable String id, @RequestParam boolean status) {
         try {
-            userService.setStatus(id, status);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            User user = userService.setStatus(id, status);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

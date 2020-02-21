@@ -1,13 +1,17 @@
 package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
 import com.uet.ooadloophole.controller.interface_model.IUser;
 import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.RoleService;
+import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,10 @@ import java.util.Set;
 public class InterfaceModelConverterService {
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private ClassService classService;
+    @Autowired
+    private UserService userService;
 
     public User convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -43,5 +51,20 @@ public class InterfaceModelConverterService {
         student.setStudentId(iStudent.getStudentId());
         student.setClassId(iStudent.getClassId());
         return student;
+    }
+
+    public DTOStudent convertToDTOStudent(Student student) throws BusinessServiceException {
+        DTOStudent dtoStudent = new DTOStudent();
+        Class ooadClass = classService.getById(student.getClassId());
+        User user = userService.getById(student.getUserId());
+        dtoStudent.set_id(student.get_id());
+        dtoStudent.setStudentId(student.getStudentId());
+        dtoStudent.setClassId(student.getClassId());
+        dtoStudent.setClassName(ooadClass.getClassName());
+        dtoStudent.setUserId(user.get_id());
+        dtoStudent.setFullName(user.getFullName());
+        dtoStudent.setEmail(user.getEmail());
+        dtoStudent.setActive(user.isActive());
+        return dtoStudent;
     }
 }

@@ -1,6 +1,9 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
+import com.uet.ooadloophole.controller.interface_model.ListJsonWrapper;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.InterfaceModelConverterService;
@@ -12,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,6 +27,8 @@ public class ApiStudentController {
     private StudentService studentService;
     @Autowired
     private UserService userService;
+
+    private Gson gson = new Gson();
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getStudentById(@PathVariable String id) {
@@ -77,7 +83,7 @@ public class ApiStudentController {
     public ResponseEntity<String> deleteStudent(@PathVariable String id) {
         try {
             studentService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -87,5 +93,19 @@ public class ApiStudentController {
     public ResponseEntity<List<Student>> importStudents(@RequestBody List<Student> students) {
         List<Student> newStudents = studentService.importStudents(students);
         return ResponseEntity.status(HttpStatus.OK).body(newStudents);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllStudents() {
+        List<DTOStudent> dtoStudents = new ArrayList<>();
+        studentService.getAll().forEach(student -> {
+            try {
+                dtoStudents.add(interfaceModelConverterService.convertToDTOStudent(student));
+            } catch (BusinessServiceException e) {
+                e.printStackTrace();
+                //TODO: add logger here
+            }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ListJsonWrapper(dtoStudents)));
     }
 }

@@ -15,6 +15,7 @@ public class User {
     @DBRef
     private Set<Role> roles;
     private boolean active;
+    private String phoneNumber;
 
     public User() {
 
@@ -87,5 +88,13 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
