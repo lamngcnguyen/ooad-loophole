@@ -134,6 +134,11 @@
             <artifactId>webjars-locator</artifactId>
             <version>0.30</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>github-com-SheetJS-js-xlsx</artifactId>
+            <version>v0.11.17</version>
+        </dependency>
     </dependencies>
 
     <build>

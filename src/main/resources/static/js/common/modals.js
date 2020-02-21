@@ -18,14 +18,10 @@ function clearForm(el) {
     $(el).form('clear');
 }
 
-function submitForm() {
-    
-}
-
 function showDimmer(el) {
-    $(el + ' .dimmer').addClass('active');
+    $(`${el} .dimmer`).addClass('active');
 }
 
 function hideDimmer(el) {
-    $(el + ' .dimmer').removeClass('active');
+    $(`${el} .dimmer`).removeClass('active');
 }
