@@ -65,6 +65,11 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    public List<Student> getAllStudents(String classId) {
+        return studentService.getByClass(classId);
+    }
+
+    @Override
     public void delete(String classId) throws BusinessServiceException {
         try {
             Class classToDelete = getById(classId);

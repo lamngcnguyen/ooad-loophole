@@ -1,28 +1,35 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.DTOStudent;
+import com.uet.ooadloophole.controller.interface_model.ListJsonWrapper;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.service.InterfaceModelConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/classes")
 public class ApiClassController {
     @Autowired
     private SecureUserDetailService secureUserDetailService;
     @Autowired
     private ClassService classService;
+    @Autowired
+    private InterfaceModelConverterService interfaceModelConverterService;
 
-    @ResponseBody
+    private Gson gson = new Gson();
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
@@ -35,7 +42,6 @@ public class ApiClassController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<Object> getClassesByTeacherId(@CookieValue String userId) {
         try {
@@ -47,7 +53,8 @@ public class ApiClassController {
         }
     }
 
-    @ResponseBody
+
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteClass(@PathVariable String id) {
         try {
@@ -58,7 +65,20 @@ public class ApiClassController {
         }
     }
 
-    @ResponseBody
+    @RequestMapping(value = "/{classId}/students", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllStudentsByClass(@PathVariable String classId) {
+        List<DTOStudent> dtoStudents = new ArrayList<>();
+        classService.getAllStudents(classId).forEach(student -> {
+            try {
+                dtoStudents.add(interfaceModelConverterService.convertToDTOStudent(student));
+            } catch (BusinessServiceException e) {
+                //TODO: add logger here
+                e.printStackTrace();
+            }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ListJsonWrapper(dtoStudents)));
+    }
+
     @RequestMapping(value = "/{id}/students/import", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Object> importStudents(@PathVariable String id, @RequestBody List<Student> students) {
         try {
