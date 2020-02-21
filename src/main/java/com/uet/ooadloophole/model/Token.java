@@ -15,12 +15,12 @@ public class Token {
     private String id;
     private String tokenString;
     private Date expiryDate;
-    private User user;
+    private String userId;
 
-    public Token(User user) {
+    public Token(String userId) {
         tokenString = UUID.randomUUID().toString();
         expiryDate = calculateExpiryDate();
-        this.user = user;
+        this.userId = userId;
     }
 
     private Date calculateExpiryDate() {
@@ -54,12 +54,12 @@ public class Token {
         this.expiryDate = expiryDate;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
 

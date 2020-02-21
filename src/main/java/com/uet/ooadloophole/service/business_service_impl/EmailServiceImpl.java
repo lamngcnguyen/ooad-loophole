@@ -22,7 +22,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendActivationEmail(User user) throws BusinessServiceException {
         try {
-            String token = tokenService.createToken(user);
+            String token = tokenService.createToken(user.get_id());
             String recipientAddress = user.getEmail();
 
             String subject = "Kích hoạt tài khoản OOAD Loophole";
@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendResetPasswordEmail(User user) throws BusinessServiceException {
         try {
-            String token = tokenService.createToken(user);
+            String token = tokenService.createToken(user.get_id());
             String recipientAddress = user.getEmail();
 
             String subject = "Đặt lại mật khẩu tài khoản OOAD Loophole";

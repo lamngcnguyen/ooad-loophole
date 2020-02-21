@@ -15,8 +15,8 @@ public class TokenServiceImpl implements TokenService {
     private TokenRepository tokenRepository;
 
     @Override
-    public String createToken(User user) {
-        Token newToken = new Token(user);
+    public String createToken(String userId) {
+        Token newToken = new Token(userId);
         tokenRepository.save(newToken);
         return newToken.getTokenString();
     }
