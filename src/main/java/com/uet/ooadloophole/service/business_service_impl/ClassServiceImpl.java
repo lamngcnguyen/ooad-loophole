@@ -132,4 +132,9 @@ public class ClassServiceImpl implements ClassService {
         });
         return newStudentList;
     }
+
+    @Override
+    public List<Class> searchByName(String className) {
+        return classRepository.findAllByClassNameLikeIgnoreCase(className);
+    }
 }

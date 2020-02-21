@@ -30,7 +30,7 @@ public interface UserService {
 
     void delete(String userId) throws BusinessServiceException;
 
-    void setPassword(String userEmail, String password) throws BusinessServiceException;
+    void setPassword(String userId, String password) throws BusinessServiceException;
 
 //    void changePassword(String userId, String newPassword) throws BusinessServiceException;
 

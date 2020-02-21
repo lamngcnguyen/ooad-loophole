@@ -24,4 +24,6 @@ public interface ClassService {
     Class update(Class ooadClass) throws BusinessServiceException;
 
     List<Student> importStudents(String classId, List<Student> payload);
+
+    List<Class> searchByName(String className);
 }

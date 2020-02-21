@@ -58,12 +58,14 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/activateAccount", method = RequestMethod.GET)
+    @RequestMapping(value = "/activate-account", method = RequestMethod.GET)
     private ModelAndView activateAccount(@RequestParam String token) {
-        if (tokenService.isValid(token)) {
+//        if (tokenService.isValid(token)) {
+        if(true) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
             model.setViewName("activate");
+            model.addObject("userId", tokenService.getByTokenString(token).getUser().get_id());
             return model;
         } else {
             //TODO: create error view

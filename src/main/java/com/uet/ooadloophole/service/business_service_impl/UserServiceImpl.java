@@ -149,9 +149,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void setPassword(String userEmail, String password) throws BusinessServiceException {
+    public void setPassword(String userId, String password) throws BusinessServiceException {
         try {
-            User user = getByEmail(userEmail);
+            User user = getById(userId);
             user.setPassword(bCryptPasswordEncoder.encode(password));
             userRepository.save(user);
         } catch (BusinessServiceException e) {

@@ -46,7 +46,6 @@ public class ApiUserController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/changePassword", method = RequestMethod.PUT)
     private ResponseEntity<String> changePassword(String oldPassword, String password) {
         try {
@@ -62,7 +61,6 @@ public class ApiUserController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     private ResponseEntity<String> resetPassword(String token, String email, String password) {
         try {
@@ -78,12 +76,12 @@ public class ApiUserController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/activateAccount", method = RequestMethod.POST)
-    private ResponseEntity<String> activateAccount(String token, String email, String password) {
+    @RequestMapping(value = "/activate-account", method = RequestMethod.POST)
+    private ResponseEntity<String> activateAccount(String token, String userId, String password) {
         try {
             if (tokenService.isValid(token)) {
-                userService.setPassword(email, password);
+                userService.setPassword(userId, password);
+                userService.setStatus(userId, true);
                 tokenService.deleteActiveToken(tokenService.getByTokenString(token));
                 return ResponseEntity.status(HttpStatus.OK).build();
             } else {
@@ -94,7 +92,6 @@ public class ApiUserController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.POST)
     private ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
         try {
@@ -106,7 +103,6 @@ public class ApiUserController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     private ResponseEntity<Object> updateUser(@PathVariable String id, @RequestBody IUser iUser) {
         try {
@@ -118,7 +114,6 @@ public class ApiUserController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     private ResponseEntity<String> deleteUser(@PathVariable String id) {
         try {
@@ -129,7 +124,6 @@ public class ApiUserController {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/{id}/status", method = RequestMethod.POST)
     private ResponseEntity<Object> setStatus(@PathVariable String id, @RequestParam boolean status) {
         try {

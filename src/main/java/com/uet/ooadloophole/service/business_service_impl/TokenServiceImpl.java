@@ -1,7 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.TokenRepository;
-import com.uet.ooadloophole.database.UserRepository;
 import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_service.TokenService;
@@ -14,8 +13,6 @@ import java.util.Calendar;
 public class TokenServiceImpl implements TokenService {
     @Autowired
     private TokenRepository tokenRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     public String createToken(User user) {
@@ -40,15 +37,8 @@ public class TokenServiceImpl implements TokenService {
         if (token == null) {
             return false;
         } else {
-            User user = token.getUser();
             Calendar calendar = Calendar.getInstance();
-            if ((token.getExpiryDate().getTime() - calendar.getTime().getTime()) <= 0) {
-                return false;
-            } else {
-                user.setActive(true);
-                userRepository.save(user);
-                return true;
-            }
+            return (token.getExpiryDate().getTime() - calendar.getTime().getTime()) > 0;
         }
     }
 }

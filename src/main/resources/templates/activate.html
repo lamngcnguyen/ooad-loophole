@@ -1,10 +1,13 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Đăng nhập</title>
+    <meta charset="UTF-8">
+    <title>Kích hoạt tài khoản</title>
     <link rel="stylesheet" th:href="@{/webjars/Semantic-UI/2.4.1/semantic.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}">
     <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/Semantic-UI/2.4.1/semantic.js}"></script>
+    <script type="text/javascript" th:src="@{/js/activate.js}"></script>
 </head>
 <body>
 <div class="ui middle aligned center aligned black grid">
@@ -13,17 +16,13 @@
             <h3 class="ui image header">
                 <img th:src="@{/images/logo.png}" class="tiny image">
                 <div class="content">
-                    Đăng nhập OOAD Loophole
+                    Kích hoạt tài khoản OOAD Loophole
                 </div>
             </h3>
-            <form class="ui large form" action="/login" method="post">
+            <form class="ui large form">
+                <input type="hidden" name="token" th:value="${#httpServletRequest.getParameter('token')}">
+                <input type="hidden" name="userId" th:value="${userId}">
                 <div class="ui stacked segment">
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="user icon"></i>
-                            <input type="text" name="username" placeholder="Tên đăng nhập">
-                        </div>
-                    </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
@@ -31,14 +30,14 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="remember-me">
-                            <label>Remember Me</label>
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="confirmPassword" placeholder="Nhập lại mật khẩu">
                         </div>
                     </div>
-                    <button class="ui fluid large blue submit button" type="submit">Đăng nhập</button>
+                    <div class="ui error message"></div>
+                    <button class="ui fluid large green submit button" type="button">Kích hoạt</button>
                 </div>
-                <div class="ui error visible message">Sai tên đăng nhập hoặc mật khẩu</div>
             </form>
         </div>
     </div>

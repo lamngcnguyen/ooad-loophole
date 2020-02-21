@@ -97,4 +97,11 @@ public class ApiClassController {
         User user = secureUserDetailService.getCurrentUser();
         return !user.hasRole("teacher");
     }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    private ResponseEntity<List<Class>> searchClass(@RequestParam String keyword) {
+        List<Class> classes = classService.searchByName(keyword);
+        HttpStatus httpStatus = (classes.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
+        return ResponseEntity.status(httpStatus).body(classes);
+    }
 }
