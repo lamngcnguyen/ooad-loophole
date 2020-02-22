@@ -44,14 +44,14 @@ public class ApiClassController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<Object> getClassesByTeacherId(@CookieValue String userId) {
+    @RequestMapping(value = "/teacher/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getClassesByTeacherId(@PathVariable String id) {
         try {
             if (userIsNotTeacher()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             } else {
                 List<DTOClass> dtoClasses = new ArrayList<>();
-                classService.getByTeacherId(userId).forEach(ooadClass -> {
+                classService.getByTeacherId(id).forEach(ooadClass -> {
                     try {
                         dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
                     } catch (BusinessServiceException e) {
@@ -66,7 +66,7 @@ public class ApiClassController {
         }
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<Object> getClasses() {
         List<DTOClass> dtoClasses = new ArrayList<>();
         classService.getAll().forEach(ooadClass -> {
