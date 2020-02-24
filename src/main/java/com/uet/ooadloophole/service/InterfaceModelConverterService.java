@@ -1,10 +1,7 @@
 package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.config.Constant;
-import com.uet.ooadloophole.controller.interface_model.DTOClass;
-import com.uet.ooadloophole.controller.interface_model.DTOStudent;
-import com.uet.ooadloophole.controller.interface_model.IStudent;
-import com.uet.ooadloophole.controller.interface_model.IUser;
+import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -15,6 +12,8 @@ import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,6 +52,15 @@ public class InterfaceModelConverterService {
         student.setStudentId(iStudent.getStudentId());
         student.setClassId(iStudent.getClassId());
         return student;
+    }
+
+    public Semester convertSemesterInterface(ISemester iSemester) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
+        Semester semester = new Semester();
+        semester.setName(iSemester.getName());
+        semester.setStartDate(LocalDate.parse(iSemester.getStartDate(), formatter));
+        semester.setEndDate(LocalDate.parse(iSemester.getEndDate(), formatter));
+        return semester;
     }
 
     public DTOStudent convertToDTOStudent(Student student) throws BusinessServiceException {

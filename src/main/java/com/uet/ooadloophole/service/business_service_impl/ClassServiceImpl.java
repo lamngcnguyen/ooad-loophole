@@ -54,17 +54,7 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public Class create(Class ooadClass) {
-        classRepository.save(ooadClass);
-        return ooadClass;
-    }
-
-    @Override
-    public Class create(String name, String teacherId, String semesterId, int scheduledDayOfWeek) {
-        Class ooadClass = new Class();
-        ooadClass.setClassName(name);
-        ooadClass.setTeacherId(teacherId);
-        ooadClass.setSemesterId(semesterId);
-        ooadClass.setScheduledDayOfWeek(scheduledDayOfWeek);
+        ooadClass.setActive(true);
         classRepository.save(ooadClass);
         return ooadClass;
     }

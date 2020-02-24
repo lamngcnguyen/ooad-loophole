@@ -85,52 +85,48 @@
                     </div>
                     <div class="required field nine wide">
                         <label>Giảng viên</label>
-                        <div class="ui selection dropdown">
-                            <input type="hidden" name="teacher">
+                        <div class="ui selection dropdown teacher">
+                            <input type="hidden" name="teacherId">
                             <i class="dropdown icon"></i>
                             <div class="default text">Chọn giảng viên</div>
-                            <div class="menu">
-                                <div class="item" data-value="teacher2">abc</div>
-                                <div class="item" data-value="teacher1">def</div>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="fields">
                     <div class="required field seven wide">
                         <label>Học kì</label>
-                        <div class="ui selection dropdown">
-                            <input type="hidden" name="semester">
+                        <div class="ui selection dropdown semester">
+                            <input type="hidden" name="semesterId">
                             <i class="dropdown icon"></i>
                             <div class="default text">Chọn học kì</div>
-                            <div class="menu">
-                                <div class="item" data-value="semester1">2019</div>
-                                <div class="item" data-value="semester1">2020</div>
-                            </div>
                         </div>
                     </div>
                     <div class="required field nine wide">
                         <label>Ngày học</label>
-                        <div class="ui selection dropdown">
-                            <input type="hidden" name="semester">
+                        <div class="ui selection dropdown dayOfWeek">
+                            <input type="hidden" name="scheduledDayOfWeek">
                             <i class="dropdown icon"></i>
                             <div class="default text">Chọn ngày học</div>
                             <div class="menu">
-                                <div class="item" data-value="semester1">2019</div>
-                                <div class="item" data-value="semester1">2020</div>
+                                <div class="item" data-value="1">Thứ 2</div>
+                                <div class="item" data-value="2">Thứ 3</div>
+                                <div class="item" data-value="3">Thứ 4</div>
+                                <div class="item" data-value="4">Thứ 5</div>
+                                <div class="item" data-value="5">Thứ 6</div>
+                                <div class="item" data-value="6">Thứ 7</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="ui error message"></div>
-                <button class="ui green labeled icon submit button" onclick="validateForm('.form.create-class')">
-                    <i class="plus icon"></i>
-                    Tạo
-                </button>
-                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-class')">
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-class')">
                     <i class="close icon"></i>
                     Hủy
                 </div>
+                <button class="ui right floated green labeled icon submit button" onclick="validateForm('.form.create-class')">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
             </div>
         </div>
     </div>
@@ -249,8 +245,8 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/admin/user/api.js}"></script>
-    <script type="text/javascript" th:src="@{/js/admin/user/class.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/class/class.js}"></script>
 </div>
 </body>
 </html>

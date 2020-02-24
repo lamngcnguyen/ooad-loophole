@@ -7,10 +7,17 @@ import com.uet.ooadloophole.service.business_service.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SemesterServiceImpl implements SemesterService {
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Override
+    public List<Semester> getAll() {
+        return semesterRepository.findAll();
+    }
 
     @Override
     public Semester getById(String id) throws BusinessServiceException {
