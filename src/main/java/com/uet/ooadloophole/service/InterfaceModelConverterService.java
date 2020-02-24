@@ -90,4 +90,12 @@ public class InterfaceModelConverterService {
         dtoClass.setActive(ooadClass.isActive());
         return dtoClass;
     }
+
+    public Student convertToStudent(IStudent iStudent) {
+        Student student = new Student();
+        student.setStudentId(iStudent.getStudentId());
+        student.setFullName(iStudent.getFullName());
+        student.setClassId(iStudent.getClassId());
+        return student;
+    }
 }

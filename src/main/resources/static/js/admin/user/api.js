@@ -5,6 +5,7 @@ $.fn.api.settings.api = {
     'set user active': '/api/users/{id}/status?active={isActive}',
     'create student': '/api/students',
     'update student': '/api/students/{id}',
+    'import student': '/api/students/import',
     'search class': '/api/classes/search?keyword={query}',
     'get classes': '/api/classes',
 };

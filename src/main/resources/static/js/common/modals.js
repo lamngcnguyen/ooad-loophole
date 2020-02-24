@@ -6,10 +6,6 @@ function hideModal(el) {
     $(el).modal('hide')
 }
 
-function validateForm(el) {
-    $(el).form('is valid');
-}
-
 function resetForm(el) {
     $(el).form('reset');
 }
