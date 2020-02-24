@@ -8,8 +8,6 @@ public class Class {
     private String className;
     private String teacherId; //Points to User
     private String semesterId;
-    //The day of week the class supposed to take place
-    //This variable's name might be changed later
     private int scheduledDayOfWeek;
     private int limit;
     private boolean active;
