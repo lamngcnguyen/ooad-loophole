@@ -7,9 +7,6 @@ $.fn.api.settings.api = {
     'update student': '/api/students/{id}',
     'search class': '/api/classes/search?keyword={query}',
     'get classes': '/api/classes',
-    'get teachers': '/api/users/role/teacher',
-    'get semesters': '/api/semesters/',
-    'create class': '/api/classes/'
 };
 
 $.fn.form.settings.rules.oneRoleClaimed = function (value, formId) {

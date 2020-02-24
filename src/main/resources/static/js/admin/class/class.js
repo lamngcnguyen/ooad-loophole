@@ -34,7 +34,27 @@ const classTable = $(".ui.table").DataTable({
     ],
     columnDefs: [
         {targets: [0, 1, -1], className: "center aligned"}
-    ]
+    ],
+    createdRow: function (row) {
+        const actionCell = $(row).children().eq(1);
+        const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
+            .click(function () {
+                showModal('.modal.edit-class');
+            });
+        const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
+            .click(function () {
+                showModal('.modal.delete-class');
+            });
+        const btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
+            .click(function () {
+                showModal('.modal.deactivate-class');
+            });
+        actionCell.append(
+            btnEdit, $('<span>&nbsp</span>'),
+            btnDeactivate, $('<span>&nbsp</span>'),
+            btnDelete
+        );
+    }
 });
 
 $('.form.create-class').form({
@@ -59,6 +79,12 @@ $('.form.create-class').form({
                 classTable.ajax.reload();
             }
         })
+    },
+    fields: {
+        className: validationRules.className,
+        teacherId: validationRules.teacherId,
+        semesterId: validationRules.semesterId,
+        scheduledDayOfWeek: validationRules.scheduledDayOfWeek
     }
 });
 
