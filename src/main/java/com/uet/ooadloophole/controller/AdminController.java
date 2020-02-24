@@ -44,6 +44,12 @@ public class AdminController {
         return getAdminPage(pageTitle, new BodyFragment("admin/site-config", "body-content"));
     }
 
+    @RequestMapping(value = "/semester", method = RequestMethod.GET)
+    public ModelAndView getSemesterManagementView() {
+        String pageTitle = "Quản lý học kì";
+        return getAdminPage(pageTitle, new BodyFragment("admin/semester", "body-content"));
+    }
+
     private ModelAndView getAdminPage(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {

@@ -55,10 +55,9 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="three wide">Thao tác</th>
-                                <th>Tên lớp</th>
-                                <th>Giảng viên</th>
-                                <th>Học kì</th>
-                                <th class="one wide">Đang hoạt động</th>
+                                <th>Tên học kì</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
                             </tr>
                             </thead>
                         </table>
@@ -68,7 +67,7 @@
         </div>
     </div>
 
-    <div class="ui small modal create-class">
+    <div class="ui small modal create-semester">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -77,11 +76,11 @@
             Thêm mới
         </div>
         <div class="content">
-            <div class="ui form create-class">
+            <div class="ui form create-semester">
                 <div class="fields">
                     <div class="required field seven wide">
-                        <label>Tên lớp</label>
-                        <input type="text" name="className" placeholder="Class name">
+                        <label>Tên học kì</label>
+                        <input type="text" name="className" placeholder="Semester name">
                     </div>
                     <div class="required field nine wide">
                         <label>Giảng viên</label>
@@ -131,7 +130,7 @@
         </div>
     </div>
 
-    <div class="ui small modal edit-class">
+    <div class="ui small modal edit-semester">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -140,61 +139,59 @@
             Chỉnh sửa
         </div>
         <div class="content">
-            <div class="ui form create-class">
-                <div class="fields">
-                    <div class="required field seven wide">
-                        <label>Tên lớp</label>
-                        <input type="text" name="className" placeholder="Class name">
-                    </div>
-                    <div class="required field nine wide">
-                        <label>Giảng viên</label>
-                        <div class="ui selection dropdown teacher">
-                            <input type="hidden" name="teacherId">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Chọn giảng viên</div>
-                        </div>
-                    </div>
+            <div class="ui form edit-semester">
+                <input type="hidden" name="id">
+                <h4 class="ui dividing header">Thông tin cơ bản</h4>
+                <div class="required field">
+                    <label>Họ tên</label>
+                    <input type="text" name="fullName" placeholder="Full name">
                 </div>
-                <div class="fields">
-                    <div class="required field seven wide">
-                        <label>Học kì</label>
-                        <div class="ui selection dropdown semester">
-                            <input type="hidden" name="semesterId">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Chọn học kì</div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="seven wide required field">
+                            <label>Tên đăng nhập</label>
+                            <input type="text" name="username" placeholder="Username">
                         </div>
-                    </div>
-                    <div class="required field nine wide">
-                        <label>Ngày học</label>
-                        <div class="ui selection dropdown dayOfWeek">
-                            <input type="hidden" name="scheduledDayOfWeek">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Chọn ngày học</div>
-                            <div class="menu">
-                                <div class="item" data-value="1">Thứ 2</div>
-                                <div class="item" data-value="2">Thứ 3</div>
-                                <div class="item" data-value="3">Thứ 4</div>
-                                <div class="item" data-value="4">Thứ 5</div>
-                                <div class="item" data-value="5">Thứ 6</div>
-                                <div class="item" data-value="6">Thứ 7</div>
+                        <div class="nine wide required field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                            <div class="ui pointing label">
+                                Email sẽ nhận được thông báo kích hoạt tài khoản
                             </div>
                         </div>
                     </div>
                 </div>
+                <h4 class="ui dividing header">Quyền</h4>
+                <div class="two fields">
+                    <div class="four wide field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="checkboxEditAdmin" name="isAdmin" tabindex="0"
+                                   class="hidden" data-validate="role-checkbox">
+                            <label for="checkboxEditAdmin">Admin</label>
+                        </div>
+                    </div>
+                    <div class="four wide field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" id="checkboxEditTeacher" name="isTeacher" tabindex="0"
+                                   class="hidden" data-validate="role-checkbox">
+                            <label for="checkboxEditTeacher">Giảng viên</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="ui error message"></div>
-                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-class')">
+                <button class="ui blue labeled icon submit button">
+                    <i class="save icon"></i>
+                    Lưu
+                </button>
+                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.edit-semester')">
                     <i class="close icon"></i>
                     Hủy
                 </div>
-                <button class="ui right floated green labeled icon submit button">
-                    <i class="plus icon"></i>
-                    Thêm
-                </button>
             </div>
         </div>
     </div>
 
-    <div class="ui small modal delete-class">
+    <div class="ui small modal delete-semester">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -203,7 +200,7 @@
             Cảnh báo
         </div>
         <div class="content">
-            <div class="ui form delete-class">
+            <div class="ui form delete-semester">
                 <input type="hidden" name="id">
                 <div class="field">
                     <label>Bạn có chắc chắn muốn xóa lớp học này không?</label>
@@ -212,14 +209,14 @@
                     <i class="check icon"></i>
                     Có
                 </div>
-                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-class')">
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-semester')">
                     <i class="close icon"></i>
                     Không
                 </div>
             </div>
         </div>
     </div>
-    <div class="ui small modal deactivate-class">
+    <div class="ui small modal deactivate-semester">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -228,7 +225,7 @@
             Cảnh báo
         </div>
         <div class="content">
-            <div class="ui form deactivate-class">
+            <div class="ui form deactivate-semester">
                 <input type="hidden" name="id">
                 <div class="field">
                     <label>
@@ -240,15 +237,15 @@
                     Có
                 </div>
                 <div class="ui grey labeled right floated icon button"
-                     onclick="hideModal('.modal.deactivate-class')">
+                     onclick="hideModal('.modal.deactivate-semester')">
                     <i class="close icon"></i>
                     Không
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/admin/class/api.js}"></script>
-    <script type="text/javascript" th:src="@{/js/admin/class/class.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/semester/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/semester/semester.js}"></script>
 </div>
 </body>
 </html>
