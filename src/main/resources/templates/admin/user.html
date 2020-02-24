@@ -76,9 +76,9 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="three wide">Thao tác</th>
-                                <th>Họ tên</th>
-                                <th>Tên đăng nhập</th>
-                                <th>Email</th>
+                                <th class="four wide">Họ tên</th>
+                                <th class="three wide">Tên đăng nhập</th>
+                                <th class="four wide">Email</th>
                                 <th class="one wide">Đang hoạt động</th>
                             </tr>
                             </thead>
@@ -131,10 +131,10 @@
                             <thead>
                             <tr>
                                 <th class="one wide">#</th>
-                                <th class="two wide">Thao tác</th>
-                                <th>Họ tên</th>
-                                <th>MSSV</th>
-                                <th>Lớp</th>
+                                <th class="three wide">Thao tác</th>
+                                <th class="three wide">MSSV</th>
+                                <th class="four wide">Họ tên</th>
+                                <th class="four wide">Lớp</th>
                                 <th class="one wide">Đang hoạt động</th>
                             </tr>
                             </thead>
@@ -195,14 +195,14 @@
                     </div>
                 </div>
                 <div class="ui error message"></div>
-                <button class="ui green labeled icon submit button" onclick="validateForm('.form.create-user')">
-                    <i class="plus icon"></i>
-                    Tạo
-                </button>
-                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-user')">
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-user')">
                     <i class="close icon"></i>
                     Hủy
                 </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
             </div>
         </div>
     </div>
@@ -252,14 +252,14 @@
                     </div>
                 </div>
                 <div class="ui error message"></div>
-                <button class="ui blue labeled icon submit button" onclick="validateForm('.form.edit-user')">
-                    <i class="save icon"></i>
-                    Lưu
-                </button>
-                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.edit-user')">
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-user')">
                     <i class="close icon"></i>
                     Hủy
                 </div>
+                <button class="ui right floated blue labeled icon submit button">
+                    <i class="save icon"></i>
+                    Lưu
+                </button>
             </div>
         </div>
     </div>
@@ -294,14 +294,14 @@
                     </div>
                 </div>
                 <div class="ui error message"></div>
-                <button class="ui green labeled icon submit button" onclick="validateForm('.form.create-student')">
-                    <i class="plus icon"></i>
-                    Tạo
-                </button>
-                <div class="ui right floated grey labeled icon button" onclick="hideModal('.modal.create-student')">
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-student')">
                     <i class="close icon"></i>
                     Hủy
                 </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
             </div>
         </div>
     </div>
@@ -375,7 +375,7 @@
             </div>
         </div>
     </div>
-    <div class="ui small modal import-student">
+    <div class="ui large modal import-student">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -384,10 +384,10 @@
             Nhập từ Excel
         </div>
         <div class="content">
-            <div class="ui form">
+            <div class="ui form import-student">
                 <div class="field">
                     <input type="file" name="uploadExcel" hidden>
-                    <div class="ui green labeled icon mini button">
+                    <div class="ui green labeled icon mini button" onclick="openImportStudentDialog()">
                         <i class="upload icon"></i>
                         Chọn tệp Excel
                     </div>
@@ -406,49 +406,33 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <table class="ui celled table">
-                <thead>
-                <tr>
-                    <th class="one wide">#</th>
-                    <th>Họ tên</th>
-                    <th>MSSV</th>
-                </tr>
-                </thead>
-            </table>
-        </div>
-        <div class="actions">
-            <div class="ui green labeled icon button">
-                <i class="plus icon"></i>
-                Lưu
-            </div>
-            <div class="ui grey labeled icon button" onclick="hideModal('.modal.import-student')">
-                <i class="close icon"></i>
-                Hủy
+                <div class="field">
+                    <table class="ui small celled table import-student">
+                        <thead>
+                        <tr>
+                            <th class="one wide">#</th>
+                            <th class="two wide">MSSV</th>
+                            <th>Họ tên</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.import-student')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <div class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </div>
             </div>
         </div>
     </div>
     <script type="text/javascript" th:src="@{/js/admin/user/api.js}"></script>
     <script type="text/javascript" th:src="@{/js/admin/user/user.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/github-com-SheetJS-js-xlsx/v0.11.17/dist/shim.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/github-com-SheetJS-js-xlsx/v0.11.17/dist/xlsx.full.min.js}"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.5/dist/xlsx.full.min.js"></script>
     <script type="text/javascript" th:src="@{/js/admin/user/import.js}"></script>
-    <script>
-        function createStudentImportTemplate() {
-            var wb = XLSX.utils.book_new();
-            var ws_name = "students";
-            var ws_data = [
-                ['#', 'Full name', 'Student ID', 'Email', 'Group'],
-                ['1', 'Phong Ha Tuan', '16020263', '16020263@vnu.edu.vn', 'F & Đồng bọn'],
-                ['2', 'Nguyen Ngoc Lam', '16022408', '16022408@vnu.edu.vn', 'F & Đồng bọn']
-            ];
-
-
-            var ws = XLSX.utils.aoa_to_sheet(ws_data);
-            XLSX.utils.book_append_sheet(wb, ws, ws_name);
-            XLSX.writeFile(wb, 'students.xlsx');
-        }
-    </script>
 </div>
 </body>
 </html>

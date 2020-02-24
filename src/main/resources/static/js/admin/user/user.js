@@ -1,9 +1,9 @@
-let rowIndex = 0;
+var userRowIndex = 0;
 const userTable = $(".teacher-admin .ui.table").DataTable({
     ordering: true,
     searching: true,
     paging: true,
-    autoWidth: true,
+    autoWidth: false,
     lengthChange: true,
     ajax: "/api/users/role/admin",
     sDom: stringDom,
@@ -12,7 +12,7 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
         {
             data: null,
             render: function () {
-                return ++rowIndex;
+                return ++userRowIndex;
             }
         },
         {
@@ -71,12 +71,12 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
     }
 });
 
-rowIndex = 0;
+var studentRowIndex = 0;
 const studentTable = $(".student .ui.table").DataTable({
     ordering: true,
     searching: true,
     paging: true,
-    autoWidth: true,
+    autoWidth: false,
     lengthChange: true,
     ajax: "/api/students",
     sDom: stringDom,
@@ -85,7 +85,7 @@ const studentTable = $(".student .ui.table").DataTable({
         {
             data: null,
             render: function () {
-                return ++rowIndex;
+                return ++studentRowIndex;
             }
         },
         {
@@ -94,8 +94,8 @@ const studentTable = $(".student .ui.table").DataTable({
                 return "";
             }
         },
-        {data: "fullName"},
         {data: "studentId"},
+        {data: "fullName"},
         {data: "className"},
         {
             data: "active",
@@ -134,7 +134,7 @@ $('.form.create-user').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.create-user');
         correctFormData('.form.create-user', data);
-        $('.create-user .form').api({
+        $('.form.create-user').api({
             action: 'create user',
             on: 'now',
             method: 'post',
@@ -144,11 +144,13 @@ $('.form.create-user').form({
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
             },
             onFailure: function (response) {
+                hideDimmer('.modal.edit-user');
                 $('.form.create-user').form('add errors', [response.message]);
             },
             onSuccess: function () {
                 hideDimmer('.modal.create-user');
                 hideModal('.modal.create-user');
+                userRowIndex = 0;
                 userTable.ajax.reload();
             }
         });
@@ -165,7 +167,7 @@ $('.form.edit-user').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.edit-user');
         correctFormData('.form.edit-user', data);
-        $('.create-user .form').api({
+        $('.form.edit-user').api({
             action: 'update user',
             urlData: {
                 id: data.id,
@@ -178,11 +180,13 @@ $('.form.edit-user').form({
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
             },
             onFailure: function (response) {
-                $('.edit.create-user').form('add errors', [response.message]);
+                hideDimmer('.modal.edit-user');
+                $('.form.edit-user').form('add errors', [response.message]);
             },
             onSuccess: function () {
                 hideDimmer('.modal.edit-user');
                 hideModal('.modal.edit-user');
+                userRowIndex = 0;
                 userTable.ajax.reload();
             }
         });
@@ -197,19 +201,19 @@ $('.form.edit-user').form({
 
 $('.form.delete-user').form();
 
-$('.teacher-admin input.page-length').change(function () {
+$('.teacher-admin .page-length input').change(function () {
     userTable.page.len(this.value).draw();
 });
 
-$('.teacher-admin input.table-search').keyup(function () {
+$('.teacher-admin .table-search input').keyup(function () {
     userTable.search(this.value).draw();
 });
 
-$('.student input.page-length').change(function () {
+$('.student .page-length input').change(function () {
     studentTable.page.len(this.value).draw();
 });
 
-$('.student input.table-search').keyup(function () {
+$('.student .table-search input').keyup(function () {
     studentTable.search(this.value).draw();
 });
 
@@ -228,7 +232,7 @@ $('.item.student').click(function () {
 });
 
 function filterRole(roleName) {
-    rowIndex = 0;
+    userRowIndex = 0;
     userTable.ajax.url(`/api/users/role/${roleName}`).load();
     userTable.draw();
 }
@@ -247,11 +251,12 @@ $('.dropdown.assigned-class').dropdown({
     on: 'now',
     onSuccess(response, element, xhr) {
         var values = [];
-        xhr.responseJSON.results.forEach(function (c) {
+        xhr.responseJSON.data.forEach(function (c) {
             values.push({
                 value: c._id,
                 name: c.className,
                 text: c.className,
+                description: c.className
             });
         });
         console.log(values);

@@ -5,8 +5,8 @@ import com.uet.ooadloophole.controller.interface_model.DTOClass;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
 import com.uet.ooadloophole.controller.interface_model.IUser;
-import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
+import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.RoleService;
@@ -81,5 +81,13 @@ public class InterfaceModelConverterService {
         dtoClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
         dtoClass.setActive(ooadClass.isActive());
         return dtoClass;
+    }
+
+    public Student convertToStudent(IStudent iStudent) {
+        Student student = new Student();
+        student.setStudentId(iStudent.getStudentId());
+        student.setFullName(iStudent.getFullName());
+        student.setClassId(iStudent.getClassId());
+        return student;
     }
 }

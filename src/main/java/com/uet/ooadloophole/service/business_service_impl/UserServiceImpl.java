@@ -117,9 +117,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             user.setActive(false);
             userRepository.save(user);
-            emailService.sendActivationEmail(user);
+            //emailService.sendActivationEmail(user);
             return user;
-        } catch (BusinessServiceException e) {
+        } catch (Exception e) {
             throw new BusinessServiceException("Unable to create user: " + e.getMessage());
         }
     }

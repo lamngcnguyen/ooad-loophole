@@ -66,14 +66,14 @@ public class ApiClassController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<Object> getClasses() {
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<String> getClasses() {
         List<DTOClass> dtoClasses = new ArrayList<>();
         classService.getAll().forEach(ooadClass -> {
             try {
                 dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
             } catch (BusinessServiceException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 //TODO: add logger here
             }
         });

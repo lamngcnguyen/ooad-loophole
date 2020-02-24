@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/students")
@@ -90,8 +91,10 @@ public class ApiStudentController {
     }
 
     @RequestMapping(value = "/import", method = RequestMethod.POST)
-    public ResponseEntity<List<Student>> importStudents(@RequestBody List<Student> students) {
-        List<Student> newStudents = studentService.importStudents(students);
+    public ResponseEntity<List<Student>> importStudents(@RequestBody List<IStudent> students) {
+        List<Student> convertedStudents = students.stream().map(s -> interfaceModelConverterService.convertToStudent(s))
+                .collect(Collectors.toList());
+        List<Student> newStudents = studentService.importStudents(convertedStudents);
         return ResponseEntity.status(HttpStatus.OK).body(newStudents);
     }
 
