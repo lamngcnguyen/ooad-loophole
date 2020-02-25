@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
             user.setActive(false);
             userRepository.save(user);
-            emailService.sendActivationEmail(user);
+//            emailService.sendActivationEmail(user);
             return user;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to create user: " + e.getMessage());
@@ -168,12 +168,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 //    }
 
     @Override
-    public void resetAccount(String email) throws BusinessServiceException {
+    public User resetAccount(String email) throws BusinessServiceException {
         User user = getByEmail(email);
         user.setPassword("");
         user.setActive(false);
-        emailService.sendResetPasswordEmail(user);
+//        emailService.sendResetPasswordEmail(user);
         userRepository.save(user);
+        return user;
     }
 
     @Override

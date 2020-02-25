@@ -97,7 +97,10 @@ public class ApiUserController {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
             User newUser = userService.create(user);
-            return ResponseEntity.status(HttpStatus.OK).body(newUser);
+            //TODO: remove confirmation URL
+            String token = tokenService.createToken(newUser.get_id());
+            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+            return ResponseEntity.status(HttpStatus.OK).body(confirmationUrl);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

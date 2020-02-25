@@ -12,6 +12,7 @@ import com.uet.ooadloophole.service.InterfaceModelConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
+import com.uet.ooadloophole.service.business_service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,8 @@ public class ApiClassController {
     private SecureUserDetailService secureUserDetailService;
     @Autowired
     private ClassService classService;
+    @Autowired
+    private TokenService tokenService;
     @Autowired
     private InterfaceModelConverterService interfaceModelConverterService;
 
@@ -111,7 +114,14 @@ public class ApiClassController {
                 System.out.println(student.getFullName());
             }
             List<Student> studentList = classService.importStudents(id, students);
-            return ResponseEntity.status(HttpStatus.OK).body(studentList);
+            List<String> confirmationLinks = new ArrayList<>();
+            for (Student s : studentList) {
+                //TODO: remove confirmation URL
+                String token = tokenService.createToken(s.getUserId());
+                String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+                confirmationLinks.add(confirmationUrl);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(new Gson().toJson(new TableDataWrapper(confirmationLinks)));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

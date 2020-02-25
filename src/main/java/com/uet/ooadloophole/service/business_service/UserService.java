@@ -34,7 +34,7 @@ public interface UserService {
 
 //    void changePassword(String userId, String newPassword) throws BusinessServiceException;
 
-    void resetAccount(String email) throws BusinessServiceException;
+    User resetAccount(String email) throws BusinessServiceException;
 
     void assignRole(String userId, String roleName) throws BusinessServiceException;
 
