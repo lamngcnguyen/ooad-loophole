@@ -57,7 +57,7 @@ public class AdminController {
             if (currentUser.hasRole("admin")) {
                 modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
             } else {
-                modelAndView = new ModelAndView("unauthorized");
+                modelAndView = new ModelAndView("forbidden");
             }
         } catch (BusinessServiceException e) {
             modelAndView = new ModelAndView("error");
