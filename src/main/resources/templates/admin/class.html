@@ -58,8 +58,8 @@
                                 <th>Tên lớp</th>
                                 <th>Giảng viên</th>
                                 <th>Học kì</th>
-                                <th>Số sinh viên</th>
-                                <th class="one wide">Đang hoạt động</th>
+                                <th>Ngày học</th>
+                                <th class="one wide">Số sinh viên</th>
                             </tr>
                             </thead>
                         </table>
@@ -141,7 +141,8 @@
             Chỉnh sửa
         </div>
         <div class="content">
-            <div class="ui form create-class">
+            <div class="ui form edit-class">
+                <input type="hidden" name="id">
                 <div class="fields">
                     <div class="required field seven wide">
                         <label>Tên lớp</label>
@@ -188,8 +189,8 @@
                     Hủy
                 </div>
                 <button class="ui right floated green labeled icon submit button">
-                    <i class="plus icon"></i>
-                    Thêm
+                    <i class="pencil icon"></i>
+                    Sửa
                 </button>
             </div>
         </div>
@@ -214,34 +215,6 @@
                     Có
                 </div>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-class')">
-                    <i class="close icon"></i>
-                    Không
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ui small modal deactivate-class">
-        <div class="ui dimmer">
-            <div class="ui loader"></div>
-        </div>
-        <div class="ui large header">
-            <i class="red ban icon"></i>
-            Cảnh báo
-        </div>
-        <div class="content">
-            <div class="ui form deactivate-class">
-                <input type="hidden" name="id">
-                <div class="field">
-                    <label>
-                        Bạn có chắc chắn muốn vô hiệu hóa lớp học này không?
-                    </label>
-                </div>
-                <div class="ui red labeled icon button">
-                    <i class="check icon"></i>
-                    Có
-                </div>
-                <div class="ui grey labeled right floated icon button"
-                     onclick="hideModal('.modal.deactivate-class')">
                     <i class="close icon"></i>
                     Không
                 </div>

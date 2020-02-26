@@ -24,35 +24,51 @@ const classTable = $(".ui.table").DataTable({
         {data: "className"},
         {data: "teacherName"},
         {data: "semesterName"},
-        {data: "studentCount"},
         {
-            data: "active",
-            render: function (isActive) {
-                if (isActive) return "<i class='green check icon'></i>";
-                else return "<i class='red ban icon'></i>"
+            data: "scheduledDayOfWeek",
+            render: function (dayOfWeek) {
+                switch (dayOfWeek) {
+                    case 1:
+                        return "Thứ Hai";
+                    case 2:
+                        return "Thứ Ba";
+                    case 3:
+                        return "Thứ Tư";
+                    case 4:
+                        return "Thứ Năm";
+                    case 5:
+                        return "Thứ Sáu";
+                    case 6:
+                        return "Thứ Bảy";
+                    case 7:
+                        return "Chủ Nhật";
+                }
             }
-        }
+        },
+        {data: "studentCount"}
     ],
     columnDefs: [
         {targets: [0, 1, -1, -2], className: "center aligned"}
     ],
-    createdRow: function (row) {
+    createdRow: function (row, data) {
         const actionCell = $(row).children().eq(1);
         const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
             .click(function () {
+                $('.form.edit-class').form('set values', {
+                    id: data._id,
+                    className: data.className,
+                    teacherId: data.teacherId,
+                    semesterId: data.semesterId,
+                    scheduledDayOfWeek: data.scheduledDayOfWeek
+                });
                 showModal('.modal.edit-class');
             });
         const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
             .click(function () {
                 showModal('.modal.delete-class');
             });
-        const btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
-            .click(function () {
-                showModal('.modal.deactivate-class');
-            });
         actionCell.append(
             btnEdit, $('<span>&nbsp</span>'),
-            btnDeactivate, $('<span>&nbsp</span>'),
             btnDelete
         );
     }
@@ -76,9 +92,44 @@ $('.form.create-class').form({
             onSuccess: function () {
                 hideDimmer('.modal.create-class');
                 hideModal('.modal.create-class');
-                classTable.ajax.reload();
+                reloadClassTable()
             }
         })
+    },
+    fields: {
+        className: validationRules.className,
+        teacherId: validationRules.teacherId,
+        semesterId: validationRules.semesterId,
+        scheduledDayOfWeek: validationRules.scheduledDayOfWeek
+    }
+});
+
+$('.form.edit-class').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.form.edit-class');
+        correctFormData('.form.edit-class', data);
+        $('.form.edit-class').api({
+            action: 'update class',
+            urlData: {
+                id: data.id,
+            },
+            on: 'now',
+            method: 'put',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            },
+            onFailure: function (response) {
+                hideDimmer('.modal.edit-class');
+                $('.form.edit-class').form('add errors', [response]);
+            },
+            onSuccess: function () {
+                hideDimmer('.modal.edit-class');
+                hideModal('.modal.edit-class');
+                reloadUserTable();
+            }
+        });
     },
     fields: {
         className: validationRules.className,
@@ -131,3 +182,8 @@ $('.class .table-search input').keyup(function () {
 $('.class .page-length input').change(function () {
     classTable.page.len(this.value).draw();
 });
+
+function reloadClassTable() {
+    rowIndex = 0;
+    classTable.ajax.reload();
+}

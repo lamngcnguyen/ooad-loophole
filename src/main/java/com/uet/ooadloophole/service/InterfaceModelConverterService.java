@@ -86,7 +86,9 @@ public class InterfaceModelConverterService {
         dtoClass.set_id(ooadClass.get_id());
         dtoClass.setClassName(ooadClass.getClassName());
         dtoClass.setTeacherName(user.getFullName());
+        dtoClass.setTeacherId(user.get_id());
         dtoClass.setSemesterName(semester.getName());
+        dtoClass.setSemesterId(semester.get_id());
         dtoClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
         dtoClass.setStudentCount(studentService.countByClassId(ooadClass.get_id()));
         dtoClass.setActive(ooadClass.isActive());

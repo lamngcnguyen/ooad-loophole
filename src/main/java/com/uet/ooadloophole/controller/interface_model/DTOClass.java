@@ -4,7 +4,9 @@ public class DTOClass {
     private String _id;
     private String className;
     private String teacherName;
+    private String teacherId;
     private String semesterName;
+    private String semesterId;
     private int scheduledDayOfWeek;
     private int studentCount;
     private boolean active;
@@ -39,6 +41,22 @@ public class DTOClass {
 
     public void setSemesterName(String semesterName) {
         this.semesterName = semesterName;
+    }
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(String semesterId) {
+        this.semesterId = semesterId;
     }
 
     public int getScheduledDayOfWeek() {

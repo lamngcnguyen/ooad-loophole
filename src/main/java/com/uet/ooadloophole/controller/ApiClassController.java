@@ -150,6 +150,18 @@ public class ApiClassController {
         }
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateClass(@PathVariable String id, @RequestBody Class ooadClass) {
+        try {
+            if (userIsNotTeacher())
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            Class updatedClass = classService.update(ooadClass);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedClass);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     private boolean userIsNotTeacher() throws BusinessServiceException {
         User user = secureUserDetailService.getCurrentUser();
         return !user.hasRole("teacher");
