@@ -29,4 +29,6 @@ public interface StudentService {
     Student update(String id, Student student) throws BusinessServiceException;
 
     void delete(String studentId) throws BusinessServiceException;
+
+    int countByClassId(String classId);
 }

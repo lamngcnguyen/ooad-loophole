@@ -24,6 +24,7 @@ const classTable = $(".ui.table").DataTable({
         {data: "className"},
         {data: "teacherName"},
         {data: "semesterName"},
+        {data: "studentCount"},
         {
             data: "active",
             render: function (isActive) {
@@ -33,7 +34,7 @@ const classTable = $(".ui.table").DataTable({
         }
     ],
     columnDefs: [
-        {targets: [0, 1, -1], className: "center aligned"}
+        {targets: [0, 1, -1, -2], className: "center aligned"}
     ],
     createdRow: function (row) {
         const actionCell = $(row).children().eq(1);
@@ -102,7 +103,6 @@ $('.dropdown.teacher').dropdown({
                 text: teacher.fullName,
             })
         });
-        console.log(values);
         $(element).dropdown('change values', values);
     }
 });
@@ -121,7 +121,6 @@ $('.dropdown.semester').dropdown({
                 text: semester.name,
             })
         });
-        console.log(values);
         $(element).dropdown('change values', values);
     }
 });

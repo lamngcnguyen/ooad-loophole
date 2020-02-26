@@ -6,6 +6,7 @@ public class DTOClass {
     private String teacherName;
     private String semesterName;
     private int scheduledDayOfWeek;
+    private int studentCount;
     private boolean active;
 
     public String get_id() {
@@ -46,6 +47,14 @@ public class DTOClass {
 
     public void setScheduledDayOfWeek(int scheduledDayOfWeek) {
         this.scheduledDayOfWeek = scheduledDayOfWeek;
+    }
+
+    public int getStudentCount() {
+        return studentCount;
+    }
+
+    public void setStudentCount(int studentCount) {
+        this.studentCount = studentCount;
     }
 
     public boolean isActive() {

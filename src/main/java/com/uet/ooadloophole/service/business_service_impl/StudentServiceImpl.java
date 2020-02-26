@@ -149,4 +149,9 @@ public class StudentServiceImpl implements StudentService {
             throw new BusinessServiceException("Unable to delete student: " + e.getMessage());
         }
     }
+
+    @Override
+    public int countByClassId(String classId) {
+        return studentRepository.countAllByClassId(classId);
+    }
 }

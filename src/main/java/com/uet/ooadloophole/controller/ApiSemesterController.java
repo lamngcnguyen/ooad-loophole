@@ -1,10 +1,12 @@
 package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.DTOSemester;
 import com.uet.ooadloophole.controller.interface_model.ISemester;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Semester;
 import com.uet.ooadloophole.service.InterfaceModelConverterService;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/semesters")
@@ -32,7 +37,11 @@ public class ApiSemesterController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<String> getClasses() {
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(semesterService.getAll())));
+    public ResponseEntity<String> getSemesters() {
+        List<DTOSemester> dtoSemesters = new ArrayList<>();
+        semesterService.getAll().forEach(semester -> {
+            dtoSemesters.add(interfaceModelConverterService.convertToDTOSemester(semester));
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoSemesters)));
     }
 }
