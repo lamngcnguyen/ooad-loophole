@@ -13,6 +13,8 @@ public interface ClassService {
 
     List<Class> getByTeacherId(String teacherId) throws BusinessServiceException;
 
+    List<Class> getByTeacherIdAndSemesterId(String teacherId, String semesterId);
+
     Class getById(String id) throws BusinessServiceException;
 
     Class create(Class ooadClass);

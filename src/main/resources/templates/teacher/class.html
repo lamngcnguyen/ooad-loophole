@@ -6,7 +6,75 @@
 </head>
 <body>
 <div th:fragment="body-content">
-    This is class view
+    <link rel="stylesheet" th:href="@{/css/teacher/class.css}">
+    <input type="hidden" th:value="${teacherId}" name="teacherId">
+    <div class="row">
+        <div class="column">
+            <h3 class="header">
+                <i class="chalkboard teacher icon"></i>
+                Lớp của tôi
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui segment stackable grid card-view">
+                <div class="row">
+                    <div class="six wide column">
+                        <label>Học kì</label>&nbsp
+                        <div class="ui search selection dropdown semester">
+                            <input type="hidden" name="semesterId">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Select semester</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui fitted divider"></div>
+                <div class="class row">
+                    <div class="four wide column">
+                        <a class="ui black card card-template">
+                            <div class="small image">
+                                <img th:src="@{/images/class_example_card.jpg}" alt="something funny">
+                            </div>
+                            <div class="content">
+                                <div class="header">Class name</div>
+                                <div class="meta">
+                                    <span class="semester">Semester</span>
+                                </div>
+                                <div class="description">
+                                    Class description
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <i class="users icon"></i>
+                                <span class="student-count"># students</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="ui card card-template" style="display: none;">
+        <div class="small image">
+            <img th:src="@{/images/class_example_card.jpg}" alt="something funny">
+        </div>
+        <div class="content">
+            <div class="header">Class name</div>
+            <div class="meta">
+                <span class="semester">Semester</span>
+            </div>
+            <div class="description">
+                Class description
+            </div>
+        </div>
+        <div class="extra content">
+            <i class="users icon"></i>
+            <span class="student-count"># students</span>
+        </div>
+    </a>
+    <script type="text/javascript" th:src="@{/js/teacher/class/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class/class.js}"></script>
 </div>
 </body>
 </html>

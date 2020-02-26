@@ -44,6 +44,11 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    public List<Class> getByTeacherIdAndSemesterId(String teacherId, String semesterId) {
+        return classRepository.findAllByTeacherIdAndSemesterId(teacherId, semesterId);
+    }
+
+    @Override
     public Class getById(String id) throws BusinessServiceException {
         Class result = classRepository.findBy_id(id);
         if (result == null) {
