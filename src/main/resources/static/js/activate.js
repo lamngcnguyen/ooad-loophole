@@ -2,8 +2,7 @@ $.fn.api.settings.api = {
     'activate': '/api/users/activate-account'
 };
 
-$('.ui.form').form({
-    debug: true,
+$('.form.activate').form({
     fields: {
         password: {
             identifier: 'password',
@@ -20,8 +19,7 @@ $('.ui.form').form({
             }]
         }
     },
-   onSuccess: function (evt, data) {
-        console.log('called');
+    onSuccess: function (evt, data) {
         $('.form').api({
             action: 'activate',
             urlData: {
@@ -35,8 +33,8 @@ $('.ui.form').form({
                 window.href.location = '/login';
             },
             onFailure: function (res) {
-              $('.form').form('add errors', res.message);
+                $('.form').form('add errors', res.message);
             }
         })
-   }
+    }
 });

@@ -133,7 +133,6 @@
             <artifactId>github-com-SheetJS-js-xlsx</artifactId>
             <version>v0.11.17</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.webjars.bowergithub.fomantic/fomantic-ui -->
         <dependency>
             <groupId>org.webjars.bowergithub.fomantic</groupId>
             <artifactId>fomantic-ui</artifactId>

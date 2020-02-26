@@ -67,8 +67,8 @@ public class AuthController {
         if(true) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
-            model.setViewName("activate");
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());
+            model.setViewName("activate");
             return model;
         } else {
             //TODO: create error view
