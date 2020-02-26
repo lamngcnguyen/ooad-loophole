@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
             String recipientAddress = user.getEmail();
 
             String subject = "Kích hoạt tài khoản OOAD Loophole";
-            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activateAccount?token=" + token;
+            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
             String message = "Bấm vào link để kích hoạt tài khoản: ";
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();

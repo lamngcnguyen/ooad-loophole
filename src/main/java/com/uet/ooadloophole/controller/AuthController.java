@@ -51,8 +51,11 @@ public class AuthController {
         newUser.setPassword(password);
         newUser.setFullName(fullName);
         try {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-                    userService.createActivatedUser(newUser, "TEACHER"));
+            //TODO: remove confirmation URL
+            User user = userService.createActivatedUser(newUser, "TEACHER");
+            String token = tokenService.createToken(user.get_id());
+            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(confirmationUrl);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -78,8 +81,11 @@ public class AuthController {
     @RequestMapping(value = "/reset", method = RequestMethod.POST)
     private ResponseEntity<String> sendResetAccount(String email) {
         try {
-            userService.resetAccount(email);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            //TODO: remove confirmation URL
+            User user = userService.resetAccount(email);
+            String token = tokenService.createToken(user.get_id());
+            String resetLink = "http://ooad-loophole.herokuapp.com/resetPassword?token=" + token;
+            return ResponseEntity.status(HttpStatus.OK).body(resetLink);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

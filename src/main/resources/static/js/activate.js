@@ -1,5 +1,5 @@
 $.fn.api.settings.api = {
-    'activate' : '/fake'
+    'activate': '/api/users/activate-account'
 };
 
 $('.ui.form').form({
