@@ -155,7 +155,7 @@ public class ApiClassController {
         try {
             if (userIsNotTeacher())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            Class updatedClass = classService.update(ooadClass);
+            Class updatedClass = classService.update(id, ooadClass);
             return ResponseEntity.status(HttpStatus.OK).body(updatedClass);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

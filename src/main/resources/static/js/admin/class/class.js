@@ -127,7 +127,7 @@ $('.form.edit-class').form({
             onSuccess: function () {
                 hideDimmer('.modal.edit-class');
                 hideModal('.modal.edit-class');
-                reloadUserTable();
+                reloadClassTable();
             }
         });
     },

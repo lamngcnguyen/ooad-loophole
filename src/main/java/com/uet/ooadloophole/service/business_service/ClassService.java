@@ -23,7 +23,7 @@ public interface ClassService {
 
     void delete(String classId) throws BusinessServiceException;
 
-    Class update(Class ooadClass) throws BusinessServiceException;
+    Class update(String id, Class ooadClass) throws BusinessServiceException;
 
     List<Student> importStudents(String classId, List<Student> payload);
 

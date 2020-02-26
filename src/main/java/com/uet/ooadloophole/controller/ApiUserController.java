@@ -84,7 +84,7 @@ public class ApiUserController {
                 userService.setPassword(userId, password);
                 userService.setStatus(userId, true);
                 tokenService.deleteActiveToken(tokenService.getByTokenString(token));
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("activated")));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid token");
             }

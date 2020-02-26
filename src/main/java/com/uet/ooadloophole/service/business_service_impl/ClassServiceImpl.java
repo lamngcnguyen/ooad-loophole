@@ -96,9 +96,9 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public Class update(Class ooadClass) throws BusinessServiceException {
+    public Class update(String id, Class ooadClass) throws BusinessServiceException {
         try {
-            Class dbClass = getById(ooadClass.get_id());
+            Class dbClass = getById(id);
             dbClass.setClassName(ooadClass.getClassName());
             dbClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
             dbClass.setSemesterId(ooadClass.getSemesterId());

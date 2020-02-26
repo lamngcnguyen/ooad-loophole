@@ -25,7 +25,7 @@ const studentTable = $(".student .ui.table").DataTable({
         {data: "fullName"},
         {data: "className"},
         {
-            data: "active",
+            data: "isActive",
             render: function (isActive) {
                 if (isActive) return "<i class='green check icon'></i>";
                 else return "<i class='red ban icon'></i>"
