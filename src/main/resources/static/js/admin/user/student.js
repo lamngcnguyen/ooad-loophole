@@ -98,8 +98,7 @@ $('.form.create-student').form({
             onSuccess: function () {
                 hideDimmer('.modal.create-student');
                 hideModal('.modal.create-student');
-                studentRowIndex = 0;
-                studentTable.ajax.reload();
+                reloadStudentTable()
             },
             onFailure: function (response) {
                 hideDimmer('.modal.create-student');
@@ -132,8 +131,7 @@ $('.form.edit-student').form({
             onSuccess: function () {
                 hideDimmer('.modal.edit-student');
                 hideModal('.modal.edit-student');
-                studentRowIndex = 0;
-                studentTable.ajax.reload();
+                reloadStudentTable()
             },
             onFailure: function (response) {
                 hideDimmer('.modal.edit-student');
@@ -147,3 +145,8 @@ $('.form.edit-student').form({
         classId: validationRules.classId,
     }
 });
+
+function reloadStudentTable() {
+    studentRowIndex = 0;
+    studentTable.ajax.reload();
+}
