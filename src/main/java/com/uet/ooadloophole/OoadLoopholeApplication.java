@@ -56,6 +56,14 @@ public class OoadLoopholeApplication {
                     itemClass.setRoleId(adminRole.getId());
                     navigationItemRepository.save(itemClass);
                 }
+                NavigationItem itemSemester = navigationItemRepository.findByName("Quản lý học kì");
+                if (itemSemester == null) {
+                    itemSemester = new NavigationItem();
+                    itemSemester.setName("Quản lý học kì");
+                    itemSemester.setUrl("/admin/semester");
+                    itemSemester.setRoleId(adminRole.getId());
+                    navigationItemRepository.save(itemSemester);
+                }
 
                 NavigationGroup adminGroup = navigationGroupRepository.findByRoleId(adminRole.getId());
                 if (adminGroup == null) {
@@ -65,6 +73,7 @@ public class OoadLoopholeApplication {
                     items.add(itemSiteConfig);
                     items.add(itemUser);
                     items.add(itemClass);
+                    items.add(itemSemester);
                     adminGroup.setItems(items);
                     adminGroup.setRoleId(adminRole.getId());
                     adminGroup.setUrl("/admin");

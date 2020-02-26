@@ -125,3 +125,11 @@ $('.dropdown.semester').dropdown({
         $(element).dropdown('change values', values);
     }
 });
+
+$('.class .table-search input').keyup(function () {
+    classTable.search(this.value).draw();
+});
+
+$('.class .page-length input').change(function () {
+    classTable.page.len(this.value).draw();
+});
