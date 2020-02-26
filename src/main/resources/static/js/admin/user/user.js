@@ -37,7 +37,7 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
     ],
     createdRow: function (row, data) {
         const actionCell = $(row).children().eq(1);
-        const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
+        const btnEdit = $('<button type="button" class="ui mini icon blue button" data-tooltip="Chỉnh sửa thông tin" data-inverted=""><i class="pencil icon"></i></button>')
             .click(function () {
                 $('.form.edit-user').form('set values', {
                     id: data._id,
@@ -49,84 +49,14 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
                 });
                 showModal('.modal.edit-user');
             });
-        const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
+        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa tài khoản" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
                 $('.form.delete-user').form('set values', {
                     id: data._id
                 });
                 showModal('.modal.delete-user');
             });
-        const btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
-            .click(function () {
-                $('.form.deactivate-user').form('set values', {
-                    id: data._id
-                });
-                showModal('.modal.deactivate-user');
-            });
-        actionCell.append(
-            btnEdit, $('<span>&nbsp</span>'),
-            btnDeactivate, $('<span>&nbsp</span>'),
-            btnDelete
-        );
-    }
-});
-
-var studentRowIndex = 0;
-const studentTable = $(".student .ui.table").DataTable({
-    ordering: true,
-    searching: true,
-    paging: true,
-    autoWidth: false,
-    lengthChange: true,
-    ajax: "/api/students",
-    sDom: stringDom,
-    language: languageOption,
-    columns: [
-        {
-            data: null,
-            render: function () {
-                return ++studentRowIndex;
-            }
-        },
-        {
-            data: null,
-            render: function () {
-                return "";
-            }
-        },
-        {data: "studentId"},
-        {data: "fullName"},
-        {data: "className"},
-        {
-            data: "active",
-            render: function (isActive) {
-                if (isActive) return "<i class='green check icon'></i>";
-                else return "<i class='red ban icon'></i>"
-            }
-        }
-    ],
-    columnDefs: [
-        {targets: [0, 1, -1], className: "center aligned"}
-    ],
-    createdRow: function (row, data) {
-        const actionCell = $(row).children().eq(1);
-        const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
-            .click(function () {
-                showModal('.modal.edit-student');
-            });
-        const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
-            .click(function () {
-                showModal('.modal.delete-user');
-            });
-        const btnDeactivate = $('<button type="button" class="ui mini icon red button"><i class="ban icon"></i></button>')
-            .click(function () {
-                showModal('.modal.deactivate-user');
-            });
-        actionCell.append(
-            btnEdit, $('<span>&nbsp</span>'),
-            btnDeactivate, $('<span>&nbsp</span>'),
-            btnDelete
-        );
+        actionCell.append(btnEdit, $('<span>&nbsp</span>'), btnDelete);
     }
 });
 
@@ -145,13 +75,12 @@ $('.form.create-user').form({
             },
             onFailure: function (response) {
                 hideDimmer('.modal.edit-user');
-                $('.form.create-user').form('add errors', [response.message]);
+                $('.form.create-user').form('add errors', [response]);
             },
             onSuccess: function () {
                 hideDimmer('.modal.create-user');
                 hideModal('.modal.create-user');
-                userRowIndex = 0;
-                userTable.ajax.reload();
+                reloadUserTable();
             }
         });
     },
@@ -181,13 +110,12 @@ $('.form.edit-user').form({
             },
             onFailure: function (response) {
                 hideDimmer('.modal.edit-user');
-                $('.form.edit-user').form('add errors', [response.message]);
+                $('.form.edit-user').form('add errors', [response]);
             },
             onSuccess: function () {
                 hideDimmer('.modal.edit-user');
                 hideModal('.modal.edit-user');
-                userRowIndex = 0;
-                userTable.ajax.reload();
+                reloadUserTable();
             }
         });
     },
@@ -199,7 +127,28 @@ $('.form.edit-user').form({
     }
 });
 
-$('.form.delete-user').form();
+$('.form.delete-user').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.form.delete-user');
+        $('.form.delete-user').api({
+            action: 'delete user',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-user');
+                hideModal('.modal.delete-user');
+                reloadUserTable();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-user');
+                $('.form.delete-user').form('add errors', [res]);
+            }
+        });
+    },
+});
 
 $('.teacher-admin .page-length input').change(function () {
     userTable.page.len(this.value).draw();
@@ -207,14 +156,6 @@ $('.teacher-admin .page-length input').change(function () {
 
 $('.teacher-admin .table-search input').keyup(function () {
     userTable.search(this.value).draw();
-});
-
-$('.student .page-length input').change(function () {
-    studentTable.page.len(this.value).draw();
-});
-
-$('.student .table-search input').keyup(function () {
-    studentTable.search(this.value).draw();
 });
 
 $('.item.teacher-admin').click(function () {
@@ -244,33 +185,7 @@ function userHasRole(user, roleName) {
     return false;
 }
 
-$('.dropdown.assigned-class').dropdown({
-    showOnFocus: false,
-}).api({
-    action: 'get classes',
-    on: 'now',
-    onSuccess(response, element, xhr) {
-        var values = [];
-        xhr.responseJSON.data.forEach(function (c) {
-            values.push({
-                value: c._id,
-                name: c.className,
-                text: c.className,
-                description: c.className
-            });
-        });
-        console.log(values);
-        $(element).dropdown('change values', values);
-    }
-});
-
-$('.form.create-student').form({
-    onSuccess: function (evt, data) {
-
-    },
-    fields: {
-        fullName: validationRules.fullName,
-        studentId: validationRules.studentId,
-        classId: validationRules.classId,
-    }
-});
+function reloadUserTable() {
+    userRowIndex = 0;
+    userTable.ajax.reload();
+}

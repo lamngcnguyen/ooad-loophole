@@ -2,6 +2,7 @@ package com.uet.ooadloophole.controller;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.IUser;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.InterfaceModelConverterService;
@@ -47,7 +48,7 @@ public class ApiUserController {
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.PUT)
-    private ResponseEntity<String> changePassword(String oldPassword, String password) {
+    public ResponseEntity<String> changePassword(String oldPassword, String password) {
         try {
             User user = secureUserDetailService.getCurrentUser();
             if (!userService.matchPassword(user, oldPassword)) {
@@ -62,7 +63,7 @@ public class ApiUserController {
     }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
-    private ResponseEntity<String> resetPassword(String token, String email, String password) {
+    public ResponseEntity<String> resetPassword(String token, String email, String password) {
         try {
             if (tokenService.isValid(token)) {
                 userService.setPassword(email, password);
@@ -77,7 +78,7 @@ public class ApiUserController {
     }
 
     @RequestMapping(value = "/activate-account", method = RequestMethod.POST)
-    private ResponseEntity<String> activateAccount(String token, String userId, String password) {
+    public ResponseEntity<String> activateAccount(String token, String userId, String password) {
         try {
             if (tokenService.isValid(token)) {
                 userService.setPassword(userId, password);
@@ -93,7 +94,7 @@ public class ApiUserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    private ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
+    public ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
             User newUser = userService.create(user);
@@ -107,7 +108,7 @@ public class ApiUserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    private ResponseEntity<Object> updateUser(@PathVariable String id, @RequestBody IUser iUser) {
+    public ResponseEntity<Object> updateUser(@PathVariable String id, @RequestBody IUser iUser) {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
             User updatedUser = userService.update(id, user);
@@ -118,20 +119,20 @@ public class ApiUserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    private ResponseEntity<String> deleteUser(@PathVariable String id) {
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
         try {
             userService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/{id}/status", method = RequestMethod.POST)
-    private ResponseEntity<Object> setStatus(@PathVariable String id, @RequestParam boolean status) {
+    public ResponseEntity<String> setStatus(@PathVariable String id, @RequestParam boolean status) {
         try {
-            User user = userService.setStatus(id, status);
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+            userService.setStatus(id, status);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
