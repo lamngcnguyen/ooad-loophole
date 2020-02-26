@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $('.dropdown.semester').dropdown({
-        onChange: function (value, text) {
+        onChange: function (value) {
             filterClassBySemester(value);
         }
     }).api({
@@ -34,11 +34,20 @@ function createClassCards(data) {
         var card = $('.card-template').clone()
             .removeClass('card-template')
             .css('display', 'block')
-            .addClass(card_colors[colCount])
-            .prop('href', 'https://fb.com');
+            .addClass(card_colors[colCount - 1])
+            .prop('href', `/teacher/class/${c.className}`);
         card.find('.header').text(c.className);
-        card.find('.student-count').text('50');
+        card.find('.class-description').text(`Thứ ${c.scheduledDayOfWeek + 1}`);
+        card.find('.student-count').text(c.studentCount);
         card.find('.semester').text(c.semesterName);
+        card.find('.button.student').addClass(card_colors[colCount - 1]).click(function () {
+            return false;
+        });
+        card.find('.setting-redirect').on('click', function () {
+            window.open(`/teacher/class/${c.className}/settings`);
+            return false;
+        });
+        card.find('img').attr('src', `/images/card-backgrounds/${colCount}.jpg`);
         $('.card-view .class.row:last-child')
             .append($('<div class="four wide column">').append(card));
         if (colCount === 4) {

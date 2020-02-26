@@ -28,8 +28,14 @@
                             <div class="default text">Select semester</div>
                         </div>
                     </div>
+                    <div class="ten wide column">
+                        <div class="ui green right floated icon labeled button">
+                            <i class="plus icon">
+                            </i>
+                            Thêm mới
+                        </div>
+                    </div>
                 </div>
-                <div class="ui fitted divider"></div>
                 <div class="class row">
                     <div class="four wide column">
                         <a class="ui black card card-template">
@@ -55,9 +61,9 @@
             </div>
         </div>
     </div>
-    <a class="ui card card-template" style="display: none;">
+    <a class="ui card card-template" style="display: none;" target="_blank">
         <div class="small image">
-            <img th:src="@{/images/class_example_card.jpg}" alt="something funny">
+            <img alt="something funny">
         </div>
         <div class="content">
             <div class="header">Class name</div>
@@ -65,12 +71,20 @@
                 <span class="semester">Semester</span>
             </div>
             <div class="description">
-                Class description
+                <i class="calendar icon"></i>
+                <span class="class-description">Class description</span>
             </div>
         </div>
-        <div class="extra content">
-            <i class="users icon"></i>
-            <span class="student-count"># students</span>
+        <div class="extra middle aligned content">
+            <div class="item">
+                <div class="ui mini labeled icon button student">
+                    <i class="users icon"></i>
+                    <span class="student-count"># students</span>
+                </div>
+                <div class="ui mini right floated icon button setting-redirect">
+                    <i class="cog icon"></i>
+                </div>
+            </div>
         </div>
     </a>
     <script type="text/javascript" th:src="@{/js/teacher/class/api.js}"></script>
