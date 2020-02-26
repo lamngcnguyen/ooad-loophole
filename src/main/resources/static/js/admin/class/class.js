@@ -61,7 +61,6 @@ const classTable = $(".ui.table").DataTable({
 $('.form.create-class').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.create-class');
-        correctFormData('.form.create-class', data);
         $('.create-class .form').api({
             action: 'create class',
             on: 'now',

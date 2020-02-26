@@ -148,3 +148,11 @@ $('.modal.edit-semester').modal({
         });
     }
 });
+
+$('.semester .table-search input').keyup(function () {
+    semesterTable.search(this.value).draw();
+});
+
+$('.semester .page-length input').change(function () {
+    semesterTable.page.len(this.value).draw();
+});
