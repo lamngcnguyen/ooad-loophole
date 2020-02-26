@@ -1,4 +1,4 @@
-var studentRowIndex = 0;
+let studentRowIndex = 0;
 const studentTable = $(".student .ui.table").DataTable({
     ordering: true,
     searching: true,

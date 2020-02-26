@@ -35,8 +35,8 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public Semester update(Semester semester) throws BusinessServiceException {
-        Semester dbSemester = getById(semester.get_id());
+    public Semester update(String id, Semester semester) throws BusinessServiceException {
+        Semester dbSemester = getById(id);
         dbSemester.setName(semester.getName());
         dbSemester.setStartDate(semester.getStartDate());
         dbSemester.setEndDate(semester.getEndDate());

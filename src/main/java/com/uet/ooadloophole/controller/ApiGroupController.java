@@ -1,5 +1,7 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.Topic;
@@ -25,6 +27,8 @@ public class ApiGroupController {
 
     @Autowired
     private TopicService topicService;
+
+    private Gson gson = new Gson();
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Group> getGroupById(@PathVariable String id) {
@@ -76,7 +80,7 @@ public class ApiGroupController {
     public ResponseEntity<String> deleteGroup(@PathVariable String id) {
         try {
             groupService.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

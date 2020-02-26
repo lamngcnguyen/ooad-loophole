@@ -1,5 +1,7 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
@@ -30,6 +32,8 @@ public class ApiFileController {
     @Autowired
     private SpecFileService specFileService;
 
+    private Gson gson = new Gson();
+
     @RequestMapping(value = "/download", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadFile(@RequestParam String filePath, HttpServletRequest request) {
         String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
@@ -53,7 +57,7 @@ public class ApiFileController {
     public ResponseEntity<String> uploadRepoFile(@RequestParam("file") MultipartFile file, String path) {
         try {
             repoFileService.upload(file, path);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -63,7 +67,7 @@ public class ApiFileController {
     public ResponseEntity<String> uploadSpecFile(@RequestParam("file") MultipartFile file, String path, String topicId) {
         try {
             specFileService.upload(file, path, topicId);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

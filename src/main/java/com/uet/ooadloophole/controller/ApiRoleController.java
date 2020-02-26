@@ -1,5 +1,7 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.UserService;
@@ -14,11 +16,13 @@ public class ApiRoleController {
     @Autowired
     private UserService userService;
 
+    private Gson gson = new Gson();
+
     @RequestMapping(value = "/assign/{userId}", method = RequestMethod.POST)
-    public ResponseEntity assignRole(@PathVariable String userId, @RequestParam String roleName) {
+    public ResponseEntity<String> assignRole(@PathVariable String userId, @RequestParam String roleName) {
         try {
             userService.assignRole(userId, roleName);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

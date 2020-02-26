@@ -40,10 +40,16 @@ const semesterTable = $('.ui.table').DataTable({
     columnDefs: [
         {targets: [0, 1, -1], className: "center aligned"}
     ],
-    createdRow: function (row) {
+    createdRow: function (row, data) {
         const actionCell = $(row).children().eq(1);
         const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
             .click(function () {
+                $('.form.edit-semester').form('set values', {
+                    id: data._id,
+                    name: data.name,
+                    startDate: data.startDate,
+                    endDate: data.endDate,
+                });
                 showModal('.modal.edit-semester');
             });
         const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
@@ -76,7 +82,7 @@ $('.form.create-semester').form({
             onSuccess: function () {
                 hideDimmer('.modal.create-semester');
                 hideModal('.modal.create-semester');
-                semesterTable.ajax.reload();
+                reloadSemesterTable()
             }
         })
     },
@@ -84,6 +90,41 @@ $('.form.create-semester').form({
         name: validationRules.name,
         startDate: validationRules.startDate,
         endDate: validationRules.endDate
+    }
+});
+
+$('.form.edit-semester').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.form.edit-semester');
+        correctFormData('.form.edit-semester', data);
+        $('.form.edit-semester').api({
+            action: 'update semester',
+            urlData: {
+                id: data.id,
+            },
+            on: 'now',
+            method: 'put',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            },
+            onFailure: function (response) {
+                hideDimmer('.modal.edit-semester');
+                $('.form.edit-class').form('add errors', [response]);
+            },
+            onSuccess: function () {
+                hideDimmer('.modal.edit-semester');
+                hideModal('.modal.edit-semester');
+                reloadSemesterTable();
+            }
+        });
+    },
+    fields: {
+        className: validationRules.className,
+        teacherId: validationRules.teacherId,
+        semesterId: validationRules.semesterId,
+        scheduledDayOfWeek: validationRules.scheduledDayOfWeek
     }
 });
 
@@ -156,3 +197,8 @@ $('.semester .table-search input').keyup(function () {
 $('.semester .page-length input').change(function () {
     semesterTable.page.len(this.value).draw();
 });
+
+function reloadSemesterTable() {
+    rowIndex = 0;
+    semesterTable.ajax.reload();
+}

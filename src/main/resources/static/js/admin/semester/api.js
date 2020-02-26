@@ -1,6 +1,7 @@
 $.fn.api.settings.api = {
-    'get semesters' : '/api/semesters/',
-    'create semester' : '/api/semesters/'
+    'get semesters': '/api/semesters/',
+    'create semester': '/api/semesters/',
+    'update semester': '/api/semesters/{id}'
 };
 
 const validationRules = {

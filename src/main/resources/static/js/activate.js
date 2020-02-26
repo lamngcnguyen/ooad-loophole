@@ -30,7 +30,7 @@ $('.form.activate').form({
             method: 'post',
             on: 'now',
             onSuccess: function () {
-                window.href.location = '/login';
+                window.location.href = '/login';
             },
             onFailure: function (res) {
                 $('.form').form('add errors', res);

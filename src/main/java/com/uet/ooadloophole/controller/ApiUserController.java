@@ -55,7 +55,7 @@ public class ApiUserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Old Password doesn't match");
             } else {
                 userService.changePassword(user, password);
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
             }
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to change password" + e.getMessage());
@@ -68,7 +68,7 @@ public class ApiUserController {
             if (tokenService.isValid(token)) {
                 userService.setPassword(email, password);
                 tokenService.deleteActiveToken(tokenService.getByTokenString(token));
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid token");
             }
@@ -101,7 +101,7 @@ public class ApiUserController {
             //TODO: remove confirmation URL
             String token = tokenService.createToken(newUser.get_id());
             String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
-            return ResponseEntity.status(HttpStatus.OK).body(confirmationUrl);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage(confirmationUrl)));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

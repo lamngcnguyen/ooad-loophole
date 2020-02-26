@@ -14,7 +14,7 @@ public interface SemesterService {
 
     Semester create(Semester semester);
 
-    Semester update(Semester semester) throws BusinessServiceException;
+    Semester update(String id, Semester semester) throws BusinessServiceException;
 
     void delete(String semesterId) throws BusinessServiceException;
 }

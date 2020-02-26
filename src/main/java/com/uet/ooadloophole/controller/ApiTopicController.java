@@ -1,5 +1,7 @@
 package com.uet.ooadloophole.controller;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.model.business.Topic;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -20,6 +22,8 @@ public class ApiTopicController {
 
     @Autowired
     private GroupService groupService;
+
+    private Gson gson = new Gson();
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getTopicById(@PathVariable String id) {
@@ -64,7 +68,7 @@ public class ApiTopicController {
     public ResponseEntity<String> deleteTopic(@PathVariable String id) {
         try {
             topicService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
