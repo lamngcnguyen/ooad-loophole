@@ -71,7 +71,7 @@ $('.form.create-class').form({
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
             },
             onFailure: function (response) {
-                $('.form.create-class').form('add errors', [response.message]);
+                $('.form.create-class').form('add errors', [response]);
             },
             onSuccess: function () {
                 hideDimmer('.modal.create-class');

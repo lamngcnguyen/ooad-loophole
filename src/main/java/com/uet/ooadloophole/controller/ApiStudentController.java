@@ -58,7 +58,7 @@ public class ApiStudentController {
         return ResponseEntity.status(httpStatus).body(results);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createStudent(@RequestBody IStudent iStudent) {
         try {
             Student student = interfaceModelConverterService.convertStudentInterface(iStudent);
@@ -84,7 +84,7 @@ public class ApiStudentController {
     public ResponseEntity<String> deleteStudent(@PathVariable String id) {
         try {
             studentService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.status(HttpStatus.OK).body("success");
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -98,7 +98,7 @@ public class ApiStudentController {
         return ResponseEntity.status(HttpStatus.OK).body(newStudents);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getAllStudents() {
         List<DTOStudent> dtoStudents = new ArrayList<>();
         studentService.getAll().forEach(student -> {

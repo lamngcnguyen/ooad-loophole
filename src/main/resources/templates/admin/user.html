@@ -206,7 +206,7 @@
             </div>
         </div>
     </div>
-    <div class="ui small modal edit-user">
+    <div class="ui tiny modal edit-user">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -216,6 +216,7 @@
         </div>
         <div class="content">
             <div class="ui form edit-user">
+                <input type="hidden" name="id">
                 <div class="field">
                     <div class="fields">
                         <div class="nine wide required field">
@@ -305,24 +306,50 @@
             </div>
         </div>
     </div>
-    <div class="ui small modal edit-student">
+    <div class="ui tiny modal edit-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
         <div class="ui large header">
-            <i class="blue pencil icon"></i>
+            <i class="green student icon"></i>
             Chỉnh sửa
         </div>
-        <div class="content"></div>
-        <div class="actions">
-            <div class="ui blue labeled icon button">
-                <i class="save icon"></i>
-                Lưu
-            </div>
-            <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-student')">
-                <i class="close icon"></i>
-                Hủy
+        <div class="content">
+            <div class="ui form edit-student">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Họ tên</label>
+                            <input type="text" name="fullName" placeholder="Full name">
+                        </div>
+                        <div class="seven wide required field">
+                            <label>MSSV</label>
+                            <input type="text" name="studentId" placeholder="Student ID">
+                        </div>
+                    </div>
+                </div>
+                <div class="ten wide required field">
+                    <label>Lớp</label>
+                    <div class="ui search selection dropdown assigned-class">
+                        <input type="hidden" name="classId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select class</div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-student')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated blue labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Lưu
+                </button>
             </div>
         </div>
     </div>
-    <div class="ui small modal delete-user">
+    <div class="ui tiny modal delete-user">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -336,39 +363,12 @@
                 <div class="field">
                     <label>Bạn có chắc chắn muốn xóa người dùng này không?</label>
                 </div>
-                <div class="ui red labeled icon button">
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
                     Có
-                </div>
+                </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-user')">
-                    <i class="close icon"></i>
-                    Không
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ui small modal deactivate-user">
-        <div class="ui dimmer">
-            <div class="ui loader"></div>
-        </div>
-        <div class="ui large header">
-            <i class="red ban icon"></i>
-            Cảnh báo
-        </div>
-        <div class="content">
-            <div class="ui form deactivate-user">
-                <input type="hidden" name="id">
-                <div class="field">
-                    <label>
-                        Bạn có chắc chắn muốn vô hiệu hóa người dùng này không?
-                    </label>
-                </div>
-                <div class="ui red labeled icon button">
-                    <i class="check icon"></i>
-                    Có
-                </div>
-                <div class="ui grey labeled right floated icon button"
-                     onclick="hideModal('.modal.deactivate-user')">
                     <i class="close icon"></i>
                     Không
                 </div>
@@ -431,6 +431,7 @@
     </div>
     <script type="text/javascript" th:src="@{/js/admin/user/api.js}"></script>
     <script type="text/javascript" th:src="@{/js/admin/user/user.js}"></script>
+    <script type="text/javascript" th:src="@{/js/admin/user/student.js}"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.5/dist/xlsx.full.min.js"></script>
     <script type="text/javascript" th:src="@{/js/admin/user/import.js}"></script>
 </div>

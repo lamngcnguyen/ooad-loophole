@@ -93,7 +93,7 @@ $('.form.import-student').form({
             onFailure: function (response) {
                 console.log('failed');
                 hideDimmer('.modal.import-student');
-                $('.form.import-student').form('add errors', [response.message])
+                $('.form.import-student').form('add errors', [response])
             },
             onSuccess: function () {
                 console.log('success');

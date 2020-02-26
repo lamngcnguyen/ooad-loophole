@@ -31,7 +31,7 @@ public class OoadLoopholeApplication {
                 newAdminRole.setRole("ADMIN");
                 roleRepository.save(newAdminRole);
             } else {
-                NavigationItem itemSiteConfig = navigationItemRepository.findByName("Cài đặt hệ thống");
+                NavigationItem itemSiteConfig = navigationItemRepository.findByName("Thiết lập hệ thống");
                 if (itemSiteConfig == null) {
                     itemSiteConfig = new NavigationItem();
                     itemSiteConfig.setName("Thiết lập hệ thống");
