@@ -21,4 +21,6 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     List<Student> deleteAllByClassId(String classId);
 
     List<Student> findAllByFullNameLikeIgnoreCaseOrStudentIdLike(String fullName, String studentId);
+
+    int countAllByClassId(String classId);
 }

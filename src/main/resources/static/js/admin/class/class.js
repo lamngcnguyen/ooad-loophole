@@ -24,6 +24,7 @@ const classTable = $(".ui.table").DataTable({
         {data: "className"},
         {data: "teacherName"},
         {data: "semesterName"},
+        {data: "studentCount"},
         {
             data: "active",
             render: function (isActive) {
@@ -33,7 +34,7 @@ const classTable = $(".ui.table").DataTable({
         }
     ],
     columnDefs: [
-        {targets: [0, 1, -1], className: "center aligned"}
+        {targets: [0, 1, -1, -2], className: "center aligned"}
     ],
     createdRow: function (row) {
         const actionCell = $(row).children().eq(1);
@@ -60,7 +61,6 @@ const classTable = $(".ui.table").DataTable({
 $('.form.create-class').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.create-class');
-        correctFormData('.form.create-class', data);
         $('.create-class .form').api({
             action: 'create class',
             on: 'now',
@@ -102,7 +102,6 @@ $('.dropdown.teacher').dropdown({
                 text: teacher.fullName,
             })
         });
-        console.log(values);
         $(element).dropdown('change values', values);
     }
 });
@@ -121,7 +120,14 @@ $('.dropdown.semester').dropdown({
                 text: semester.name,
             })
         });
-        console.log(values);
         $(element).dropdown('change values', values);
     }
+});
+
+$('.class .table-search input').keyup(function () {
+    classTable.search(this.value).draw();
+});
+
+$('.class .page-length input').change(function () {
+    classTable.page.len(this.value).draw();
 });
