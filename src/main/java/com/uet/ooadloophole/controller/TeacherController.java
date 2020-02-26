@@ -60,6 +60,7 @@ public class TeacherController {
             User currentUser = secureUserDetailService.getCurrentUser();
             if (currentUser.hasRole("teacher")) {
                 modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
+                modelAndView.addObject("teacherId", currentUser.get_id());
             } else {
                 modelAndView = new ModelAndView("unauthorized");
             }

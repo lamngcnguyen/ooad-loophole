@@ -69,6 +69,28 @@ public class ApiClassController {
         }
     }
 
+    @RequestMapping(value = "/teacher/{id}/semester/{semesterId}", method = RequestMethod.GET)
+    public ResponseEntity<String> getClassesBySemester(@PathVariable String id, @PathVariable String semesterId) {
+        try {
+            if (userIsNotTeacher()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            } else {
+                List<DTOClass> dtoClasses = new ArrayList<>();
+                classService.getByTeacherIdAndSemesterId(id, semesterId).forEach(ooadClass -> {
+                    try {
+                        dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
+                    } catch (BusinessServiceException e) {
+                        e.printStackTrace();
+                        //TODO: add logger here
+                    }
+                });
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClasses)));
+            }
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<String> getClasses() {
         List<DTOClass> dtoClasses = new ArrayList<>();
