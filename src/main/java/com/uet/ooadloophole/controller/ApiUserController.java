@@ -145,8 +145,8 @@ public class ApiUserController {
         return userService.loadAvatar(id);
     }
 
-    @RequestMapping(value = "/avatar/{id}", method = RequestMethod.POST)
-    private ResponseEntity<String> uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable String id) {
+    @RequestMapping(value = "/avatar", method = RequestMethod.POST)
+    private ResponseEntity<String> uploadAvatar(@RequestParam("file") MultipartFile file, @CookieValue("userId") String id) {
         try {
             userService.uploadAvatar(file, id);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
