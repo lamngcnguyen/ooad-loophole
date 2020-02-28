@@ -3,7 +3,7 @@ package com.uet.ooadloophole.controller.interface_model;
 public class DTOStudent {
     private String _id;
     private String userId;
-    private String studentId; //mssv
+    private String studentId;
     private String className;
     private String classId;
     private String fullName;
