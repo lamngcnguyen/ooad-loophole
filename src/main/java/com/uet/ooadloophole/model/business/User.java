@@ -12,6 +12,7 @@ public class User {
     private String email;
     private String password;
     private String fullName;
+    private String avatar;
     @DBRef
     private Set<Role> roles;
     private boolean active;
@@ -64,6 +65,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Set<Role> getRoles() {

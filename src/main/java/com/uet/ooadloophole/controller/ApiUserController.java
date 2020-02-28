@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -135,6 +137,21 @@ public class ApiUserController {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/avatar/{id}", method = RequestMethod.GET)
+    public byte[] getAvatar(@PathVariable String id) throws IOException, BusinessServiceException {
+        return userService.loadAvatar(id);
+    }
+
+    @RequestMapping(value = "/avatar/{id}", method = RequestMethod.POST)
+    private ResponseEntity<String> uploadAvatar(@RequestParam("file") MultipartFile file, @PathVariable String id) {
+        try {
+            userService.uploadAvatar(file, id);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(gson.toJson(new ResponseMessage(e.getMessage())));
         }
     }
 }
