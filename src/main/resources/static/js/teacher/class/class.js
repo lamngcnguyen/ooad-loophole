@@ -28,7 +28,7 @@ $(document).ready(function () {
 
 function createClassCards(data) {
     $('.card-view').find('.class.row').remove();
-    $('.card-view').append($('<div class="class row"></div>'));
+    $('.card-view').append($('<div class="class four column row"></div>'));
     var colCount = 1;
     data.forEach(function (c) {
         var card = $('.card-template').clone()
@@ -49,10 +49,10 @@ function createClassCards(data) {
         });
         card.find('img').attr('src', `/images/card-backgrounds/${colCount}.jpg`);
         $('.card-view .class.row:last-child')
-            .append($('<div class="four wide column">').append(card));
+            .append($('<div class="column">').append(card));
         if (colCount === 4) {
             colCount = 1;
-            $('.card-view').append($('<div class="class row"></div>'));
+            $('.card-view').append($('<div class="class four column row"></div>'));
         } else {
             colCount++;
         }

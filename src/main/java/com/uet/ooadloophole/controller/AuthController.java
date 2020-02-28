@@ -63,8 +63,7 @@ public class AuthController {
 
     @RequestMapping(value = "/activate-account", method = RequestMethod.GET)
     private ModelAndView activateAccount(@RequestParam String token) {
-//        if (tokenService.isValid(token)) {
-        if(true) {
+        if (tokenService.isValid(token)) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());
