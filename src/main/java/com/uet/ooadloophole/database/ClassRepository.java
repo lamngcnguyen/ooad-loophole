@@ -10,6 +10,8 @@ public interface ClassRepository extends MongoRepository<Class, String> {
 
     Class getByTeacherIdAndClassName(String teacherId, String className);
 
+    List<Class> findAllByTeacherIdAndClassNameLikeIgnoreCase(String teacherId, String className);
+
     List<Class> findAllByTeacherId(String teacherId);
 
     List<Class> findAllByClassNameLikeIgnoreCase(String className);

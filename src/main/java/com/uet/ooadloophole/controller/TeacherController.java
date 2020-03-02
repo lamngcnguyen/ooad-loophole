@@ -27,6 +27,9 @@ public class TeacherController {
     @Autowired
     private InterfaceModelConverterService converterService;
 
+    @Autowired
+    private ClassService classService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
         String pageTitle = "Giảng viên";

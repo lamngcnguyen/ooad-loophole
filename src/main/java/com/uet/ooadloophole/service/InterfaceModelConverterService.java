@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,6 +28,10 @@ public class InterfaceModelConverterService {
     private StudentService studentService;
     @Autowired
     private SemesterService semesterService;
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private SpecFileService specFileService;
 
     public User convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -123,5 +129,26 @@ public class InterfaceModelConverterService {
         dtoUser.setActive(user.isActive());
         dtoUser.setPhoneNumber(user.getPhoneNumber());
         return dtoUser;
+    }
+
+    public DTOTopic convertToDTOTopic(Topic topic) throws BusinessServiceException {
+        DTOTopic dtoTopic = new DTOTopic();
+        dtoTopic.set_id(topic.get_id());
+        dtoTopic.setName(topic.getName());
+        dtoTopic.setDescriptions(topic.getDescriptions());
+        dtoTopic.setClassId(topic.getClassId());
+        dtoTopic.setGroupId(topic.getGroupId());
+
+        Group group = groupService.getById(topic.getGroupId());
+        dtoTopic.setGroupName(group.getGroupName());
+
+        List<SpecFile> specFiles = specFileService.getByTopicId(topic.get_id());
+        List<String> fileNames = new ArrayList<>();
+        for (SpecFile specFile : specFiles) {
+            fileNames.add(specFile.getFileName());
+        }
+        dtoTopic.setFileNames(fileNames);
+
+        return dtoTopic;
     }
 }
