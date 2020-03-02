@@ -3,6 +3,7 @@ package com.uet.ooadloophole.controller;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
@@ -66,10 +67,14 @@ public class ApiStudentController {
         try {
             Student student = interfaceModelConverterService.convertStudentInterface(iStudent);
             //TODO: remove confirmation URL
-            Student newStudent = studentService.create(student);
-            String token = tokenService.createToken(newStudent.getUserId());
-            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
-            return ResponseEntity.status(HttpStatus.OK).body(confirmationUrl);
+            if (studentService.studentIdExists(student.getStudentId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(new ResponseMessage("Student already exists")));
+            } else {
+                Student newStudent = studentService.create(student);
+                String token = tokenService.createToken(newStudent.getUserId());
+                String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+                return ResponseEntity.status(HttpStatus.OK).body(confirmationUrl);
+            }
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

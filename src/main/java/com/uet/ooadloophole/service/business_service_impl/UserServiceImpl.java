@@ -269,4 +269,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setAvatar(avatar.getFileName());
         userRepository.save(user);
     }
+
+    @Override
+    public boolean emailExists(String email) {
+        try {
+            getByEmail(email);
+            return true;
+        } catch (BusinessServiceException ignored) {
+            return false;
+        }
+    }
 }

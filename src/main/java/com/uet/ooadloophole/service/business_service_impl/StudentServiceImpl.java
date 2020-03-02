@@ -99,7 +99,8 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    private boolean studentIdExists(String studentId) {
+    @Override
+    public boolean studentIdExists(String studentId) {
         return studentRepository.findByStudentId(studentId) != null;
     }
 

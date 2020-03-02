@@ -53,4 +53,6 @@ public interface UserService {
     byte[] loadAvatar(String id) throws IOException, BusinessServiceException;
 
     void uploadAvatar(MultipartFile file, String id) throws BusinessServiceException;
+
+    boolean emailExists(String email);
 }
