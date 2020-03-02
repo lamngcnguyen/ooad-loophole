@@ -11,6 +11,9 @@ import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -129,7 +132,9 @@ public class StudentServiceImpl implements StudentService {
             dbUser.setFullName(student.getFullName());
             dbUser.setUsername(student.getStudentId());
             dbStudent.setGroupId(student.getGroupId());
-            dbStudent.setStudentId(student.getStudentId());
+            if (!studentIdExists(id, student.getStudentId())) {
+                dbStudent.setStudentId(student.getStudentId());
+            }
             dbStudent.setFullName(student.getFullName());
 
             userRepository.save(dbUser);

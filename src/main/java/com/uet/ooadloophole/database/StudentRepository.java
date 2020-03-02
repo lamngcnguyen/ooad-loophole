@@ -2,6 +2,7 @@ package com.uet.ooadloophole.database;
 
 import com.uet.ooadloophole.model.business.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface StudentRepository extends MongoRepository<Student, String> {
     Student findByStudentId(String studentId);
 
     Student findByUserId(String userId);
+
+    Student findBy_idNot(String _id);
 
     Student findBy_idNotAndStudentId(String _id, String studentId);
 
