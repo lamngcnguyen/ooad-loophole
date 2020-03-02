@@ -17,6 +17,8 @@ public interface ClassService {
 
     Class getById(String id) throws BusinessServiceException;
 
+    Class getByTeacherIdAndClassName(String teacherId, String name) throws BusinessServiceException;
+
     Class create(Class ooadClass);
 
     List<Student> getAllStudents(String classId);

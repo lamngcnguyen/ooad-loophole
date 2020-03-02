@@ -58,6 +58,15 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    public Class getByTeacherIdAndClassName(String teacherId, String name) throws BusinessServiceException {
+        Class result = classRepository.getByTeacherIdAndClassName(teacherId, name);
+        if (result == null) {
+            throw new BusinessServiceException("No class of name keyword found for this teacher");
+        }
+        return result;
+    }
+
+    @Override
     public Class create(Class ooadClass) {
         ooadClass.setActive(true);
         classRepository.save(ooadClass);

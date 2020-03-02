@@ -3,6 +3,7 @@ package com.uet.ooadloophole.controller;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
@@ -90,7 +91,7 @@ public class ApiStudentController {
     public ResponseEntity<String> deleteStudent(@PathVariable String id) {
         try {
             studentService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).body("success");
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
