@@ -24,6 +24,57 @@ $(document).ready(function () {
             $(element).dropdown('set selected', values[0].value);
         }
     });
+
+    $('.modal.create-class').modal({
+        onShow: function () {
+            $('.dropdown.semester').dropdown({
+                showOnFocus: false,
+            }).api({
+                action: 'get semesters',
+                on: 'now',
+                onSuccess(response, element, xhr) {
+                    const values = [];
+                    xhr.responseJSON.data.forEach(function (semester) {
+                        values.push({
+                            value: semester._id,
+                            name: semester.name,
+                            text: semester.name,
+                        })
+                    });
+                    $(element).dropdown('change values', values);
+                }
+            });
+        }
+    });
+
+    $('.form.create-class').form({
+        onSuccess: function (evt, data) {
+            showDimmer('.form.create-class');
+            $('.create-class .form').api({
+                action: 'create class',
+                on: 'now',
+                method: 'post',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                beforeXHR: (xhr) => {
+                    xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
+                },
+                onFailure: function (response) {
+                    $('.form.create-class').form('add errors', [response]);
+                },
+                onSuccess: function () {
+                    hideDimmer('.modal.create-class');
+                    hideModal('.modal.create-class');
+                    reloadClassTable()
+                }
+            })
+        },
+        fields: {
+            className: validationRules.className,
+            semesterId: validationRules.semesterId,
+            scheduledDayOfWeek: validationRules.scheduledDayOfWeek
+        }
+    });
 });
 
 function createClassCards(data) {

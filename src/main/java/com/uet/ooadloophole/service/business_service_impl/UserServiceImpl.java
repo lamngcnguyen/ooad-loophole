@@ -169,13 +169,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     }
 
-//    @Override
-//    public void changePassword(User user, String newPassword) {
-//        //            User dbUser = getById(userId);
-//        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
-//        userRepository.save(user);
-//    }
-
     @Override
     public User resetAccount(String email) throws BusinessServiceException {
         User user = getByEmail(email);
@@ -242,28 +235,33 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public byte[] loadAvatar(String id) throws IOException, BusinessServiceException {
         User user = getById(id);
         String fileName = user.getAvatar();
-        String saveLocation;
-        if (user.hasRole(Constant.ROLE_TEACHER) || user.hasRole(Constant.ROLE_ADMIN)) {
-            saveLocation = "avatar/staff/";
+        String saveLocation = Constant.AVATAR_FOLDER;
+        if (fileName == null) {
+            fileName = Constant.DEFAULT_AVATAR;
         } else {
-            Student student = studentService.getByUserId(id);
-            saveLocation = "avatar/" + student.getClassId() + "/";
+            if (user.hasRole(Constant.ROLE_TEACHER) || user.hasRole(Constant.ROLE_ADMIN)) {
+                saveLocation += "/staff/";
+            } else {
+                Student student = studentService.getByUserId(id);
+                saveLocation += student.getClassId() + "/";
+            }
         }
-
         String imagePath = saveLocation + "/" + fileName;
-        FileInputStream image = new FileInputStream(imagePath);
-        return IOUtils.toByteArray(image);
+        FileInputStream imageStream = new FileInputStream(imagePath);
+        byte[] imageBytes = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+        return imageBytes;
     }
 
     @Override
     public void uploadAvatar(MultipartFile file, String id) throws BusinessServiceException {
         User user = getById(id);
-        String saveLocation;
+        String saveLocation = Constant.AVATAR_FOLDER;
         if (user.hasRole(Constant.ROLE_TEACHER) || user.hasRole(Constant.ROLE_ADMIN)) {
-            saveLocation = "avatar/staff/";
+            saveLocation += "staff/";
         } else {
             Student student = studentService.getByUserId(id);
-            saveLocation = "avatar/" + student.getClassId() + "/";
+            saveLocation += student.getClassId() + "/";
         }
         UserFile avatar = fileService.storeFile(file, saveLocation);
         user.setAvatar(avatar.getFileName());

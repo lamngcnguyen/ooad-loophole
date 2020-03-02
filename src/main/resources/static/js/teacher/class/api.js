@@ -8,3 +8,33 @@ var card_colors = [
     'red', 'blue', 'violet', 'black'
 ];
 
+const validationRules = {
+    className: {
+        identifier: 'className',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Chưa nhập tên lớp!'
+            }
+        ]
+    },
+    semesterId: {
+        identifier: 'semesterId',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Chưa nhập học kì!'
+            }
+        ]
+    },
+    scheduledDayOfWeek: {
+        identifier: 'scheduledDayOfWeek',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Chưa nhập ngày học!'
+            }
+        ]
+    }
+};
+
