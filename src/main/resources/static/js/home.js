@@ -21,7 +21,7 @@ $('input[name="avatar"]').change(function () {
     var formData = new FormData();
     formData.append('file', image, newFileName);
     $.ajax({
-        url: `api/users/avatar?t=${new Date().getTime()}`,
+        url: `/api/users/avatar?t=${new Date().getTime()}`,
         method: 'post',
         data: formData,
         contentType: false,

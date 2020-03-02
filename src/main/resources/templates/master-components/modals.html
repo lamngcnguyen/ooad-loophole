@@ -19,8 +19,8 @@
                     <input type="file" hidden="" name="avatar" accept="image/*">
                     <input type="hidden" name="userId" th:value="${user.get_id()}">
                     <input type="hidden" name="avatarLink" th:value="${avatarLink}">
-                    <div class="center" onclick="openAvatarDialog()">
-                        <div class="ui inverted icon button">
+                    <div class="center">
+                        <div class="ui inverted icon button" onclick="openAvatarDialog()" data-tooltip="Đổi avatar" data-inverted="">
                             <i class="pencil icon"></i>
                         </div>
                     </div>

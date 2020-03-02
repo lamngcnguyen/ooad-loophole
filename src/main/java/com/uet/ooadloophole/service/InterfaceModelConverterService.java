@@ -34,6 +34,7 @@ public class InterfaceModelConverterService {
         user.setUsername(iUser.getUsername());
         user.setFullName(iUser.getFullName());
         user.setEmail(iUser.getEmail());
+        user.setPhoneNumber(iUser.getPhoneNumber());
         if (iUser.isAdmin()) {
             Role role = roleService.getByName(Constant.ROLE_ADMIN);
             roles.add(role);

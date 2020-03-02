@@ -24,6 +24,7 @@ const studentTable = $(".student .ui.table").DataTable({
         {data: "studentId"},
         {data: "fullName"},
         {data: "className"},
+        {data: "phoneNumber", defaultContent: "Not set"},
         {
             data: "isActive",
             render: function (isActive) {
@@ -47,7 +48,7 @@ const studentTable = $(".student .ui.table").DataTable({
                 });
                 showModal('.modal.edit-student');
             });
-        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Chỉnh sửa thông tin" data-inverted=""><i class="trash icon"></i></button>')
+        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa sinh viên" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
                 showModal('.modal.delete-user');
             });
