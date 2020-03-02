@@ -1,12 +1,14 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.UserRepository;
 import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.EmailService;
-import com.uet.ooadloophole.service.business_service.RoleService;
-import com.uet.ooadloophole.service.business_service.UserService;
+import com.uet.ooadloophole.service.business_service.*;
+import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +18,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -29,6 +34,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private FileService fileService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -132,6 +141,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             dbUser.setUsername(user.getUsername());
             dbUser.setEmail(user.getEmail());
             dbUser.setRoles(user.getRoles());
+            dbUser.setPhoneNumber(user.getPhoneNumber());
             return userRepository.save(dbUser);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to update user" + e.getMessage());
@@ -159,13 +169,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
 
     }
-
-//    @Override
-//    public void changePassword(User user, String newPassword) {
-//        //            User dbUser = getById(userId);
-//        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
-//        userRepository.save(user);
-//    }
 
     @Override
     public User resetAccount(String email) throws BusinessServiceException {
@@ -227,5 +230,52 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public void changePassword(User user, String password) {
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    @Override
+    public byte[] loadAvatar(String id) throws IOException, BusinessServiceException {
+        User user = getById(id);
+        String fileName = user.getAvatar();
+        String saveLocation = Constants.AVATAR_FOLDER;
+        if (fileName == null) {
+            fileName = Constants.DEFAULT_AVATAR;
+        } else {
+            if (user.hasRole(Constants.ROLE_TEACHER) || user.hasRole(Constants.ROLE_ADMIN)) {
+                saveLocation += "/staff/";
+            } else {
+                Student student = studentService.getByUserId(id);
+                saveLocation += student.getClassId() + "/";
+            }
+        }
+        String imagePath = saveLocation + "/" + fileName;
+        FileInputStream imageStream = new FileInputStream(imagePath);
+        byte[] imageBytes = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+        return imageBytes;
+    }
+
+    @Override
+    public void uploadAvatar(MultipartFile file, String id) throws BusinessServiceException {
+        User user = getById(id);
+        String saveLocation = Constants.AVATAR_FOLDER;
+        if (user.hasRole(Constants.ROLE_TEACHER) || user.hasRole(Constants.ROLE_ADMIN)) {
+            saveLocation += "staff/";
+        } else {
+            Student student = studentService.getByUserId(id);
+            saveLocation += student.getClassId() + "/";
+        }
+        UserFile avatar = fileService.storeFile(file, saveLocation);
+        user.setAvatar(avatar.getFileName());
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        try {
+            getByEmail(email);
+            return true;
+        } catch (BusinessServiceException ignored) {
+            return false;
+        }
     }
 }

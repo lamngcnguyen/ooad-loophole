@@ -4,7 +4,9 @@ import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,4 +49,10 @@ public interface UserService {
     boolean matchPassword(User user, String password);
 
     void changePassword(User user, String password);
+
+    byte[] loadAvatar(String id) throws IOException, BusinessServiceException;
+
+    void uploadAvatar(MultipartFile file, String id) throws BusinessServiceException;
+
+    boolean emailExists(String email);
 }

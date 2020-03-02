@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service;
 
-import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,10 @@ public class InterfaceModelConverterService {
     private StudentService studentService;
     @Autowired
     private SemesterService semesterService;
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private SpecFileService specFileService;
 
     public User convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -34,12 +39,13 @@ public class InterfaceModelConverterService {
         user.setUsername(iUser.getUsername());
         user.setFullName(iUser.getFullName());
         user.setEmail(iUser.getEmail());
+        user.setPhoneNumber(iUser.getPhoneNumber());
         if (iUser.isAdmin()) {
-            Role role = roleService.getByName(Constant.ROLE_ADMIN);
+            Role role = roleService.getByName(Constants.ROLE_ADMIN);
             roles.add(role);
         }
         if (iUser.isTeacher()) {
-            Role role = roleService.getByName(Constant.ROLE_TEACHER);
+            Role role = roleService.getByName(Constants.ROLE_TEACHER);
             roles.add(role);
         }
         user.setRoles(roles);
@@ -103,12 +109,46 @@ public class InterfaceModelConverterService {
         return student;
     }
 
-    public DTOSemester convertToDTOSemester(Semester semester){
+    public DTOSemester convertToDTOSemester(Semester semester) {
         DTOSemester dtoSemester = new DTOSemester();
         dtoSemester.set_id(semester.get_id());
         dtoSemester.setName(semester.getName());
         dtoSemester.setStartDate(semester.getStartDate().toString());
         dtoSemester.setEndDate(semester.getEndDate().toString());
         return dtoSemester;
+    }
+
+    public DTOUser convertToDTOUser(User user) {
+        DTOUser dtoUser = new DTOUser();
+        dtoUser.set_id(user.get_id());
+        dtoUser.setUsername(user.getUsername());
+        dtoUser.setEmail(user.getEmail());
+        dtoUser.setFullName(user.getFullName());
+        dtoUser.setAvatar(user.getAvatar());
+        dtoUser.setRoles(user.getRoles());
+        dtoUser.setActive(user.isActive());
+        dtoUser.setPhoneNumber(user.getPhoneNumber());
+        return dtoUser;
+    }
+
+    public DTOTopic convertToDTOTopic(Topic topic) throws BusinessServiceException {
+        DTOTopic dtoTopic = new DTOTopic();
+        dtoTopic.set_id(topic.get_id());
+        dtoTopic.setName(topic.getName());
+        dtoTopic.setDescriptions(topic.getDescriptions());
+        dtoTopic.setClassId(topic.getClassId());
+        dtoTopic.setGroupId(topic.getGroupId());
+
+        Group group = groupService.getById(topic.getGroupId());
+        dtoTopic.setGroupName(group.getGroupName());
+
+        List<SpecFile> specFiles = specFileService.getByTopicId(topic.get_id());
+        List<String> fileNames = new ArrayList<>();
+        for (SpecFile specFile : specFiles) {
+            fileNames.add(specFile.getFileName());
+        }
+        dtoTopic.setFileNames(fileNames);
+
+        return dtoTopic;
     }
 }

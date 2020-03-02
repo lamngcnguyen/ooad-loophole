@@ -24,6 +24,8 @@ public interface StudentService {
 
     Student create(Student student) throws BusinessServiceException;
 
+    boolean studentIdExists(String studentId);
+
     List<Student> importStudents(List<Student> students);
 
     Student update(String id, Student student) throws BusinessServiceException;

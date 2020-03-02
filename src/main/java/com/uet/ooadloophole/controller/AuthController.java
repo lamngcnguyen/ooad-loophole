@@ -1,5 +1,6 @@
 package com.uet.ooadloophole.controller;
 
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.TokenService;
@@ -54,7 +55,7 @@ public class AuthController {
             //TODO: remove confirmation URL
             User user = userService.createActivatedUser(newUser, "TEACHER");
             String token = tokenService.createToken(user.get_id());
-            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+            String confirmationUrl = Constants.CONFIRMATION_URL + token;
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(confirmationUrl);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -63,8 +64,7 @@ public class AuthController {
 
     @RequestMapping(value = "/activate-account", method = RequestMethod.GET)
     private ModelAndView activateAccount(@RequestParam String token) {
-//        if (tokenService.isValid(token)) {
-        if(true) {
+        if (tokenService.isValid(token)) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());
@@ -84,7 +84,7 @@ public class AuthController {
             //TODO: remove confirmation URL
             User user = userService.resetAccount(email);
             String token = tokenService.createToken(user.get_id());
-            String resetLink = "http://ooad-loophole.herokuapp.com/resetPassword?token=" + token;
+            String resetLink = Constants.RESET_LINK + token;
             return ResponseEntity.status(HttpStatus.OK).body(resetLink);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

@@ -8,7 +8,12 @@
 <div th:fragment="body-content" class="ui stackable grid">
     <link rel="stylesheet" th:href="@{/css/admin/user.css}">
     <div class="row">
-        <div class="column"><h3 class="header"><i class="users icon nav-icon"></i><span>Quản lý người dùng</span></h3>
+        <div class="column">
+            <div class="header">
+                <div class="ui large grey label">
+                    <i class="users icon nav-icon"></i><span>Quản lý người dùng</span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -76,9 +81,10 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="three wide">Thao tác</th>
-                                <th class="four wide">Họ tên</th>
+                                <th class="three wide">Họ tên</th>
                                 <th class="three wide">Tên đăng nhập</th>
                                 <th class="four wide">Email</th>
+                                <th class="one wide">SĐT</th>
                                 <th class="one wide">Đang hoạt động</th>
                             </tr>
                             </thead>
@@ -133,8 +139,9 @@
                                 <th class="one wide">#</th>
                                 <th class="three wide">Thao tác</th>
                                 <th class="three wide">MSSV</th>
-                                <th class="four wide">Họ tên</th>
-                                <th class="four wide">Lớp</th>
+                                <th class="three wide">Họ tên</th>
+                                <th class="three wide">Lớp</th>
+                                <th class="two wide">SĐT</th>
                                 <th class="one wide">Đang hoạt động</th>
                             </tr>
                             </thead>
@@ -156,22 +163,31 @@
             <div class="ui form create-user">
                 <div class="field">
                     <div class="fields">
-                        <div class="nine wide required field">
+                        <div class="eight wide required field">
                             <label>Họ tên</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
-                        <div class="seven wide required field">
+                        <div class="eight wide required field">
                             <label>Tên đăng nhập</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
                     </div>
                 </div>
-                <div class="required field">
-                    <label>Email</label>
-                    <div class="inline field">
-                        <input type="email" name="email" placeholder="Email">
-                        <div class="ui left pointing small label">
-                            Email sẽ nhận được thông báo kích hoạt tài khoản
+                <div class="field">
+                    <div class="fields">
+                        <div class="required eight wide field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="eight wide field">
+                            <label>SĐT</label>
+                            <div class="ui labeled input">
+                                <div class="ui label">
+                                    <i class="vn flag"></i>
+                                    <span>+84</span>
+                                </div>
+                                <input type="text" name="phoneNumber" placeholder="Phone number">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,19 +235,33 @@
                 <input type="hidden" name="id">
                 <div class="field">
                     <div class="fields">
-                        <div class="nine wide required field">
+                        <div class="eight wide required field">
                             <label>Họ tên</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
-                        <div class="seven wide required field">
+                        <div class="eight wide required field">
                             <label>Tên đăng nhập</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
                     </div>
                 </div>
-                <div class="required field">
-                    <label>Email</label>
-                    <input type="email" name="email" placeholder="Email">
+                <div class="field">
+                    <div class="fields">
+                        <div class="required eight wide field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="eight wide field">
+                            <label>SĐT</label>
+                            <div class="ui labeled input">
+                                <div class="ui label">
+                                    <i class="vn flag"></i>
+                                    <span>+84</span>
+                                </div>
+                                <input type="text" name="phoneNumber" placeholder="Phone number">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="required field">
                     <label class="ui dividing">Quyền</label>
@@ -387,11 +417,11 @@
             <div class="ui form import-student">
                 <div class="field">
                     <input type="file" name="uploadExcel" hidden>
-                    <div class="ui green labeled icon mini button" onclick="openImportStudentDialog()">
+                    <div class="ui red labeled icon mini button" onclick="openImportStudentDialog()">
                         <i class="upload icon"></i>
                         Chọn tệp Excel
                     </div>
-                    <div class="ui orange labeled icon mini button" onclick="createStudentImportTemplate()">
+                    <div class="ui green labeled icon mini button" onclick="createStudentImportTemplate()">
                         <i class="download icon"></i>
                         Tải tệp mẫu
                     </div>
@@ -425,6 +455,32 @@
                 <div class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
                     Thêm
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal delete-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Cảnh báo
+        </div>
+        <div class="content">
+            <div class="ui form delete-student">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Bạn có chắc chắn muốn xóa sinh viên này không?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Có
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-student')">
+                    <i class="close icon"></i>
+                    Không
                 </div>
             </div>
         </div>

@@ -1,31 +1,18 @@
-package com.uet.ooadloophole.model.business;
+package com.uet.ooadloophole.controller.interface_model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import com.uet.ooadloophole.model.business.Role;
 
 import java.util.Set;
 
-public class User {
-    @Id
+public class DTOUser {
     private String _id;
     private String username;
     private String email;
-    private String password;
     private String fullName;
     private String avatar;
-    @DBRef
     private Set<Role> roles;
     private boolean active;
     private String phoneNumber;
-
-    public User() {
-
-    }
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public String get_id() {
         return _id;
@@ -43,28 +30,20 @@ public class User {
         this.username = username;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getAvatar() {
@@ -81,14 +60,6 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public boolean hasRole(String roleName) {
-        for (Role role : roles) {
-            if (role.getRole().toLowerCase().equals(roleName.toLowerCase()))
-                return true;
-        }
-        return false;
     }
 
     public boolean isActive() {

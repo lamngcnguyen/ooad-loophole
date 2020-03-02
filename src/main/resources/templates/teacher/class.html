@@ -10,10 +10,12 @@
     <input type="hidden" th:value="${teacherId}" name="teacherId">
     <div class="row">
         <div class="column">
-            <h3 class="header">
-                <i class="chalkboard teacher icon"></i>
-                Lớp của tôi
-            </h3>
+            <div class="header">
+                <div class="ui large grey label">
+                    <i class="chalkboard teacher icon"></i>
+                    Lớp của tôi
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -22,23 +24,23 @@
                 <div class="row">
                     <div class="six wide column">
                         <label>Học kì</label>&nbsp
-                        <div class="ui search selection dropdown semester">
+                        <div class="ui search selection dropdown semester filter">
                             <input type="hidden" name="semesterId">
                             <i class="dropdown icon"></i>
                             <div class="default text">Select semester</div>
                         </div>
                     </div>
                     <div class="ten wide column">
-                        <div class="ui green right floated icon labeled button">
+                        <div class="ui green right floated icon labeled button" onclick="showModal('.modal.create-class')">
                             <i class="plus icon">
                             </i>
                             Thêm mới
                         </div>
                     </div>
                 </div>
-                <div class="class row">
-                    <div class="four wide column">
-                        <a class="ui black card card-template">
+                <div class="class four column row">
+                    <div class="column">
+                        <a class="ui fluid black card card-template">
                             <div class="small image">
                                 <img th:src="@{/images/class_example_card.jpg}" alt="something funny">
                             </div>
@@ -61,7 +63,7 @@
             </div>
         </div>
     </div>
-    <a class="ui card card-template" style="display: none;" target="_blank">
+    <a class="ui fluid card card-template" style="display: none;" target="_blank">
         <div class="small image">
             <img alt="something funny">
         </div>
@@ -77,16 +79,71 @@
         </div>
         <div class="extra middle aligned content">
             <div class="item">
-                <div class="ui mini labeled icon button student">
+                <div class="ui small labeled icon button student">
                     <i class="users icon"></i>
                     <span class="student-count"># students</span>
                 </div>
-                <div class="ui mini right floated icon button setting-redirect">
+                <div class="ui small right floated icon button setting-redirect" data-tooltip="Cài đặt" data-inverted="">
                     <i class="cog icon"></i>
                 </div>
             </div>
         </div>
     </a>
+    <div class="ui tiny  modal create-class">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green user icon"></i>
+            Thêm mới
+        </div>
+        <div class="content">
+            <div class="ui form create-class">
+                <input type="hidden" th:value="${teacherId}" name="teacherId">
+                <div class="fields">
+                    <div class="required seven wide field">
+                        <label>Tên lớp</label>
+                        <input type="text" name="className" placeholder="Class name">
+                    </div>
+                    <div class="required nine wide field">
+                        <label>Học kì</label>
+                        <div class="ui selection dropdown semester">
+                            <input type="hidden" name="semesterId">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Chọn học kì</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="required seven wide field">
+                        <label>Ngày học</label>
+                        <div class="ui selection dropdown dayOfWeek">
+                            <input type="hidden" name="scheduledDayOfWeek">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Chọn ngày học</div>
+                            <div class="menu">
+                                <div class="item" data-value="1">Thứ 2</div>
+                                <div class="item" data-value="2">Thứ 3</div>
+                                <div class="item" data-value="3">Thứ 4</div>
+                                <div class="item" data-value="4">Thứ 5</div>
+                                <div class="item" data-value="5">Thứ 6</div>
+                                <div class="item" data-value="6">Thứ 7</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-class')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" th:src="@{/js/teacher/class/api.js}"></script>
     <script type="text/javascript" th:src="@{/js/teacher/class/class.js}"></script>
 </div>

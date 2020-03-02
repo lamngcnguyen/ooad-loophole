@@ -17,6 +17,8 @@ public interface ClassService {
 
     Class getById(String id) throws BusinessServiceException;
 
+    Class getByTeacherIdAndClassName(String teacherId, String name) throws BusinessServiceException;
+
     Class create(Class ooadClass);
 
     List<Student> getAllStudents(String classId);
@@ -28,4 +30,6 @@ public interface ClassService {
     List<Student> importStudents(String classId, List<Student> payload);
 
     List<Class> searchByName(String className);
+
+    boolean classNameExists(String teacherId, String className);
 }

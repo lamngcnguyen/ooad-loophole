@@ -5,8 +5,239 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="body-content">
-    This is class setting view
+<div th:fragment="body-content" class="ui stackable grid">
+    <link rel="stylesheet" th:href="@{/css/teacher/class_setting.css}">
+    <input type="hidden" th:value="${class.get_id()}" name="classId">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large labels">
+                    <div class="ui blue label">
+                        <i class="users icon nav-icon"></i>
+                        <span th:text="${class.getClassName()}"></span>
+                    </div>
+                    <div class="ui grey label" th:text="${class.getSemesterName()}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui top attached tabular menu">
+                <a class="active student item" onclick="showTab('student')">Sinh viên</a>
+                <a class="group item" onclick="showTab('group')">Nhóm</a>
+                <a class="topic item" onclick="showTab('topic')">Đề tài</a>
+            </div>
+            <div class="ui active student tab segment stackable grid">
+                <div class="row">
+                    <div class="column">
+                        <button type="button" class="ui labeled icon green button"
+                                onclick="showModal('.modal.create-student')">
+                            <i class="plus icon"></i>
+                            Thêm mới
+                        </button>
+                        <button type="button" class="ui labeled icon green button"
+                                onclick="showModal('.modal.import-student')">
+                            <i class="file excel icon"></i>
+                            Nhập từ Excel
+                        </button>
+                    </div>
+                </div>
+                <div class="row my-table-control">
+                    <div class="eight wide column">
+                        Hiển thị
+                        &nbsp
+                        <div class="ui compact selection dropdown page-length">
+                            <input type="hidden">
+                            <i class="dropdown icon"></i>
+                            <div class="text">10</div>
+                            <div class="menu">
+                                <div class="item" data-value="10">10</div>
+                                <div class="item" data-value="25">25</div>
+                                <div class="item" data-value="50">50</div>
+                                <div class="item" data-value="100">100</div>
+                            </div>
+                        </div>
+                        &nbsp
+                        mục
+                    </div>
+                    <div class="right aligned eight wide column">
+                        Tìm kiếm:&nbsp
+                        <div class="ui icon input table-search">
+                            <input type="text" placeholder="Search...">
+                            <i class="search icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <table class="ui celled black sortable table" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th class="one wide">#</th>
+                                <th class="three wide">Thao tác</th>
+                                <th class="three wide">MSSV</th>
+                                <th class="three wide">Họ tên</th>
+                                <th class="two wide">SĐT</th>
+                                <th class="one wide">Đang hoạt động</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="ui group tab segment stackable grid">
+                Group
+            </div>
+            <div class="ui topic tab segment stackable grid">
+                Topic
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal create-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green student icon"></i>
+            Thêm mới
+        </div>
+        <div class="content">
+            <div class="ui form create-student">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Họ tên</label>
+                            <input type="text" name="fullName" placeholder="Full name">
+                        </div>
+                        <div class="seven wide required field">
+                            <label>MSSV</label>
+                            <input type="text" name="studentId" placeholder="Student ID">
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-student')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal edit-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green student icon"></i>
+            Chỉnh sửa
+        </div>
+        <div class="content">
+            <div class="ui form edit-student">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Họ tên</label>
+                            <input type="text" name="fullName" placeholder="Full name">
+                        </div>
+                        <div class="seven wide required field">
+                            <label>MSSV</label>
+                            <input type="text" name="studentId" placeholder="Student ID">
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-student')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated blue labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui large modal import-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green file excel icon"></i>
+            Nhập từ Excel
+        </div>
+        <div class="content">
+            <div class="ui form import-student">
+                <div class="field">
+                    <input type="file" name="uploadExcel" hidden>
+                    <div class="ui red labeled icon mini button" onclick="openImportStudentDialog()">
+                        <i class="upload icon"></i>
+                        Chọn tệp Excel
+                    </div>
+                    <div class="ui green labeled icon mini button" onclick="createStudentImportTemplate()">
+                        <i class="download icon"></i>
+                        Tải tệp mẫu
+                    </div>
+                </div>
+                <div class="field">
+                    <table class="ui small celled table import-student">
+                        <thead>
+                        <tr>
+                            <th class="one wide">#</th>
+                            <th class="two wide">MSSV</th>
+                            <th>Họ tên</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.import-student')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <div class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal delete-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Cảnh báo
+        </div>
+        <div class="content">
+            <div class="ui form delete-student">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Bạn có chắc chắn muốn xóa sinh viên này không?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Có
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-student')">
+                    <i class="close icon"></i>
+                    Không
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/teacher/class_setting/class_setting.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_setting/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_setting/student.js}"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.5/dist/xlsx.full.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_setting/import.js}"></script>
 </div>
 </body>
 </html>

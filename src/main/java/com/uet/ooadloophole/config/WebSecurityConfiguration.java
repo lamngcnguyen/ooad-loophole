@@ -2,6 +2,7 @@ package com.uet.ooadloophole.config;
 
 import com.uet.ooadloophole.service.business_service_impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -21,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 @EnableScheduling
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    @Value("${security.remember-me-key}")
+    private String rememberMeKey;
+
     @Autowired
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
@@ -102,7 +106,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                 .and()
-                .rememberMe().key("@]3eVHcKP~/ijFq6=q'PDonv=b;/[-%A\\}_").tokenValiditySeconds(7*24*60*60);
+                .rememberMe().key(rememberMeKey).tokenValiditySeconds(7*24*60*60);
 //                .logoutSuccessHandler(logoutSuccessHandler());
     }
 

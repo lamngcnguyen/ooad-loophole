@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.StudentRepository;
 import com.uet.ooadloophole.database.UserRepository;
 import com.uet.ooadloophole.model.business.Role;
@@ -82,10 +82,10 @@ public class StudentServiceImpl implements StudentService {
                 throw new BusinessServiceException("Student ID already exists");
             }
             Set<Role> roles = new HashSet<>();
-            roles.add(roleService.getByName(Constant.ROLE_STUDENT));
+            roles.add(roleService.getByName(Constants.ROLE_STUDENT));
 
             User user = new User();
-            user.setEmail(student.getStudentId() + Constant.EMAIL_SUFFIX);
+            user.setEmail(student.getStudentId() + Constants.EMAIL_SUFFIX);
             user.setUsername(student.getStudentId());
             user.setFullName(student.getFullName());
             user.setPassword(student.getStudentId());
@@ -99,7 +99,8 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    private boolean studentIdExists(String studentId) {
+    @Override
+    public boolean studentIdExists(String studentId) {
         return studentRepository.findByStudentId(studentId) != null;
     }
 
@@ -124,11 +125,13 @@ public class StudentServiceImpl implements StudentService {
         try {
             Student dbStudent = getById(id);
             User dbUser = userService.getById(dbStudent.getUserId());
-            dbUser.setEmail(student.getStudentId() + Constant.EMAIL_SUFFIX);
+            dbUser.setEmail(student.getStudentId() + Constants.EMAIL_SUFFIX);
             dbUser.setFullName(student.getFullName());
             dbUser.setUsername(student.getStudentId());
             dbStudent.setGroupId(student.getGroupId());
-            dbStudent.setStudentId(student.getStudentId());
+            if (!studentIdExists(id, student.getStudentId())) {
+                dbStudent.setStudentId(student.getStudentId());
+            }
             dbStudent.setFullName(student.getFullName());
 
             userRepository.save(dbUser);

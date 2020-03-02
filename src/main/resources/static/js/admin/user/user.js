@@ -24,6 +24,7 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
         {data: "fullName"},
         {data: "username"},
         {data: "email"},
+        {data: "phoneNumber", defaultContent: 'Not set'},
         {
             data: "active",
             render: function (isActive) {
@@ -44,6 +45,7 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
                     fullName: data.fullName,
                     username: data.username,
                     email: data.email,
+                    phoneNumber: data.phoneNumber,
                     isAdmin: userHasRole(data, 'admin'),
                     isTeacher: userHasRole(data, 'teacher')
                 });
@@ -88,6 +90,7 @@ $('.form.create-user').form({
         fullName: validationRules.fullName,
         username: validationRules.username,
         email: validationRules.email,
+        phoneNumber: validationRules.phoneNumber,
         oneRoleClaimed: validationRules.oneRoleClaimed('.form.create-user')
     }
 });
@@ -123,6 +126,7 @@ $('.form.edit-user').form({
         fullName: validationRules.fullName,
         username: validationRules.username,
         email: validationRules.email,
+        phoneNumber: validationRules.phoneNumber,
         oneRoleClaimed: validationRules.oneRoleClaimed('.form.edit-user')
     }
 });

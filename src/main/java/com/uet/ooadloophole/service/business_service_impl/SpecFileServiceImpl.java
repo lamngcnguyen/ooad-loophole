@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class SpecFileServiceImpl implements SpecFileService {
@@ -51,5 +52,10 @@ public class SpecFileServiceImpl implements SpecFileService {
     @Override
     public Resource download(String fileName, String path) throws BusinessServiceException {
         return null;
+    }
+
+    @Override
+    public List<SpecFile> getByTopicId(String topicId) {
+        return specFileRepository.findAllByTopicId(topicId);
     }
 }

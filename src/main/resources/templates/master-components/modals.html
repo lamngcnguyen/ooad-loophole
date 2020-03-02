@@ -5,18 +5,32 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="profile-modal" class="ui small modal profile">
+<div th:fragment="profile-modal" class="ui tiny modal profile">
+    <div class="ui dimmer profile-loader">
+        <div class="ui loader"></div>
+    </div>
     <div class="ui large header">
         Thông tin cá nhân
     </div>
     <div class="image content">
-        <div class="ui medium rounded image">
-            <img src="https://community.secondlife.com/applications/core/interface/imageproxy/imageproxy.php?img=https://pbs.twimg.com/profile_images/930690106842865664/0KvvEciA_400x400.jpg&key=98ee4236f2aba89273f61ff8fb575645d02ce874c0cc38974931669ae405b782"
-                 alt="profile-image">
+        <div class="ui small fluid rounded blurring dimmable bordered image my-avatar">
+            <div class="ui dimmer">
+                <div class="content">
+                    <input type="file" hidden="" name="avatar" accept="image/*">
+                    <input type="hidden" name="userId" th:value="${user.get_id()}">
+                    <input type="hidden" name="avatarLink" th:value="${avatarLink}">
+                    <div class="center">
+                        <div class="ui inverted icon button" onclick="openAvatarDialog()" data-tooltip="Đổi avatar" data-inverted="">
+                            <i class="pencil icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img class="my-avatar" th:src="${avatarLink}" alt="profile-image">
         </div>
         <div class="description">
-            <div class="ui huge header" th:text="${user.getFullName()}"></div>
-            <div class="ui huge list">
+            <div class="ui large header" th:text="${user.getFullName()}"></div>
+            <div class="ui large list">
                 <div class="item">
                     <i class="icon user"></i>
                     <div class="content" th:text="${user.getUsername()}"></div>
@@ -24,6 +38,10 @@
                 <div class="item">
                     <i class="icon mail"></i>
                     <div class="content" th:text="${user.getEmail()}"></div>
+                </div>
+                <div class="item">
+                    <i class="phone icon"></i>
+                    <div class="content" th:text="${user.getPhoneNumber()}"></div>
                 </div>
             </div>
         </div>
