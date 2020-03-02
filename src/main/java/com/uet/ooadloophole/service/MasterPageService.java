@@ -24,7 +24,7 @@ public class MasterPageService {
             modelAndView.addObject("user", user);
             modelAndView.addObject("bodyFragment", bodyFragment);
             modelAndView.addObject("navGroups", navigationGroupService.getByRoles(user.getRoles()));
-            modelAndView.addObject("avatarLink", "api/users/avatar/" + user.get_id());
+            modelAndView.addObject("avatarLink", "/api/users/avatar/" + user.get_id());
             return modelAndView;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Error creating master-components page: " + e.getMessage());

@@ -52,7 +52,7 @@ const classTable = $(".ui.table").DataTable({
     ],
     createdRow: function (row, data) {
         const actionCell = $(row).children().eq(1);
-        const btnEdit = $('<button type="button" class="ui mini icon blue button"><i class="pencil icon"></i></button>')
+        const btnEdit = $('<button type="button" class="ui mini icon blue button" data-tooltip="Chỉnh sửa thông tin" data-inverted=""><i class="pencil icon"></i></button>')
             .click(function () {
                 $('.form.edit-class').form('set values', {
                     id: data._id,
@@ -63,7 +63,7 @@ const classTable = $(".ui.table").DataTable({
                 });
                 showModal('.modal.edit-class');
             });
-        const btnDelete = $('<button type="button" class="ui mini icon grey button"><i class="trash icon"></i></button>')
+        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa lớp" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
                 showModal('.modal.delete-class');
             });

@@ -69,5 +69,14 @@ var validationRules = {
                 prompt: 'Vui lòng chọn lớp học'
             }
         ]
+    },
+    phoneNumber: {
+        identifier: 'phoneNumber',
+        rules: [
+            {
+                type: 'number',
+                prompt: 'SĐT không hợp lệ'
+            }
+        ]
     }
 };

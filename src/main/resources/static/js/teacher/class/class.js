@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.dropdown.semester').dropdown({
+    $('.dropdown.semester.filter').dropdown({
         onChange: function (value) {
             filterClassBySemester(value);
         }
@@ -27,9 +27,7 @@ $(document).ready(function () {
 
     $('.modal.create-class').modal({
         onShow: function () {
-            $('.dropdown.semester').dropdown({
-                showOnFocus: false,
-            }).api({
+            $('.create-class .dropdown.semester').dropdown().api({
                 action: 'get semesters',
                 on: 'now',
                 onSuccess(response, element, xhr) {
@@ -65,7 +63,7 @@ $(document).ready(function () {
                 onSuccess: function () {
                     hideDimmer('.modal.create-class');
                     hideModal('.modal.create-class');
-                    reloadClassTable()
+                    filterClassBySemester($(".dropdown.semester.filter").dropdown("get value"));
                 }
             })
         },

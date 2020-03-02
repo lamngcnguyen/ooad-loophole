@@ -76,9 +76,10 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="three wide">Thao tác</th>
-                                <th class="four wide">Họ tên</th>
+                                <th class="three wide">Họ tên</th>
                                 <th class="three wide">Tên đăng nhập</th>
                                 <th class="four wide">Email</th>
+                                <th class="one wide">SĐT</th>
                                 <th class="one wide">Đang hoạt động</th>
                             </tr>
                             </thead>
@@ -133,8 +134,9 @@
                                 <th class="one wide">#</th>
                                 <th class="three wide">Thao tác</th>
                                 <th class="three wide">MSSV</th>
-                                <th class="four wide">Họ tên</th>
-                                <th class="four wide">Lớp</th>
+                                <th class="three wide">Họ tên</th>
+                                <th class="three wide">Lớp</th>
+                                <th class="two wide">SĐT</th>
                                 <th class="one wide">Đang hoạt động</th>
                             </tr>
                             </thead>
@@ -156,22 +158,31 @@
             <div class="ui form create-user">
                 <div class="field">
                     <div class="fields">
-                        <div class="nine wide required field">
+                        <div class="eight wide required field">
                             <label>Họ tên</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
-                        <div class="seven wide required field">
+                        <div class="eight wide required field">
                             <label>Tên đăng nhập</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
                     </div>
                 </div>
-                <div class="required field">
-                    <label>Email</label>
-                    <div class="inline field">
-                        <input type="email" name="email" placeholder="Email">
-                        <div class="ui left pointing small label">
-                            Email sẽ nhận được thông báo kích hoạt tài khoản
+                <div class="field">
+                    <div class="fields">
+                        <div class="required eight wide field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="eight wide field">
+                            <label>SĐT</label>
+                            <div class="ui labeled input">
+                                <div class="ui label">
+                                    <i class="vn flag"></i>
+                                    <span>+84</span>
+                                </div>
+                                <input type="text" name="phoneNumber" placeholder="Phone number">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,19 +230,33 @@
                 <input type="hidden" name="id">
                 <div class="field">
                     <div class="fields">
-                        <div class="nine wide required field">
+                        <div class="eight wide required field">
                             <label>Họ tên</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
-                        <div class="seven wide required field">
+                        <div class="eight wide required field">
                             <label>Tên đăng nhập</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
                     </div>
                 </div>
-                <div class="required field">
-                    <label>Email</label>
-                    <input type="email" name="email" placeholder="Email">
+                <div class="field">
+                    <div class="fields">
+                        <div class="required eight wide field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                        </div>
+                        <div class="eight wide field">
+                            <label>SĐT</label>
+                            <div class="ui labeled input">
+                                <div class="ui label">
+                                    <i class="vn flag"></i>
+                                    <span>+84</span>
+                                </div>
+                                <input type="text" name="phoneNumber" placeholder="Phone number">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="required field">
                     <label class="ui dividing">Quyền</label>

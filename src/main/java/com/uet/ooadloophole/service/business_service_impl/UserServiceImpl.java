@@ -141,6 +141,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             dbUser.setUsername(user.getUsername());
             dbUser.setEmail(user.getEmail());
             dbUser.setRoles(user.getRoles());
+            dbUser.setPhoneNumber(user.getPhoneNumber());
             return userRepository.save(dbUser);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to update user" + e.getMessage());

@@ -6,13 +6,15 @@ public class IUser {
     private String email;
     private Boolean isAdmin;
     private Boolean isTeacher;
+    private String phoneNumber;
 
-    public IUser(String fullName, String username, String email, boolean isAdmin, boolean isTeacher) {
+    public IUser(String fullName, String username, String email, boolean isAdmin, boolean isTeacher, String phoneNumber) {
         this.fullName = fullName;
         this.username = username;
         this.email = email;
         this.isAdmin = isAdmin;
         this.isTeacher = isTeacher;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFullName() {
@@ -53,5 +55,13 @@ public class IUser {
 
     public void setTeacher(boolean teacher) {
         isTeacher = teacher;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
