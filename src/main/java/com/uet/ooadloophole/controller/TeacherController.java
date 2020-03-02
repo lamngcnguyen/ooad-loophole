@@ -20,9 +20,6 @@ public class TeacherController {
     private SecureUserDetailService secureUserDetailService;
 
     @Autowired
-    private ClassService classService;
-
-    @Autowired
     private MasterPageService masterPageService;
 
     @RequestMapping(method = RequestMethod.GET)
