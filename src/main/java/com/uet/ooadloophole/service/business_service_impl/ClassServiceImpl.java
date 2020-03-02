@@ -137,4 +137,9 @@ public class ClassServiceImpl implements ClassService {
     public List<Class> searchByName(String className) {
         return classRepository.findAllByClassNameLikeIgnoreCase(className);
     }
+
+    @Override
+    public boolean classNameExists(String teacherId, String className) {
+        return !classRepository.findAllByTeacherIdAndClassNameLikeIgnoreCase(teacherId, className).isEmpty();
+    }
 }

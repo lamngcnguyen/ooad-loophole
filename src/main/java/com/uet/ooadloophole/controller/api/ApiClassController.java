@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.Student;
@@ -32,11 +33,19 @@ public class ApiClassController {
 
     private Gson gson = new Gson();
 
+    private boolean userCanCreateClass() throws BusinessServiceException {
+        User user = secureUserDetailService.getCurrentUser();
+        return (user.hasRole("teacher") || user.hasRole("admin"));
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
-            if (userIsNotTeacher())
+            if (!userCanCreateClass())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            if (classService.classNameExists(ooadClass.getTeacherId(), ooadClass.getClassName()))
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(
+                        new ResponseMessage("Class name already exists for this teacher")));
             Class newClass = classService.create(ooadClass);
             return ResponseEntity.status(HttpStatus.OK).body(newClass);
         } catch (BusinessServiceException e) {
@@ -47,7 +56,7 @@ public class ApiClassController {
     @RequestMapping(value = "/teacher/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getClassesByTeacherId(@PathVariable String id) {
         try {
-            if (userIsNotTeacher()) {
+            if (!userCanCreateClass()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             } else {
                 List<DTOClass> dtoClasses = new ArrayList<>();
@@ -69,7 +78,7 @@ public class ApiClassController {
     @RequestMapping(value = "/teacher/{id}/semester/{semesterId}", method = RequestMethod.GET)
     public ResponseEntity<String> getClassesBySemester(@PathVariable String id, @PathVariable String semesterId) {
         try {
-            if (userIsNotTeacher()) {
+            if (!userCanCreateClass()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             } else {
                 List<DTOClass> dtoClasses = new ArrayList<>();
@@ -105,6 +114,8 @@ public class ApiClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteClass(@PathVariable String id) {
         try {
+            if(!userCanCreateClass())
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             classService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
@@ -137,7 +148,7 @@ public class ApiClassController {
             for (Student s : studentList) {
                 //TODO: remove confirmation URL
                 String token = tokenService.createToken(s.getUserId());
-                String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+                String confirmationUrl = Constants.CONFIRMATION_URL + token;
                 confirmationLinks.add(confirmationUrl);
             }
             return ResponseEntity.status(HttpStatus.OK).body(new Gson().toJson(new TableDataWrapper(confirmationLinks)));
@@ -150,18 +161,16 @@ public class ApiClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateClass(@PathVariable String id, @RequestBody Class ooadClass) {
         try {
-            if (userIsNotTeacher())
+            if (!userCanCreateClass())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            if (classService.classNameExists(ooadClass.getTeacherId(), ooadClass.getClassName()))
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(
+                        new ResponseMessage("Class name already exists for this teacher")));
             Class updatedClass = classService.update(id, ooadClass);
             return ResponseEntity.status(HttpStatus.OK).body(updatedClass);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-    }
-
-    private boolean userIsNotTeacher() throws BusinessServiceException {
-        User user = secureUserDetailService.getCurrentUser();
-        return !user.hasRole("teacher");
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)

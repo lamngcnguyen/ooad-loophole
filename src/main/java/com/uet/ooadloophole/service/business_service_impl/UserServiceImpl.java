@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.UserRepository;
 import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.model.business.Student;
@@ -236,11 +236,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public byte[] loadAvatar(String id) throws IOException, BusinessServiceException {
         User user = getById(id);
         String fileName = user.getAvatar();
-        String saveLocation = Constant.AVATAR_FOLDER;
+        String saveLocation = Constants.AVATAR_FOLDER;
         if (fileName == null) {
-            fileName = Constant.DEFAULT_AVATAR;
+            fileName = Constants.DEFAULT_AVATAR;
         } else {
-            if (user.hasRole(Constant.ROLE_TEACHER) || user.hasRole(Constant.ROLE_ADMIN)) {
+            if (user.hasRole(Constants.ROLE_TEACHER) || user.hasRole(Constants.ROLE_ADMIN)) {
                 saveLocation += "/staff/";
             } else {
                 Student student = studentService.getByUserId(id);
@@ -257,8 +257,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public void uploadAvatar(MultipartFile file, String id) throws BusinessServiceException {
         User user = getById(id);
-        String saveLocation = Constant.AVATAR_FOLDER;
-        if (user.hasRole(Constant.ROLE_TEACHER) || user.hasRole(Constant.ROLE_ADMIN)) {
+        String saveLocation = Constants.AVATAR_FOLDER;
+        if (user.hasRole(Constants.ROLE_TEACHER) || user.hasRole(Constants.ROLE_ADMIN)) {
             saveLocation += "staff/";
         } else {
             Student student = studentService.getByUserId(id);

@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service;
 
-import com.uet.ooadloophole.config.Constant;
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -36,11 +35,11 @@ public class InterfaceModelConverterService {
         user.setEmail(iUser.getEmail());
         user.setPhoneNumber(iUser.getPhoneNumber());
         if (iUser.isAdmin()) {
-            Role role = roleService.getByName(Constant.ROLE_ADMIN);
+            Role role = roleService.getByName(Constants.ROLE_ADMIN);
             roles.add(role);
         }
         if (iUser.isTeacher()) {
-            Role role = roleService.getByName(Constant.ROLE_TEACHER);
+            Role role = roleService.getByName(Constants.ROLE_TEACHER);
             roles.add(role);
         }
         user.setRoles(roles);
@@ -104,12 +103,25 @@ public class InterfaceModelConverterService {
         return student;
     }
 
-    public DTOSemester convertToDTOSemester(Semester semester){
+    public DTOSemester convertToDTOSemester(Semester semester) {
         DTOSemester dtoSemester = new DTOSemester();
         dtoSemester.set_id(semester.get_id());
         dtoSemester.setName(semester.getName());
         dtoSemester.setStartDate(semester.getStartDate().toString());
         dtoSemester.setEndDate(semester.getEndDate().toString());
         return dtoSemester;
+    }
+
+    public DTOUser convertToDTOUser(User user) {
+        DTOUser dtoUser = new DTOUser();
+        dtoUser.set_id(user.get_id());
+        dtoUser.setUsername(user.getUsername());
+        dtoUser.setEmail(user.getEmail());
+        dtoUser.setFullName(user.getFullName());
+        dtoUser.setAvatar(user.getAvatar());
+        dtoUser.setRoles(user.getRoles());
+        dtoUser.setActive(user.isActive());
+        dtoUser.setPhoneNumber(user.getPhoneNumber());
+        return dtoUser;
     }
 }

@@ -1,6 +1,8 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.config.Constants;
+import com.uet.ooadloophole.controller.interface_model.DTOUser;
 import com.uet.ooadloophole.controller.interface_model.IUser;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,15 +38,21 @@ public class ApiUserController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getUsers() {
-        List<User> users = userService.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(users)));
+        List<DTOUser> dtoUsers = new ArrayList<>();
+        for (User user : userService.getAll()) {
+            dtoUsers.add(interfaceModelConverterService.convertToDTOUser(user));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoUsers)));
     }
 
     @RequestMapping(value = "/role/{roleName}", method = RequestMethod.GET)
-    public ResponseEntity<String> getUsers(@PathVariable String roleName) {
+    public ResponseEntity<String> getUsersByRole(@PathVariable String roleName) {
         try {
-            List<User> users = userService.getAllByRole(roleName);
-            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(users)));
+            List<DTOUser> dtoUsers = new ArrayList<>();
+            for (User user : userService.getAllByRole(roleName)) {
+                dtoUsers.add(interfaceModelConverterService.convertToDTOUser(user));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoUsers)));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -99,13 +108,13 @@ public class ApiUserController {
     public ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
         try {
             User user = interfaceModelConverterService.convertUserInterface(iUser);
-            if(userService.emailExists(user.getEmail())) {
+            if (userService.emailExists(user.getEmail())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(new ResponseMessage("Email already exists")));
             } else {
                 User newUser = userService.create(user);
                 //TODO: remove confirmation URL
                 String token = tokenService.createToken(newUser.get_id());
-                String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+                String confirmationUrl = Constants.CONFIRMATION_URL + token;
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage(confirmationUrl)));
             }
         } catch (BusinessServiceException e) {

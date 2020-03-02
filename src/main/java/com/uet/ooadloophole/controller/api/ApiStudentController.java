@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.DTOStudent;
 import com.uet.ooadloophole.controller.interface_model.IStudent;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
@@ -72,7 +73,7 @@ public class ApiStudentController {
             } else {
                 Student newStudent = studentService.create(student);
                 String token = tokenService.createToken(newStudent.getUserId());
-                String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+                String confirmationUrl = Constants.CONFIRMATION_URL + token;
                 return ResponseEntity.status(HttpStatus.OK).body(confirmationUrl);
             }
         } catch (BusinessServiceException e) {

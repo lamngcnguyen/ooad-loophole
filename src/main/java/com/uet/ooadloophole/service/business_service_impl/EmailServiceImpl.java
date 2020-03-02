@@ -1,5 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.EmailService;
@@ -26,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
             String recipientAddress = user.getEmail();
 
             String subject = "Kích hoạt tài khoản OOAD Loophole";
-            String confirmationUrl = "http://ooad-loophole.herokuapp.com/activate-account?token=" + token;
+            String confirmationUrl = Constants.CONFIRMATION_URL + token;
             String message = "Bấm vào link để kích hoạt tài khoản: ";
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -48,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
             String recipientAddress = user.getEmail();
 
             String subject = "Đặt lại mật khẩu tài khoản OOAD Loophole";
-            String confirmationUrl = "http://ooad-loophole.herokuapp.com/resetPassword?token=" + token;
+            String confirmationUrl = Constants.CONFIRMATION_URL + token;
             String message = "Bấm vào link để đặt lại mật khẩu: ";
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();

@@ -28,4 +28,6 @@ public interface ClassService {
     List<Student> importStudents(String classId, List<Student> payload);
 
     List<Class> searchByName(String className);
+
+    boolean classNameExists(String teacherId, String className);
 }
