@@ -1,11 +1,12 @@
 let studentRowIndex = 0;
+
 const studentTable = $(".student .ui.table").DataTable({
     ordering: true,
     searching: true,
     paging: true,
     autoWidth: false,
     lengthChange: true,
-    ajax: "/api/students",
+    ajax: "/api/classes/" + classId + "/students",
     sDom: stringDom,
     language: languageOption,
     columns: [
@@ -23,7 +24,6 @@ const studentTable = $(".student .ui.table").DataTable({
         },
         {data: "studentId"},
         {data: "fullName"},
-        {data: "className"},
         {data: "phoneNumber", defaultContent: "Not set"},
         {
             data: "isActive",
@@ -44,14 +44,13 @@ const studentTable = $(".student .ui.table").DataTable({
                     id: data._id,
                     fullName: data.fullName,
                     studentId: data.studentId,
-                    classId: data.classId,
                 });
                 showModal('.modal.edit-student');
             });
         const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa sinh viên" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
                 $('.form.delete-student').form('set values', {
-                    id: data._id,
+                    id: data._id
                 });
                 showModal('.modal.delete-student');
             });
@@ -90,6 +89,7 @@ $('.dropdown.assigned-class').dropdown({
 $('.form.create-student').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.create-student');
+        data['classId'] = classId;
         $('.form.create-student').api({
             action: 'create student',
             on: 'now',
@@ -120,6 +120,7 @@ $('.form.create-student').form({
 $('.form.edit-student').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.edit-student');
+        data['classId'] = classId;
         $('.form.edit-student').api({
             action: 'update student',
             urlData: {
@@ -153,7 +154,7 @@ $('.form.edit-student').form({
 $('.form.delete-student').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.delete-student');
-        $('.form.delete-user').api({
+        $('.form.delete-student').api({
             action: 'delete student',
             urlData: {
                 id: data.id

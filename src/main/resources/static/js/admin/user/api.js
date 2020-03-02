@@ -5,6 +5,7 @@ $.fn.api.settings.api = {
     'create student': '/api/students',
     'update student': '/api/students/{id}',
     'import student': '/api/students/import',
+    'delete student': '/api/students/{id}',
     'search class': '/api/classes/search?keyword={query}',
     'get classes': '/api/classes',
 };

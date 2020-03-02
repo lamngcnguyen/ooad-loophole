@@ -8,7 +8,7 @@ import java.util.List;
 public interface ClassRepository extends MongoRepository<Class, String> {
     Class findBy_id(String _id);
 
-    List<Class> findAllByTeacherIdAndClassNameLikeIgnoreCase(String teacherId, String className);
+    Class getByTeacherIdAndClassName(String teacherId, String className);
 
     List<Class> findAllByTeacherId(String teacherId);
 

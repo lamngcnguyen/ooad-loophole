@@ -96,7 +96,7 @@ public class ApiStudentController {
     public ResponseEntity<String> deleteStudent(@PathVariable String id) {
         try {
             studentService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).body("success");
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
