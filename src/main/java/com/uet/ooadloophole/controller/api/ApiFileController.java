@@ -65,9 +65,9 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/spec", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadSpecFile(@RequestParam("file") MultipartFile file, String topicId) {
+    public ResponseEntity<Object> uploadSpecFile(@RequestParam("file") MultipartFile file) {
         try {
-            SpecFile specFile = specFileService.upload(file, topicId);
+            SpecFile specFile = specFileService.upload(file);
             return ResponseEntity.status(HttpStatus.OK).body(specFile);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -75,14 +75,36 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/spec/multiple", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadMultipleSpecFiles(@RequestParam("files") List<MultipartFile> files, String topicId) {
+    public ResponseEntity<Object> uploadMultipleSpecFiles(@RequestParam("files") List<MultipartFile> files) {
         try {
             List<SpecFile> specFiles = new ArrayList<>();
             for (MultipartFile file : files) {
-                specFiles.add(specFileService.upload(file, topicId));
+                specFiles.add(specFileService.upload(file));
             }
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(specFiles);
         } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/assign/topicId", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignTopicIdToSpecFile(@RequestBody SpecFile specFile) {
+        try {
+            specFileService.updateTopicId(specFile);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
+        } catch (BusinessServiceException | IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/multiple/assign/topicId", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignTopicIdToMultipleSpecFile(@RequestBody List<SpecFile> specFiles) {
+        try {
+            for (SpecFile specFile : specFiles) {
+                specFileService.updateTopicId(specFile);
+            }
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
+        } catch (BusinessServiceException | IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

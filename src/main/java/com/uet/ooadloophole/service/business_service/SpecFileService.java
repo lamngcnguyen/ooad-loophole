@@ -6,13 +6,16 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public interface SpecFileService {
     SpecFile findById(String id);
 
-    SpecFile upload(MultipartFile file, String topicId) throws BusinessServiceException;
+    void updateTopicId(SpecFile specFile) throws BusinessServiceException, IOException;
+
+    SpecFile upload(MultipartFile file) throws BusinessServiceException;
 
     Resource download(String id);
 

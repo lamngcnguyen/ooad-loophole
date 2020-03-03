@@ -15,6 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 
@@ -33,9 +34,23 @@ public class SpecFileServiceImpl implements SpecFileService {
     }
 
     @Override
-    public SpecFile upload(MultipartFile file, String topicId) throws FileStorageException {
+    public void updateTopicId(SpecFile specFile) throws BusinessServiceException, IOException {
+        SpecFile dbSpecFile = findById(specFile.get_id());
+        String newPath = Constants.SPEC_FOLDER + specFile.getTopicId() + "/";
+        dbSpecFile.setTopicId(specFile.getTopicId());
+        dbSpecFile.setPath(newPath);
+        //specFile.getPath() may indicate the spec file is in temp folder
+        String fileName = converterService.formatFileName(specFile.getFileName(), specFile.getTimeStamp(), specFile.getFileExtension());
+        if (!fileService.moveFile(fileName, specFile.getPath(), newPath)) {
+            throw new BusinessServiceException("Unable to assign topicId to this file");
+        }
+        specFileRepository.save(dbSpecFile);
+    }
+
+    @Override
+    public SpecFile upload(MultipartFile file) throws FileStorageException {
         try {
-            String saveLocation = Constants.SPEC_FOLDER + topicId;
+            String saveLocation = Constants.SPEC_FOLDER + "temp/";
             SpecFile specFile = new SpecFile();
             UserFile userFile = fileService.storeFile(file, saveLocation);
 
@@ -43,7 +58,7 @@ public class SpecFileServiceImpl implements SpecFileService {
             specFile.setFileExtension(userFile.getFileExtension());
             specFile.setTimeStamp(userFile.getTimeStamp());
             specFile.setUploaderId(userFile.getUploaderId());
-            specFile.setTopicId(topicId);
+            specFile.setPath(saveLocation);
 
             specFileRepository.save(specFile);
             return specFile;
@@ -55,7 +70,7 @@ public class SpecFileServiceImpl implements SpecFileService {
     @Override
     public Resource download(String id) {
         SpecFile specFile = findById(id);
-        String saveLocation = Constants.SPEC_FOLDER + specFile.getTopicId();
+        String saveLocation = specFile.getPath();
         String fileName = converterService.formatFileName(specFile.getFileName(), specFile.getTimeStamp(), specFile.getFileExtension());
         return fileService.loadFileAsResource(fileName, saveLocation);
     }
