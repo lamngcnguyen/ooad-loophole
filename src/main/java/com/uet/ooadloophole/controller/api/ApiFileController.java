@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @RestController
@@ -89,7 +90,10 @@ public class ApiFileController {
     @RequestMapping(value = "/spec/{id}", method = RequestMethod.GET)
     private ResponseEntity<Resource> downloadSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = specFileService.download(id);
+        String timeStamp = specFileService.findById(id).getTimeStamp();
+
         String contentType = null;
+        String fileName = Objects.requireNonNull(resource.getFilename()).replace("_" + timeStamp, "");
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException e) {
@@ -98,7 +102,7 @@ public class ApiFileController {
         if (contentType == null) contentType = "application/octet-stream";
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(resource);
     }
 }

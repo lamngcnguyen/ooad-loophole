@@ -2,8 +2,10 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.SpecFileRepository;
+import com.uet.ooadloophole.database.TopicRepository;
 import com.uet.ooadloophole.model.business.SpecFile;
 import com.uet.ooadloophole.model.business.UserFile;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
 import com.uet.ooadloophole.service.business_service.FileService;
@@ -13,10 +15,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
 public class SpecFileServiceImpl implements SpecFileService {
+    @Autowired
+    private ConverterService converterService;
     @Autowired
     private FileService fileService;
     @Autowired
@@ -51,7 +56,8 @@ public class SpecFileServiceImpl implements SpecFileService {
     public Resource download(String id) {
         SpecFile specFile = findById(id);
         String saveLocation = Constants.SPEC_FOLDER + specFile.getTopicId();
-        return fileService.loadFileAsResource(specFile.getFileName(), saveLocation);
+        String fileName = converterService.formatFileName(specFile.getFileName(), specFile.getTimeStamp(), specFile.getFileExtension());
+        return fileService.loadFileAsResource(fileName, saveLocation);
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class InterfaceModelConverterService {
+public class ConverterService {
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -156,5 +156,9 @@ public class InterfaceModelConverterService {
         dtoTopic.setFileNames(fileNames);
 
         return dtoTopic;
+    }
+
+    public String formatFileName(String fileName, String timeStamp, String extension) {
+        return fileName.substring(0, fileName.lastIndexOf(".")) + "_" + timeStamp + "." + extension;
     }
 }

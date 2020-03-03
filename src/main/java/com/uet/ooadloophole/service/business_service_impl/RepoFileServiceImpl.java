@@ -51,7 +51,6 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setPath(saveLocation);
             repoFile.setGroupId(groupId);
             repoFile.setTimeStamp(Instant.now().toString());
-            repoFile.setScore(0);
             repoFileRepository.save(repoFile);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to upload repo file. " + e.getMessage());

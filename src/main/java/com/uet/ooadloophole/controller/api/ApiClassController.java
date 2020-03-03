@@ -5,7 +5,7 @@ import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
-import com.uet.ooadloophole.service.InterfaceModelConverterService;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
@@ -34,7 +34,7 @@ public class ApiClassController {
     @Autowired
     private GroupService groupService;
     @Autowired
-    private InterfaceModelConverterService interfaceModelConverterService;
+    private ConverterService converterService;
 
     private Gson gson = new Gson();
 
@@ -67,7 +67,7 @@ public class ApiClassController {
                 List<DTOClass> dtoClasses = new ArrayList<>();
                 classService.getByTeacherId(id).forEach(ooadClass -> {
                     try {
-                        dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
+                        dtoClasses.add(converterService.convertToDTOClass(ooadClass));
                     } catch (BusinessServiceException e) {
                         e.printStackTrace();
                         //TODO: add logger here
@@ -89,7 +89,7 @@ public class ApiClassController {
                 List<DTOClass> dtoClasses = new ArrayList<>();
                 classService.getByTeacherIdAndSemesterId(id, semesterId).forEach(ooadClass -> {
                     try {
-                        dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
+                        dtoClasses.add(converterService.convertToDTOClass(ooadClass));
                     } catch (BusinessServiceException e) {
                         e.printStackTrace();
                         //TODO: add logger here
@@ -107,7 +107,7 @@ public class ApiClassController {
         List<DTOClass> dtoClasses = new ArrayList<>();
         classService.getAll().forEach(ooadClass -> {
             try {
-                dtoClasses.add(interfaceModelConverterService.convertToDTOClass(ooadClass));
+                dtoClasses.add(converterService.convertToDTOClass(ooadClass));
             } catch (BusinessServiceException e) {
                 //e.printStackTrace();
                 //TODO: add logger here
@@ -133,7 +133,7 @@ public class ApiClassController {
         List<DTOStudent> dtoStudents = new ArrayList<>();
         classService.getAllStudents(classId).forEach(student -> {
             try {
-                dtoStudents.add(interfaceModelConverterService.convertToDTOStudent(student));
+                dtoStudents.add(converterService.convertToDTOStudent(student));
             } catch (BusinessServiceException e) {
                 //TODO: add logger here
                 e.printStackTrace();
@@ -191,7 +191,7 @@ public class ApiClassController {
         List<DTOTopic> dtoTopics = new ArrayList<>();
         topics.forEach(topic -> {
             try {
-                dtoTopics.add(interfaceModelConverterService.convertToDTOTopic(topic));
+                dtoTopics.add(converterService.convertToDTOTopic(topic));
             } catch (BusinessServiceException e) {
                 System.out.println(e.getMessage());
             }

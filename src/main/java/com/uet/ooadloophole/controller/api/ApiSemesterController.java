@@ -6,7 +6,7 @@ import com.uet.ooadloophole.controller.interface_model.ISemester;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Semester;
-import com.uet.ooadloophole.service.InterfaceModelConverterService;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ public class ApiSemesterController {
     @Autowired
     private SemesterService semesterService;
     @Autowired
-    private InterfaceModelConverterService interfaceModelConverterService;
+    private ConverterService converterService;
 
     private Gson gson = new Gson();
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Semester> createSemester(@RequestBody ISemester iSemester) {
         Semester semester = semesterService.create(
-                interfaceModelConverterService.convertSemesterInterface(iSemester));
+                converterService.convertSemesterInterface(iSemester));
         return ResponseEntity.status(HttpStatus.OK).body(semester);
     }
 
@@ -38,7 +38,7 @@ public class ApiSemesterController {
     public ResponseEntity<String> getSemesters() {
         List<DTOSemester> dtoSemesters = new ArrayList<>();
         semesterService.getAll().forEach(semester -> {
-            dtoSemesters.add(interfaceModelConverterService.convertToDTOSemester(semester));
+            dtoSemesters.add(converterService.convertToDTOSemester(semester));
         });
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoSemesters)));
     }
@@ -46,7 +46,7 @@ public class ApiSemesterController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateSemester(@PathVariable String id, @RequestBody ISemester iSemester) {
         try {
-            Semester semester = interfaceModelConverterService.convertSemesterInterface(iSemester);
+            Semester semester = converterService.convertSemesterInterface(iSemester);
             Semester updatedSemester = semesterService.update(id, semester);
             return ResponseEntity.status(HttpStatus.OK).body(updatedSemester);
         } catch (BusinessServiceException e) {

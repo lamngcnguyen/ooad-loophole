@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.model.business.UserFile;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;
@@ -30,6 +31,8 @@ import java.util.Objects;
 public class FileServiceImpl implements FileService {
     @Autowired
     private SecureUserDetailService secureUserDetailService;
+    @Autowired
+    private ConverterService converterService;
 
     @Override
     public Path createPath(String dir) {
@@ -66,26 +69,28 @@ public class FileServiceImpl implements FileService {
         String userId = secureUserDetailService.getCurrentUser().get_id();
 
         Path savePath = createPath(saveLocation);
-        // Normalize file name
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String extension = FilenameUtils.getExtension(originalFileName);
         try {
             // Check if the file's name contains invalid characters
-            if (fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            if (originalFileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + originalFileName);
             }
             // Copy file to the target location (Replacing existing file with the same name)
+            String fileName = converterService.formatFileName(originalFileName, timeStamp, extension);
             assert savePath != null;
             Path targetLocation = savePath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            uploadedUserFile.setFileName(fileName);
-            uploadedUserFile.setFileExtension(FilenameUtils.getExtension(fileName));
-            uploadedUserFile.setTimeStamp(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+            uploadedUserFile.setFileName(originalFileName);
+            uploadedUserFile.setFileExtension(extension);
+            uploadedUserFile.setTimeStamp(timeStamp);
             uploadedUserFile.setUploaderId(userId);
             uploadedUserFile.setPath(saveLocation);
             return uploadedUserFile;
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            throw new FileStorageException("Could not store file " + originalFileName + ". Please try again!", ex);
         }
     }
 
@@ -95,7 +100,6 @@ public class FileServiceImpl implements FileService {
         try {
             assert path != null;
             Path filePath = path.resolve(fileName).normalize();
-            System.out.println(filePath.toAbsolutePath());
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;

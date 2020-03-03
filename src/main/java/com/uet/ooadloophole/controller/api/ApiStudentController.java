@@ -8,7 +8,7 @@ import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
-import com.uet.ooadloophole.service.InterfaceModelConverterService;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.TokenService;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/students")
 public class ApiStudentController {
     @Autowired
-    private InterfaceModelConverterService interfaceModelConverterService;
+    private ConverterService converterService;
     @Autowired
     private StudentService studentService;
     @Autowired
@@ -66,7 +66,7 @@ public class ApiStudentController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createStudent(@RequestBody IStudent iStudent) {
         try {
-            Student student = interfaceModelConverterService.convertStudentInterface(iStudent);
+            Student student = converterService.convertStudentInterface(iStudent);
             //TODO: remove confirmation URL
             if (studentService.studentIdExists(student.getStudentId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(new ResponseMessage("Student already exists")));
@@ -84,7 +84,7 @@ public class ApiStudentController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateStudent(@PathVariable String id, @RequestBody IStudent iStudent) {
         try {
-            Student student = interfaceModelConverterService.convertStudentInterface(iStudent);
+            Student student = converterService.convertStudentInterface(iStudent);
             Student updatedStudent = studentService.update(id, student);
             return ResponseEntity.status(HttpStatus.OK).body(updatedStudent);
         } catch (BusinessServiceException e) {
@@ -104,7 +104,7 @@ public class ApiStudentController {
 
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     public ResponseEntity<List<Student>> importStudents(@RequestBody List<IStudent> students) {
-        List<Student> convertedStudents = students.stream().map(s -> interfaceModelConverterService.convertToStudent(s))
+        List<Student> convertedStudents = students.stream().map(s -> converterService.convertToStudent(s))
                 .collect(Collectors.toList());
         List<Student> newStudents = studentService.importStudents(convertedStudents);
         return ResponseEntity.status(HttpStatus.OK).body(newStudents);
@@ -115,7 +115,7 @@ public class ApiStudentController {
         List<DTOStudent> dtoStudents = new ArrayList<>();
         studentService.getAll().forEach(student -> {
             try {
-                dtoStudents.add(interfaceModelConverterService.convertToDTOStudent(student));
+                dtoStudents.add(converterService.convertToDTOStudent(student));
             } catch (BusinessServiceException e) {
                 e.printStackTrace();
                 //TODO: add logger here

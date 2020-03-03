@@ -2,7 +2,7 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.model.business.User;
-import com.uet.ooadloophole.service.InterfaceModelConverterService;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -25,7 +25,7 @@ public class TeacherController {
     private MasterPageService masterPageService;
 
     @Autowired
-    private InterfaceModelConverterService converterService;
+    private ConverterService converterService;
 
     @Autowired
     private ClassService classService;

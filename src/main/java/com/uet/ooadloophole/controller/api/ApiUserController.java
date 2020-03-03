@@ -7,7 +7,7 @@ import com.uet.ooadloophole.controller.interface_model.IUser;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.User;
-import com.uet.ooadloophole.service.InterfaceModelConverterService;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.TokenService;
@@ -30,7 +30,7 @@ public class ApiUserController {
     @Autowired
     private TokenService tokenService;
     @Autowired
-    private InterfaceModelConverterService interfaceModelConverterService;
+    private ConverterService converterService;
     @Autowired
     private SecureUserDetailService secureUserDetailService;
 
@@ -40,7 +40,7 @@ public class ApiUserController {
     public ResponseEntity<String> getUsers() {
         List<DTOUser> dtoUsers = new ArrayList<>();
         for (User user : userService.getAll()) {
-            dtoUsers.add(interfaceModelConverterService.convertToDTOUser(user));
+            dtoUsers.add(converterService.convertToDTOUser(user));
         }
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoUsers)));
     }
@@ -50,7 +50,7 @@ public class ApiUserController {
         try {
             List<DTOUser> dtoUsers = new ArrayList<>();
             for (User user : userService.getAllByRole(roleName)) {
-                dtoUsers.add(interfaceModelConverterService.convertToDTOUser(user));
+                dtoUsers.add(converterService.convertToDTOUser(user));
             }
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoUsers)));
         } catch (BusinessServiceException e) {
@@ -107,7 +107,7 @@ public class ApiUserController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
         try {
-            User user = interfaceModelConverterService.convertUserInterface(iUser);
+            User user = converterService.convertUserInterface(iUser);
             if (userService.emailExists(user.getEmail())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(new ResponseMessage("Email already exists")));
             } else {
@@ -125,7 +125,7 @@ public class ApiUserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateUser(@PathVariable String id, @RequestBody IUser iUser) {
         try {
-            User user = interfaceModelConverterService.convertUserInterface(iUser);
+            User user = converterService.convertUserInterface(iUser);
             User updatedUser = userService.update(id, user);
             return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
         } catch (BusinessServiceException e) {
