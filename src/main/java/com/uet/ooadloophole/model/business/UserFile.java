@@ -1,10 +1,8 @@
 package com.uet.ooadloophole.model.business;
 
-import org.springframework.data.annotation.Id;
-
 public class UserFile {
-
     private String fileName;
+    private String fileExtension;
     private String timeStamp;
     private String uploaderId;
     private String path;
@@ -15,6 +13,14 @@ public class UserFile {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
     public String getTimeStamp() {

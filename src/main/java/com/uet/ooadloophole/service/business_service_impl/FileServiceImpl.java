@@ -7,6 +7,7 @@ import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundExcept
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,6 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Objects;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -63,7 +67,7 @@ public class FileServiceImpl implements FileService {
 
         Path savePath = createPath(saveLocation);
         // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
             // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
@@ -75,7 +79,10 @@ public class FileServiceImpl implements FileService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             uploadedUserFile.setFileName(fileName);
+            uploadedUserFile.setFileExtension(FilenameUtils.getExtension(fileName));
+            uploadedUserFile.setTimeStamp(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
             uploadedUserFile.setUploaderId(userId);
+            uploadedUserFile.setPath(saveLocation);
             return uploadedUserFile;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);

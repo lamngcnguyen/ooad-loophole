@@ -9,4 +9,5 @@ public class Constants {
     public static final String RESET_LINK = "http://ooad-loophole.herokuapp.com/resetPassword?token=";
     public static final String AVATAR_FOLDER = "avatar/";
     public static final String DEFAULT_AVATAR = "default.png";
+    public static final String SPEC_FOLDER = "topic/";
 }

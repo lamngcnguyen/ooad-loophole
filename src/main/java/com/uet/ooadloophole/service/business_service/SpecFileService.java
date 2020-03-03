@@ -10,9 +10,11 @@ import java.util.List;
 
 @Service
 public interface SpecFileService {
-    void upload(MultipartFile file, String path, String topicId) throws BusinessServiceException;
+    SpecFile findById(String id);
 
-    Resource download(String fileName, String path) throws BusinessServiceException;
+    SpecFile upload(MultipartFile file, String topicId) throws BusinessServiceException;
+
+    Resource download(String id);
 
     List<SpecFile> getByTopicId(String topicId);
 }
