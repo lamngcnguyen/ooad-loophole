@@ -4,6 +4,9 @@ $.fn.api.settings.api = {
     'update student': '/api/students/{id}',
     'import student': '/api/students/import',
     'delete student': '/api/students/{id}',
+    'get groups': '/api/classes/{classId}/groups',
+    'get topics': '/api/classes/{classId}/topics',
+    'create topic': '/api/topics/',
 };
 
 const VN_ALPHABET = 'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ';
@@ -34,4 +37,13 @@ var validationRules = {
             }
         ]
     },
+    topicName: {
+        identifier: 'name',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Vui lòng điền tên đề tài'
+            }
+        ]
+    }
 };

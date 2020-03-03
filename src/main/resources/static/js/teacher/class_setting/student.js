@@ -54,7 +54,7 @@ const studentTable = $(".student .ui.table").DataTable({
                 });
                 showModal('.modal.delete-student');
             });
-        actionCell.append(btnEdit, $('<span>&nbsp</span>'), btnDelete);
+        actionCell.append(btnEdit, btnDelete);
     }
 });
 

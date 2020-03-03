@@ -68,8 +68,7 @@ const classTable = $(".ui.table").DataTable({
                 showModal('.modal.delete-class');
             });
         actionCell.append(
-            btnEdit, $('<span>&nbsp</span>'),
-            btnDelete
+            btnEdit, btnDelete
         );
     }
 });
