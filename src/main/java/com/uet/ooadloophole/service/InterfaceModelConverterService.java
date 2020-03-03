@@ -2,8 +2,8 @@ package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
-import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
+import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,10 +138,16 @@ public class InterfaceModelConverterService {
         dtoTopic.setDescriptions(topic.getDescriptions());
         dtoTopic.setClassId(topic.getClassId());
         dtoTopic.setGroupId(topic.getGroupId());
-
-        Group group = groupService.getById(topic.getGroupId());
-        dtoTopic.setGroupName(group.getGroupName());
-
+        if (topic.getGroupId() != null) {
+            try {
+                Group group = groupService.getById(topic.getGroupId());
+                if (group != null) {
+                    dtoTopic.setGroupName(group.getGroupName());
+                }
+            } catch (BusinessServiceException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         List<SpecFile> specFiles = specFileService.getByTopicId(topic.get_id());
         List<String> fileNames = new ArrayList<>();
         for (SpecFile specFile : specFiles) {

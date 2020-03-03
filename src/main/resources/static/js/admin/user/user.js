@@ -58,7 +58,7 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
                 });
                 showModal('.modal.delete-user');
             });
-        actionCell.append(btnEdit, $('<span>&nbsp</span>'), btnDelete);
+        actionCell.append(btnEdit, btnDelete);
     }
 });
 

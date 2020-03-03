@@ -3,14 +3,15 @@ package com.uet.ooadloophole.controller.api;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
+import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
-import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.InterfaceModelConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
+import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.TokenService;
+import com.uet.ooadloophole.service.business_service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,10 @@ public class ApiClassController {
     private ClassService classService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private TopicService topicService;
+    @Autowired
+    private GroupService groupService;
     @Autowired
     private InterfaceModelConverterService interfaceModelConverterService;
 
@@ -114,7 +119,7 @@ public class ApiClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteClass(@PathVariable String id) {
         try {
-            if(!userCanCreateClass())
+            if (!userCanCreateClass())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             classService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
@@ -178,5 +183,25 @@ public class ApiClassController {
         List<Class> classes = classService.searchByName(keyword);
         HttpStatus httpStatus = (classes.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
         return ResponseEntity.status(httpStatus).body(gson.toJson(new SearchResultWrapper(classes)));
+    }
+
+    @RequestMapping(value = "/{classId}/topics", method = RequestMethod.GET)
+    public ResponseEntity<String> getTopics(@PathVariable String classId) {
+        List<Topic> topics = topicService.getAllByClassId(classId);
+        List<DTOTopic> dtoTopics = new ArrayList<>();
+        topics.forEach(topic -> {
+            try {
+                dtoTopics.add(interfaceModelConverterService.convertToDTOTopic(topic));
+            } catch (BusinessServiceException e) {
+                System.out.println(e.getMessage());
+            }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoTopics)));
+    }
+
+    @RequestMapping(value = "/{classId}/groups", method = RequestMethod.GET)
+    public ResponseEntity<String> getGroups(@PathVariable String classId) {
+        List<Group> groups = groupService.getAllByClassId(classId);
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(groups)));
     }
 }
