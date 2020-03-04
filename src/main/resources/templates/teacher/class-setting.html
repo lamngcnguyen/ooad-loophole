@@ -87,7 +87,55 @@
                 </div>
             </div>
             <div class="ui group tab segment stackable grid">
-                Group
+                <div class="row">
+                    <div class="column">
+                        <button type="button" class="ui labeled icon green button"
+                                onclick="showModal('.modal.create-group')">
+                            <i class="plus icon"></i>
+                            Thêm mới
+                        </button>
+                    </div>
+                </div>
+                <div class="row my-table-control">
+                    <div class="eight wide column">
+                        Hiển thị
+                        &nbsp
+                        <div class="ui compact selection dropdown page-length">
+                            <input type="hidden">
+                            <i class="dropdown icon"></i>
+                            <div class="text">10</div>
+                            <div class="menu">
+                                <div class="item" data-value="10">10</div>
+                                <div class="item" data-value="25">25</div>
+                                <div class="item" data-value="50">50</div>
+                                <div class="item" data-value="100">100</div>
+                            </div>
+                        </div>
+                        &nbsp
+                        mục
+                    </div>
+                    <div class="right aligned eight wide column">
+                        Tìm kiếm:&nbsp
+                        <div class="ui icon input table-search">
+                            <input type="text" placeholder="Search...">
+                            <i class="search icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <table class="ui celled black sortable table" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th class="one wide">#</th>
+                                <th class="three wide">Thao tác</th>
+                                <th class="three wide">Tên nhóm</th>
+                                <th class="three wide">Trưởng nhóm</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="ui topic tab segment stackable grid">
                 <div class="row">
@@ -283,6 +331,7 @@
             </div>
         </div>
     </div>
+    <!---------------Topic-------------------->
     <div class="ui large modal create-topic">
         <div class="ui dimmer">
             <div class="ui loader"></div>
@@ -360,6 +409,114 @@
                     <i class="plus icon"></i>
                     Thêm
                 </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui large modal edit-topic">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green lightbulb icon"></i>
+            Chỉnh sửa
+        </div>
+        <div class="content">
+            <div class="ui form create-topic">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide field">
+                            <div class="field">
+                                <div class="fields">
+                                    <div class="nine wide required field">
+                                        <label>Tên đề tài</label>
+                                        <input type="text" name="name" placeholder="Topic name">
+                                    </div>
+                                    <div class="seven wide field">
+                                        <label>Nhóm</label>
+                                        <div class="ui search selection dropdown assigned-group">
+                                            <input type="hidden" name="groupId">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Select group</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="fields">
+                                    <div class="sixteen wide field">
+                                        <label>Mô tả</label>
+                                        <textarea name="descriptions" placeholder="Description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seven wide field">
+                            <div class="fields">
+                                <div class="sixteen wide field">
+                                    <label>Tệp đính kèm</label>
+                                    <div class="ui input">
+                                        <table class="ui small celled red table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <input type="file" hidden="" name="specFiles" multiple>
+                                                    <div class="ui red labeled icon button"
+                                                         onclick="openSpecFileDialog()">
+                                                        <i class="upload icon"></i>
+                                                        Choose file(s)
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-topic')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated blue labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Sửa
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal delete-topic">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Cảnh báo
+        </div>
+        <div class="content">
+            <div class="ui form delete-student">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Bạn có chắc chắn muốn xóa đề tài này không?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Có
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-topic')">
+                    <i class="close icon"></i>
+                    Không
+                </div>
             </div>
         </div>
     </div>

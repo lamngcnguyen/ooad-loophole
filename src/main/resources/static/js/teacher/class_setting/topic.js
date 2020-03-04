@@ -39,9 +39,15 @@ const topicTable = $(".topic .ui.table").DataTable({
         const actionCell = $(row).children().eq(1);
         const btnEdit = $('<button type="button" class="ui mini icon blue button" data-tooltip="Chỉnh sửa thông tin" data-inverted=""><i class="pencil icon"></i></button>')
             .click(function () {
+                $('.form.edit-topic').form('set values', {
+                    id: data._id,
+                    name: data.name,
+                    descriptions: data.descriptions,
+                    groupId: data.groupId
+                });
                 showModal('.modal.edit-topic');
             });
-        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa sinh viên" data-inverted=""><i class="trash icon"></i></button>')
+        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa đề tài" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
                 showModal('.modal.delete-topic');
             });

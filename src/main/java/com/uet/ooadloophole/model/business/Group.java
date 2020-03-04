@@ -6,6 +6,7 @@ public class Group {
     @Id
     private String _id;
     private String groupName;
+    private String leaderId;
     private String classId;
 
     public String get_id() {
@@ -22,6 +23,14 @@ public class Group {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public String getLeaderId() {
+        return leaderId;
+    }
+
+    public void setLeaderId(String leaderId) {
+        this.leaderId = leaderId;
     }
 
     public String getClassId() {

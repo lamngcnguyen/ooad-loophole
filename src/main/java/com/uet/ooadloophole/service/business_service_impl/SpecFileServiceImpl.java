@@ -34,10 +34,10 @@ public class SpecFileServiceImpl implements SpecFileService {
     }
 
     @Override
-    public void updateTopicId(SpecFile specFile) throws BusinessServiceException, IOException {
+    public void updateTopicId(SpecFile specFile, String topicId) throws BusinessServiceException, IOException {
         SpecFile dbSpecFile = findById(specFile.get_id());
         String newPath = Constants.SPEC_FOLDER + specFile.getTopicId() + "/";
-        dbSpecFile.setTopicId(specFile.getTopicId());
+        dbSpecFile.setTopicId(topicId);
         dbSpecFile.setPath(newPath);
         //specFile.getPath() may indicate the spec file is in temp folder
         String fileName = converterService.formatFileName(specFile.getFileName(), specFile.getTimeStamp(), specFile.getFileExtension());

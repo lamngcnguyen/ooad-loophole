@@ -7,6 +7,10 @@ $.fn.api.settings.api = {
     'get groups': '/api/classes/{classId}/groups',
     'get topics': '/api/classes/{classId}/topics',
     'create topic': '/api/topics/',
+    'upload spec': '/api/files/spec',
+    'upload multiple spec': '/api/files/spec/multiple',
+    'assign topic spec': '/api/files/spec/assign/{id}',
+    'assign topic multiple spec': '/api/files/spec/multi/assign/{id}'
 };
 
 const VN_ALPHABET = 'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ';

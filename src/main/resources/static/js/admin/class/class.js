@@ -27,22 +27,7 @@ const classTable = $(".ui.table").DataTable({
         {
             data: "scheduledDayOfWeek",
             render: function (dayOfWeek) {
-                switch (dayOfWeek) {
-                    case 1:
-                        return "Thứ Hai";
-                    case 2:
-                        return "Thứ Ba";
-                    case 3:
-                        return "Thứ Tư";
-                    case 4:
-                        return "Thứ Năm";
-                    case 5:
-                        return "Thứ Sáu";
-                    case 6:
-                        return "Thứ Bảy";
-                    case 7:
-                        return "Chủ Nhật";
-                }
+                return "Thứ" + dayOfWeek + 1;
             }
         },
         {data: "studentCount"}

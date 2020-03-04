@@ -74,7 +74,7 @@ public class ApiFileController {
         }
     }
 
-    @RequestMapping(value = "/spec/multiple", method = RequestMethod.POST)
+    @RequestMapping(value = "/spec/multi", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadMultipleSpecFiles(@RequestParam("files") List<MultipartFile> files) {
         try {
             List<SpecFile> specFiles = new ArrayList<>();
@@ -87,21 +87,21 @@ public class ApiFileController {
         }
     }
 
-    @RequestMapping(value = "/spec/assign/topicId", method = RequestMethod.PUT)
-    public ResponseEntity<String> assignTopicIdToSpecFile(@RequestBody SpecFile specFile) {
+    @RequestMapping(value = "/spec/assign/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignTopicIdToSpecFile(@RequestBody SpecFile specFile, @PathVariable String id) {
         try {
-            specFileService.updateTopicId(specFile);
+            specFileService.updateTopicId(specFile, id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
         } catch (BusinessServiceException | IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/spec/multiple/assign/topicId", method = RequestMethod.PUT)
-    public ResponseEntity<String> assignTopicIdToMultipleSpecFile(@RequestBody List<SpecFile> specFiles) {
+    @RequestMapping(value = "/spec/multi/assign/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignTopicIdToMultipleSpecFile(@RequestBody List<SpecFile> specFiles, @PathVariable String id) {
         try {
             for (SpecFile specFile : specFiles) {
-                specFileService.updateTopicId(specFile);
+                specFileService.updateTopicId(specFile, id);
             }
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
         } catch (BusinessServiceException | IOException e) {

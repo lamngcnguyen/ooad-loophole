@@ -13,7 +13,7 @@ import java.util.List;
 public interface SpecFileService {
     SpecFile findById(String id);
 
-    void updateTopicId(SpecFile specFile) throws BusinessServiceException, IOException;
+    void updateTopicId(SpecFile specFile, String topicId) throws BusinessServiceException, IOException;
 
     SpecFile upload(MultipartFile file) throws BusinessServiceException;
 
