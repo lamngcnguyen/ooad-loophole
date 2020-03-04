@@ -38,15 +38,15 @@ public class ApiClassController {
 
     private Gson gson = new Gson();
 
-    private boolean userCanCreateClass() throws BusinessServiceException {
+    private boolean userCanNotCreateClass() throws BusinessServiceException {
         User user = secureUserDetailService.getCurrentUser();
-        return (user.hasRole("teacher") || user.hasRole("admin"));
+        return (!user.hasRole("teacher") && !user.hasRole("admin"));
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
-            if (!userCanCreateClass())
+            if (userCanNotCreateClass())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             if (classService.classNameExists(ooadClass.getTeacherId(), ooadClass.getClassName()))
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(
@@ -61,7 +61,7 @@ public class ApiClassController {
     @RequestMapping(value = "/teacher/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getClassesByTeacherId(@PathVariable String id) {
         try {
-            if (!userCanCreateClass()) {
+            if (userCanNotCreateClass()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             } else {
                 List<DTOClass> dtoClasses = new ArrayList<>();
@@ -83,7 +83,7 @@ public class ApiClassController {
     @RequestMapping(value = "/teacher/{id}/semester/{semesterId}", method = RequestMethod.GET)
     public ResponseEntity<String> getClassesBySemester(@PathVariable String id, @PathVariable String semesterId) {
         try {
-            if (!userCanCreateClass()) {
+            if (userCanNotCreateClass()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             } else {
                 List<DTOClass> dtoClasses = new ArrayList<>();
@@ -119,7 +119,7 @@ public class ApiClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteClass(@PathVariable String id) {
         try {
-            if (!userCanCreateClass())
+            if (userCanNotCreateClass())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             classService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
@@ -166,7 +166,7 @@ public class ApiClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateClass(@PathVariable String id, @RequestBody Class ooadClass) {
         try {
-            if (!userCanCreateClass())
+            if (userCanNotCreateClass())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             if (classService.classNameExists(ooadClass.getTeacherId(), ooadClass.getClassName()))
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(
@@ -202,6 +202,14 @@ public class ApiClassController {
     @RequestMapping(value = "/{classId}/groups", method = RequestMethod.GET)
     public ResponseEntity<String> getGroups(@PathVariable String classId) {
         List<Group> groups = groupService.getAllByClassId(classId);
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(groups)));
+        List<DTOGroup> dtoGroups = new ArrayList<>();
+        groups.forEach(group -> {
+            try {
+                dtoGroups.add(converterService.convertToDTOGroup(group));
+            } catch (BusinessServiceException e) {
+                e.printStackTrace();
+            }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoGroups)));
     }
 }

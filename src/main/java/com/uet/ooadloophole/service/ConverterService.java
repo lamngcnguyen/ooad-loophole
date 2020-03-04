@@ -158,6 +158,21 @@ public class ConverterService {
         return dtoTopic;
     }
 
+    public DTOGroup convertToDTOGroup(Group group) throws BusinessServiceException {
+        DTOGroup dtoGroup = new DTOGroup();
+        dtoGroup.set_id(group.get_id());
+        dtoGroup.setGroupName(group.getGroupName());
+        dtoGroup.setLeader(studentService.getById(group.getLeaderId()).get_id());
+
+        List<Student> studentList = studentService.getByGroup(group.get_id());
+        List<String> studentNameList = new ArrayList<>();
+        for (Student student : studentList) {
+            studentNameList.add(student.getFullName());
+        }
+        dtoGroup.setMembers(studentNameList);
+        return dtoGroup;
+    }
+
     public String formatFileName(String fileName, String timeStamp, String extension) {
         return fileName.substring(0, fileName.lastIndexOf(".")) + "_" + timeStamp + "." + extension;
     }
