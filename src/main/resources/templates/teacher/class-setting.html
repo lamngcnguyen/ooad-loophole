@@ -375,21 +375,23 @@
                                 <div class="sixteen wide field">
                                     <label>Tệp đính kèm</label>
                                     <div class="ui input">
-                                        <table class="ui small celled red table">
+                                        <table class="ui small celled red table attachments">
                                             <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Tên</th>
+                                                <th class="ten wide">Tên</th>
+                                                <th class="four wide center aligned">Trạng thái</th>
+                                                <th class="two wide"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td colspan="2">
-                                                    <input type="file" hidden="" name="specFiles" multiple>
+                                                <td colspan="3">
+                                                    <input type="file" hidden="" name="specFiles" multiple accept="image/*, .pdf, .doc, .docx, .xlsx, .xml, .xls, .xlsx, .ppt, .pptx">
                                                     <div class="ui red labeled icon button" onclick="openSpecFileDialog()">
                                                         <i class="upload icon"></i>
                                                         Choose file(s)
                                                     </div>
+                                                    <label class="ui grey left pointing label">images, documents, diagrams...</label>
                                                 </td>
                                             </tr>
                                             </tbody>
