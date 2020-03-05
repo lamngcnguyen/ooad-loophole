@@ -2,7 +2,6 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.SpecFileRepository;
-import com.uet.ooadloophole.database.TopicRepository;
 import com.uet.ooadloophole.model.business.SpecFile;
 import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -36,14 +34,17 @@ public class SpecFileServiceImpl implements SpecFileService {
     @Override
     public void updateTopicId(String specFileId, String topicId) throws BusinessServiceException, IOException {
         SpecFile dbSpecFile = findById(specFileId);
-        String newPath = Constants.SPEC_FOLDER + dbSpecFile.getTopicId() + "/";
+        String newPath = Constants.SPEC_FOLDER + topicId + "/";
         dbSpecFile.setTopicId(topicId);
-        dbSpecFile.setPath(newPath);
         //specFile.getPath() may indicate the spec file is in temp folder
         String fileName = converterService.formatFileName(dbSpecFile.getFileName(), dbSpecFile.getTimeStamp(), dbSpecFile.getFileExtension());
-        if (!fileService.moveFile(fileName, dbSpecFile.getPath(), newPath)) {
-            throw new BusinessServiceException("Unable to assign topicId to this file");
+        try {
+            fileService.moveFile(fileName, dbSpecFile.getPath(), newPath);
+        } catch (BusinessServiceException | IOException e) {
+            e.printStackTrace();
+            throw new BusinessServiceException("Unable to assign topicId to this file: " + e.getMessage());
         }
+        dbSpecFile.setPath(newPath);
         specFileRepository.save(dbSpecFile);
     }
 

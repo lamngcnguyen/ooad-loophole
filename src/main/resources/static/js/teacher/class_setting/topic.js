@@ -26,9 +26,16 @@ const topicTable = $(".topic .ui.table").DataTable({
         {data: "groupName", defaultContent: "Not set"},
         {
             data: "fileNames",
-            defaultContent: "Not set",
+            defaultContent: "No attachments",
             render: function (files) {
-                return "bruh";
+                var html = $('<div class="ui middle aligned animated list"></div>');
+                $.each(files, function (index, file) {
+                    var item = $(`<a class="item" href="/api/files/spec/${file._id}" target="_blank"></a>`);
+                    item.append($('<i class="file icon"></i>'));
+                    item.append(`<div class="content"><div class="header">${file.fileName}</div></div>`);
+                    html.append(item);
+                });
+                return html.prop('outerHTML');
             }
         }
     ],
@@ -199,13 +206,19 @@ function assignSpecsToTopic(topicId, specIds, modal) {
     $.api({
         action: 'assign topic multiple spec',
         on: 'now',
+        method: 'put',
         urlData: {
             id: topicId,
         },
+        dataType: 'json',
         data: JSON.stringify(specIds),
+        beforeXHR: function (xhr) {
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+        },
         onSuccess: function () {
             hideDimmer(modal);
             hideModal(modal);
+            reloadTopicTable();
         },
         onFailure: function (res) {
             hideDimmer(modal);
