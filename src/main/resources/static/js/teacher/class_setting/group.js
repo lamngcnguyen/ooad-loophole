@@ -83,7 +83,13 @@ $('.form.create-group').form({
     onSuccess: function (evt, data) {
         showDimmer('.form.create-group');
         data['classId'] = classId;
-        $('.form.create-group').api({
+        $.api({
+            action: 'create group',
+            on: 'now',
+            method: 'post',
+            dataType: 'json',
+            data: JSON.stringify(data),
+
         })
     }
 });
