@@ -25,13 +25,13 @@ const topicTable = $(".topic .ui.table").DataTable({
         {data: "descriptions", defaultContent: "Not set"},
         {data: "groupName", defaultContent: "Not set"},
         {
-            data: "fileNames",
+            data: "files",
             defaultContent: "No attachments",
             render: function (files) {
                 var html = $('<div class="ui middle aligned animated list"></div>');
                 $.each(files, function (index, file) {
                     var item = $(`<a class="item" href="/api/files/spec/${file._id}" target="_blank"></a>`);
-                    item.append($('<i class="file icon"></i>'));
+                    item.append(`<div class="ui avatar image"><i class="large file ${getFileIconClass(file.fileExtension)} icon"></i></div>`);
                     item.append(`<div class="content"><div class="header">${file.fileName}</div></div>`);
                     html.append(item);
                 });

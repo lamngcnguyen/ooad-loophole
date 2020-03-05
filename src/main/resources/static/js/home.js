@@ -31,3 +31,26 @@ $('input[name="avatar"]').change(function () {
         }
     });
 });
+
+function getFileIconClass(type) {
+    // console.log(type);
+    switch (type) {
+        case 'pdf':
+            return 'red pdf';
+        case 'png':
+        case 'jpg':
+        case 'jpeg':
+            return 'teal image';
+        case 'xls':
+        case 'xlsx':
+            return 'green excel';
+        case 'ppt':
+        case 'pptx':
+            return 'orange powerpoint';
+        case 'doc':
+        case 'docx':
+            return 'blue word';
+        default:
+            return '';
+    }
+}
