@@ -47,8 +47,8 @@ $(document).ready(function () {
 
     $('.form.create-class').form({
         onSuccess: function (evt, data) {
-            showDimmer('.form.create-class');
-            $('.create-class .form').api({
+            showDimmer('.modal.create-class');
+            $.api({
                 action: 'create class',
                 on: 'now',
                 method: 'post',
@@ -109,7 +109,7 @@ function createClassCards(data) {
 }
 
 function filterClassBySemester(semesterId) {
-    $('.card-view').api({
+    $.api({
         action: (semesterId.length === 0) ? 'get my classes' : 'filter my classes',
         on: 'now',
         method: 'get',

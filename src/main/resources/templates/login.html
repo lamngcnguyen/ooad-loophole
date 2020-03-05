@@ -43,7 +43,7 @@
                     </div>
                     <button class="ui fluid large blue submit button" type="submit">Đăng nhập</button>
                 </div>
-                <div class="ui error visible message">Sai tên đăng nhập hoặc mật khẩu</div>
+                <div th:if="${#httpServletRequest.getParameter('error') != null}" class="ui error visible message">Sai tên đăng nhập hoặc mật khẩu</div>
             </form>
         </div>
     </div>

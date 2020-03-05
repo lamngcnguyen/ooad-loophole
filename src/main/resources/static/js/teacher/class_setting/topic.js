@@ -12,7 +12,7 @@ const topicTable = $(".topic .ui.table").DataTable({
         {
             data: null,
             render: function () {
-                return ++studentRowIndex;
+                return ++topicRowIndex;
             }
         },
         {
@@ -49,10 +49,21 @@ const topicTable = $(".topic .ui.table").DataTable({
             });
         const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa đề tài" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
+                $('.form.delete-topic').form('set values', {
+                    id: data._id,
+                });
                 showModal('.modal.delete-topic');
             });
         actionCell.append(btnEdit, btnDelete);
     }
+});
+
+$('.topic .page-length input').change(function () {
+    studentTable.page.len(this.value).draw();
+});
+
+$('.topic .table-search input').keyup(function () {
+    studentTable.search(this.value).draw();
 });
 
 function openSpecFileDialog() {
@@ -60,62 +71,78 @@ function openSpecFileDialog() {
 }
 
 $('input[name="specFiles"]').change(function () {
-    uploadSpecFiles(this.files);
+    createUploadStatus(this.files);
 });
 
-function uploadSpecFiles(files) {
+function createUploadStatus(files) {
     for (var i = 0; i < files.length; i++) {
         const file = files[i];
-        const tr = $('<tr></tr>');
-        tr.append($('<input type="hidden" name="id">'),
-            $(`<td>${file.name}</td>`),
-            $('<td class="center aligned">' +
-                '<div class="ui active centered inline red loader"></div>' +
-                '<div class="upload-success" style="display: none;"><i class="large green check icon"></i></div>' +
-                '<div class="upload-failure" style="display: none"><i class="large red close icon"></i></div>' +
-                '</td>'),
-            $('<td class="center aligned">' +
-                '<div class="ui grey icon button delete-file"><i class="trash icon"></i></div>' +
-                '<div class="ui blue icon button retry-upload" style="display: none"><i class="redo icon"></i></div>' +
-                '</td>')
-        );
+        const tr = $('.jquery-template .spec-upload-status').clone();
+        tr.find('.file-name').text(file.name);
         $('.table.attachments').append(tr);
-        const formData = new FormData();
-        formData.append('file', file);
-        tr.api({
-            action: 'upload spec',
-            method: 'post',
-            on: 'now',
-            cache: false,
-            contentType: false,
-            processData: false,
-            beforeSend: (settings) => {
-                settings.data = formData;
-                return settings;
-            },
-            onSuccess(res, el, xhr) {
-                el.find('.loader').hide();
-                el.find('.upload-success').show();
-                var fileInfo = xhr.responseJSON;
-                el.find('input[name="id"]').val(fileInfo._id);
-                el.find('div.delete-file').click(function () {
-                    console.log('delete');
-                });
-            },
-            onFailure(res, el, xhr) {
-                el.find('.loader').hide();
-                el.find('.upload-failure').show();
-                el.find('div.delete-file').hide();
-                el.find('div.retry-upload').click(function () {
-                    console.log('retry')
-                }).show();
-            }
+
+        const loader = tr.find('.loader');
+        const uploadSuccess = tr.find('.upload-success');
+        const uploadFailure = tr.find('.upload-failure');
+        const btnDelete = tr.find('div.delete-file');
+        const btnRetry = tr.find('div.retry-upload');
+        btnRetry.click(function () {
+            loader.show();
+            uploadFailure.hide();
+            requestSpecUpload(tr, file, loader, uploadSuccess, uploadFailure, btnDelete, btnRetry);
         });
+        requestSpecUpload(tr, file, loader, uploadSuccess, uploadFailure, btnDelete, btnRetry);
     }
+}
+
+function requestSpecUpload(tr, file, loader, uploadSuccess, uploadFailure, btnDelete, btnRetry) {
+    const formData = new FormData();
+    formData.append('file', file);
+    tr.api({
+        action: 'upload spec',
+        method: 'post',
+        on: 'now',
+        cache: false,
+        contentType: false,
+        processData: false,
+        timeout: 3000,
+        beforeSend: (settings) => {
+            settings.data = formData;
+            return settings;
+        },
+        onSuccess: function (res, el, xhr) {
+            loader.hide();
+            uploadSuccess.show();
+            var fileInfo = xhr.responseJSON;
+            el.find('input[name="id"]').val(fileInfo._id);
+            btnRetry.hide();
+            btnDelete.click(function () {
+                $('.form.delete-spec').form('set values', {
+                    id: fileInfo._id
+                });
+                showOverlapModal('.modal.delete-spec')
+            });
+            btnDelete.show();
+        },
+        onFailure: function (res, el, xhr) {
+            loader.hide();
+            uploadFailure.show();
+            btnDelete.hide();
+            btnRetry.show()
+        },
+        onAbort: function () {
+            loader.hide();
+            uploadFailure.show();
+            btnDelete.hide();
+            btnRetry.show()
+        }
+    });
 }
 
 $('.modal.create-topic').modal({
     onShow: function () {
+        $('.form.create-topic').form('clear');
+        $('.form.create-topic table').find('tr:gt(1)').remove();
         $('.dropdown.assigned-group').dropdown().api({
             action: 'get groups',
             on: 'now',
@@ -138,9 +165,9 @@ $('.modal.create-topic').modal({
 
 $('.form.create-topic').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.create-topic');
+        showDimmer('.modal.create-topic');
         data['classId'] = classId;
-        $('.form.create-topic').api({
+        $.api({
             action: 'create topic',
             on: 'now',
             method: 'post',
@@ -150,16 +177,63 @@ $('.form.create-topic').form({
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
             },
             onSuccess: function (res) {
-                console.log(res);
-                reloadTopicTable();
+                var topicId = res._id;
+                var specIds = [];
+                $('.create-topic .spec-upload-status input[name="id"]').each(function (i, el) {
+                    specIds.push($(el).val());
+                });
+                assignSpecsToTopic(topicId, specIds, '.modal.create-topic');
             },
             onFailure: function (res) {
+                hideDimmer('.modal.create-topic');
                 $('.form.create-topic').form('add errors', [res]);
             }
         });
     },
     fields: {
         name: validationRules.topicName,
+    }
+});
+
+function assignSpecsToTopic(topicId, specIds, modal) {
+    $.api({
+        action: 'assign topic multiple spec',
+        on: 'now',
+        urlData: {
+            id: topicId,
+        },
+        data: JSON.stringify(specIds),
+        onSuccess: function () {
+            hideDimmer(modal);
+            hideModal(modal);
+        },
+        onFailure: function (res) {
+            hideDimmer(modal);
+            $(`${modal} .form`).form('add errors', [res]);
+        }
+    });
+}
+
+$('.form.delete-topic').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-topic');
+        $.api({
+            action: 'delete topic',
+            on: 'now',
+            method: 'delete',
+            urlData: {
+                topicId: data.id
+            },
+            onSuccess: function () {
+                hideDimmer('.modal.delete-topic');
+                hideModal('.modal.delete-topic');
+                reloadTopicTable();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-topic');
+                $('.form.delete-topic').form('add errors', [res]);
+            }
+        });
     }
 });
 

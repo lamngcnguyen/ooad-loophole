@@ -72,7 +72,7 @@ document.getElementsByName('uploadExcel')[0].addEventListener('change', function
 
 $('.form.import-student').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.import-student');
+        showDimmer('.modal.import-student');
         var studentData = importTable.data().toArray();
         if (studentData.length === 0) {
             $('.form.import-student').form('add errors', ['Chưa có sinh viên']);
@@ -81,7 +81,7 @@ $('.form.import-student').form({
         studentData.forEach(function (s) {
             s['classId'] = classId;
         });
-        $('.form.import-student').api({
+        $.api({
             action: 'import student',
             on: 'now',
             method: 'post',

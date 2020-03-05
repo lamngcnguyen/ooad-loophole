@@ -27,7 +27,7 @@ const classTable = $(".ui.table").DataTable({
         {
             data: "scheduledDayOfWeek",
             render: function (dayOfWeek) {
-                return "Thứ" + dayOfWeek + 1;
+                return "Thứ " + (dayOfWeek + 1);
             }
         },
         {data: "studentCount"}
@@ -60,8 +60,8 @@ const classTable = $(".ui.table").DataTable({
 
 $('.form.create-class').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.create-class');
-        $('.create-class .form').api({
+        showDimmer('.modal.create-class');
+        $.api({
             action: 'create class',
             on: 'now',
             method: 'post',
@@ -90,9 +90,9 @@ $('.form.create-class').form({
 
 $('.form.edit-class').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.edit-class');
+        showDimmer('.modal.edit-class');
         correctFormData('.form.edit-class', data);
-        $('.form.edit-class').api({
+        $.api({
             action: 'update class',
             urlData: {
                 id: data.id,

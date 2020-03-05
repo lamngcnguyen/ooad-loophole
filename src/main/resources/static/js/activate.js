@@ -20,7 +20,7 @@ $('.form.activate').form({
         }
     },
     onSuccess: function (evt, data) {
-        $('.form').api({
+        $.api({
             action: 'activate',
             urlData: {
                 token: data.token,
