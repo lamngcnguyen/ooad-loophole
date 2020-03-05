@@ -2,6 +2,13 @@ function showModal(el) {
     $(el).modal('show')
 }
 
+function showOverlapModal(el) {
+    $(el).modal({
+        allowMultiple: true,
+    });
+    $(el).modal('show');
+}
+
 function hideModal(el) {
     $(el).modal('hide')
 }

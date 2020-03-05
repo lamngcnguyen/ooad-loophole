@@ -64,9 +64,9 @@ const userTable = $(".teacher-admin .ui.table").DataTable({
 
 $('.form.create-user').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.create-user');
+        showDimmer('.modal.create-user');
         correctFormData('.form.create-user', data);
-        $('.form.create-user').api({
+        $.api({
             action: 'create user',
             on: 'now',
             method: 'post',
@@ -97,9 +97,9 @@ $('.form.create-user').form({
 
 $('.form.edit-user').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.edit-user');
+        showDimmer('.modal.edit-user');
         correctFormData('.form.edit-user', data);
-        $('.form.edit-user').api({
+        $.api({
             action: 'update user',
             urlData: {
                 id: data.id,
@@ -133,8 +133,8 @@ $('.form.edit-user').form({
 
 $('.form.delete-user').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.delete-user');
-        $('.form.delete-user').api({
+        showDimmer('.modal.delete-user');
+        $.api({
             action: 'delete user',
             urlData: {
                 id: data.id

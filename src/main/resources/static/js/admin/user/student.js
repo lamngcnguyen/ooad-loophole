@@ -89,8 +89,8 @@ $('.dropdown.assigned-class').dropdown({
 
 $('.form.create-student').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.create-student');
-        $('.form.create-student').api({
+        showDimmer('.modal.create-student');
+        $.api({
             action: 'create student',
             on: 'now',
             method: 'post',
@@ -119,8 +119,8 @@ $('.form.create-student').form({
 
 $('.form.edit-student').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.edit-student');
-        $('.form.edit-student').api({
+        showDimmer('.modal.edit-student');
+        $.api({
             action: 'update student',
             urlData: {
                 id: data.id
@@ -152,8 +152,8 @@ $('.form.edit-student').form({
 
 $('.form.delete-student').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.delete-student');
-        $('.form.delete-user').api({
+        showDimmer('.modal.delete-student');
+        $.api({
             action: 'delete student',
             urlData: {
                 id: data.id

@@ -526,7 +526,7 @@
                                 <div class="sixteen wide field">
                                     <label>Tệp đính kèm</label>
                                     <div class="ui input">
-                                        <table class="ui small celled red table">
+                                        <table class="ui small celled red table spec-files">
                                             <thead>
                                             <tr>
                                                 <th>#</th>
@@ -573,7 +573,7 @@
             Cảnh báo
         </div>
         <div class="content">
-            <div class="ui form delete-student">
+            <div class="ui form delete-topic">
                 <input type="hidden" name="id">
                 <div class="field">
                     <label>Bạn có chắc chắn muốn xóa đề tài này không?</label>
@@ -589,6 +589,52 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="ui tiny modal delete-spec">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Cảnh báo
+        </div>
+        <div class="content">
+            <div class="ui form delete-spec">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Bạn có chắc chắn muốn xóa file này không?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Có
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-spec')">
+                    <i class="close icon"></i>
+                    Không
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui modal jquery-template">
+        <table>
+            <tbody>
+            <tr class="spec-upload-status">
+                <td class="file-name">
+                </td>
+                <td class="center aligned">
+                    <div class="ui active centered inline red loader"></div>
+                    <div class="upload-success" style="display: none"><i class="large green check icon"></i></div>
+                    <div class="upload-failure" style="display: none"><i class="large red close icon"></i></div>
+                </td>
+                <td class="center aligned">
+                    <input type="hidden" name="id">
+                    <div class="ui grey icon button delete-file"><i class="trash icon"></i></div>
+                    <div class="ui grey icon button retry-upload" style="display: none"><i class="redo icon"></i></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript" th:src="@{/js/teacher/class_setting/class_setting.js}"></script>
     <script type="text/javascript" th:src="@{/js/teacher/class_setting/api.js}"></script>

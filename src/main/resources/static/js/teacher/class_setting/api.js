@@ -9,12 +9,14 @@ $.fn.api.settings.api = {
     'assign group member': '/api/groups/add',
     'get topics': '/api/classes/{classId}/topics',
     'create topic': '/api/topics/',
+    'delete topic': '/api/topics/{topicId}',
     'upload spec': '/api/files/spec',
     'upload multiple spec': '/api/files/spec/multiple',
     'assign topic spec': '/api/files/spec/assign/{id}',
     'assign topic multiple spec': '/api/files/spec/multi/assign/{id}'
 };
 
+const UPLOAD_TIMEOUT = 10000;
 const VN_ALPHABET = 'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ';
 
 var validationRules = {

@@ -138,7 +138,7 @@ public class StudentServiceImpl implements StudentService {
                 dbStudent.setStudentId(student.getStudentId());
             }
             dbStudent.setFullName(student.getFullName());
-
+            dbStudent.setClassId(student.getClassId());
             userRepository.save(dbUser);
             studentRepository.save(dbStudent);
             return dbStudent;

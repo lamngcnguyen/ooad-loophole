@@ -64,9 +64,9 @@ const semesterTable = $('.ui.table').DataTable({
 
 $('.form.create-semester').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.create-semester');
+        showDimmer('.modal.create-semester');
         correctFormData('.form.create-semester', data);
-        $('.create-semester .form').api({
+        $.api({
             action: 'create semester',
             on: 'now',
             method: 'post',
@@ -94,9 +94,9 @@ $('.form.create-semester').form({
 
 $('.form.edit-semester').form({
     onSuccess: function (evt, data) {
-        showDimmer('.form.edit-semester');
+        showDimmer('.modal.edit-semester');
         correctFormData('.form.edit-semester', data);
-        $('.form.edit-semester').api({
+        $.api({
             action: 'update semester',
             urlData: {
                 id: data.id,
