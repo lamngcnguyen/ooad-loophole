@@ -59,6 +59,61 @@ function openSpecFileDialog() {
     $('input[name="specFiles"]').click();
 }
 
+$('input[name="specFiles"]').change(function () {
+    uploadSpecFiles(this.files);
+});
+
+function uploadSpecFiles(files) {
+    for (var i = 0; i < files.length; i++) {
+        const file = files[i];
+        const tr = $('<tr></tr>');
+        tr.append($('<input type="hidden" name="id">'),
+            $(`<td>${file.name}</td>`),
+            $('<td class="center aligned">' +
+                '<div class="ui active centered inline red loader"></div>' +
+                '<div class="upload-success" style="display: none;"><i class="large green check icon"></i></div>' +
+                '<div class="upload-failure" style="display: none"><i class="large red close icon"></i></div>' +
+                '</td>'),
+            $('<td class="center aligned">' +
+                '<div class="ui grey icon button delete-file"><i class="trash icon"></i></div>' +
+                '<div class="ui blue icon button retry-upload" style="display: none"><i class="redo icon"></i></div>' +
+                '</td>')
+        );
+        $('.table.attachments').append(tr);
+        const formData = new FormData();
+        formData.append('file', file);
+        tr.api({
+            action: 'upload spec',
+            method: 'post',
+            on: 'now',
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: (settings) => {
+                settings.data = formData;
+                return settings;
+            },
+            onSuccess(res, el, xhr) {
+                el.find('.loader').hide();
+                el.find('.upload-success').show();
+                var fileInfo = xhr.responseJSON;
+                el.find('input[name="id"]').val(fileInfo._id);
+                el.find('div.delete-file').click(function () {
+                    console.log('delete');
+                });
+            },
+            onFailure(res, el, xhr) {
+                el.find('.loader').hide();
+                el.find('.upload-failure').show();
+                el.find('div.delete-file').hide();
+                el.find('div.retry-upload').click(function () {
+                    console.log('retry')
+                }).show();
+            }
+        });
+    }
+}
+
 $('.modal.create-topic').modal({
     onShow: function () {
         $('.dropdown.assigned-group').dropdown().api({
