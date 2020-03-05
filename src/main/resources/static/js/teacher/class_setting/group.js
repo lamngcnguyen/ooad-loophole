@@ -70,3 +70,20 @@ const groupTable = $(".group .ui.table").DataTable({
         actionCell.append(btnEdit, btnDelete);
     }
 });
+
+$('.group .page-length input').change(function () {
+    groupTable.page.len(this.value).draw();
+});
+
+$('.group .table-search input').keyup(function () {
+    groupTable.search(this.value).draw();
+});
+
+$('.form.create-group').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.form.create-group');
+        data['classId'] = classId;
+        $('.form.create-group').api({
+        })
+    }
+});

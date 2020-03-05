@@ -88,9 +88,9 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/spec/assign/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> assignTopicIdToSpecFile(@RequestBody SpecFile specFile, @PathVariable String id) {
+    public ResponseEntity<String> assignTopicIdToSpecFile(@RequestBody String specFileId, @PathVariable String id) {
         try {
-            specFileService.updateTopicId(specFile, id);
+            specFileService.updateTopicId(specFileId, id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
         } catch (BusinessServiceException | IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -98,10 +98,10 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/spec/multi/assign/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> assignTopicIdToMultipleSpecFile(@RequestBody List<SpecFile> specFiles, @PathVariable String id) {
+    public ResponseEntity<String> assignTopicIdToMultipleSpecFile(@RequestBody List<String> specFileIds, @PathVariable String id) {
         try {
-            for (SpecFile specFile : specFiles) {
-                specFileService.updateTopicId(specFile, id);
+            for (String specFileId : specFileIds) {
+                specFileService.updateTopicId(specFileId, id);
             }
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
         } catch (BusinessServiceException | IOException e) {

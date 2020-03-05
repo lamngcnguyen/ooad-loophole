@@ -133,7 +133,7 @@
                                 <th class="two wide">Thao tác</th>
                                 <th class="three wide">Tên nhóm</th>
                                 <th class="five wide">Trưởng nhóm&nbsp<i class="orange star icon"></i></th>
-                                <th class="five wide">Thành viên</th>
+                                <th class="five wide">Thành viên&nbsp<i class="red dumbbell icon"></i></th>
                             </tr>
                             </thead>
                         </table>
@@ -337,7 +337,65 @@
         </div>
     </div>
     <!---------------------------------Group modals--------------------------------->
-
+    <div class="ui tiny modal create-group">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green users icon"></i>
+            Thêm mới
+        </div>
+        <div class="content">
+            <div class="ui form create-group">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Tên nhóm</label>
+                            <input type="text" name="name" placeholder="Group name">
+                        </div>
+                        <div class="seven wide field">
+                            <label>Trưởng nhóm</label>
+                            <div class="ui search selection dropdown leader">
+                                <input type="hidden" name="leaderId">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Select leader</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="twelve wide field">
+                            <label>Thành viên</label>
+                            <div class="ui search selection dropdown member">
+                                <input type="hidden" name="memberId">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Select member</div>
+                            </div>
+                        </div>
+                        <div class="four wide field">
+                            <label>&nbsp</label>
+                            <div class="ui green fluid button">Thêm</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui segment member-list" style="display: none">
+                        <div class="ui middle aligned divided list"></div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-group')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
+            </div>
+        </div>
+    </div>
     <!---------------------------------Topic modals--------------------------------->
     <div class="ui large modal create-topic">
         <div class="ui dimmer">
@@ -393,12 +451,15 @@
                                             <tbody>
                                             <tr>
                                                 <td colspan="3">
-                                                    <input type="file" hidden="" name="specFiles" multiple accept="image/*, .pdf, .doc, .docx, .xlsx, .xml, .xls, .xlsx, .ppt, .pptx">
-                                                    <div class="ui red labeled icon button" onclick="openSpecFileDialog()">
+                                                    <input type="file" hidden="" name="specFiles" multiple
+                                                           accept="image/*, .pdf, .doc, .docx, .xlsx, .xml, .xls, .xlsx, .ppt, .pptx">
+                                                    <div class="ui red labeled icon button"
+                                                         onclick="openSpecFileDialog()">
                                                         <i class="upload icon"></i>
                                                         Choose file(s)
                                                     </div>
-                                                    <label class="ui grey left pointing label">images, documents, diagrams...</label>
+                                                    <label class="ui grey left pointing label">images, documents,
+                                                        diagrams...</label>
                                                 </td>
                                             </tr>
                                             </tbody>

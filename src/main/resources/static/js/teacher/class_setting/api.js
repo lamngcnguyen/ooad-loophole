@@ -5,6 +5,8 @@ $.fn.api.settings.api = {
     'import student': '/api/students/import',
     'delete student': '/api/students/{id}',
     'get groups': '/api/classes/{classId}/groups',
+    'create group': '/api/groups/',
+    'assign group member': '/api/groups/add',
     'get topics': '/api/classes/{classId}/topics',
     'create topic': '/api/topics/',
     'upload spec': '/api/files/spec',
