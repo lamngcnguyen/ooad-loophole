@@ -1,14 +1,9 @@
-package com.uet.ooadloophole.model.business;
+package com.uet.ooadloophole.controller.interface_model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
-public class Group {
-    @Id
+public class IGroup {
     private String _id;
     private String groupName;
-    @DBRef
-    private Student leader;
+    private String leaderId;
     private String classId;
 
     public String get_id() {
@@ -27,12 +22,12 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public Student getLeader() {
-        return leader;
+    public String getLeaderId() {
+        return leaderId;
     }
 
-    public void setLeader(Student leader) {
-        this.leader = leader;
+    public void setLeaderId(String leaderId) {
+        this.leaderId = leaderId;
     }
 
     public String getClassId() {

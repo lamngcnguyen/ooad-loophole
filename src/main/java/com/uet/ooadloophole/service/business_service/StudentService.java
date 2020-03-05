@@ -14,6 +14,8 @@ public interface StudentService {
 
     Student getByStudentId(String studentId) throws BusinessServiceException;
 
+    List<Student> getByGroupIdExcludingLeader(String leaderId, String groupId);
+
     Student getByUserId(String userId) throws BusinessServiceException;
 
     List<Student> searchByFullNameOrStudentId(String keyword);
@@ -29,6 +31,8 @@ public interface StudentService {
     List<Student> importStudents(List<Student> students);
 
     Student update(String id, Student student) throws BusinessServiceException;
+
+    void assignGroup(String id, String groupId) throws BusinessServiceException;
 
     void delete(String studentId) throws BusinessServiceException;
 

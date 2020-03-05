@@ -203,13 +203,7 @@ public class ApiClassController {
     public ResponseEntity<String> getGroups(@PathVariable String classId) {
         List<Group> groups = groupService.getAllByClassId(classId);
         List<DTOGroup> dtoGroups = new ArrayList<>();
-        groups.forEach(group -> {
-            try {
-                dtoGroups.add(converterService.convertToDTOGroup(group));
-            } catch (BusinessServiceException e) {
-                e.printStackTrace();
-            }
-        });
+        groups.forEach(group -> dtoGroups.add(converterService.convertToDTOGroup(group)));
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoGroups)));
     }
 }

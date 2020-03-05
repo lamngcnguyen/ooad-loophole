@@ -17,6 +17,8 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     Student findBy_idNotAndStudentId(String _id, String studentId);
 
+    List<Student> getBy_idNotAndGroupId(String _id, String groupId);
+
     List<Student> findAllByClassId(String classId);
 
     List<Student> findAllByGroupId(String groupId);

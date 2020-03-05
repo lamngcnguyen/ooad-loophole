@@ -158,19 +158,26 @@ public class ConverterService {
         return dtoTopic;
     }
 
-    public DTOGroup convertToDTOGroup(Group group) throws BusinessServiceException {
+    public DTOGroup convertToDTOGroup(Group group) {
         DTOGroup dtoGroup = new DTOGroup();
         dtoGroup.set_id(group.get_id());
         dtoGroup.setGroupName(group.getGroupName());
-        dtoGroup.setLeader(studentService.getById(group.getLeaderId()).get_id());
+        dtoGroup.setLeader(group.getLeader());
 
-        List<Student> studentList = studentService.getByGroup(group.get_id());
-        List<String> studentNameList = new ArrayList<>();
-        for (Student student : studentList) {
-            studentNameList.add(student.getFullName());
-        }
-        dtoGroup.setMembers(studentNameList);
+        List<Student> studentList = studentService.getByGroupIdExcludingLeader(group.getLeader().get_id(), group.get_id());
+        dtoGroup.setMembers(studentList);
         return dtoGroup;
+    }
+
+    public Group convertToGroup(IGroup iGroup) throws BusinessServiceException {
+        Group group = new Group();
+        group.set_id(iGroup.get_id());
+        group.setGroupName(iGroup.getGroupName());
+        group.setClassId(iGroup.getClassId());
+
+        Student groupLeader = studentService.getById(iGroup.getLeaderId());
+        group.setLeader(groupLeader);
+        return group;
     }
 
     public String formatFileName(String fileName, String timeStamp, String extension) {

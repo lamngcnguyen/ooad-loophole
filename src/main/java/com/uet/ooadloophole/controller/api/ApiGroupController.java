@@ -1,10 +1,13 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.DTOGroup;
+import com.uet.ooadloophole.controller.interface_model.IGroup;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.Topic;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.StudentService;
@@ -14,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,6 +31,9 @@ public class ApiGroupController {
 
     @Autowired
     private TopicService topicService;
+
+    @Autowired
+    private ConverterService converterService;
 
     private Gson gson = new Gson();
 
@@ -57,19 +64,29 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<Object> createGroup(@RequestBody Group group) {
+    public ResponseEntity<Object> createGroup(@RequestBody IGroup iGroup) {
         try {
-            Group newGroup = groupService.create(group);
+            Group newGroup = groupService.create(converterService.convertToGroup(iGroup));
             return ResponseEntity.status(HttpStatus.OK).body(newGroup);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateGroup(@RequestBody Group group) {
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<String> addMember(String id, String groupId) {
         try {
-            Group updatedGroup = groupService.update(group);
+            studentService.assignGroup(id, groupId);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("Added")));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateGroup(@RequestBody IGroup iGroup) {
+        try {
+            Group updatedGroup = groupService.update(converterService.convertToGroup(iGroup));
             return ResponseEntity.status(HttpStatus.OK).body(updatedGroup);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -87,9 +104,11 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<List<Group>> searchGroup(@RequestParam String keyword) {
+    public ResponseEntity<List<DTOGroup>> searchGroup(@RequestParam String keyword) {
         List<Group> groups = groupService.searchByName(keyword);
+        List<DTOGroup> dtoGroups = new ArrayList<>();
+        groups.forEach(group -> dtoGroups.add(converterService.convertToDTOGroup(group)));
         HttpStatus httpStatus = (groups.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
-        return ResponseEntity.status(httpStatus).body(groups);
+        return ResponseEntity.status(httpStatus).body(dtoGroups);
     }
 }

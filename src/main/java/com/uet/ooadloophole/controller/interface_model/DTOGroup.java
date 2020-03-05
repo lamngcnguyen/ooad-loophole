@@ -1,12 +1,14 @@
 package com.uet.ooadloophole.controller.interface_model;
 
+import com.uet.ooadloophole.model.business.Student;
+
 import java.util.List;
 
 public class DTOGroup {
     private String _id;
     private String groupName;
-    private String leader;
-    private List<String> members;
+    private Student leader;
+    private List<Student> members;
 
     public String get_id() {
         return _id;
@@ -24,19 +26,19 @@ public class DTOGroup {
         this.groupName = groupName;
     }
 
-    public String getLeader() {
+    public Student getLeader() {
         return leader;
     }
 
-    public void setLeader(String leader) {
+    public void setLeader(Student leader) {
         this.leader = leader;
     }
 
-    public List<String> getMembers() {
+    public List<Student> getMembers() {
         return members;
     }
 
-    public void setMembers(List<String> members) {
+    public void setMembers(List<Student> members) {
         this.members = members;
     }
 }

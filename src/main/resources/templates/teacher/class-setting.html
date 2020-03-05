@@ -28,6 +28,7 @@
                 <a class="group item" onclick="showTab('group')">Nhóm</a>
                 <a class="topic item" onclick="showTab('topic')">Đề tài</a>
             </div>
+            <!---------------------------------Student table--------------------------------->
             <div class="ui active student tab segment stackable grid">
                 <div class="row">
                     <div class="column">
@@ -86,6 +87,7 @@
                     </div>
                 </div>
             </div>
+            <!---------------------------------Group table--------------------------------->
             <div class="ui group tab segment stackable grid">
                 <div class="row">
                     <div class="column">
@@ -128,15 +130,17 @@
                             <thead>
                             <tr>
                                 <th class="one wide">#</th>
-                                <th class="three wide">Thao tác</th>
+                                <th class="two wide">Thao tác</th>
                                 <th class="three wide">Tên nhóm</th>
-                                <th class="three wide">Trưởng nhóm</th>
+                                <th class="five wide">Trưởng nhóm&nbsp<i class="orange star icon"></i></th>
+                                <th class="five wide">Thành viên</th>
                             </tr>
                             </thead>
                         </table>
                     </div>
                 </div>
             </div>
+            <!---------------------------------Topic table--------------------------------->
             <div class="ui topic tab segment stackable grid">
                 <div class="row">
                     <div class="column">
@@ -192,6 +196,7 @@
             </div>
         </div>
     </div>
+    <!---------------------------------Student modals--------------------------------->
     <div class="ui tiny modal create-student">
         <div class="ui dimmer">
             <div class="ui loader"></div>
@@ -331,7 +336,9 @@
             </div>
         </div>
     </div>
-    <!---------------Topic-------------------->
+    <!---------------------------------Group modals--------------------------------->
+
+    <!---------------------------------Topic modals--------------------------------->
     <div class="ui large modal create-topic">
         <div class="ui dimmer">
             <div class="ui loader"></div>
@@ -526,6 +533,7 @@
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.5/dist/xlsx.full.min.js"></script>
     <script type="text/javascript" th:src="@{/js/teacher/class_setting/import.js}"></script>
     <script type="text/javascript" th:src="@{/js/teacher/class_setting/topic.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_setting/group.js}"></script>
 </div>
 </body>
 </html>

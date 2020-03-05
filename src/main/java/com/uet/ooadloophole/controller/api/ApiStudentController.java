@@ -74,7 +74,7 @@ public class ApiStudentController {
                 Student newStudent = studentService.create(student);
                 String token = tokenService.createToken(newStudent.getUserId());
                 String confirmationUrl = Constants.CONFIRMATION_URL + token;
-                return ResponseEntity.status(HttpStatus.OK).body(confirmationUrl);
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage(confirmationUrl)));
             }
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

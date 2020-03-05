@@ -52,6 +52,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> getByGroupIdExcludingLeader(String leaderId, String groupId) {
+        return studentRepository.getBy_idNotAndGroupId(leaderId, groupId);
+    }
+
+    @Override
     public Student getByUserId(String userId) throws BusinessServiceException {
         Student result = studentRepository.findByUserId(userId);
         if (result == null) {
@@ -140,6 +145,13 @@ public class StudentServiceImpl implements StudentService {
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to update student: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void assignGroup(String id, String groupId) throws BusinessServiceException {
+        Student student = getById(id);
+        student.setGroupId(groupId);
+        studentRepository.save(student);
     }
 
     @Override

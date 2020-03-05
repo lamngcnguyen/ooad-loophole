@@ -50,6 +50,12 @@ public class AdminController {
         return getAdminPage(pageTitle, new BodyFragment("admin/semester", "body-content"));
     }
 
+    @RequestMapping(value = "/business", method = RequestMethod.GET)
+    public ModelAndView getBusinessView() {
+        String pageTitle = "Nghiệp vụ";
+        return getAdminPage(pageTitle, new BodyFragment("admin/business", "body-content"));
+    }
+
     private ModelAndView getAdminPage(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {
