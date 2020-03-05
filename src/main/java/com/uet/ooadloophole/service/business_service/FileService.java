@@ -18,7 +18,7 @@ public interface FileService {
 
     boolean editFileName(String saveLocation, String oldFileName, String newFileName);
 
-    boolean moveFile(String filename, String oldPath, String newPath) throws BusinessServiceException, IOException;
+    void moveFile(String filename, String oldPath, String newPath) throws BusinessServiceException, IOException;
 
     boolean deleteFile(String filePath) throws IOException;
 

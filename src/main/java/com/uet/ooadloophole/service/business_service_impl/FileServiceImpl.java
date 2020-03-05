@@ -53,17 +53,18 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public boolean moveFile(String filename, String oldPath, String newPath) throws BusinessServiceException {
+    public void moveFile(String filename, String oldPath, String newPath) throws BusinessServiceException {
         File file = new File(oldPath + filename);
+        if(!file.exists()) throw new BusinessServiceException("File not found " + oldPath + filename);
         File saveLocation = new File(newPath);
         if (!saveLocation.exists()) {
-            if (saveLocation.mkdir()) {
-                return file.renameTo(new File(newPath + filename));
-            } else {
-                throw new BusinessServiceException("Unable to create new path");
+            if (!saveLocation.mkdir()) {
+                throw new BusinessServiceException("Unable to create path " + newPath);
             }
         }
-        return file.renameTo(new File(newPath + filename));
+        if (!file.renameTo(new File(newPath + filename))) {
+            throw new BusinessServiceException("unable to move file " + filename);
+        }
     }
 
     @Override
