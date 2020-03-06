@@ -17,6 +17,17 @@ public class NavigationItemServiceImpl implements NavigationItemService {
     private NavigationItemRepository navigationItemRepository;
 
     @Override
+    public NavigationItem create(String name, String url, Role role, String description) {
+        NavigationItem navigationItem = new NavigationItem();
+        navigationItem.setName(name);
+        navigationItem.setUrl(url);
+        navigationItem.setRoleId(role.getId());
+        navigationItem.setDescription(description);
+        navigationItemRepository.save(navigationItem);
+        return navigationItem;
+    }
+
+    @Override
     public List<NavigationItem> getByRoleId(String roleId) {
         return navigationItemRepository.getAllByRoleId(roleId);
     }

@@ -353,7 +353,7 @@
                             <label>Tên nhóm</label>
                             <input type="text" name="name" placeholder="Group name">
                         </div>
-                        <div class="seven wide field">
+                        <div class="seven wide required field">
                             <label>Trưởng nhóm</label>
                             <div class="ui search selection dropdown leader">
                                 <input type="hidden" name="leaderId">
@@ -367,7 +367,7 @@
                     <div class="fields">
                         <div class="twelve wide field">
                             <label>Thành viên</label>
-                            <div class="ui search selection dropdown member">
+                            <div class="ui search multiple selection dropdown member">
                                 <input type="hidden" name="memberId">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Select member</div>
@@ -379,6 +379,9 @@
                         </div>
                     </div>
                 </div>
+                <h4 class="ui horizontal divider header">
+                    Thành viên
+                </h4>
                 <div class="field">
                     <div class="ui segment member-list" style="display: none">
                         <div class="ui middle aligned divided list"></div>

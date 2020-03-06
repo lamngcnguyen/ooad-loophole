@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface NavigationItemService {
+    NavigationItem create(String name, String url, Role role, String description);
+
     List<NavigationItem> getByRoleId(String roleId);
 
     List<NavigationItem> getByRole(Role role);

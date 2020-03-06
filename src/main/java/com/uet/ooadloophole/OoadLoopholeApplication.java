@@ -1,11 +1,11 @@
 package com.uet.ooadloophole;
 
-import com.uet.ooadloophole.database.NavigationGroupRepository;
-import com.uet.ooadloophole.database.NavigationItemRepository;
-import com.uet.ooadloophole.database.RoleRepository;
-import com.uet.ooadloophole.model.frontend_element.NavigationGroup;
-import com.uet.ooadloophole.model.frontend_element.NavigationItem;
 import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.frontend_element.NavigationItem;
+import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.NavigationGroupService;
+import com.uet.ooadloophole.service.business_service.NavigationItemService;
+import com.uet.ooadloophole.service.business_service.RoleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,117 +23,101 @@ public class OoadLoopholeApplication {
 
     //Create Role
     @Bean
-    CommandLineRunner init(RoleRepository roleRepository, NavigationItemRepository navigationItemRepository, NavigationGroupRepository navigationGroupRepository) {
+    CommandLineRunner init(RoleService roleService, NavigationItemService navigationItemService, NavigationGroupService navigationGroupService) {
         return args -> {
-            Role adminRole = roleRepository.findByRole("ADMIN");
+            Role adminRole = roleService.getByName("ADMIN");
             if (adminRole == null) {
-                Role newAdminRole = new Role();
-                newAdminRole.setRole("ADMIN");
-                roleRepository.save(newAdminRole);
+                roleService.create("ADMIN");
             } else {
-                NavigationItem itemSiteConfig = navigationItemRepository.findByName("Thiết lập hệ thống");
+                NavigationItem itemSiteConfig = navigationItemService.getByName("Thiết lập hệ thống");
                 if (itemSiteConfig == null) {
-                    itemSiteConfig = new NavigationItem();
-                    itemSiteConfig.setName("Thiết lập hệ thống");
-                    itemSiteConfig.setUrl("/admin/business");
-                    itemSiteConfig.setRoleId(adminRole.getId());
-                    itemSiteConfig.setDescription("Quản lý các thông tin chung của hệ thống, VD: học kỳ, bảng tin...");
-                    navigationItemRepository.save(itemSiteConfig);
+                    itemSiteConfig = navigationItemService.create("Thiết lập hệ thống", "/admin/business", adminRole,
+                            "Quản lý các thông tin chung của hệ thống, VD: học kỳ, bảng tin...");
                 }
-                NavigationItem itemUser = navigationItemRepository.findByName("Quản lý người dùng");
+                NavigationItem itemUser = navigationItemService.getByName("Quản lý người dùng");
                 if (itemUser == null) {
-                    itemUser = new NavigationItem();
-                    itemUser.setName("Quản lý người dùng");
-                    itemUser.setUrl("/admin/user");
-                    itemUser.setRoleId(adminRole.getId());
-                    navigationItemRepository.save(itemUser);
+                    itemUser = navigationItemService.create("Quản lý người dùng", "/admin/user", adminRole, null);
                 }
-                NavigationItem itemClass = navigationItemRepository.findByName("Quản lý lớp học");
+                NavigationItem itemClass = navigationItemService.getByName("Quản lý lớp học");
                 if (itemClass == null) {
-                    itemClass = new NavigationItem();
-                    itemClass.setName("Quản lý lớp học");
-                    itemClass.setUrl("/admin/class");
-                    itemClass.setRoleId(adminRole.getId());
-                    navigationItemRepository.save(itemClass);
+                    itemClass = navigationItemService.create("Quản lý lớp học", "/admin/class", adminRole, null);
                 }
-                NavigationItem itemSemester = navigationItemRepository.findByName("Quản lý học kì");
+                NavigationItem itemSemester = navigationItemService.getByName("Quản lý học kì");
                 if (itemSemester == null) {
-                    itemSemester = new NavigationItem();
-                    itemSemester.setName("Quản lý học kì");
-                    itemSemester.setUrl("/admin/semester");
-                    itemSemester.setRoleId(adminRole.getId());
-                    navigationItemRepository.save(itemSemester);
+                    itemSemester = navigationItemService.create("Quản lý học kì", "/admin/semester", adminRole, null);
                 }
 
-                NavigationGroup adminGroup = navigationGroupRepository.findByRoleId(adminRole.getId());
-                if (adminGroup == null) {
-                    adminGroup = new NavigationGroup();
-                    adminGroup.setName("Quản trị viên");
+                try {
+                    navigationGroupService.getByRole(adminRole);
+                } catch (BusinessServiceException ignored) {
                     List<NavigationItem> items = new ArrayList<>();
                     items.add(itemSiteConfig);
                     items.add(itemUser);
                     items.add(itemClass);
                     items.add(itemSemester);
-                    adminGroup.setItems(items);
-                    adminGroup.setRoleId(adminRole.getId());
-                    adminGroup.setUrl("/admin");
-                    navigationGroupRepository.save(adminGroup);
+                    navigationGroupService.create("Quản trị viên", items, adminRole, "/admin");
                 }
             }
 
-            Role userRole = roleRepository.findByRole("STUDENT");
-            if (userRole == null) {
-                Role newUserRole = new Role();
-                newUserRole.setRole("STUDENT");
-                roleRepository.save(newUserRole);
-            }
-
-            Role teacherRole = roleRepository.findByRole("TEACHER");
-            if (teacherRole == null) {
-                Role newUserRole = new Role();
-                newUserRole.setRole("TEACHER");
-                roleRepository.save(newUserRole);
+            Role studentRole = roleService.getByName("STUDENT");
+            if (studentRole == null) {
+                roleService.create("STUDENT");
             } else {
-                NavigationItem itemClass = navigationItemRepository.findByName("Lớp học của tôi");
+                NavigationItem itemGroup = navigationItemService.getByName("Nhóm");
+                if (itemGroup == null) {
+                    itemGroup = navigationItemService.create("Nhóm", "/student/group", studentRole, null);
+                }
+                NavigationItem itemIteration = navigationItemService.getByName("Vòng lặp phát triển");
+                if (itemIteration == null) {
+                    itemIteration = navigationItemService.create("Vòng lặp phát triển", "/student/iteration", studentRole, null);
+                }
+                NavigationItem itemEvaluation = navigationItemService.getByName("Chấm điểm");
+                if (itemEvaluation == null) {
+                    itemEvaluation = navigationItemService.create("Chấm điểm", "/student/evaluation", studentRole, null);
+                }
+                NavigationItem itemRequirement = navigationItemService.getByName("Yêu cầu");
+                if (itemRequirement == null) {
+                    itemRequirement = navigationItemService.create("Yêu cầu", "/student/requirement", studentRole, null);
+                }
+                try {
+                    navigationGroupService.getByRole(studentRole);
+                } catch (BusinessServiceException ignored) {
+                    List<NavigationItem> items = new ArrayList<>();
+                    items.add(itemGroup);
+                    items.add(itemIteration);
+                    items.add(itemEvaluation);
+                    items.add(itemRequirement);
+                    navigationGroupService.create("Sinh viên", items, studentRole, "/student");
+                }
+            }
+
+            Role teacherRole = roleService.getByName("TEACHER");
+            if (teacherRole == null) {
+                roleService.create("TEACHER");
+            } else {
+                NavigationItem itemClass = navigationItemService.getByName("Lớp học của tôi");
                 if (itemClass == null) {
-                    itemClass = new NavigationItem();
-                    itemClass.setName("Lớp học của tôi");
-                    itemClass.setUrl("/teacher/class");
-                    itemClass.setRoleId(teacherRole.getId());
-                    navigationItemRepository.save(itemClass);
+                    itemClass = navigationItemService.create("Lớp học của tôi", "/teacher/class", teacherRole, null);
                 }
 
-                NavigationItem itemEvaluation = navigationItemRepository.findByName("Chấm bài");
+                NavigationItem itemEvaluation = navigationItemService.getByName("Chấm bài");
                 if (itemEvaluation == null) {
-                    itemEvaluation = new NavigationItem();
-                    itemEvaluation.setName("Chấm bài");
-                    itemEvaluation.setUrl("/teacher/evaluate");
-                    itemEvaluation.setRoleId(teacherRole.getId());
-                    navigationItemRepository.save(itemEvaluation);
+                    itemEvaluation = navigationItemService.create("Chấm bài", "/teacher/evaluate", teacherRole, null);
                 }
-                NavigationItem itemBusiness = navigationItemRepository.findByName("Thiết lập quy trình phát triển");
+                NavigationItem itemBusiness = navigationItemService.getByName("Thiết lập quy trình phát triển");
                 if (itemBusiness == null) {
-                    itemBusiness = new NavigationItem();
-                    itemBusiness.setName("Thiết lập quy trình phát triển");
-                    itemBusiness.setUrl("/teacher/process");
-                    itemBusiness.setRoleId(teacherRole.getId());
-                    navigationItemRepository.save(itemBusiness);
+                    itemBusiness = navigationItemService.create("Thiết lập quy trình phát triển", "/teacher/process", teacherRole, null);
                 }
-                NavigationGroup teacherGroup = navigationGroupRepository.findByRoleId(teacherRole.getId());
-                if (teacherGroup == null) {
-                    teacherGroup = new NavigationGroup();
-                    teacherGroup.setName("Giáo viên");
+                try {
+                    navigationGroupService.getByRole(teacherRole);
+                } catch (BusinessServiceException ignored) {
                     List<NavigationItem> items = new ArrayList<>();
                     items.add(itemClass);
                     items.add(itemEvaluation);
                     items.add(itemBusiness);
-                    teacherGroup.setItems(items);
-                    teacherGroup.setRoleId(teacherRole.getId());
-                    teacherGroup.setUrl("/teacher");
-                    navigationGroupRepository.save(teacherGroup);
+                    navigationGroupService.create("Giáo viên", items, teacherRole, "/teacher");
                 }
             }
         };
-
     }
 }

@@ -14,6 +14,13 @@ public class RoleServiceImpl implements RoleService {
     private RoleRepository roleRepository;
 
     @Override
+    public Role create(String roleName) {
+        Role role = new Role();
+        role.setRole(roleName);
+        return roleRepository.save(role);
+    }
+
+    @Override
     public Role getByName(String roleName) throws BusinessServiceException {
         Role result = roleRepository.findByRole(roleName.toUpperCase());
         if(result == null) {
