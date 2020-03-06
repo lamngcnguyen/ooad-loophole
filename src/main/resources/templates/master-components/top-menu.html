@@ -18,7 +18,26 @@
         </a>
     </div>
     <div class="menu right">
-        <div class="ui dropdown item content-flex flex-row" style="min-width: 200px">
+        <div class="ui inverted dropdown item notification">
+            <div class="borderless item" style="padding: 0 !important;">
+                <i class="large bell icon" style="margin: 0 !important;"></i>
+                <div class="floating ui red circular label unseen">
+                    <span>1</span>
+                </div>
+            </div>
+            <div class="ui left menu">
+                <a class="item notification">
+                    <div class="header">
+                        <span class="subject">New Member</span>
+                        <span class="timestamp"><i class="clock icon"></i>12:00</span>
+                    </div>
+                    <div class="content">
+                        <div class="description"><span class="ui blue text">Nguyen Ngoc Lam</span> has invited you to join <span class="ui red text">Weebs</span>!</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="ui inverted dropdown item content-flex flex-row" style="min-width: 200px">
             <div class="ui mini circular image my-logo">
                 <img class="my-avatar" th:src="${avatarLink}">
             </div>

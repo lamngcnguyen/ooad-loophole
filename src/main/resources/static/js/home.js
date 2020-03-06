@@ -1,5 +1,11 @@
 $('.ui.dropdown').dropdown();
 
+$('.dropdown.notification').dropdown({
+    onShow: function () {
+        $('.label.unseen').hide();
+    }
+});
+
 function toggleSidebar() {
     $('.ui.sidebar')
         .sidebar('toggle');

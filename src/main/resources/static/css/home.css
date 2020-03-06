@@ -71,3 +71,15 @@
     }
 }
 
+.notification .header {
+    margin-bottom: 1em;
+}
+
+.notification .timestamp {
+    float: right;
+}
+
+.notification .subject {
+    font-weight: bold;
+    font-size: 18px;
+}
