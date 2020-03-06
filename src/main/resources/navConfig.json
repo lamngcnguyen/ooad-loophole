@@ -1,0 +1,78 @@
+[
+  {
+    "name": "Quản trị viên",
+    "url": "/admin",
+    "role": "ADMIN",
+    "navigationItems": [
+      {
+        "name": "Thiết lập hệ thống",
+        "url": "/admin/business",
+        "description": "Quản lý các thông tin chung của hệ thống, VD: học kỳ, bảng tin..."
+      },
+      {
+        "name": "Quản lý người dùng",
+        "url": "/admin/user",
+        "description": null
+      },
+      {
+        "name": "Quản lý lớp học",
+        "url": "/admin/class",
+        "description": null
+      },
+      {
+        "name": "Quản lý học kì",
+        "url": "/admin/semester",
+        "description": null
+      }
+    ]
+  },
+  {
+    "name": "Giáo viên",
+    "role": "TEACHER",
+    "url": "/teacher",
+    "navigationItems": [
+      {
+        "name": "Lớp học của tôi",
+        "url": "/teacher/class",
+        "description": null
+      },
+      {
+        "name": "Chấm bài",
+        "url": "/teacher/evaluate",
+        "description": null
+      },
+      {
+        "name": "Thiết lập quy trình phát triển",
+        "url": "/teacher/process",
+        "description": null
+      }
+    ]
+  },
+  {
+    "name": "Sinh viên",
+    "role": "STUDENT",
+    "url": "/student",
+    "navigationItems": [
+      {
+        "name": "Nhóm",
+        "url": "/student/group",
+        "description": null
+      },
+      {
+        "name": "Vòng lặp phát triển",
+        "url": "/student/iteration",
+        "description": null
+      },
+      {
+        "name": "Chấm điểm",
+        "url": "/student/evaluation",
+        "description": null
+      },
+      {
+        "name": "Yêu cầu",
+        "url": "/student/requirement",
+        "description": null
+      }
+    ]
+  }
+]

@@ -93,3 +93,40 @@ $('.form.create-group').form({
         })
     }
 });
+
+
+$('.modal.create-group').modal({
+    onShow: function () {
+        $('.dropdown.member').dropdown({
+            onChange: function (value, text) {
+                console.log(value);
+                $('.dropdown.leader').dropdown('remove selected', value);
+            }
+        });
+        $('.dropdown.leader').dropdown({
+            showOnFocus: false,
+            onChange: function (value, text) {
+                $('.dropdown.member').dropdown('remove selected', value);
+            }
+        });
+        $.api({
+            action: 'get students',
+            urlData: {
+                classId: classId
+            },
+            on: 'now',
+            onSuccess(response, element, xhr) {
+                const values = [];
+                xhr.responseJSON.data.forEach(function (student) {
+                    values.push({
+                        value: student._id,
+                        name: student.fullName + " - " + student.studentId,
+                        text: student.fullName
+                    })
+                });
+                $('.dropdown.member, .dropdown.leader').dropdown('change values', values);
+            }
+        });
+    }
+});
+

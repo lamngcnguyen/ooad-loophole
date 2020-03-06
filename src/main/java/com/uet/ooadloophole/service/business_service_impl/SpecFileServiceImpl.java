@@ -32,7 +32,7 @@ public class SpecFileServiceImpl implements SpecFileService {
     }
 
     @Override
-    public void updateTopicId(String specFileId, String topicId) throws BusinessServiceException, IOException {
+    public void updateTopicId(String specFileId, String topicId) throws BusinessServiceException {
         SpecFile dbSpecFile = findById(specFileId);
         String newPath = Constants.SPEC_FOLDER + topicId + "/";
         dbSpecFile.setTopicId(topicId);
