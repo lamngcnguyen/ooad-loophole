@@ -171,6 +171,7 @@ public class ConverterService {
         group.setClassId(iGroup.getClassId());
 
         Student groupLeader = studentService.getById(iGroup.getLeaderId());
+        userService.assignRole(groupLeader.getUserId(), Constants.ROLE_LEADER);
         group.setLeader(groupLeader);
         return group;
     }

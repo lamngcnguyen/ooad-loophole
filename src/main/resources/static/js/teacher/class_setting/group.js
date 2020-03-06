@@ -12,7 +12,7 @@ const groupTable = $(".group .ui.table").DataTable({
         {
             data: null,
             render: function () {
-                return ++studentRowIndex;
+                return ++groupRowIndex;
             }
         },
         {
