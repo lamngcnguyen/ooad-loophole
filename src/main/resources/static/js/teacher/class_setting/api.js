@@ -1,5 +1,6 @@
 $.fn.api.settings.api = {
     'get students': '/api/classes/{classId}/students',
+    'get students with no groups': '/api/classes/{classId}/students',
     'create student': '/api/students',
     'update student': '/api/students/{id}',
     'import student': '/api/students/import',

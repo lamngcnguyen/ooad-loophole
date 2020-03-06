@@ -151,7 +151,7 @@ public class StudentServiceImpl implements StudentService {
     public void assignGroup(String id, String groupId) throws BusinessServiceException {
         Student student = getById(id);
         student.setGroupId(groupId);
-        userService.assignRole(student.getUserId(), Constants.ROLE_MEMEBER);
+        userService.assignRole(student.getUserId(), Constants.ROLE_MEMBER);
         studentRepository.save(student);
     }
 

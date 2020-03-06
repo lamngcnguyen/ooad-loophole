@@ -5,7 +5,7 @@ public class Constants {
     public static final String ROLE_TEACHER = "TEACHER";
     public static final String ROLE_STUDENT = "STUDENT";
     public static final String ROLE_LEADER = "STUDENT_LEADER";
-    public static final String ROLE_MEMEBER = "STUDENT_MEMBER";
+    public static final String ROLE_MEMBER = "STUDENT_MEMBER";
     public static final String EMAIL_SUFFIX = "@vnu.edu.vn";
     public static final String CONFIRMATION_URL = "http://ooad-loophole.herokuapp.com/activate-account?token=";
     public static final String RESET_LINK = "http://ooad-loophole.herokuapp.com/resetPassword?token=";

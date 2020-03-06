@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
 import com.uet.ooadloophole.service.business_service.RoleService;
 import org.springframework.beans.factory.InitializingBean;
@@ -38,20 +37,16 @@ public class ApplicationSetup implements InitializingBean {
         new NavigationConfig(navConfigFile, roleService, navigationGroupService).initNavGroups();
     }
 
-    private void createRole() {
+    private void createRole() throws FileNotFoundException {
         if (roleService.checkRoleNotExists("ADMIN")) {
             roleService.create("ADMIN");
         }
-        try {
-            JsonObject rolesJson = JsonParser.parseReader(new FileReader(roleConfigFile)).getAsJsonObject();
-            JsonArray dataArray = rolesJson.getAsJsonArray("roles");
-            for (JsonElement data : dataArray) {
-                if(roleService.checkRoleNotExists(data.getAsString())){
-                    roleService.create(data.getAsString());
-                }
+        JsonObject rolesJson = JsonParser.parseReader(new FileReader(roleConfigFile)).getAsJsonObject();
+        JsonArray dataArray = rolesJson.getAsJsonArray("roles");
+        for (JsonElement data : dataArray) {
+            if (roleService.checkRoleNotExists(data.getAsString())) {
+                roleService.create(data.getAsString());
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

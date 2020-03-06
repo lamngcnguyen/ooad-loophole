@@ -76,9 +76,9 @@
                             <thead>
                             <tr>
                                 <th class="one wide">#</th>
-                                <th class="three wide">Thao tác</th>
+                                <th class="two wide">Thao tác</th>
                                 <th class="three wide">MSSV</th>
-                                <th class="three wide">Họ tên</th>
+                                <th class="four wide">Họ tên</th>
                                 <th class="two wide">SĐT</th>
                                 <th class="one wide">Đang hoạt động</th>
                             </tr>
@@ -337,7 +337,7 @@
         </div>
     </div>
     <!---------------------------------Group modals--------------------------------->
-    <div class="ui tiny modal create-group">
+    <div class="ui small modal create-group">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -349,11 +349,11 @@
             <div class="ui form create-group">
                 <div class="field">
                     <div class="fields">
-                        <div class="nine wide required field">
+                        <div class="eight wide required field">
                             <label>Tên nhóm</label>
                             <input type="text" name="name" placeholder="Group name">
                         </div>
-                        <div class="seven wide required field">
+                        <div class="eight wide required field">
                             <label>Trưởng nhóm</label>
                             <div class="ui search selection dropdown leader">
                                 <input type="hidden" name="leaderId">
@@ -364,27 +364,11 @@
                     </div>
                 </div>
                 <div class="field">
-                    <div class="fields">
-                        <div class="twelve wide field">
-                            <label>Thành viên</label>
-                            <div class="ui search multiple selection dropdown member">
-                                <input type="hidden" name="memberId">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">Select member</div>
-                            </div>
-                        </div>
-                        <div class="four wide field">
-                            <label>&nbsp</label>
-                            <div class="ui green fluid button">Thêm</div>
-                        </div>
-                    </div>
-                </div>
-                <h4 class="ui horizontal divider header">
-                    Thành viên
-                </h4>
-                <div class="field">
-                    <div class="ui segment member-list" style="display: none">
-                        <div class="ui middle aligned divided list"></div>
+                    <label>Thành viên</label>
+                    <div class="ui multiple search selection dropdown member">
+                        <input type="hidden" name="memberId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select member</div>
                     </div>
                 </div>
                 <div class="ui error message"></div>

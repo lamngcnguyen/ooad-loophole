@@ -94,23 +94,25 @@ $('.form.create-group').form({
     }
 });
 
-
+var leaderId;
 $('.modal.create-group').modal({
     onShow: function () {
         $('.dropdown.member').dropdown({
             onChange: function (value, text) {
-                console.log(value);
-                $('.dropdown.leader').dropdown('remove selected', value);
+                if (value === leaderId) {
+                    $('.dropdown.leader').dropdown('clear', false);
+                }
             }
         });
         $('.dropdown.leader').dropdown({
             showOnFocus: false,
             onChange: function (value, text) {
+                leaderId = value;
                 $('.dropdown.member').dropdown('remove selected', value);
             }
         });
         $.api({
-            action: 'get students',
+            action: 'get students with no group',
             urlData: {
                 classId: classId
             },
@@ -120,8 +122,8 @@ $('.modal.create-group').modal({
                 xhr.responseJSON.data.forEach(function (student) {
                     values.push({
                         value: student._id,
-                        name: student.fullName + " - " + student.studentId,
-                        text: student.fullName
+                        text: student.fullName,
+                        name: `<span class="ui teal label">${student.studentId}</span>${student.fullName}`
                     })
                 });
                 $('.dropdown.member, .dropdown.leader').dropdown('change values', values);
@@ -129,4 +131,3 @@ $('.modal.create-group').modal({
         });
     }
 });
-

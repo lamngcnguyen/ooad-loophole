@@ -110,7 +110,7 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/spec/{id}", method = RequestMethod.GET)
-    private ResponseEntity<Resource> downloadSpecFile(@PathVariable String id, HttpServletRequest request) {
+    public ResponseEntity<Resource> downloadSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = specFileService.download(id);
         String timeStamp = specFileService.findById(id).getTimeStamp();
 
