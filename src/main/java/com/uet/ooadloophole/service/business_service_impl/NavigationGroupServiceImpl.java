@@ -29,6 +29,11 @@ public class NavigationGroupServiceImpl implements NavigationGroupService {
     }
 
     @Override
+    public NavigationGroup create(NavigationGroup group) {
+        return navigationGroupRepository.save(group);
+    }
+
+    @Override
     public NavigationGroup getByRole(Role role) throws BusinessServiceException {
         NavigationGroup group = navigationGroupRepository.findByRoleId(role.getId());
         if (group == null) {
@@ -48,6 +53,11 @@ public class NavigationGroupServiceImpl implements NavigationGroupService {
             }
         });
         return navigationGroups;
+    }
+
+    @Override
+    public void deleteAll() {
+        navigationGroupRepository.deleteAll();
     }
 
 }
