@@ -28,4 +28,10 @@ public class RoleServiceImpl implements RoleService {
         }
         return result;
     }
+
+    @Override
+    public boolean checkRoleNotExists(String roleName) {
+        Role role = roleRepository.findByRole(roleName.toUpperCase());
+        return role == null;
+    }
 }

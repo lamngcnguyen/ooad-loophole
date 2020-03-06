@@ -6,4 +6,5 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 public interface RoleService {
     Role create(String roleName);
     Role getByName(String roleName) throws BusinessServiceException;
+    boolean checkRoleNotExists(String roleName);
 }

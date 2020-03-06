@@ -8,7 +8,6 @@ public class NavigationItem {
     private String name;
     private String url;
     private String description;
-
     private String roleId;
 
     public NavigationItem() {

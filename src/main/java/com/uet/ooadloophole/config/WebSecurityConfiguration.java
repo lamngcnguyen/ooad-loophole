@@ -67,15 +67,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //Spring routing security rule set
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/teacher/**").hasAuthority("TEACHER")
+                .antMatchers("/student/**").hasAnyAuthority("STUDENT", "STUDENT_LEADER", "STUDENT_MEMBER")
                 .antMatchers("/api/classes/**").hasAuthority("TEACHER")
                 .antMatchers("/api/students/**").hasAuthority("TEACHER")
                 .antMatchers("/api/semesters/**").hasAnyAuthority("ADMIN", "TEACHER")
-                .antMatchers("/api/topics/**").hasAnyAuthority("TEACHER", "STUDENT", "ADMIN")
-                .antMatchers("/api/files/download").hasAnyAuthority("ADMIN", "TEACHER", "STUDENT")
-                .antMatchers("/api/files/upload/repo").hasAuthority("STUDENT")
+                .antMatchers("/api/topics/**").hasAnyAuthority("ADMIN", "TEACHER", "STUDENT", "STUDENT_LEADER", "STUDENT_MEMBER")
+                .antMatchers("/api/files/download").hasAnyAuthority("ADMIN", "TEACHER", "STUDENT", "STUDENT_LEADER", "STUDENT_MEMBER")
+                .antMatchers("/api/files/upload/repo").hasAnyAuthority("STUDENT", "STUDENT_LEADER", "STUDENT_MEMBER")
                 .antMatchers("/api/files/upload/spec").hasAuthority("TEACHER")
-                .antMatchers("/api/groups/**").hasAnyAuthority("TEACHER", "STUDENT", "ADMIN")
-                .antMatchers("/student/**").hasAnyAuthority("STUDENT", "TEACHER")
+                .antMatchers("/api/groups/**").hasAnyAuthority("ADMIN", "TEACHER", "STUDENT", "STUDENT_LEADER", "STUDENT_MEMBER")
                 .antMatchers("/register/**", "/", "/login").permitAll()
                 .antMatchers("/reset", "/resetAccount**").permitAll()
                 .antMatchers("/activate-account**").permitAll()
@@ -106,7 +106,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                 .and()
-                .rememberMe().key(rememberMeKey).tokenValiditySeconds(7*24*60*60);
+                .rememberMe().key(rememberMeKey).tokenValiditySeconds(7 * 24 * 60 * 60);
 //                .logoutSuccessHandler(logoutSuccessHandler());
     }
 

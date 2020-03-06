@@ -59,4 +59,8 @@ public class NavigationConfig {
         }
         return item;
     }
+
+    private void createRole(JsonObject data) {
+
+    }
 }

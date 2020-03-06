@@ -1,8 +1,8 @@
 [
   {
     "name": "Quản trị viên",
-    "url": "/admin",
     "role": "ADMIN",
+    "url": "/admin",
     "navigationItems": [
       {
         "name": "Thiết lập hệ thống",

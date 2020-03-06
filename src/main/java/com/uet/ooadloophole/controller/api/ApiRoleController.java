@@ -11,10 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/api/roles")
 public class ApiRoleController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
     private Gson gson = new Gson();
 
@@ -26,5 +28,11 @@ public class ApiRoleController {
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseEntity<String> createRole(String roleName) {
+        roleService.create(roleName);
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
     }
 }
