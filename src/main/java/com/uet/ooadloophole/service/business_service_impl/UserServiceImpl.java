@@ -193,6 +193,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public void assignRoles(String userId, String[] roleNames) throws BusinessServiceException {
+        try {
+            User dbUser = getById(userId);
+            for (String roleName : roleNames) {
+                Role dbRole = roleService.getByName(roleName);
+                dbUser.getRoles().add(dbRole);
+            }
+            userRepository.save(dbUser);
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to assign role to user: " + e.getMessage());
+        }
+    }
+
+    @Override
     public void removeRole(String userId, String roleName) throws BusinessServiceException {
         try {
             User dbUser = getById(userId);

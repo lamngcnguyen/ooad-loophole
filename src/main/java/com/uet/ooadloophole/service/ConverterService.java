@@ -158,7 +158,6 @@ public class ConverterService {
         dtoGroup.set_id(group.get_id());
         dtoGroup.setGroupName(group.getGroupName());
         dtoGroup.setLeader(group.getLeader());
-
         List<Student> studentList = studentService.getByGroupIdExcludingLeader(group.getLeader().get_id(), group.get_id());
         dtoGroup.setMembers(studentList);
         return dtoGroup;
@@ -169,10 +168,7 @@ public class ConverterService {
         group.set_id(iGroup.get_id());
         group.setGroupName(iGroup.getGroupName());
         group.setClassId(iGroup.getClassId());
-
-        Student groupLeader = studentService.getById(iGroup.getLeaderId());
-        userService.assignRole(groupLeader.getUserId(), Constants.ROLE_LEADER);
-        group.setLeader(groupLeader);
+        group.setLeader(studentService.getById(iGroup.getLeaderId()));
         return group;
     }
 

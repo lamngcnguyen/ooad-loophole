@@ -40,6 +40,8 @@ public interface UserService {
 
     void assignRole(String userId, String roleName) throws BusinessServiceException;
 
+    void assignRoles(String userId, String[] roleNames) throws BusinessServiceException;
+
     void removeRole(String userId, String roleName) throws BusinessServiceException;
 
     User setStatus(String userId, boolean status) throws BusinessServiceException;

@@ -1,9 +1,11 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
+import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public Group getById(String id) throws BusinessServiceException {
@@ -45,6 +50,7 @@ public class GroupServiceImpl implements GroupService {
                 throw new BusinessServiceException("Group name already exists");
             }
             groupRepository.save(group);
+            userService.assignRoles(group.getLeader().getUserId(), new String[]{Constants.ROLE_LEADER, Constants.ROLE_MEMBER});
             return group;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to create group: " + e.getMessage());
@@ -63,6 +69,10 @@ public class GroupServiceImpl implements GroupService {
             }
             Group dbGroup = getById(group.get_id());
             dbGroup.setGroupName(group.getGroupName());
+            if (!dbGroup.getLeader().getUserId().equals(group.getLeader().getUserId())) {
+                userService.removeRole(dbGroup.getLeader().getUserId(), Constants.ROLE_LEADER);
+                userService.assignRole(group.getLeader().getUserId(), Constants.ROLE_LEADER);
+            }
             groupRepository.save(dbGroup);
             return dbGroup;
         } catch (BusinessServiceException e) {
