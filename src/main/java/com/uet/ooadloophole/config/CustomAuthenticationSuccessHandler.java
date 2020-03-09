@@ -29,8 +29,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             httpServletResponse.addCookie(new Cookie("userId", currentUser.get_id()));
             if (userDetailService.getCurrentUser().hasRole("student")) {
                 Student currentStudent = studentService.getByUserId(currentUser.get_id());
-                httpServletResponse.addCookie(new Cookie("classId", currentStudent.getClassId()));
-                httpServletResponse.addCookie(new Cookie("groupId", currentStudent.getGroupId()));
+                httpServletResponse.addCookie(new Cookie("studentId", currentStudent.get_id()));
             }
             httpServletResponse.sendRedirect("/home");
         } catch (BusinessServiceException e) {

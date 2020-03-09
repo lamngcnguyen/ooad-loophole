@@ -34,7 +34,7 @@ public class ApplicationSetup implements InitializingBean {
 
     private void createNavigations() throws FileNotFoundException {
         navigationGroupService.deleteAll();
-        new NavigationConfig(navConfigFile, roleService, navigationGroupService).initNavGroups();
+        new NavigationSetup(navConfigFile, roleService, navigationGroupService).initNavGroups();
     }
 
     private void createRole() throws FileNotFoundException {

@@ -15,6 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/** Converts Interface models to business models and business models to DTO models
+ *
+ */
+
 @Service
 public class ConverterService {
     @Autowired

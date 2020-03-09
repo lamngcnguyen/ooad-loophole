@@ -14,12 +14,12 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NavigationConfig {
+public class NavigationSetup {
     private String jsonPath;
     private RoleService roleService;
     private NavigationGroupService navigationGroupService;
 
-    public NavigationConfig(String jsonPath, RoleService roleService, NavigationGroupService navigationGroupService) {
+    public NavigationSetup(String jsonPath, RoleService roleService, NavigationGroupService navigationGroupService) {
         this.jsonPath = jsonPath;
         this.roleService = roleService;
         this.navigationGroupService = navigationGroupService;
