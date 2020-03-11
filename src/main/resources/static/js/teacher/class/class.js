@@ -114,7 +114,7 @@ function filterClassBySemester(semesterId) {
         on: 'now',
         method: 'get',
         urlData: {
-            id: $('input[name="teacherId"]').val(),
+            id: Cookies.get("userId"),
             semesterId: semesterId,
         },
         onSuccess: function (res, element, xhr) {

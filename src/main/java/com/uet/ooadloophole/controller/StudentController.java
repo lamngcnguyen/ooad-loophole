@@ -23,6 +23,17 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView getHomeView() {
+        String pageTitle = "Sinh viên";
+        try {
+            User currentUser = secureUserDetailService.getCurrentUser();
+            return masterPageService.getMasterPage(pageTitle, new BodyFragment("student/home", "body-content"), currentUser);
+        } catch (BusinessServiceException e) {
+            return new ModelAndView("unauthorized");
+        }
+    }
+
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ModelAndView getGroupView() {
         String pageTitle = "Nhóm";
