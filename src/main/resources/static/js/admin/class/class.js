@@ -50,6 +50,9 @@ const classTable = $(".ui.table").DataTable({
             });
         const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa lớp" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
+                $('.form.delete-class').form('set values', {
+                    id: data._id
+                });
                 showModal('.modal.delete-class');
             });
         actionCell.append(
@@ -121,6 +124,29 @@ $('.form.edit-class').form({
         semesterId: validationRules.semesterId,
         scheduledDayOfWeek: validationRules.scheduledDayOfWeek
     }
+});
+
+$('.form.delete-class').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-class');
+        $.api({
+            action: 'delete class',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-class');
+                hideModal('.modal.delete-class');
+                reloadClassTable();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-class');
+                $('.form.delete-class').form('add errors', [res]);
+            }
+        });
+    },
 });
 
 $('.dropdown.teacher').dropdown({

@@ -14,9 +14,6 @@ public class MasterPageService {
     @Autowired
     private NavigationGroupService navigationGroupService;
 
-    @Autowired
-    private UserService userService;
-
     public ModelAndView getMasterPage(String pageTitle, BodyFragment bodyFragment, User user) throws BusinessServiceException {
         try {
             ModelAndView modelAndView = new ModelAndView("master");
