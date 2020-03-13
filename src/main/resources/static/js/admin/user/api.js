@@ -77,6 +77,10 @@ var validationRules = {
             {
                 type: 'number',
                 prompt: 'SĐT không hợp lệ'
+            },
+            {
+                type: 'minLength[9]',
+                prompt: 'SĐT phải có ít nhất {ruleValue} chữ số'
             }
         ]
     }

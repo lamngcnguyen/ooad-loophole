@@ -7,7 +7,7 @@
 <body>
 <div th:fragment="body-content">
     <link rel="stylesheet" th:href="@{/css/teacher/class.css}">
-<!--    <input type="hidden" th:value="${teacherId}" name="teacherId">-->
+    <input type="hidden" th:value="${user.get_id()}" name="teacherId">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -31,35 +31,15 @@
                         </div>
                     </div>
                     <div class="ten wide column">
-                        <div class="ui green right floated icon labeled button" onclick="showModal('.modal.create-class')">
+                        <div class="ui green right floated icon labeled button"
+                             onclick="showModal('.modal.create-class')">
                             <i class="plus icon">
                             </i>
                             Thêm mới
                         </div>
                     </div>
                 </div>
-                <div class="class four column row">
-                    <div class="column">
-                        <a class="ui fluid black card card-template">
-                            <div class="small image">
-                                <img th:src="@{/images/card-backgrounds/1.jpg}" alt="something funny">
-                            </div>
-                            <div class="content">
-                                <div class="header">Class name</div>
-                                <div class="meta">
-                                    <span class="semester">Semester</span>
-                                </div>
-                                <div class="description">
-                                    Class description
-                                </div>
-                            </div>
-                            <div class="extra content">
-                                <i class="users icon"></i>
-                                <span class="student-count"># students</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -83,13 +63,14 @@
                     <i class="users icon"></i>
                     <span class="student-count"># students</span>
                 </div>
-                <div class="ui small right floated icon button setting-redirect" data-tooltip="Cài đặt" data-inverted="">
+                <div class="ui small right floated icon button setting-redirect" data-tooltip="Cài đặt"
+                     data-inverted="">
                     <i class="cog icon"></i>
                 </div>
             </div>
         </div>
     </a>
-    <div class="ui tiny  modal create-class">
+    <div class="ui tiny modal create-class">
         <div class="ui dimmer">
             <div class="ui loader"></div>
         </div>
@@ -99,7 +80,7 @@
         </div>
         <div class="content">
             <div class="ui form create-class">
-                <input type="hidden" th:value="${teacherId}" name="teacherId">
+                <input type="hidden" th:value="${user.get_id()}" name="teacherId">
                 <div class="fields">
                     <div class="required seven wide field">
                         <label>Tên lớp</label>
