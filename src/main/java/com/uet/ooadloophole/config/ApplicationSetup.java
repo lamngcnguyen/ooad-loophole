@@ -28,8 +28,8 @@ public class ApplicationSetup implements InitializingBean {
     //Cleanup old nav items and groups
     @Override
     public void afterPropertiesSet() throws FileNotFoundException {
-        createNavigations();
         createRole();
+        createNavigations();
     }
 
     private void createNavigations() throws FileNotFoundException {

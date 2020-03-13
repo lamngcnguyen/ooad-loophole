@@ -2,13 +2,17 @@ package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
+
 public class Notification {
     @Id
     private String _id;
     private String receiverId;
     private String subject;
     private String content;
+    private LocalDateTime timeStamp;
     private String url;
+    private Boolean seen;
 
     public String get_id() {
         return _id;
@@ -48,5 +52,21 @@ public class Notification {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public Boolean getSeen() {
+        return seen;
+    }
+
+    public void setSeen(Boolean seen) {
+        this.seen = seen;
     }
 }

@@ -5,8 +5,32 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="body-content">
-    <h1 class="text">This is index view</h1>
+<div th:fragment="body-content" class="ui grid full height">
+    <div class="row">
+        <div class="ten wide column">
+            <div th:if="${user.hasRole('admin')}" class="row">
+                This is admin card
+            </div>
+            <div th:if="${user.hasRole('teacher')}" class="row">
+                This is teacher card
+            </div>
+        </div>
+
+        <div class="six wide column">
+            <div class="ui segment full height">
+                <div class="ui relaxed divided list">
+                    <a class="item" th:each="noti: ${notifications}" th:href="${noti.getUrl()}" target="_blank">
+                        <i class="large bell middle aligned icon"></i>
+                        <div class="content">
+                            <div class="header" th:text="${noti.getSubject()}"></div>
+                            <div class="description" th:utext="${noti.getContent()}"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 </body>
 </html>
