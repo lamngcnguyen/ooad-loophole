@@ -5,8 +5,144 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="body-content">
-    This is student group view
+<div th:fragment="body-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large grey label">
+                    <i class="users icon"></i>
+                    Cài đặt nhóm
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui stackable grid">
+                <div class="row">
+                    <div class="four wide column">
+                        <div class="ui vertical fluid tabular menu">
+                            <div class="active blue item members" onclick="showTab('members')">
+                                <i class="users icon"></i>
+                                Quản lí thành viên
+                            </div>
+                            <div class="item roles" onclick="showTab('roles')">
+                                <i class="user tag icon"></i>
+                                Quản lí quyền
+                            </div>
+                            <div class="item github-connect" onclick="showTab('github-connect')">
+                                <i class="github icon"></i>
+                                Liên kết Github
+                            </div>
+                            <div class="item guests" onclick="showTab('guests')">
+                                <i class="eye icon"></i>
+                                Quản lí khách
+                            </div>
+                        </div>
+                    </div>
+                    <div class="twelve wide stretched column">
+                        <div class="ui active tab segment members">
+                            <div class="ui stackable grid">
+                                <div class="row">
+                                    <div class="column">
+                                        <div class="ui icon labeled green button">
+                                            <i class="plus icon"></i>
+                                            Mời
+                                        </div>
+                                        <div class="ui black right floated button">
+                                            Giới hạn 3-5 thành viên
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider" style="margin: 0 !important;"></div>
+                                <div class="row">
+                                    <div class="column">
+                                        <div class="ui divided items">
+                                            <div class="item">
+                                                <div class="image">
+                                                    <img th:src="@{/images/default.png}">
+                                                </div>
+                                                <div class="content">
+                                                    <div class="header">Hà Tuấn Phong</div>
+                                                    <div class="meta">
+                                                        Description
+                                                    </div>
+                                                    <div class="description">
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="extra">
+                                                        <div class="ui red icon labeled button">
+                                                            <i class="futbol outline icon"></i>
+                                                            Yeet
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="image">
+                                                    <img th:src="@{/images/default.png}">
+                                                </div>
+                                                <div class="content">
+                                                    <div class="header">Nguyễn Ngọc Lâm</div>
+                                                    <div class="meta">
+                                                        Description
+                                                    </div>
+                                                    <div class="description">
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="extra">
+                                                        <div class="ui red icon labeled button">
+                                                            <i class="futbol outline icon"></i>
+                                                            Yeet
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="image">
+                                                    <img th:src="@{/images/default.png}">
+                                                </div>
+                                                <div class="content">
+                                                    <div class="header">Lê Trung Thông</div>
+                                                    <div class="meta">
+                                                        Description
+                                                    </div>
+                                                    <div class="description">
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="extra">
+                                                        <div class="ui red icon labeled button">
+                                                            <i class="futbol outline icon"></i>
+                                                            Yeet
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui tab segment roles">
+                            Role management
+                        </div>
+                        <div class="ui tab segment github-connect">
+                            Github connect
+                        </div>
+                        <div class="ui tab segment guests">
+                            Guests management
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/student/leader/group.js}"></script>
+    <style>
+        .tab.segment {
+            margin: 0 !important;
+        }
+    </style>
 </div>
 </body>
 </html>

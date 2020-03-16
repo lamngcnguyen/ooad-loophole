@@ -64,7 +64,7 @@ public class StudentController {
             User currentUser = secureUserDetailService.getCurrentUser();
             if (currentUser.hasRole("student")) {
                 Student student = studentService.getByUserId(currentUser.get_id());
-                if (student.getGroupId() != null) {
+                if (student.getGroupId() == null) {
                     modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/unassigned", "body-content"), currentUser);
                 }
                 else {
