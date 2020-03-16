@@ -53,7 +53,7 @@ public class AuthController {
         newUser.setFullName(fullName);
         try {
             //TODO: remove confirmation URL
-            User user = userService.createActivatedUser(newUser, "TEACHER");
+            User user = userService.createActivatedUser(newUser, new String[]{"TEACHER"});
             String token = tokenService.createToken(user.get_id());
             String confirmationUrl = Constants.CONFIRMATION_URL + token;
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(confirmationUrl);

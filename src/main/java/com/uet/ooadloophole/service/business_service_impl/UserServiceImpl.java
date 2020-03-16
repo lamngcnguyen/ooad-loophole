@@ -107,12 +107,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User createActivatedUser(User user, String roleName) throws BusinessServiceException {
+    public User createActivatedUser(User user, String[] roleNames) throws BusinessServiceException {
         try {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            Role dbRole = roleService.getByName(roleName);
-            user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
-            user.setActive(false);
+            Set<Role> userRoles = new HashSet<>();
+            for (String r : roleNames) {
+                userRoles.add(roleService.getByName(r));
+            }
+            user.setRoles(userRoles);
+            user.setActive(true);
             userRepository.save(user);
 //            emailService.sendActivationEmail(user);
             return user;
