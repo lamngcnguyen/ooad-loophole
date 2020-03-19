@@ -18,10 +18,10 @@
     </div>
     <div class="row">
         <div class="column">
-            <div class="ui stackable grid">
+            <div class="ui stackable grid segment">
                 <div class="row">
                     <div class="four wide column">
-                        <div class="ui vertical fluid tabular menu">
+                        <div class="ui vertical fluid menu">
                             <div class="active blue item members" onclick="showTab('members')">
                                 <i class="users icon"></i>
                                 Quản lí thành viên
@@ -45,12 +45,12 @@
                             <div class="ui stackable grid">
                                 <div class="row">
                                     <div class="column">
-                                        <div class="ui icon labeled green button">
-                                            <i class="plus icon"></i>
+                                        <div class="ui icon labeled teal button">
+                                            <i class="paper plane icon"></i>
                                             Mời
                                         </div>
                                         <div class="ui black right floated button">
-                                            Giới hạn 3-5 thành viên
+                                            Giới hạn: 3-5
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@
                                     <div class="column">
                                         <div class="ui divided items">
                                             <div class="item">
-                                                <div class="image">
+                                                <div class="ui tiny circular image">
                                                     <img th:src="@{/images/default.png}">
                                                 </div>
                                                 <div class="content">
@@ -69,9 +69,7 @@
                                                     </div>
                                                     <div class="description">
                                                         <p></p>
-                                                    </div>
-                                                    <div class="extra">
-                                                        <div class="ui red icon labeled button">
+                                                        <div class="ui tiny red icon labeled button right floated">
                                                             <i class="futbol outline icon"></i>
                                                             Yeet
                                                         </div>
@@ -79,7 +77,7 @@
                                                 </div>
                                             </div>
                                             <div class="item">
-                                                <div class="image">
+                                                <div class="ui tiny circular image">
                                                     <img th:src="@{/images/default.png}">
                                                 </div>
                                                 <div class="content">
@@ -89,9 +87,7 @@
                                                     </div>
                                                     <div class="description">
                                                         <p></p>
-                                                    </div>
-                                                    <div class="extra">
-                                                        <div class="ui red icon labeled button">
+                                                        <div class="ui tiny red icon labeled button right floated">
                                                             <i class="futbol outline icon"></i>
                                                             Yeet
                                                         </div>
@@ -99,7 +95,7 @@
                                                 </div>
                                             </div>
                                             <div class="item">
-                                                <div class="image">
+                                                <div class="ui tiny circular image">
                                                     <img th:src="@{/images/default.png}">
                                                 </div>
                                                 <div class="content">
@@ -109,9 +105,7 @@
                                                     </div>
                                                     <div class="description">
                                                         <p></p>
-                                                    </div>
-                                                    <div class="extra">
-                                                        <div class="ui red icon labeled button">
+                                                        <div class="ui tiny red icon labeled button right floated">
                                                             <i class="futbol outline icon"></i>
                                                             Yeet
                                                         </div>
@@ -124,13 +118,83 @@
                             </div>
                         </div>
                         <div class="ui tab segment roles">
-                            Role management
+                            <table class="ui celled black table">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="center aligned">Trưởng nhóm</th>
+                                    <th class="center aligned">Quản lí</th>
+                                    <th class="center aligned">Thành viên</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Hà Tuấn Phong</td>
+                                    <td class="center aligned"><i class="large green check icon"></i></td>
+                                    <td class="center aligned"></td>
+                                    <td class="center aligned"></td>
+                                </tr>
+                                <tr>
+                                    <td>Nguyễn Ngọc Lâm</td>
+                                    <td class="center aligned"></td>
+                                    <td class="center aligned" ><i class="large green check icon"></i></td>
+                                    <td class="center aligned" ></td>
+                                </tr>
+                                <tr>
+                                    <td>Lê Trung Thông</td>
+                                    <td class="center aligned"></td>
+                                    <td class="center aligned"></td>
+                                    <td class="center aligned"><i class="large green check icon"></i></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="ui green icon labeled button">
+                                <i class="save icon"></i>
+                                Lưu
+                            </div>
                         </div>
                         <div class="ui tab segment github-connect">
-                            Github connect
+                            <div class="ui header">
+                                Connect to <span class="ui blue text"><i class="github icon"></i>Github</span> feature: <span class="ui red text">IN DEVELOPMENT</span>
+                            </div>
                         </div>
                         <div class="ui tab segment guests">
-                            Guests management
+                            <div class="ui stackable grid">
+                                <div class="row">
+                                    <div class="column">
+                                        <div class="ui icon labeled teal button">
+                                            <i class="paper plane icon"></i>
+                                            Mời
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider" style="margin: 0 !important;"></div>
+                                <div class="row">
+                                    <div class="column">
+                                        <div class="ui divided items">
+                                            <div class="item">
+                                                <div class="ui tiny circular image">
+                                                    <img th:src="@{/images/default.png}">
+                                                </div>
+                                                <div class="content">
+                                                    <div class="header">Đặng Đức Hạnh</div>
+                                                    <div class="meta">
+                                                        <i class="orange star icon"></i>
+                                                        Giảng viên
+                                                    </div>
+                                                    <div class="description">
+                                                        <p></p>
+                                                        <div class="ui tiny red icon labeled button right floated">
+                                                            <i class="futbol outline icon"></i>
+                                                            Yeet
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

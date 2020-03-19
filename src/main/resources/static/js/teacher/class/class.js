@@ -93,7 +93,7 @@ function createClassCards(data) {
             return false;
         });
         card.find('.setting-redirect').on('click', function () {
-            window.open(`/teacher/class/${c.className}/settings`);
+            window.location.href = `/teacher/class/${c.className}/settings`;
             return false;
         });
         card.find('img').attr('src', `/images/card-backgrounds/${colCount}.jpg`);

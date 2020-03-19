@@ -40,11 +40,6 @@
         "name": "Chấm bài",
         "url": "/teacher/evaluate",
         "description": null
-      },
-      {
-        "name": "Thiết lập quy trình phát triển",
-        "url": "/teacher/process",
-        "description": null
       }
     ]
   },

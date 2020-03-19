@@ -38,7 +38,7 @@ const semesterTable = $('.ui.table').DataTable({
         }
     ],
     columnDefs: [
-        {targets: [0, 1, -1], className: "center aligned"}
+        {targets: [0, 1, -1, -2], className: "center aligned"}
     ],
     createdRow: function (row, data) {
         const actionCell = $(row).children().eq(1);
@@ -205,7 +205,7 @@ $('.form.delete-semester').form({
             onSuccess: function () {
                 hideDimmer('.modal.delete-semester');
                 hideModal('.modal.delete-semester');
-                reloadUserTable();
+                reloadSemesterTable();
             },
             onFailure: function (res) {
                 hideDimmer('.modal.delete-semester');
