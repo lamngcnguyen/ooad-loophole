@@ -167,4 +167,13 @@ public class ApiUserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(gson.toJson(new ResponseMessage(e.getMessage())));
         }
     }
+//    @PutMapping(value = "/{id}")
+//    public ResponseEntity<Object> updateUser2(@PathVariable String id, @RequestBody IUser iUser){
+//        try {
+//            User user = converterService.convertUserInterface(iUser);
+//
+//        } catch (BusinessServiceException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+//        }
+//    }
 }
