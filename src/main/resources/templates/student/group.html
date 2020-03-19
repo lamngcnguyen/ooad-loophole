@@ -11,7 +11,7 @@
             <div class="header">
                 <div class="ui large grey label">
                     <i class="users icon"></i>
-                    Cài đặt nhóm
+                    Quản lý nhóm
                 </div>
             </div>
         </div>
@@ -208,8 +208,79 @@
         }
     </style>
 </div>
-<div th:fragment="member-content">
-     Member view
+<div th:fragment="member-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large grey label">
+                    <i class="users icon"></i>
+                    Thông tin nhóm
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui segment members">
+                <div class="ui stackable grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui divided items">
+                                <div class="item">
+                                    <div class="ui tiny circular image">
+                                        <img th:src="@{/images/default.png}">
+                                    </div>
+                                    <div class="content">
+                                        <div class="header">Hà Tuấn Phong</div>
+                                        <div class="meta">
+                                            Description
+                                        </div>
+                                        <div class="description">
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui tiny circular image">
+                                        <img th:src="@{/images/default.png}">
+                                    </div>
+                                    <div class="content">
+                                        <div class="header">Nguyễn Ngọc Lâm</div>
+                                        <div class="meta">
+                                            Description
+                                        </div>
+                                        <div class="description">
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui tiny circular image">
+                                        <img th:src="@{/images/default.png}">
+                                    </div>
+                                    <div class="content">
+                                        <div class="header">Lê Trung Thông</div>
+                                        <div class="meta">
+                                            Description
+                                        </div>
+                                        <div class="description">
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/student/leader/group.js}"></script>
+    <style>
+        .tab.segment {
+            margin: 0 !important;
+        }
+    </style>
 </div>
 </body>
 </html>
