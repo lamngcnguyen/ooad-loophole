@@ -37,25 +37,25 @@ public class StudentController {
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ModelAndView getGroupView() {
         String pageTitle = "Nhóm";
-        return getStudentView(pageTitle, new BodyFragment("group", "body-content"));
+        return getStudentView(pageTitle, new BodyFragment("student/group", "content"));
     }
 
     @RequestMapping(value = "/iteration", method = RequestMethod.GET)
     public ModelAndView getIterationView() {
         String pageTitle = "Vòng lặp phát triển";
-        return getStudentView(pageTitle, new BodyFragment("iteration", "body-content"));
+        return getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
     }
 
     @RequestMapping(value = "/evaluation", method = RequestMethod.GET)
     public ModelAndView getEvaluationView() {
         String pageTitle = "Chấm điểm";
-        return getStudentView(pageTitle, new BodyFragment("evaluation", "body-content"));
+        return getStudentView(pageTitle, new BodyFragment("student/evaluation", "content"));
     }
 
     @RequestMapping(value = "/requirement", method = RequestMethod.GET)
     public ModelAndView getRequirementView() {
         String pageTitle = "Yêu cầu";
-        return getStudentView(pageTitle, new BodyFragment("requirement", "body-content"));
+        return getStudentView(pageTitle, new BodyFragment("student/requirement", "content"));
     }
 
     private ModelAndView getStudentView(String pageTitle, BodyFragment bodyFragment) {
@@ -69,7 +69,7 @@ public class StudentController {
                 }
                 else {
                     String roleFolder = currentUser.hasRole("group_leader") ? "leader" : "member";
-                    bodyFragment.setView("student/" + roleFolder + "/" + bodyFragment.getView());
+                    bodyFragment.setFragment(roleFolder + "-" + bodyFragment.getFragment());
                     modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
                 }
                 modelAndView.addObject("studentId", student.get_id());

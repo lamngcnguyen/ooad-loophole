@@ -127,6 +127,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public User create(User user) throws BusinessServiceException {
         try {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setActive(false);
             userRepository.save(user);
             //emailService.sendActivationEmail(user);

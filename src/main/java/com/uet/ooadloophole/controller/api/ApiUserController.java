@@ -73,7 +73,7 @@ public class ApiUserController {
         }
     }
 
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
     public ResponseEntity<String> resetPassword(String token, String email, String password) {
         try {
             if (tokenService.isValid(token)) {

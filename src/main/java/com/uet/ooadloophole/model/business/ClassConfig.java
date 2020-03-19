@@ -6,7 +6,8 @@ public class ClassConfig {
     @Id
     private String _id;
     private String classId;
-    private int groupLimit;
+    private int groupLimitMax;
+    private int groupLimitMin;
     private int defaultIterationLength;
 
     public String get_id() {
@@ -25,12 +26,20 @@ public class ClassConfig {
         this.classId = classId;
     }
 
-    public int getGroupLimit() {
-        return groupLimit;
+    public int getGroupLimitMax() {
+        return groupLimitMax;
     }
 
-    public void setGroupLimit(int groupLimit) {
-        this.groupLimit = groupLimit;
+    public void setGroupLimitMax(int groupLimitMax) {
+        this.groupLimitMax = groupLimitMax;
+    }
+
+    public int getGroupLimitMin() {
+        return groupLimitMin;
+    }
+
+    public void setGroupLimitMin(int groupLimitMin) {
+        this.groupLimitMin = groupLimitMin;
     }
 
     public int getDefaultIterationLength() {
