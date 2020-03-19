@@ -282,8 +282,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             Student student = studentService.getByUserId(id);
             saveLocation += student.getClassId() + "/";
         }
-        UserFile avatar = fileService.storeFile(file, saveLocation);
-        user.setAvatar(avatar.getFileName());
+        String avatar = fileService.storeAvatar(file, saveLocation);
+        user.setAvatar(avatar);
         userRepository.save(user);
     }
 

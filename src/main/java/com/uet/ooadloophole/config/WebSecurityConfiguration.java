@@ -101,7 +101,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .successHandler(customAuthenticationSuccessHandler)
 ////                .failureHandler(authenticationFailureHandler())
                 .and()
-                .logout().deleteCookies("JSESSIONID")
+                .logout().deleteCookies("JSESSIONID", "userId")
                 .permitAll()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")

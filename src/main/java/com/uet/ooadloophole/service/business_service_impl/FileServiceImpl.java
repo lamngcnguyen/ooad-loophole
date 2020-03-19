@@ -110,6 +110,23 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public String storeAvatar(MultipartFile file, String saveLocation) throws FileStorageException, BusinessServiceException {
+        Path savePath = createPath(saveLocation);
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        try {
+            if (fileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            }
+            assert savePath != null;
+            Path targetLocation = savePath.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            return fileName;
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+    }
+
+    @Override
     public Resource loadFileAsResource(String fileName, String saveLocation) {
         Path path = createPath(saveLocation);
         try {
