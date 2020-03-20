@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<!--<div class="ui middle aligned center aligned black grid">-->
+<div th:fragment="body-content" class="ui middle aligned center aligned black grid">
+
+        <div class="column" style="width: 400px">
+            <h3 class="ui header">
+<!--                <img th:src="@{/images/logo.png}" class="tiny image">-->
+                <div class="content">
+                    Chỉnh sửa profile
+                </div>
+            </h3>
+            <form class="ui large form">
+<!--                <div class="ui stacked segment aligned">-->
+                    <div class="image center aligned content">
+                        <div class="ui small middle aligned fluid rounded blurring dimmable bordered image my-avatar">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <input type="file" hidden="" name="avatar" accept="image/*">
+                                    <input type="hidden" name="userId" th:value="${user.get_id()}">
+                                    <input type="hidden" name="avatarLink" th:value="${avatarLink}">
+                                    <div class="center">
+                                        <div class="ui inverted icon button" onclick="openAvatarDialog()" data-tooltip="Đổi avatar" data-inverted="">
+                                            <i class="pencil icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img class="my-avatar" th:src="${avatarLink}" alt="profile-image">
+                        </div>
+                    </div>
+                    <div class="required field">
+                        <label>Họ và tên</label>
+                        <input type="text" name="full-name" placeholder="Full name">
+                    </div>
+                    <div class="required field">
+                        <label>SĐT</label>
+                        <input type="text" name="telephone" placeholder="Phone">
+                    </div>
+                    <div class="required field">
+                        <label>Blank</label>
+                        <input type="text" name="telephone" placeholder="Phone">
+                     </div>
+                    <div class="required field">
+                         <label>Blank2</label>
+                        <input type="text" name="telephone" placeholder="Phone">
+                    </div>
+
+                    <div class="field">
+                            <div class="ten wide field"></div>
+                    </div>
+<!--                </div>-->
+<!--                <div th:if="${#httpServletRequest.getParameter('error') != null}" class="ui error visible message">Sai tên đăng nhập hoặc mật khẩu</div>-->
+            </form>
+            <div class="column">
+                    <button class="ui large blue submit button" type="submit">Xác nhận</button>
+                    <button class="ui large button">Trở lại</button>
+            </div>
+        </div>
+
+
+    <script>
+        $('.my-avatar.image').dimmer({
+            on: 'hover'
+        });
+    </script>
+</div>
+</body>
+</html>
