@@ -1,8 +1,12 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.config.Constants;
+import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.service.MasterPageService;
+import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.NotificationService;
 import com.uet.ooadloophole.service.business_service.TokenService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +24,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private MasterPageService masterPageService;
+    @Autowired
+    private SecureUserDetailService secureUserDetailService;
+    @Autowired
+    private NotificationService notificationService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexView() {
@@ -88,6 +97,18 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(resetLink);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public ModelAndView getHomePage() {
+        try {
+            User currentUser = secureUserDetailService.getCurrentUser();
+            ModelAndView modelAndView = masterPageService.getMasterPage("Nhà", new BodyFragment("profile", "body-content"), currentUser);
+            modelAndView.addObject("notifications", notificationService.getAllByReceiverId(currentUser.get_id()));
+            return modelAndView;
+        } catch (BusinessServiceException e) {
+            return new ModelAndView("error");
         }
     }
 
