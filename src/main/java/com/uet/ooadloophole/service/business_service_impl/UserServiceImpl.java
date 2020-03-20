@@ -107,12 +107,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User createActivatedUser(User user, String roleName) throws BusinessServiceException {
+    public User createActivatedUser(User user, String[] roleNames) throws BusinessServiceException {
         try {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            Role dbRole = roleService.getByName(roleName);
-            user.setRoles(new HashSet<>(Collections.singletonList(dbRole)));
-            user.setActive(false);
+            Set<Role> userRoles = new HashSet<>();
+            for (String r : roleNames) {
+                userRoles.add(roleService.getByName(r));
+            }
+            user.setRoles(userRoles);
+            user.setActive(true);
             userRepository.save(user);
 //            emailService.sendActivationEmail(user);
             return user;
@@ -124,6 +127,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public User create(User user) throws BusinessServiceException {
         try {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setActive(false);
             userRepository.save(user);
             //emailService.sendActivationEmail(user);
@@ -278,8 +282,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             Student student = studentService.getByUserId(id);
             saveLocation += student.getClassId() + "/";
         }
-        UserFile avatar = fileService.storeFile(file, saveLocation);
-        user.setAvatar(avatar.getFileName());
+        String avatar = fileService.storeAvatar(file, saveLocation);
+        user.setAvatar(avatar);
         userRepository.save(user);
     }
 

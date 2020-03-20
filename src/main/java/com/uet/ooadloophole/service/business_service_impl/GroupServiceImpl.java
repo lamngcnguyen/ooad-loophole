@@ -5,6 +5,7 @@ import com.uet.ooadloophole.database.GroupRepository;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
+import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StudentService studentService;
 
     @Override
     public Group getById(String id) throws BusinessServiceException {
@@ -51,6 +55,7 @@ public class GroupServiceImpl implements GroupService {
             }
             groupRepository.save(group);
             userService.assignRoles(group.getLeader().getUserId(), new String[]{Constants.ROLE_LEADER, Constants.ROLE_MEMBER});
+            studentService.assignGroup(group.getLeader().get_id(), group.get_id());
             return group;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to create group: " + e.getMessage());

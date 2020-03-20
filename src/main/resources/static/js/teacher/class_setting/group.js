@@ -89,7 +89,7 @@ $('.form.create-group').form({
             method: 'post',
             dataType: 'json',
             data: JSON.stringify(data),
-
+            //TODO: finish this
         })
     }
 });

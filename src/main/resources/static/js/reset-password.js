@@ -1,5 +1,5 @@
 $.fn.api.settings.api = {
-    'activate': '/api/users/activate-account'
+    'reset': '/api/users/activate-account?token={token}&userId={userId}&password={password}'
 };
 
 $('.form.activate').form({
@@ -20,10 +20,9 @@ $('.form.activate').form({
         }
     },
     onSuccess: function (evt, data) {
-        console.log("called");
         $.api({
             action: 'activate',
-            data: {
+            urlData: {
                 token: data.token,
                 userId: data.userId,
                 password: data.password
@@ -34,7 +33,7 @@ $('.form.activate').form({
                 window.location.href = '/login';
             },
             onFailure: function (res) {
-                $('.form').form('add errors', [res]);
+                $('.form').form('add errors', res);
             }
         })
     }

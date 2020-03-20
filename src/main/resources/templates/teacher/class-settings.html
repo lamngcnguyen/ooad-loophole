@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="body-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui grey label">
+                    <i class="cog icon"></i>
+                    Cài đặt lớp
+                </div>
+                <div class="ui blue label" th:text="${class.getClassName()}"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="twelve wide column">
+            <div class="ui segment">
+                <div class="ui form">
+                    <div class="ui segment">
+                        <div class="ui blue large header">Nhóm</div>
+                        <div class="ui divider"></div>
+                        <div class="field">
+                            <div class="fields">
+                                <div class="required four wide field">
+                                    <label>Số thành viên tối thiểu</label>
+                                    <input type="text" name="groupMin" value="3">
+                                </div>
+                                <div class="required four wide field">
+                                    <label>Số thành viên tối đa</label>
+                                    <input type="text" name="groupMax" value="5">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="required eight wide field">
+                            <label>Thời hạn sinh viên chọn nhóm</label>
+                            <div class="fields">
+                                <div class="required field eight wide">
+                                    <div class="ui calendar range-start">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" name="startDate" placeholder="Start">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="required field eight wide">
+                                    <div class="ui calendar range-end">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" name="endDate" placeholder="End">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <div class="ui blue large header">Chu kỳ phát triển - Iteration</div>
+                        <div class="ui divider"></div>
+                        <div class="field">
+                            <div class="fields">
+                                <div class="required four wide field">
+                                    <label>Thời lượng mặc định (ngày)</label>
+                                    <input type="text" name="iterationLengthDefault" value="14">
+                                </div>
+                                <div class="required four wide field">
+                                    <label>Thời lượng tối đa (ngày)</label>
+                                    <input type="text" name="iterationLengthMax" value="21">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <div class="ui blue large header">Giai đoạn chu kỳ - Phase</div>
+                        <div class="ui divider"></div>
+                        <table class="ui celled black table">
+                            <thead>
+                            <tr>
+                                <th class="four wide">Chu kỳ</th>
+                                <th class="ten wide">Mô tả</th>
+                                <th class="two wide center aligned">Trạng thái</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Phân tích</td>
+                                <td>Description</td>
+                                <td class="center aligned">
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" checked>
+                                        <label></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Thiết kế</td>
+                                <td>Description</td>
+                                <td class="center aligned">
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" checked>
+                                        <label></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cài đặt</td>
+                                <td>Description</td>
+                                <td class="center aligned">
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" checked>
+                                        <label></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Kiềm thử</td>
+                                <td>Description</td>
+                                <td class="center aligned">
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" checked>
+                                        <label></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Triển khai</td>
+                                <td>Description</td>
+                                <td class="center aligned">
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox" checked>
+                                        <label></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
@@ -178,5 +179,16 @@ public class ConverterService {
 
     public String formatFileName(String fileName, String timeStamp, String extension) {
         return fileName.substring(0, fileName.lastIndexOf(".")) + "_" + timeStamp + "." + extension;
+    }
+
+    public Notification convertToNotification(INotification iNotification) {
+        Notification notification = new Notification();
+        notification.setSeen(false);
+        notification.setSubject(iNotification.getSubject());
+        notification.setContent(NotificationTemplateFactory.getContent(iNotification.getType(), iNotification.getTemplateValues()));
+        notification.setReceiverId(iNotification.getReceiverId());
+        notification.setTimeStamp(LocalDateTime.now());
+        notification.setUrl("/home");
+        return notification;
     }
 }

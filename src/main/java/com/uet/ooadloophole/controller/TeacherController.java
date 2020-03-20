@@ -46,9 +46,22 @@ public class TeacherController {
     public ModelAndView getClassView(@PathVariable String className, @CookieValue String userId) {
         ModelAndView modelAndView;
         try {
-            modelAndView = getTeacherView(className, new BodyFragment("teacher/class-setting", "body-content"));
+            modelAndView = getTeacherView(className, new BodyFragment("teacher/class-details", "body-content"));
             modelAndView.addObject("class",
                     converterService.convertToDTOClass(classService.getByTeacherIdAndClassName(userId, className)));
+            return modelAndView;
+        } catch (BusinessServiceException e) {
+            modelAndView = new ModelAndView("error");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/class/{className}/settings", method = RequestMethod.GET)
+    public ModelAndView getClassSettingView(@PathVariable String className, @CookieValue String userId) {
+        ModelAndView modelAndView;
+        try {
+            modelAndView = getTeacherView(className, new BodyFragment("teacher/class-settings", "body-content"));
+            modelAndView.addObject("class", converterService.convertToDTOClass(classService.getByTeacherIdAndClassName(userId, className)));
             return modelAndView;
         } catch (BusinessServiceException e) {
             modelAndView = new ModelAndView("error");
@@ -60,12 +73,6 @@ public class TeacherController {
     public ModelAndView getEvaluateView() {
         String pageTitle = "Chấm bài";
         return getTeacherView(pageTitle, new BodyFragment("teacher/evaluate", "body-content"));
-    }
-
-    @RequestMapping(value = "/process", method = RequestMethod.GET)
-    public ModelAndView getProcessView() {
-        String pageTitle = "Thiết lập quy trình phát triển";
-        return getTeacherView(pageTitle, new BodyFragment("teacher/process", "body-content"));
     }
 
     private ModelAndView getTeacherView(String pageTitle, BodyFragment bodyFragment) {

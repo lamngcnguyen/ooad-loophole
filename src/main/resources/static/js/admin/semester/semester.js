@@ -38,7 +38,7 @@ const semesterTable = $('.ui.table').DataTable({
         }
     ],
     columnDefs: [
-        {targets: [0, 1, -1], className: "center aligned"}
+        {targets: [0, 1, -1, -2], className: "center aligned"}
     ],
     createdRow: function (row, data) {
         const actionCell = $(row).children().eq(1);
@@ -55,6 +55,9 @@ const semesterTable = $('.ui.table').DataTable({
         const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa học kì" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
                 showModal('.modal.delete-semester');
+                $('.form.delete-semester').form('set values', {
+                    id: data._id
+                });
             });
         actionCell.append(
             btnEdit, btnDelete
@@ -187,6 +190,29 @@ $('.modal.edit-semester').modal({
             startCalendar: $('.modal.edit-semester .range-start')
         });
     }
+});
+
+$('.form.delete-semester').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-semester');
+        $.api({
+            action: 'delete semester',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-semester');
+                hideModal('.modal.delete-semester');
+                reloadSemesterTable();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-semester');
+                $('.form.delete-semester').form('add errors', [res]);
+            }
+        });
+    },
 });
 
 $('.semester .table-search input').keyup(function () {

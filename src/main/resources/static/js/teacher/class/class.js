@@ -7,7 +7,7 @@ $(document).ready(function () {
         action: 'get semesters',
         on: 'now',
         onSuccess(response, element, xhr) {
-            var values = [];
+            const values = [];
             xhr.responseJSON.data.forEach(function (s) {
                 values.push({
                     value: s._id,
@@ -78,9 +78,9 @@ $(document).ready(function () {
 function createClassCards(data) {
     $('.card-view').find('.class.row').remove();
     $('.card-view').append($('<div class="class four column row"></div>'));
-    var colCount = 1;
+    let colCount = 1;
     data.forEach(function (c) {
-        var card = $('.card-template').clone()
+        const card = $('.card-template').clone()
             .removeClass('card-template')
             .css('display', 'block')
             .addClass(card_colors[colCount - 1])
@@ -93,7 +93,7 @@ function createClassCards(data) {
             return false;
         });
         card.find('.setting-redirect').on('click', function () {
-            window.open(`/teacher/class/${c.className}/settings`);
+            window.location.href = `/teacher/class/${c.className}/settings`;
             return false;
         });
         card.find('img').attr('src', `/images/card-backgrounds/${colCount}.jpg`);

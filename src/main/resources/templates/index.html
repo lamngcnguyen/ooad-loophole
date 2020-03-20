@@ -5,8 +5,62 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="body-content">
-    <h1 class="text">This is index view</h1>
+<div th:fragment="body-content" class="ui grid full height" style="margin-top: 0 !important;">
+    <div class="eleven wide column">
+        <div class="ui segment full height">
+            <div class="ui stackable grid" style="margin-left: 0 !important; margin-right: 0 !important;">
+                <div class="row">
+                    <div class="ui items">
+                        <div class="item">
+                            <div class="ui tiny circular image">
+                                <img class="image" th:src="@{/images/logo.png}">
+                            </div>
+                            <div class="middle aligned content">
+                                <div class="header">Welcome to OOAD-Loophole</div>
+                                <div class="meta">
+                                    Version: 1.0.2020
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--                <div th:if="${user.hasRole('admin')}" class="row">-->
+<!--                    <div class="column ui segment">-->
+<!--                        <div class="ui large blue header">-->
+<!--                            This is admin card-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div th:if="${user.hasRole('teacher')}" class="row">-->
+<!--                    <div class="column ui segment">-->
+<!--                        <div class="ui large red header">-->
+<!--                            This is teacher card-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="five wide column">
+        <div class="ui segment full height">
+            <div class="ui header">
+                <i class="orange bell icon"></i>
+                Thông báo
+            </div>
+            <div class="ui relaxed divided animated small list">
+                <a class="item" th:each="noti: ${notifications}" th:href="${noti.getUrl()}" target="_blank">
+                    <img th:src="@{/images/default.png}" class="ui avatar image">
+                    <div class="content">
+                        <div class="header" th:text="${noti.getSubject()}"></div>
+                        <div class="description">
+                            <p th:utext="${noti.getContent()}"></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 </body>
 </html>

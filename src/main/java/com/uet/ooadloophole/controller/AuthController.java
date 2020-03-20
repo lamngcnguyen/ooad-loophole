@@ -31,7 +31,7 @@ public class AuthController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginView() {
-        return "login";
+        return "security/login";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -39,7 +39,7 @@ public class AuthController {
         ModelAndView model = new ModelAndView();
         User userDto = new User();
         model.addObject("user", userDto);
-        model.setViewName("registration");
+        model.setViewName("security/registration");
         return model;
     }
 
@@ -53,7 +53,7 @@ public class AuthController {
         newUser.setFullName(fullName);
         try {
             //TODO: remove confirmation URL
-            User user = userService.createActivatedUser(newUser, "TEACHER");
+            User user = userService.createActivatedUser(newUser, new String[]{"TEACHER"});
             String token = tokenService.createToken(user.get_id());
             String confirmationUrl = Constants.CONFIRMATION_URL + token;
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(confirmationUrl);
@@ -68,7 +68,7 @@ public class AuthController {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());
-            model.setViewName("activate");
+            model.setViewName("security/activate");
             return model;
         } else {
             //TODO: create error view
@@ -96,7 +96,8 @@ public class AuthController {
         if (tokenService.isValid(token)) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
-            model.setViewName("reset");
+            model.addObject("userId", tokenService.getByTokenString(token).getUserId());
+            model.setViewName("security/reset");
             return model;
         } else {
             //TODO: create error view

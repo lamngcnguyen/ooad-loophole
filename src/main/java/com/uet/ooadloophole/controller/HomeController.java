@@ -5,6 +5,7 @@ import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +21,16 @@ public class HomeController {
     @Autowired
     private MasterPageService masterPageService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomePage() {
         try {
             User currentUser = secureUserDetailService.getCurrentUser();
-            return masterPageService.getMasterPage("Nhà", new BodyFragment("index", "body-content"), currentUser);
+            ModelAndView modelAndView = masterPageService.getMasterPage("Nhà", new BodyFragment("index", "body-content"), currentUser);
+            modelAndView.addObject("notifications", notificationService.getAllByReceiverId(currentUser.get_id()));
+            return modelAndView;
         } catch (BusinessServiceException e) {
             return new ModelAndView("error");
         }

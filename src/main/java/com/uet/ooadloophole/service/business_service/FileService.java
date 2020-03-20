@@ -24,10 +24,11 @@ public interface FileService {
 
     UserFile storeFile(MultipartFile file, String saveLocation) throws FileStorageException, BusinessServiceException;
 
+    String storeAvatar(MultipartFile file, String saveLocation) throws BusinessServiceException;
+
     Resource loadFileAsResource(String fileName, String saveLocation);
 
     boolean deleteDirectory(String dir);
-
 
 
 }
