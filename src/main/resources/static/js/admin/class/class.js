@@ -5,7 +5,7 @@ const classTable = $(".ui.table").DataTable({
     paging: true,
     autoWidth: true,
     lengthChange: true,
-    ajax: "/api/classes/",
+    ajax: "/api/classes",
     sDom: stringDom,
     language: languageOption,
     columns: [

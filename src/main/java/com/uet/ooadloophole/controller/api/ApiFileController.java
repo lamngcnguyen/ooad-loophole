@@ -35,8 +35,9 @@ public class ApiFileController {
 
     private Gson gson = new Gson();
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<Resource> downloadFile(@RequestParam String filePath, HttpServletRequest request) {
+    //TODO: fix this
+    @RequestMapping(value = "/{filePath}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadFile(@PathVariable String filePath, HttpServletRequest request) {
         String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
         String path = filePath.substring(0, filePath.lastIndexOf('/'));
 

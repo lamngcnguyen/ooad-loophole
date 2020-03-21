@@ -43,7 +43,7 @@ public class ApiClassController {
         return (!user.hasRole("teacher") && !user.hasRole("admin"));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
         try {
             if (userCanNotCreateClass())
@@ -102,7 +102,7 @@ public class ApiClassController {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getClasses() {
         List<DTOClass> dtoClasses = new ArrayList<>();
         classService.getAll().forEach(ooadClass -> {

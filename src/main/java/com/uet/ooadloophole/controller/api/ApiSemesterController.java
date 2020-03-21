@@ -27,14 +27,14 @@ public class ApiSemesterController {
 
     private Gson gson = new Gson();
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Semester> createSemester(@RequestBody ISemester iSemester) {
         Semester semester = semesterService.create(
                 converterService.convertSemesterInterface(iSemester));
         return ResponseEntity.status(HttpStatus.OK).body(semester);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getSemesters() {
         List<DTOSemester> dtoSemesters = new ArrayList<>();
         semesterService.getAll().forEach(semester -> {

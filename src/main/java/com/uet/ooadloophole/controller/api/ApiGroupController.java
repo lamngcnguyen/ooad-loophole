@@ -63,7 +63,7 @@ public class ApiGroupController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createGroup(@RequestBody IGroup iGroup) {
         try {
             Group newGroup = groupService.create(converterService.convertToGroup(iGroup));
@@ -83,7 +83,7 @@ public class ApiGroupController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Object> updateGroup(@RequestBody IGroup iGroup) {
         try {
             Group updatedGroup = groupService.update(converterService.convertToGroup(iGroup));
@@ -103,7 +103,7 @@ public class ApiGroupController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<DTOGroup>> searchGroup(@RequestParam String keyword) {
         List<Group> groups = groupService.searchByName(keyword);
         List<DTOGroup> dtoGroups = new ArrayList<>();

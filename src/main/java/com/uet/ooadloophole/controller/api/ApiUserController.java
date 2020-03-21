@@ -104,7 +104,7 @@ public class ApiUserController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
         try {
             User user = converterService.convertUserInterface(iUser);
