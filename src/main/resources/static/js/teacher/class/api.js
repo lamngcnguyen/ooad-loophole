@@ -1,8 +1,8 @@
 $.fn.api.settings.api = {
     'get my classes': '/api/classes/teacher/{id}',
     'filter my classes': '/api/classes/teacher/{id}/semester/{semesterId}',
-    'get semesters': '/api/semesters/',
-    'create class': '/api/classes/',
+    'get semesters': '/api/semesters',
+    'create class': '/api/classes',
 };
 
 var card_colors = [

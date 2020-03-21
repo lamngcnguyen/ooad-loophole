@@ -1,7 +1,7 @@
 $.fn.api.settings.api = {
     'get teachers': '/api/users/role/teacher',
-    'get semesters': '/api/semesters/',
-    'create class': '/api/classes/',
+    'get semesters': '/api/semesters',
+    'create class': '/api/classes',
     'update class': '/api/classes/{id}',
     'delete class': '/api/classes/{id}'
 };

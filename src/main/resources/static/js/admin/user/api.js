@@ -1,5 +1,5 @@
 $.fn.api.settings.api = {
-    'create user': '/api/users/',
+    'create user': '/api/users',
     'delete user': '/api/users/{id}',
     'update user': '/api/users/{id}',
     'create student': '/api/students',

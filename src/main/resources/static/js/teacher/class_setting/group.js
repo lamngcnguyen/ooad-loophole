@@ -94,7 +94,7 @@ $('.form.create-group').form({
     }
 });
 
-var leaderId;
+let leaderId;
 $('.modal.create-group').modal({
     onShow: function () {
         $('.dropdown.member').dropdown({

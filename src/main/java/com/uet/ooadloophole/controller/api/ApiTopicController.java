@@ -48,13 +48,13 @@ public class ApiTopicController {
     }
 
     //TODO: create Spring Security Rules for these requests
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Topic> createTopic(@RequestBody Topic topic) {
         Topic newTopic = topicService.create(topic);
         return ResponseEntity.status(HttpStatus.OK).body(newTopic);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Object> updateTopic(@RequestBody Topic topic) {
         try {
             Topic updatedTopic = topicService.update(topic);
@@ -74,7 +74,7 @@ public class ApiTopicController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Topic>> searchTopic(@RequestParam String keyword) {
         List<Topic> result = topicService.searchByNameOrDescription(keyword);
         HttpStatus httpStatus = (result.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
