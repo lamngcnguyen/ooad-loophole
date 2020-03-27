@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="body-content" class="ui stackable grid">
+    <input type="hidden" class="class-id-input" th:value="${classId}">
     <div class="row">
         <div class="nine wide centered column">
             <div class="ui huge center aligned header">
@@ -25,7 +26,7 @@
                 <div class="field">
                     <div class="fields">
                         <div class="eleven wide field">
-                            <div class="ui search selection dropdown">
+                            <div class="ui search selection dropdown group-dropdown">
                                 <input type="hidden">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn nhóm</div>
@@ -61,7 +62,7 @@
                     </div>
                     <div class="field">
                         <label>Thành viên</label>
-                        <div class="ui search selection multiple dropdown">
+                        <div class="ui search selection multiple dropdown unassigned-student-dropdown">
                             <input type="hidden" name="members">
                             <i class="dropdown icon"></i>
                             <div class="default text">Select members to invite</div>
@@ -80,6 +81,8 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="/js/student/unassigned/api.js"></script>
+    <script type="text/javascript" src="/js/student/unassigned/unassigned.js"></script>
 </div>
 </body>
 </html>

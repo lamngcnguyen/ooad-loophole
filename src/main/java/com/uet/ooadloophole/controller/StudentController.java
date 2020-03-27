@@ -30,7 +30,7 @@ public class StudentController {
             User currentUser = secureUserDetailService.getCurrentUser();
             return masterPageService.getMasterPage(pageTitle, new BodyFragment("student/home", "body-content"), currentUser);
         } catch (BusinessServiceException e) {
-            return new ModelAndView("unauthorized");
+            return new ModelAndView("forbidden");
         }
     }
 
@@ -72,9 +72,10 @@ public class StudentController {
                     bodyFragment.setFragment(roleFolder + "-" + bodyFragment.getFragment());
                     modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
                 }
+                modelAndView.addObject("classId", student.getClassId());
                 modelAndView.addObject("studentId", student.get_id());
             } else {
-                modelAndView = new ModelAndView("unauthorized");
+                modelAndView = new ModelAndView("forbidden");
             }
         } catch (BusinessServiceException e) {
             modelAndView = new ModelAndView("error");

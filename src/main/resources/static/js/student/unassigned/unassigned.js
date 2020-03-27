@@ -17,9 +17,45 @@ $('.form.create-group').form({
             }
         })
     },
-    fields: {
-        name: validationRules.name,
-        startDate: validationRules.startDate,
-        endDate: validationRules.endDate
+});
+
+
+$('.dropdown.group-dropdown').dropdown({
+    showOnFocus: false,
+}).api({
+    action: 'get groups',
+    method: 'get',
+    urlData: {classId: $('.class-id-input').val()},
+    on: 'now',
+    onSuccess(response, element, xhr) {
+        const values = [];
+        xhr.responseJSON.data.forEach(function (group) {
+            values.push({
+                value: group._id,
+                name: group.name,
+                text: group.name,
+            })
+        });
+        $(element).dropdown('change values', values);
+    }
+});
+
+$('.dropdown.unassigned-student-dropdown').dropdown({
+    showOnFocus: false,
+}).api({
+    action: 'get students with no group',
+    method: 'get',
+    urlData: {classId: $('.class-id-input').val()},
+    on: 'now',
+    onSuccess(response, element, xhr) {
+        const values = [];
+        xhr.responseJSON.data.forEach(function (student) {
+            values.push({
+                value: student._id,
+                name: student.fullName + ' - ' + student.studentId,
+                text: student.fullName
+            })
+        });
+        $(element).dropdown('change values', values);
     }
 });
