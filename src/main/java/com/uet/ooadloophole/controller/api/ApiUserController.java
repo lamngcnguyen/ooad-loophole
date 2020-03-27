@@ -76,9 +76,9 @@ public class ApiUserController {
     @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
     public ResponseEntity<String> resetPassword(String token, String email, String password) {
         try {
-            if (tokenService.isValid(token)) {
+            if (tokenService.isValid(token) && tokenService.isTypeValid(token, Constants.TOKEN_RESET)) {
                 userService.setPassword(email, password);
-                tokenService.deleteActiveToken(tokenService.getByTokenString(token));
+                tokenService.deleteToken(tokenService.getByTokenString(token));
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid token");
@@ -91,10 +91,10 @@ public class ApiUserController {
     @RequestMapping(value = "/activate-account", method = RequestMethod.POST)
     public ResponseEntity<String> activateAccount(String token, String userId, String password) {
         try {
-            if (tokenService.isValid(token)) {
+            if (tokenService.isValid(token) && tokenService.isTypeValid(token, Constants.TOKEN_ACTIVATE)) {
                 userService.setPassword(userId, password);
                 userService.setStatus(userId, true);
-                tokenService.deleteActiveToken(tokenService.getByTokenString(token));
+                tokenService.deleteToken(tokenService.getByTokenString(token));
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("activated")));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Invalid token");
@@ -113,7 +113,7 @@ public class ApiUserController {
             } else {
                 User newUser = userService.create(user);
                 //TODO: remove confirmation URL
-                String token = tokenService.createToken(newUser.get_id());
+                String token = tokenService.createToken(newUser.get_id(), Constants.TOKEN_ACTIVATE);
                 String confirmationUrl = Constants.CONFIRMATION_URL + token;
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage(confirmationUrl)));
             }

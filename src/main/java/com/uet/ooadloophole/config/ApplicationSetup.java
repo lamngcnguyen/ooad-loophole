@@ -4,10 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
 import com.uet.ooadloophole.service.business_service.RoleService;
+import com.uet.ooadloophole.service.business_service.TokenService;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.List;
 
 @Component
 public class ApplicationSetup implements InitializingBean {
@@ -29,6 +32,8 @@ public class ApplicationSetup implements InitializingBean {
     private NavigationGroupService navigationGroupService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenService tokenService;
 
     //Cleanup old nav items and groups
     @Override
@@ -36,6 +41,7 @@ public class ApplicationSetup implements InitializingBean {
         createRole();
         createNavigations();
         createAdmin();
+        clearExpiredTokens();
     }
 
     private void createNavigations() throws FileNotFoundException {
@@ -74,6 +80,15 @@ public class ApplicationSetup implements InitializingBean {
             userService.createActivatedUser(user, new String[]{"admin"});
         } catch (BusinessServiceException e) {
             System.out.println("Error create default admin account: " + e.getMessage());
+        }
+    }
+
+    private void clearExpiredTokens() {
+        List<Token> tokenList = tokenService.getAll();
+        for (Token token : tokenList) {
+            if (!tokenService.isValid(token.getTokenString())) {
+                tokenService.deleteToken(token);
+            }
         }
     }
 }

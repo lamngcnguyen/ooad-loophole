@@ -152,7 +152,7 @@ public class ApiClassController {
             List<String> confirmationLinks = new ArrayList<>();
             for (Student s : studentList) {
                 //TODO: remove confirmation URL
-                String token = tokenService.createToken(s.getUserId());
+                String token = tokenService.createToken(s.getUserId(), Constants.TOKEN_ACTIVATE);
                 String confirmationUrl = Constants.CONFIRMATION_URL + token;
                 confirmationLinks.add(confirmationUrl);
             }

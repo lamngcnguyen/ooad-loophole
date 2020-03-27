@@ -51,6 +51,8 @@
                 Tạo nhóm mới
             </div>
             <div class="ui form create-group">
+                <input type="hidden" name="leaderId" th:value="${studentId}">
+                <input type="hidden" name="classId" th:value="${classId}">
                 <div class="ui dimmer">
                     <div class="ui loader"></div>
                 </div>
@@ -58,7 +60,7 @@
                 <div class="content">
                     <div class="eight wide required field">
                         <label>Tên nhóm</label>
-                        <input type="text" name="name" placeholder="Group name">
+                        <input type="text" name="groupName" placeholder="Group name">
                     </div>
                     <div class="field">
                         <label>Thành viên</label>
@@ -73,10 +75,10 @@
                         <textarea name="message" placeholder="Message..."></textarea>
                     </div>
                     <div class="ui error message"></div>
-                    <div class="ui right floated green labeled icon submit button">
+                    <button class="ui right floated green labeled icon submit button">
                         <i class="plus icon"></i>
                         Thêm
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>

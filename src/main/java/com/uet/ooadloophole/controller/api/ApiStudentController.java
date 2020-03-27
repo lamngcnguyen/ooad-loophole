@@ -72,7 +72,7 @@ public class ApiStudentController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(new ResponseMessage("Student already exists")));
             } else {
                 Student newStudent = studentService.create(student);
-                String token = tokenService.createToken(newStudent.getUserId());
+                String token = tokenService.createToken(newStudent.getUserId(), Constants.TOKEN_ACTIVATE);
                 String confirmationUrl = Constants.CONFIRMATION_URL + token;
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage(confirmationUrl)));
             }
