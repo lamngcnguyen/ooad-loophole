@@ -63,7 +63,7 @@ public class AuthController {
         try {
             //TODO: remove confirmation URL
             User user = userService.createActivatedUser(newUser, new String[]{"TEACHER"});
-            String token = tokenService.createToken(user.get_id());
+            String token = tokenService.createToken(user.get_id(), Constants.TOKEN_ACTIVATE);
             String confirmationUrl = Constants.CONFIRMATION_URL + token;
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(confirmationUrl);
         } catch (BusinessServiceException e) {
@@ -73,7 +73,7 @@ public class AuthController {
 
     @RequestMapping(value = "/activate-account", method = RequestMethod.GET)
     private ModelAndView activateAccount(@RequestParam String token) {
-        if (tokenService.isValid(token)) {
+        if (tokenService.isValid(token) && tokenService.isTypeValid(token, Constants.TOKEN_ACTIVATE)) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());
@@ -92,7 +92,7 @@ public class AuthController {
         try {
             //TODO: remove confirmation URL
             User user = userService.resetAccount(email);
-            String token = tokenService.createToken(user.get_id());
+            String token = tokenService.createToken(user.get_id(), Constants.TOKEN_RESET);
             String resetLink = Constants.RESET_LINK + token;
             return ResponseEntity.status(HttpStatus.OK).body(resetLink);
         } catch (BusinessServiceException e) {
@@ -114,7 +114,7 @@ public class AuthController {
 
     @RequestMapping(value = "/resetAccount", method = RequestMethod.GET)
     private ModelAndView resetAccount(@RequestParam String token) {
-        if (tokenService.isValid(token)) {
+        if (tokenService.isValid(token) && tokenService.isTypeValid(token, Constants.TOKEN_RESET)) {
             //TODO: create activate account view
             ModelAndView model = new ModelAndView();
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());

@@ -121,4 +121,9 @@ public class ApiGroupController {
         HttpStatus httpStatus = (groups.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK;
         return ResponseEntity.status(httpStatus).body(dtoGroups);
     }
+
+    @RequestMapping(value = "/invite", method = RequestMethod.POST)
+    public ResponseEntity<String> inviteMembers(List<String> studentIdList) {
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

@@ -2,12 +2,12 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.TokenRepository;
 import com.uet.ooadloophole.model.Token;
-import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 public class TokenServiceImpl implements TokenService {
@@ -15,8 +15,8 @@ public class TokenServiceImpl implements TokenService {
     private TokenRepository tokenRepository;
 
     @Override
-    public String createToken(String userId) {
-        Token newToken = new Token(userId);
+    public String createToken(String userId, String type) {
+        Token newToken = new Token(userId, type);
         tokenRepository.save(newToken);
         return newToken.getTokenString();
     }
@@ -27,8 +27,12 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public void deleteActiveToken(Token token) {
-        tokenRepository.delete(token);
+    public void deleteToken(Token token) {
+        try {
+            tokenRepository.delete(token);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -38,7 +42,27 @@ public class TokenServiceImpl implements TokenService {
             return false;
         } else {
             Calendar calendar = Calendar.getInstance();
-            return (token.getExpiryDate().getTime() - calendar.getTime().getTime()) > 0;
+            if ((token.getExpiryDate().getTime() - calendar.getTime().getTime()) > 0) {
+                return true;
+            } else {
+                deleteToken(token);
+                return false;
+            }
         }
+    }
+
+    @Override
+    public boolean isTypeValid(String tokenString, String type) {
+        Token token = getByTokenString(tokenString);
+        if (token == null) {
+            return false;
+        } else {
+            return token.getType().equals(type);
+        }
+    }
+
+    @Override
+    public List<Token> getAll() {
+        return tokenRepository.findAll();
     }
 }
