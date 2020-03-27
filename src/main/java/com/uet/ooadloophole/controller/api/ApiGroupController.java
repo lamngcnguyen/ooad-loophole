@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.DTOGroup;
 import com.uet.ooadloophole.controller.interface_model.IGroup;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.Topic;
@@ -36,6 +37,15 @@ public class ApiGroupController {
     private ConverterService converterService;
 
     private Gson gson = new Gson();
+
+    @RequestMapping(value = "/class/{classId}", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllGroupsByClass(@PathVariable String classId) {
+        List<DTOGroup> dtoGroups = new ArrayList<>();
+        for (Group group : groupService.getAllByClassId(classId)) {
+            dtoGroups.add(converterService.convertToDTOGroup(group));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoGroups)));
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Group> getGroupById(@PathVariable String id) {
