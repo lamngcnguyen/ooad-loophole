@@ -104,7 +104,7 @@ public class AuthController {
     public ModelAndView getHomePage() {
         try {
             User currentUser = secureUserDetailService.getCurrentUser();
-            ModelAndView modelAndView = masterPageService.getMasterPage("Nhà", new BodyFragment("profile", "body-content"), currentUser);
+            ModelAndView modelAndView = masterPageService.getMasterPage("Chỉnh sửa trang cá nhân", new BodyFragment("profile", "body-content"), currentUser);
             modelAndView.addObject("notifications", notificationService.getAllByReceiverId(currentUser.get_id()));
             return modelAndView;
         } catch (BusinessServiceException e) {
