@@ -6,9 +6,9 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import java.util.List;
 
 public interface NotificationService {
-    public Notification create(Notification notification);
+    Notification create(Notification notification);
 
-    public List<Notification> getAllByReceiverId(String receiverId);
+    List<Notification> getAllByReceiverId(String receiverId);
 
-    public void markAsSeen(String notificationId) throws BusinessServiceException;
+    void markAsSeen(String notificationId) throws BusinessServiceException;
 }

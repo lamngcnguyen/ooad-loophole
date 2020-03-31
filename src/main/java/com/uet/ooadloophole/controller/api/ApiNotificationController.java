@@ -21,15 +21,15 @@ public class ApiNotificationController {
     @Autowired
     private ConverterService converterService;
 
-    @RequestMapping(value = "", method = RequestMethod.POST )
-    public ResponseEntity create(@RequestBody INotification iNotification) {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<Object> create(@RequestBody INotification iNotification) {
         Notification notification = converterService.convertToNotification(iNotification);
         Notification response = notificationService.create(notification);
         return ResponseEntity.status(HttpStatus.OK).body(notification);
     }
 
     @RequestMapping(value = "/{notificationId}", method = RequestMethod.PUT)
-    public ResponseEntity markAsSeen(@PathVariable String notificationId) {
+    public ResponseEntity<Object> markAsSeen(@PathVariable String notificationId) {
         try {
             notificationService.markAsSeen(notificationId);
             return ResponseEntity.status(HttpStatus.OK).build();

@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class Requirement {
     private String name;
     private String parentId;
     private String description;
+    @DBRef
     private List<Requirement> childRequirements;
     private RequirementSpecFile requirementSpecFile;
 
