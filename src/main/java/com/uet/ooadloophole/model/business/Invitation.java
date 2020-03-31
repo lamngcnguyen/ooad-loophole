@@ -7,6 +7,7 @@ public class Invitation {
     private String _id;
     private String groupId;
     private String receiverId;
+    private String message;
 
     public String get_id() {
         return _id;
@@ -30,5 +31,13 @@ public class Invitation {
 
     public void setReceiverId(String receiverId) {
         this.receiverId = receiverId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

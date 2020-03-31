@@ -6,72 +6,78 @@
 </head>
 <body>
 <!--<div class="ui middle aligned center aligned black grid">-->
-<div th:fragment="body-content" class="ui middle aligned center aligned black grid">
-
-    <div class="column" style="width: 100%">
-        <h3 class="ui header">
-            <!--                <img th:src="@{/images/logo.png}" class="tiny image">-->
-            <div class="content">
-                Chỉnh sửa profile
-            </div>
-        </h3>
-
-        <!--                <div class="ui stacked segment aligned">-->
-        <div class="image center aligned content">
-            <div class="ui small middle aligned fluid rounded blurring dimmable bordered image my-avatar">
-                <div class="ui dimmer">
-                    <div class="content">
-                        <input type="file" hidden="" name="avatar" accept="image/*">
-                        <input type="hidden" name="userId" th:value="${user.get_id()}">
-                        <input type="hidden" name="avatarLink" th:value="${avatarLink}">
-                        <div class="center">
-                            <div class="ui inverted icon button" onclick="openAvatarDialog()" data-tooltip="Đổi avatar"
-                                 data-inverted="">
-                                <i class="pencil icon"></i>
+<div th:fragment="body-content" class="ui middle aligned black grid">
+    <input type="hidden" id="userId" th:value="${user.get_id()}">
+    <div class="row"></div>
+    <div class="row">
+        <div class="ten wide centered column">
+            <div class="ui green large header"><i class="user icon"></i>Chỉnh sửa thông tin</div>
+            <div class="ui grid segment">
+                <div class="row">
+                    <div class="six wide column">
+                        <div class="ui fluid large bordered rounded image my-avatar">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <input type="file" id="avatarUpload" hidden onchange="uploadAvatar()"
+                                               accept="image/*">
+                                        <div class="ui icon labeled inverted button" onclick="openAvatarUploadDialog()">
+                                            <i class="upload icon"></i>
+                                            Tải ảnh lên
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <img th:src="${avatarLink}">
+                        </div>
+                    </div>
+                    <div class="ten wide column">
+                        <div class="ui form">
+                            <div class="required field">
+                                <label>Họ tên</label>
+                                <input type="text" name="fullName" placeholder="Họ tên"
+                                       th:value="${user.getFullName()}">
+                            </div>
+                            <div class="fields">
+                                <div class="eight wide required field">
+                                    <label>SĐT</label>
+                                    <div class="ui labeled input">
+                                        <div class="ui label">
+                                            <i class="vn flag"></i>+84
+                                        </div>
+                                        <input type="text" name="phoneNumber" placeholder="1900 6969"
+                                               th:value="${user.getPhoneNumber()}">
+                                    </div>
+                                </div>
+                                <div class="eight wide required field">
+                                    <label>Email</label>
+                                    <input type="email" name="email" placeholder="strongest_avenger@gmail.com"
+                                           th:value="${user.getEmail()}">
+                                </div>
+                            </div>
+                            <div class="ui error message"></div>
+                            <button class="ui green submit button" style="display: none"
+                                    onclick="console.log('clicked')"></button>
                         </div>
                     </div>
                 </div>
-                <img class="my-avatar" th:src="${avatarLink}" alt="profile-image">
+                <div class="ui divider"></div>
+                <div class="row">
+                    <div class="column">
+                        <div class="ui blue icon labeled button right floated" onclick="$('.form button').click()">
+                            <i class="save icon"></i>
+                            Lưu
+                        </div>
+                        <div class="ui large icon labeled left floated button" onclick="window.history.back()">
+                            <i class="arrow circle left icon"></i>
+                            Trở lại
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <form class="ui large form eight wide left aligned column">
-        <div class="required field">
-            <label>Họ và tên</label>
-            <input type="text" name="full-name" placeholder="Full name">
-        </div>
-        <div class="required field">
-            <label>SĐT</label>
-            <input type="text" name="telephone" placeholder="Phone">
-        </div>
-        <div class="required field">
-            <label>Reddit</label>
-            <input type="text" name="name" placeholder="Account & Karma">
-        </div>
-        <div class="required field">
-            <label>Pornhub</label>
-            <input type="text" name="name" placeholder="Account">
-        </div>
-
-        <div class="field">
-            <div class="ten wide field"></div>
-        </div>
-
-        <div class="two ui buttons ">
-            <button class="ui large fluid blue submit button" type="submit">Xác nhận</button>
-            <a class="ui large fluid button" href="/home" >Trở lại</a>
-        </div>
-        <!--                <div th:if="${#httpServletRequest.getParameter('error') != null}" class="ui error visible message">Sai tên đăng nhập hoặc mật khẩu</div>-->
-    </form>
-
-
-    <script>
-        $('.my-avatar.image').dimmer({
-            on: 'hover'
-        });
-    </script>
+    <script type="text/javascript" src="/js/profile.js"></script>
 </div>
 </body>
 </html>
