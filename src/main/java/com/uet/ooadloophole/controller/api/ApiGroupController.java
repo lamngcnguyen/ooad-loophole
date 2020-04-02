@@ -6,11 +6,13 @@ import com.uet.ooadloophole.controller.interface_model.IGroup;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.Group;
+import com.uet.ooadloophole.model.business.Invitation;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.Topic;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
+import com.uet.ooadloophole.service.business_service.InviteService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.TopicService;
 import javafx.scene.control.Tab;
@@ -27,15 +29,14 @@ import java.util.List;
 public class ApiGroupController {
     @Autowired
     private GroupService groupService;
-
     @Autowired
     private StudentService studentService;
-
     @Autowired
     private TopicService topicService;
-
     @Autowired
     private ConverterService converterService;
+    @Autowired
+    private InviteService inviteService;
 
     private Gson gson = new Gson();
 
@@ -135,7 +136,8 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
-    public ResponseEntity<String> inviteMembers(List<String> studentIdList) {
+    public ResponseEntity<String> inviteMembers(String groupId, List<String> studentIdList, String message) throws BusinessServiceException {
+        List<Invitation> invitations = inviteService.create(groupId, studentIdList, message);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

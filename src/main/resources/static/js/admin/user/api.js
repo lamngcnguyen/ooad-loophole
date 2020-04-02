@@ -16,14 +16,14 @@ $.fn.form.settings.rules.oneRoleClaimed = function (value, formId) {
     return isAdmin || isTeacher;
 };
 
-const VN_ALPHABET = 'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ';
+const VN_ALPHABET = 'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềếểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ';
 
 var validationRules = {
     fullName: {
         identifier: 'fullName',
         rules: [
             {
-                type: `regExp[/^[a-zA-Z\\s_${VN_ALPHABET}]+$/]`,
+                type: `regExp[/^[a-zA-Z\\s_${VN_ALPHABET}\s]+$/]`,
                 prompt: 'Họ tên không hợp lệ'
             }
         ]

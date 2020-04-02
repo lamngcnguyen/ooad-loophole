@@ -72,8 +72,7 @@ public class StudentController {
                     bodyFragment.setFragment(roleFolder + "-" + bodyFragment.getFragment());
                     modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
                 }
-                modelAndView.addObject("classId", student.getClassId());
-                modelAndView.addObject("studentId", student.get_id());
+                modelAndView.addObject("student", student);
             } else {
                 modelAndView = new ModelAndView("forbidden");
             }

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:fragment="body-content" class="ui stackable grid">
-    <input type="hidden" class="class-id-input" th:value="${classId}">
+    <input type="hidden" class="class-id-input" th:value="${student.getClassId()}">
     <div class="row">
         <div class="nine wide centered column">
             <div class="ui huge center aligned header">
@@ -51,8 +51,8 @@
                 Tạo nhóm mới
             </div>
             <div class="ui form create-group">
-                <input type="hidden" name="leaderId" th:value="${studentId}">
-                <input type="hidden" name="classId" th:value="${classId}">
+                <input type="hidden" name="leaderId" th:value="${student.get_id()}">
+                <input type="hidden" name="classId" th:value="${student.getClassId()}">
                 <div class="ui dimmer">
                     <div class="ui loader"></div>
                 </div>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="field">
                         <label>Nội dung lời mời</label>
-                        <textarea name="message" placeholder="Message..."></textarea>
+                        <textarea name="message" placeholder="Nội dung..."></textarea>
                     </div>
                     <div class="ui error message"></div>
                     <button class="ui right floated green labeled icon submit button">

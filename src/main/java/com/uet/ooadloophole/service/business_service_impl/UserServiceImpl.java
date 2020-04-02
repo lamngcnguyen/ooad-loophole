@@ -127,12 +127,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public User create(User user) throws BusinessServiceException {
         try {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            try {
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            } catch (NullPointerException e) {
+                user.setPassword(null);
+            }
             user.setActive(false);
             userRepository.save(user);
             //emailService.sendActivationEmail(user);
             return user;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new BusinessServiceException("Unable to create user: " + e.getMessage());
         }
     }
