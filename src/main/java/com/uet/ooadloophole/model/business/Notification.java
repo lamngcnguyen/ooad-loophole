@@ -10,7 +10,7 @@ public class Notification {
     private String receiverId;
     private String subject;
     private String content;
-    private LocalDateTime timeStamp;
+    private String timeStamp;
     private String url;
     private Boolean seen;
 
@@ -54,11 +54,11 @@ public class Notification {
         this.url = url;
     }
 
-    public LocalDateTime getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDateTime timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
 

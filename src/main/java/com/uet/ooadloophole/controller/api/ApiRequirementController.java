@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.controller;
+package com.uet.ooadloophole.controller.api;
 
 import com.uet.ooadloophole.model.business.Requirement;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/requirement")
-public class RequirementController {
+public class ApiRequirementController {
     @Autowired
     private RequirementService requirementService;
 
