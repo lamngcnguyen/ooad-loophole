@@ -45,7 +45,8 @@
                             <div class="ui stackable grid">
                                 <div class="row">
                                     <div class="column">
-                                        <div class="ui icon labeled teal button">
+                                        <div class="ui icon labeled teal button"
+                                             onclick="showModal('.modal.invite-student')">
                                             <i class="paper plane icon"></i>
                                             Mời
                                         </div>
@@ -57,26 +58,7 @@
                                 <div class="ui divider" style="margin: 0 !important;"></div>
                                 <div class="row">
                                     <div class="column">
-                                        <div class="ui divided items members-view">
-                                            <div class="item group-member-template" style="display: none">
-                                                <div class="ui tiny circular image">
-                                                    <img class="avatar-image" th:src="@{/images/default.png}">
-                                                </div>
-                                                <div class="content">
-                                                    <div class="header">Member Name</div>
-                                                    <div class="meta member-description">
-                                                        Description
-                                                    </div>
-                                                    <div class="description">
-                                                        <p></p>
-                                                        <div class="ui tiny red icon labeled button right floated">
-                                                            <i class="futbol outline icon kick-button"></i>
-                                                            Yeet
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div class="ui divided items members-view"></div>
                                     </div>
                                 </div>
                             </div>
@@ -101,8 +83,8 @@
                                 <tr>
                                     <td>Nguyễn Ngọc Lâm</td>
                                     <td class="center aligned"></td>
-                                    <td class="center aligned" ><i class="large green check icon"></i></td>
-                                    <td class="center aligned" ></td>
+                                    <td class="center aligned"><i class="large green check icon"></i></td>
+                                    <td class="center aligned"></td>
                                 </tr>
                                 <tr>
                                     <td>Lê Trung Thông</td>
@@ -119,7 +101,8 @@
                         </div>
                         <div class="ui tab segment github-connect">
                             <div class="ui header">
-                                Connect to <span class="ui blue text"><i class="github icon"></i>Github</span> feature: <span class="ui red text">IN DEVELOPMENT</span>
+                                Connect to <span class="ui blue text"><i class="github icon"></i>Github</span> feature:
+                                <span class="ui red text">IN DEVELOPMENT</span>
                             </div>
                         </div>
                         <div class="ui tab segment guests">
@@ -165,8 +148,61 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/student/leader/api.js}"></script>
-    <script type="text/javascript" th:src="@{/js/student/leader/group.js}"></script>
+    <div class="ui modal invite-student">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green paper plane icon"></i>
+            Mời
+        </div>
+        <div class="content">
+            <div class="ui form invite-student">
+                <input type="hidden" th:value="${student.getGroupId()}">
+                <div class="field">
+                    <label>Thành viên</label>
+                    <div class="ui search selection multiple dropdown unassigned-student-dropdown">
+                        <input type="hidden" name="members">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select members to invite</div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Nội dung lời mời</label>
+                    <textarea name="message" placeholder="Nội dung..."></textarea>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.invite-student')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="item group-member-template" style="display: none">
+        <div class="ui tiny circular image">
+            <img class="avatar-image" th:src="@{/images/default.png}">
+        </div>
+        <div class="content">
+            <div class="header">Member Name</div>
+            <div class="meta member-description">
+                Description
+            </div>
+            <div class="description">
+                <p></p>
+                <div class="ui tiny red icon labeled button right floated">
+                    <i class="futbol outline icon kick-button"></i>
+                    Yeet
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/student/common/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/student/common/group.js}"></script>
     <style>
         .tab.segment {
             margin: 0 !important;
@@ -190,49 +226,8 @@
                 <div class="ui stackable grid">
                     <div class="row">
                         <div class="column">
-                            <div class="ui divided items">
-                                <div class="item">
-                                    <div class="ui tiny circular image">
-                                        <img th:src="@{/images/default.png}">
-                                    </div>
-                                    <div class="content">
-                                        <div class="header">Hà Tuấn Phong</div>
-                                        <div class="meta">
-                                            Description
-                                        </div>
-                                        <div class="description">
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="ui tiny circular image">
-                                        <img th:src="@{/images/default.png}">
-                                    </div>
-                                    <div class="content">
-                                        <div class="header">Nguyễn Ngọc Lâm</div>
-                                        <div class="meta">
-                                            Description
-                                        </div>
-                                        <div class="description">
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="ui tiny circular image">
-                                        <img th:src="@{/images/default.png}">
-                                    </div>
-                                    <div class="content">
-                                        <div class="header">Lê Trung Thông</div>
-                                        <div class="meta">
-                                            Description
-                                        </div>
-                                        <div class="description">
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="ui divided items members-view">
+
                             </div>
                         </div>
                     </div>
@@ -240,7 +235,18 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/student/leader/group.js}"></script>
+    <div class="item group-member-template" style="display: none">
+        <div class="ui tiny circular image">
+            <img class="avatar-image" th:src="@{/images/default.png}">
+        </div>
+        <div class="content">
+            <div class="header">Member Name</div>
+            <div class="meta member-description">
+                Description
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/student/common/group.js}"></script>
     <style>
         .tab.segment {
             margin: 0 !important;
