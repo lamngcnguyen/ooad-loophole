@@ -57,56 +57,20 @@
                                 <div class="ui divider" style="margin: 0 !important;"></div>
                                 <div class="row">
                                     <div class="column">
-                                        <div class="ui divided items">
-                                            <div class="item">
+                                        <div class="ui divided items members-view">
+                                            <div class="item group-member-template" style="display: none">
                                                 <div class="ui tiny circular image">
-                                                    <img th:src="@{/images/default.png}">
+                                                    <img class="avatar-image" th:src="@{/images/default.png}">
                                                 </div>
                                                 <div class="content">
-                                                    <div class="header">Hà Tuấn Phong</div>
-                                                    <div class="meta">
+                                                    <div class="header">Member Name</div>
+                                                    <div class="meta member-description">
                                                         Description
                                                     </div>
                                                     <div class="description">
                                                         <p></p>
                                                         <div class="ui tiny red icon labeled button right floated">
-                                                            <i class="futbol outline icon"></i>
-                                                            Yeet
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <div class="ui tiny circular image">
-                                                    <img th:src="@{/images/default.png}">
-                                                </div>
-                                                <div class="content">
-                                                    <div class="header">Nguyễn Ngọc Lâm</div>
-                                                    <div class="meta">
-                                                        Description
-                                                    </div>
-                                                    <div class="description">
-                                                        <p></p>
-                                                        <div class="ui tiny red icon labeled button right floated">
-                                                            <i class="futbol outline icon"></i>
-                                                            Yeet
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <div class="ui tiny circular image">
-                                                    <img th:src="@{/images/default.png}">
-                                                </div>
-                                                <div class="content">
-                                                    <div class="header">Lê Trung Thông</div>
-                                                    <div class="meta">
-                                                        Description
-                                                    </div>
-                                                    <div class="description">
-                                                        <p></p>
-                                                        <div class="ui tiny red icon labeled button right floated">
-                                                            <i class="futbol outline icon"></i>
+                                                            <i class="futbol outline icon kick-button"></i>
                                                             Yeet
                                                         </div>
                                                     </div>
@@ -201,6 +165,7 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" th:src="@{/js/student/leader/api.js}"></script>
     <script type="text/javascript" th:src="@{/js/student/leader/group.js}"></script>
     <style>
         .tab.segment {

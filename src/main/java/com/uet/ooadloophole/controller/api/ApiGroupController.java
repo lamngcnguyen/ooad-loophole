@@ -13,6 +13,7 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.TopicService;
+import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +62,17 @@ public class ApiGroupController {
     public ResponseEntity<List<Student>> getStudents(@PathVariable String id) {
         List<Student> students = studentService.getByGroup(id);
         return ResponseEntity.status(HttpStatus.OK).body(students);
+    }
+
+    @RequestMapping(value = "/{userId}/members", method = RequestMethod.GET)
+    public ResponseEntity<Object> getGroupByUserId(@PathVariable String userId) {
+        try {
+            Student student = studentService.getByUserId(userId);
+            List<Student> students = studentService.getByGroup(student.getGroupId());
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(students)));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body((e.getMessage()));
+        }
     }
 
     @RequestMapping(value = "/{id}/topic", method = RequestMethod.GET)
