@@ -2,13 +2,13 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.SpecFileRepository;
-import com.uet.ooadloophole.model.business.SpecFile;
+import com.uet.ooadloophole.model.business.TopicSpecFile;
 import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
 import com.uet.ooadloophole.service.business_service.FileService;
-import com.uet.ooadloophole.service.business_service.SpecFileService;
+import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class SpecFileServiceImpl implements SpecFileService {
+public class TopicSpecFileServiceImpl implements TopicSpecFileService {
     @Autowired
     private ConverterService converterService;
     @Autowired
@@ -27,42 +27,42 @@ public class SpecFileServiceImpl implements SpecFileService {
     private SpecFileRepository specFileRepository;
 
     @Override
-    public SpecFile findById(String id) {
+    public TopicSpecFile findById(String id) {
         return specFileRepository.findBy_id(id);
     }
 
     @Override
     public void updateTopicId(String specFileId, String topicId) throws BusinessServiceException {
-        SpecFile dbSpecFile = findById(specFileId);
+        TopicSpecFile dbTopicSpecFile = findById(specFileId);
         String newPath = Constants.SPEC_FOLDER + topicId + "/";
-        dbSpecFile.setTopicId(topicId);
+        dbTopicSpecFile.setTopicId(topicId);
         //specFile.getPath() may indicate the spec file is in temp folder
-        String fileName = converterService.formatFileName(dbSpecFile.getFileName(), dbSpecFile.getTimeStamp(), dbSpecFile.getFileExtension());
+        String fileName = converterService.formatFileName(dbTopicSpecFile.getFileName(), dbTopicSpecFile.getTimeStamp(), dbTopicSpecFile.getFileExtension());
         try {
-            fileService.moveFile(fileName, dbSpecFile.getPath(), newPath);
+            fileService.moveFile(fileName, dbTopicSpecFile.getPath(), newPath);
         } catch (BusinessServiceException | IOException e) {
             e.printStackTrace();
             throw new BusinessServiceException("Unable to assign topicId to this file: " + e.getMessage());
         }
-        dbSpecFile.setPath(newPath);
-        specFileRepository.save(dbSpecFile);
+        dbTopicSpecFile.setPath(newPath);
+        specFileRepository.save(dbTopicSpecFile);
     }
 
     @Override
-    public SpecFile upload(MultipartFile file) throws FileStorageException {
+    public TopicSpecFile upload(MultipartFile file) throws FileStorageException {
         try {
             String saveLocation = Constants.SPEC_FOLDER + "temp/";
-            SpecFile specFile = new SpecFile();
+            TopicSpecFile topicSpecFile = new TopicSpecFile();
             UserFile userFile = fileService.storeFile(file, saveLocation);
 
-            specFile.setFileName(userFile.getFileName());
-            specFile.setFileExtension(userFile.getFileExtension());
-            specFile.setTimeStamp(userFile.getTimeStamp());
-            specFile.setUploaderId(userFile.getUploaderId());
-            specFile.setPath(saveLocation);
+            topicSpecFile.setFileName(userFile.getFileName());
+            topicSpecFile.setFileExtension(userFile.getFileExtension());
+            topicSpecFile.setTimeStamp(userFile.getTimeStamp());
+            topicSpecFile.setUploaderId(userFile.getUploaderId());
+            topicSpecFile.setPath(saveLocation);
 
-            specFileRepository.save(specFile);
-            return specFile;
+            specFileRepository.save(topicSpecFile);
+            return topicSpecFile;
         } catch (FileStorageException | BusinessServiceException e) {
             throw new FileStorageException("Unable to upload repo file. " + e.getMessage());
         }
@@ -70,14 +70,14 @@ public class SpecFileServiceImpl implements SpecFileService {
 
     @Override
     public Resource download(String id) {
-        SpecFile specFile = findById(id);
-        String saveLocation = specFile.getPath();
-        String fileName = converterService.formatFileName(specFile.getFileName(), specFile.getTimeStamp(), specFile.getFileExtension());
+        TopicSpecFile topicSpecFile = findById(id);
+        String saveLocation = topicSpecFile.getPath();
+        String fileName = converterService.formatFileName(topicSpecFile.getFileName(), topicSpecFile.getTimeStamp(), topicSpecFile.getFileExtension());
         return fileService.loadFileAsResource(fileName, saveLocation);
     }
 
     @Override
-    public List<SpecFile> getByTopicId(String topicId) {
+    public List<TopicSpecFile> getByTopicId(String topicId) {
         return specFileRepository.findAllByTopicId(topicId);
     }
 }

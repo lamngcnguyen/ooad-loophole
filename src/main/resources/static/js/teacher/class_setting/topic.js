@@ -30,7 +30,7 @@ const topicTable = $(".topic .ui.table").DataTable({
             render: function (files) {
                 var html = $('<div class="ui middle aligned animated list"></div>');
                 $.each(files, function (index, file) {
-                    var item = $(`<a class="item" href="/api/files/spec/${file._id}" target="_blank"></a>`);
+                    var item = $(`<a class="item" href="/api/files/spec/topic/${file._id}" target="_blank"></a>`);
                     item.append(`<div class="ui avatar image"><i class="large file ${getFileIconClass(file.fileExtension)} icon"></i></div>`);
                     item.append(`<div class="content"><div class="header">${file.fileName}</div></div>`);
                     html.append(item);
@@ -74,10 +74,10 @@ $('.topic .table-search input').keyup(function () {
 });
 
 function openSpecFileDialog() {
-    $('input[name="specFiles"]').click();
+    $('input[name="topicSpecFiles"]').click();
 }
 
-$('input[name="specFiles"]').change(function () {
+$('input[name="topicSpecFiles"]').change(function () {
     createUploadStatus(this.files);
 });
 

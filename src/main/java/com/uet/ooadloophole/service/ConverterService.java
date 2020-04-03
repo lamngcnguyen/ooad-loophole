@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -37,7 +36,7 @@ public class ConverterService {
     @Autowired
     private GroupService groupService;
     @Autowired
-    private SpecFileService specFileService;
+    private TopicSpecFileService topicSpecFileService;
 
     public User convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -154,8 +153,8 @@ public class ConverterService {
                 System.out.println(e.getMessage());
             }
         }
-        List<SpecFile> specFiles = specFileService.getByTopicId(topic.get_id());
-        dtoTopic.setFiles(specFiles);
+        List<TopicSpecFile> topicSpecFiles = topicSpecFileService.getByTopicId(topic.get_id());
+        dtoTopic.setFiles(topicSpecFiles);
 
         return dtoTopic;
     }

@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="leader-content" class="ui stackable grid">
+    <input type="hidden" class="class-id-input" th:value="${student.getClassId()}">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -46,7 +47,7 @@
                                 <div class="row">
                                     <div class="column">
                                         <div class="ui icon labeled teal button"
-                                             onclick="showModal('.modal.invite-student')">
+                                             onclick="showToast()">
                                             <i class="paper plane icon"></i>
                                             Mời
                                         </div>
@@ -158,7 +159,7 @@
         </div>
         <div class="content">
             <div class="ui form invite-student">
-                <input type="hidden" th:value="${student.getGroupId()}">
+                <input type="hidden" name="groupId" th:value="${student.getGroupId()}">
                 <div class="field">
                     <label>Thành viên</label>
                     <div class="ui search selection multiple dropdown unassigned-student-dropdown">
@@ -201,7 +202,8 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/student/common/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/student/leader/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/student/leader/group.js}"></script>
     <script type="text/javascript" th:src="@{/js/student/common/group.js}"></script>
     <style>
         .tab.segment {
@@ -246,6 +248,7 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" th:src="@{/js/student/member/api.js}"></script>
     <script type="text/javascript" th:src="@{/js/student/common/group.js}"></script>
     <style>
         .tab.segment {

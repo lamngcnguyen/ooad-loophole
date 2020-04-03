@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.controller.interface_model;
 
-import com.uet.ooadloophole.model.business.SpecFile;
+import com.uet.ooadloophole.model.business.TopicSpecFile;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class DTOTopic {
     private String classId;
     private String groupId;
     private String groupName;
-    private List<SpecFile> files;
+    private List<TopicSpecFile> files;
 
     public String get_id() {
         return _id;
@@ -61,11 +61,11 @@ public class DTOTopic {
         this.groupName = groupName;
     }
 
-    public List<SpecFile> getFiles() {
+    public List<TopicSpecFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<SpecFile> files) {
+    public void setFiles(List<TopicSpecFile> files) {
         this.files = files;
     }
 }

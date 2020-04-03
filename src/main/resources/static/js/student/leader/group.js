@@ -1,34 +1,53 @@
-function showTab(tabName) {
-    $('.menu .item').removeClass('blue active');
-    $('.tab').removeClass('active');
-    $(`.menu .item.${tabName}`).addClass('blue active');
-    $(`.tab.${tabName}`).addClass('active');
-}
+$('.dropdown.unassigned-student-dropdown').dropdown({
+    showOnFocus: false,
+}).api({
+    action: 'get students with no group',
+    method: 'get',
+    urlData: {classId: $('.class-id-input').val()},
+    on: 'now',
+    onSuccess(response, element, xhr) {
+        const values = [];
+        xhr.responseJSON.data.forEach(function (student) {
+            values.push({
+                value: student._id,
+                name: student.fullName + ' - ' + student.studentId,
+                text: student.fullName
+            })
+        });
+        $(element).dropdown('change values', values);
+    }
+});
 
-function loadGroupMember(data) {
-    data.forEach(function (c) {
-        const member = $('.group-member-template').clone()
-            .removeClass('group-member-template')
-            .css('display', 'flex')
-            .prop('data-value', c._id);
-        member.find('.header').text(c.fullName);
-        member.find('.member-description').text(`Mã số sinh viên: ${c.studentId}`);
-        member.find('img').attr('src', `/api/users/avatar/${c.userId}`);
-        $('.members-view:last-child').append(member);
-    })
-}
+$('.form.invite-student').form({
+    onSuccess: function (evt, data) {
+        $.api({
+            action: 'invite student',
+            on: 'now',
+            method: 'post',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
+            },
+            onFailure: function (response) {
+                $('.form.invite-student').form('add errors', [response]);
+            },
+            onSuccess: function () {
+                $('.my-center.flex').toast({
+                    message: 'Gửi lời mời thành công',
+                    class: 'teal'
+                })
+            }
+        })
+    },
+});
 
-$(document).ready(function () {
-    $.api({
-        action: 'get group members',
-        on: 'now',
-        method: 'get',
-        urlData: {id: Cookies.get("userId")},
-        onSuccess: function (res, element, xhr) {
-            loadGroupMember(xhr.responseJSON.data);
-        },
-        onFailure: function (res) {
-            console.log(res);
+function showToast() {
+    $('.my-center').toast({
+        message: 'Gửi lời mời thành công',
+        class: 'teal',
+        selector: {
+            container: '.my-center'
         }
     })
-});
+}

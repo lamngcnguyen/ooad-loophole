@@ -5,7 +5,6 @@ import com.uet.ooadloophole.database.UserRepository;
 import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
-import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.*;
 import org.apache.commons.io.IOUtils;
@@ -22,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
