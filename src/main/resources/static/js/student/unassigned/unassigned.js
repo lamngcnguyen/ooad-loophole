@@ -19,7 +19,6 @@ $('.form.create-group').form({
     },
 });
 
-
 $('.dropdown.group-dropdown').dropdown({
     showOnFocus: false,
 }).api({

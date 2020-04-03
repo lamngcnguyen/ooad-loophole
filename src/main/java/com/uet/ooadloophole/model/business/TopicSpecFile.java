@@ -2,7 +2,7 @@ package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 
-public class SpecFile extends UserFile {
+public class TopicSpecFile extends UserFile {
     @Id
     private String _id;
     private String topicId;

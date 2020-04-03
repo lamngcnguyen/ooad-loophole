@@ -11,10 +11,10 @@ $.fn.api.settings.api = {
     'get topics': '/api/classes/{classId}/topics',
     'create topic': '/api/topics',
     'delete topic': '/api/topics/{topicId}',
-    'upload spec': '/api/files/spec',
-    'upload multiple spec': '/api/files/spec/multiple',
-    'assign topic spec': '/api/files/spec/assign/{id}',
-    'assign topic multiple spec': '/api/files/spec/multi/assign/{id}'
+    'upload spec': '/api/files/spec/topic',
+    'upload multiple spec': '/api/files/spec/topic/multiple',
+    'assign topic spec': '/api/files/spec/topic/assign/{id}',
+    'assign topic multiple spec': '/api/files/spec/topic/multi/assign/{id}'
 };
 
 const UPLOAD_TIMEOUT = 10000;

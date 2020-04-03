@@ -2,11 +2,11 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
-import com.uet.ooadloophole.model.business.SpecFile;
+import com.uet.ooadloophole.model.business.TopicSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
-import com.uet.ooadloophole.service.business_service.SpecFileService;
+import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +31,7 @@ public class ApiFileController {
     @Autowired
     private RepoFileService repoFileService;
     @Autowired
-    private SpecFileService specFileService;
+    private TopicSpecFileService topicSpecFileService;
 
     private Gson gson = new Gson();
 
@@ -65,44 +65,44 @@ public class ApiFileController {
         }
     }
 
-    @RequestMapping(value = "/spec", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadSpecFile(@RequestParam("file") MultipartFile file) {
+    @RequestMapping(value = "/spec/topic", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadTopicSpecFile(@RequestParam("file") MultipartFile file) {
         try {
-            SpecFile specFile = specFileService.upload(file);
-            return ResponseEntity.status(HttpStatus.OK).body(specFile);
+            TopicSpecFile topicSpecFile = topicSpecFileService.upload(file);
+            return ResponseEntity.status(HttpStatus.OK).body(topicSpecFile);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/spec/multi", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadMultipleSpecFiles(@RequestParam("files") List<MultipartFile> files) {
+    @RequestMapping(value = "/spec/topic/multi", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadMultipleTopicSpecFiles(@RequestParam("files") List<MultipartFile> files) {
         try {
-            List<SpecFile> specFiles = new ArrayList<>();
+            List<TopicSpecFile> topicSpecFiles = new ArrayList<>();
             for (MultipartFile file : files) {
-                specFiles.add(specFileService.upload(file));
+                topicSpecFiles.add(topicSpecFileService.upload(file));
             }
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(specFiles);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(topicSpecFiles);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/spec/assign/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/spec/topic/assign/{id}", method = RequestMethod.PUT)
     public ResponseEntity<String> assignTopicIdToSpecFile(@RequestBody String specFileId, @PathVariable String id) {
         try {
-            specFileService.updateTopicId(specFileId, id);
+            topicSpecFileService.updateTopicId(specFileId, id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
         } catch (BusinessServiceException | IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/spec/multi/assign/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/spec/topic/multi/assign/{id}", method = RequestMethod.PUT)
     public ResponseEntity<String> assignTopicIdToMultipleSpecFile(@RequestBody List<String> specFileIds, @PathVariable String id) {
         try {
             for (String specFileId : specFileIds) {
-                specFileService.updateTopicId(specFileId, id);
+                topicSpecFileService.updateTopicId(specFileId, id);
             }
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
         } catch (BusinessServiceException | IOException e) {
@@ -110,10 +110,10 @@ public class ApiFileController {
         }
     }
 
-    @RequestMapping(value = "/spec/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/spec/topic/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadSpecFile(@PathVariable String id, HttpServletRequest request) {
-        Resource resource = specFileService.download(id);
-        String timeStamp = specFileService.findById(id).getTimeStamp();
+        Resource resource = topicSpecFileService.download(id);
+        String timeStamp = topicSpecFileService.findById(id).getTimeStamp();
 
         String contentType = null;
         String fileName = Objects.requireNonNull(resource.getFilename()).replace("_" + timeStamp, "");

@@ -136,8 +136,12 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
-    public ResponseEntity<String> inviteMembers(String groupId, List<String> studentIdList, String message) throws BusinessServiceException {
-        List<Invitation> invitations = inviteService.create(groupId, studentIdList, message);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<Object> inviteMembers(String groupId, List<String> members, String message) {
+        try {
+            List<Invitation> invitations = inviteService.create(groupId, members, message);
+            return ResponseEntity.status(HttpStatus.OK).body(invitations);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }

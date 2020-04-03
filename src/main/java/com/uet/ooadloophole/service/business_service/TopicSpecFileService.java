@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.business.SpecFile;
+import com.uet.ooadloophole.model.business.TopicSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public interface SpecFileService {
-    SpecFile findById(String id);
+public interface TopicSpecFileService {
+    TopicSpecFile findById(String id);
 
     void updateTopicId(String specFileId, String topicId) throws BusinessServiceException, IOException;
 
-    SpecFile upload(MultipartFile file) throws BusinessServiceException;
+    TopicSpecFile upload(MultipartFile file) throws BusinessServiceException;
 
     Resource download(String id);
 
-    List<SpecFile> getByTopicId(String topicId);
+    List<TopicSpecFile> getByTopicId(String topicId);
 }
