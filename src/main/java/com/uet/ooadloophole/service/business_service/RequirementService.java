@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.business.Requirement;
+import com.uet.ooadloophole.model.business.RequirementSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,7 @@ public interface RequirementService {
     Requirement getParentRequirement(String id) throws BusinessServiceException;
 
     Requirement getById(String id) throws BusinessServiceException;
+
+    void assignRequirementIdToFile(String id, RequirementSpecFile file);
 
 }

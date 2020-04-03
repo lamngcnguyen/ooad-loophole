@@ -2,10 +2,12 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
+import com.uet.ooadloophole.model.business.RequirementSpecFile;
 import com.uet.ooadloophole.model.business.TopicSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
+import com.uet.ooadloophole.service.business_service.RequirementFileService;
 import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -32,6 +34,8 @@ public class ApiFileController {
     private RepoFileService repoFileService;
     @Autowired
     private TopicSpecFileService topicSpecFileService;
+    @Autowired
+    private RequirementFileService requirementFileService;
 
     private Gson gson = new Gson();
 
@@ -127,5 +131,25 @@ public class ApiFileController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(resource);
+    }
+
+    @RequestMapping(value = "/spec/requirement", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file) {
+        try {
+            RequirementSpecFile requirementSpecFile = requirementFileService.upload(file);
+            return ResponseEntity.status(HttpStatus.OK).body(requirementSpecFile);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/requirement/assign/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignRequirementIdToSpecFile(@RequestBody String specFileId, @PathVariable String id) {
+        try {
+            requirementFileService.updateRequirementId(specFileId, id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
+        } catch (BusinessServiceException | IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }

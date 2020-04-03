@@ -2,6 +2,7 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.RequirementsRepository;
 import com.uet.ooadloophole.model.business.Requirement;
+import com.uet.ooadloophole.model.business.RequirementSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RequirementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,29 @@ public class RequirementServiceImpl implements RequirementService {
     }
 
     @Override
+    public void assignRequirementIdToFile(String id, RequirementSpecFile file) {
+        file.setRequirementId(id);
+    }
+
+    @Override
     public void create(Requirement requirement) throws BusinessServiceException {
         try {
             requirementsRepository.save(requirement);
+
+            String reqId = requirement.get_id();
+            RequirementSpecFile requirementSpecFile = requirement.getRequirementSpecFile();
+            assignRequirementIdToFile(reqId, requirementSpecFile);
+            requirement.setRequirementSpecFile(requirementSpecFile);
         } catch (Exception e) {
             throw new BusinessServiceException("Error creating requirement: " + e.getMessage());
         }
     }
+
+
+//    @Override
+//    public void create(String name, String description, MultipartFile file, String savelocation) throws BusinessServiceException {
+//
+//    }
 
     @Override
     public Requirement update(String id, Requirement requirement) throws BusinessServiceException {
