@@ -2,6 +2,7 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.RequirementsRepository;
 import com.uet.ooadloophole.model.business.Requirement;
+import com.uet.ooadloophole.model.business.RequirementSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RequirementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class RequirementServiceImpl implements RequirementService {
             throw new BusinessServiceException("Can't find requirement");
         }
         return requirement;
+    }
+
+    @Override
+    public void assignRequirementIdToFile(String id, RequirementSpecFile file) {
+        file.setRequirementId(id);
     }
 
     @Override

@@ -2,10 +2,12 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
+import com.uet.ooadloophole.model.business.RequirementSpecFile;
 import com.uet.ooadloophole.model.business.TopicSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
+import com.uet.ooadloophole.service.business_service.RequirementFileService;
 import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -32,6 +34,8 @@ public class ApiFileController {
     private RepoFileService repoFileService;
     @Autowired
     private TopicSpecFileService topicSpecFileService;
+    @Autowired
+    private RequirementFileService requirementFileService;
 
     private Gson gson = new Gson();
 
@@ -127,5 +131,58 @@ public class ApiFileController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(resource);
+    }
+
+
+    //    ---------------------- REQUIREMENTS ----------------------
+    @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file) {
+        try {
+            RequirementSpecFile requirementSpecFile = requirementFileService.upload(file);
+            return ResponseEntity.status(HttpStatus.OK).body(requirementSpecFile);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/req/multi", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadMultipleRequirementSpecFiles(@RequestParam("files") List<MultipartFile> files) {
+        try {
+            List<RequirementSpecFile> requirementSpecFiles = new ArrayList<>();
+            for (MultipartFile file : files) {
+                requirementSpecFiles.add(requirementFileService.upload(file));
+            }
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(requirementSpecFiles);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/req/assign/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignRequirementIdToSpecFile(@RequestParam String specFileId, @PathVariable String id) {
+        try {
+            requirementFileService.updateRequirementId(specFileId, id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
+        } catch (BusinessServiceException | IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/req/multi/assign/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignRequirementIdToMultipleSpecFile(@RequestBody List<String> specFileIds, @PathVariable String id) {
+        try {
+            for (String specFileId : specFileIds) {
+                requirementFileService.updateRequirementId(specFileId, id);
+            }
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
+        } catch (BusinessServiceException | IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/requirement/{id}", method = RequestMethod.GET)
+    public RequirementSpecFile findReqSpecFile(@PathVariable String id) {
+        return requirementFileService.findById(id);
+
     }
 }
