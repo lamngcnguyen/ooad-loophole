@@ -3,3 +3,15 @@ $.fn.api.settings.api = {
     'get group members': '/api/groups/{id}/members',
     'get students with no group': '/api/classes/{classId}/students',
 };
+
+const validationRules = {
+    members: {
+        identifier: 'members',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Chưa nhập thành viên!'
+            }
+        ]
+    },
+};

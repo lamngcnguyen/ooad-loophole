@@ -20,6 +20,7 @@ $('.dropdown.unassigned-student-dropdown').dropdown({
 
 $('.form.invite-student').form({
     onSuccess: function (evt, data) {
+        data['members'] = $('.form.invite-student').form('get value', 'members').split(',');
         $.api({
             action: 'invite student',
             on: 'now',
@@ -33,21 +34,16 @@ $('.form.invite-student').form({
                 $('.form.invite-student').form('add errors', [response]);
             },
             onSuccess: function () {
+                hideModal('.modal.invite-student');
                 $('.my-center.flex').toast({
                     message: 'Gửi lời mời thành công',
+                    position: 'bottom right',
                     class: 'teal'
                 })
             }
         })
     },
+    fields: {
+        members: validationRules.members,
+    }
 });
-
-function showToast() {
-    $('.my-center').toast({
-        message: 'Gửi lời mời thành công',
-        class: 'teal',
-        selector: {
-            container: '.my-center'
-        }
-    })
-}

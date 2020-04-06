@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface NotificationRepository extends MongoRepository<Notification, String> {
-    public List<Notification> findAllByReceiverId(String receiverId);
+    List<Notification> findAllByReceiverId(String receiverId);
 
-    public Notification findBy_id(String _id);
+    Notification findBy_id(String _id);
 }

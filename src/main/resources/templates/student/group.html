@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="leader-content" class="ui stackable grid">
+    <div class="ui blue toast" id="domtoast"></div>
     <input type="hidden" class="class-id-input" th:value="${student.getClassId()}">
     <div class="row">
         <div class="column">
@@ -47,7 +48,7 @@
                                 <div class="row">
                                     <div class="column">
                                         <div class="ui icon labeled teal button"
-                                             onclick="showToast()">
+                                             onclick="showModal('.modal.invite-student')">
                                             <i class="paper plane icon"></i>
                                             Mời
                                         </div>
@@ -160,7 +161,7 @@
         <div class="content">
             <div class="ui form invite-student">
                 <input type="hidden" name="groupId" th:value="${student.getGroupId()}">
-                <div class="field">
+                <div class="required field">
                     <label>Thành viên</label>
                     <div class="ui search selection multiple dropdown unassigned-student-dropdown">
                         <input type="hidden" name="members">

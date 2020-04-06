@@ -89,7 +89,7 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/spec/topic/assign/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> assignTopicIdToSpecFile(@RequestBody String specFileId, @PathVariable String id) {
+    public ResponseEntity<String> assignTopicIdToSpecFile(String specFileId, @PathVariable String id) {
         try {
             topicSpecFileService.updateTopicId(specFileId, id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));

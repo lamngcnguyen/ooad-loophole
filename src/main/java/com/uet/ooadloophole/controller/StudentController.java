@@ -1,14 +1,17 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
+import com.uet.ooadloophole.model.business.Invitation;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.InvitationService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +25,8 @@ public class StudentController {
     private MasterPageService masterPageService;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private InvitationService invitationService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -29,6 +34,25 @@ public class StudentController {
         try {
             User currentUser = secureUserDetailService.getCurrentUser();
             return masterPageService.getMasterPage(pageTitle, new BodyFragment("student/home", "body-content"), currentUser);
+        } catch (BusinessServiceException e) {
+            return new ModelAndView("forbidden");
+        }
+    }
+
+    @RequestMapping(value = "/invitation/{id}", method = RequestMethod.GET)
+    public ModelAndView getInvitationView(@PathVariable String id) {
+        String pageTitle = "Mời vào nhóm";
+        try {
+            ModelAndView modelAndView;
+            User currentUser = secureUserDetailService.getCurrentUser();
+            Invitation invitation = invitationService.getById(id);
+            if (invitation != null) {
+                modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "body-content"), currentUser);
+                modelAndView.addObject("invitation", invitation);
+            } else {
+                modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "invalid-content"), currentUser);
+            }
+            return modelAndView;
         } catch (BusinessServiceException e) {
             return new ModelAndView("forbidden");
         }

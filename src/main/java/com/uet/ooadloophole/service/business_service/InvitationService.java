@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface InviteService {
+public interface InvitationService {
+    Invitation getById(String id);
+
     List<Invitation> create(String groupId, List<String> studentIdList, String content) throws BusinessServiceException;
 }

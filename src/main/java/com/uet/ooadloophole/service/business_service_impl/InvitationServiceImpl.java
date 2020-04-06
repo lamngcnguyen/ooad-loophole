@@ -4,7 +4,6 @@ import com.uet.ooadloophole.database.InvitationRepository;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.model.business.Invitation;
 import com.uet.ooadloophole.model.business.Notification;
-import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Service
-public class InviteServiceImpl implements InviteService {
+public class InvitationServiceImpl implements InvitationService {
     @Autowired
     private InvitationRepository invitationRepository;
     @Autowired
@@ -25,6 +24,11 @@ public class InviteServiceImpl implements InviteService {
     private GroupService groupService;
     @Autowired
     private NotificationService notificationService;
+
+    @Override
+    public Invitation getById(String id) {
+        return invitationRepository.findBy_id(id);
+    }
 
     @Override
     public List<Invitation> create(String groupId, List<String> studentIdList, String message) throws BusinessServiceException {
@@ -36,6 +40,7 @@ public class InviteServiceImpl implements InviteService {
             invitation.setReceiverId(studentService.getById(studentId).getUserId());
             invitation.setMessage(message);
             invitations.add(invitation);
+            Invitation createdInvitation = invitationRepository.save(invitation);
 
             Group group = groupService.getById(groupId);
             Notification notification = new Notification();
@@ -43,9 +48,9 @@ public class InviteServiceImpl implements InviteService {
             notification.setContent("Bạn đã được mời vào nhóm " + group.getGroupName());
             notification.setTimeStamp(timeStamp);
             notification.setReceiverId(studentService.getById(studentId).getUserId());
-            notification.setUrl("");
+            notification.setUrl("/student/invitation/" + createdInvitation.get_id());
             notification.setSeen(false);
-            invitationRepository.save(invitation);
+            notificationService.create(notification);
         }
         return invitations;
     }

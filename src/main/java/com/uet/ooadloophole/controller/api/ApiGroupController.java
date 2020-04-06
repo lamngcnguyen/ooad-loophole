@@ -1,10 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
-import com.uet.ooadloophole.controller.interface_model.DTOGroup;
-import com.uet.ooadloophole.controller.interface_model.IGroup;
-import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
-import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
+import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.model.business.Invitation;
 import com.uet.ooadloophole.model.business.Student;
@@ -12,10 +9,9 @@ import com.uet.ooadloophole.model.business.Topic;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
-import com.uet.ooadloophole.service.business_service.InviteService;
+import com.uet.ooadloophole.service.business_service.InvitationService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.TopicService;
-import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +32,7 @@ public class ApiGroupController {
     @Autowired
     private ConverterService converterService;
     @Autowired
-    private InviteService inviteService;
+    private InvitationService invitationService;
 
     private Gson gson = new Gson();
 
@@ -136,9 +132,9 @@ public class ApiGroupController {
     }
 
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
-    public ResponseEntity<Object> inviteMembers(String groupId, List<String> members, String message) {
+    public ResponseEntity<Object> inviteMembers(@RequestBody IInvitation iInvitation) {
         try {
-            List<Invitation> invitations = inviteService.create(groupId, members, message);
+            List<Invitation> invitations = invitationService.create(iInvitation.getGroupId(), iInvitation.getMembers(), iInvitation.getMessage());
             return ResponseEntity.status(HttpStatus.OK).body(invitations);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
