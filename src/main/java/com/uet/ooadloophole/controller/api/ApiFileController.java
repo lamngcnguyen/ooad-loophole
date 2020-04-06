@@ -133,7 +133,9 @@ public class ApiFileController {
                 .body(resource);
     }
 
-    @RequestMapping(value = "/spec/requirement", method = RequestMethod.POST)
+
+    //    ---------------------- REQUIREMENTS ----------------------
+    @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file) {
         try {
             RequirementSpecFile requirementSpecFile = requirementFileService.upload(file);
@@ -143,13 +145,44 @@ public class ApiFileController {
         }
     }
 
-    @RequestMapping(value = "/spec/requirement/assign/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> assignRequirementIdToSpecFile(@RequestBody String specFileId, @PathVariable String id) {
+    @RequestMapping(value = "/spec/req/multi", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadMultipleRequirementSpecFiles(@RequestParam("files") List<MultipartFile> files) {
+        try {
+            List<RequirementSpecFile> requirementSpecFiles = new ArrayList<>();
+            for (MultipartFile file : files) {
+                requirementSpecFiles.add(requirementFileService.upload(file));
+            }
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(requirementSpecFiles);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/req/assign/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignRequirementIdToSpecFile(@RequestParam String specFileId, @PathVariable String id) {
         try {
             requirementFileService.updateRequirementId(specFileId, id);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
         } catch (BusinessServiceException | IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/spec/req/multi/assign/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<String> assignRequirementIdToMultipleSpecFile(@RequestBody List<String> specFileIds, @PathVariable String id) {
+        try {
+            for (String specFileId : specFileIds) {
+                requirementFileService.updateRequirementId(specFileId, id);
+            }
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(gson.toJson(new ResponseMessage("assigned")));
+        } catch (BusinessServiceException | IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/requirement/{id}", method = RequestMethod.GET)
+    public RequirementSpecFile findReqSpecFile(@PathVariable String id) {
+        return requirementFileService.findById(id);
+
     }
 }

@@ -26,11 +26,15 @@ public class RequirementFileServiceImpl implements RequirementFileService {
     private RequirementSpecFileRepository requirementSpecFileRepository;
 
     @Override
+    public RequirementSpecFile findById(String id) {
+        return requirementSpecFileRepository.findBy_id(id);
+    }
+
+    @Override
     public void updateRequirementId(String specFileId, String requirementId) throws BusinessServiceException {
-        RequirementSpecFile dbRequirementSpecFile = requirementSpecFileRepository.findBy_id(specFileId);
-        String newPath = Constants.SPEC_FOLDER + requirementId + "/";
+        RequirementSpecFile dbRequirementSpecFile = findById(specFileId);
+        String newPath = Constants.REQ_FOLDER + requirementId + "/";
         dbRequirementSpecFile.setRequirementId(requirementId);
-        //specFile.getPath() may indicate the spec file is in temp folder
         String fileName = converterService.formatFileName(dbRequirementSpecFile.getFileName(), dbRequirementSpecFile.getTimeStamp(), dbRequirementSpecFile.getFileExtension());
         try {
             fileService.moveFile(fileName, dbRequirementSpecFile.getPath(), newPath);
@@ -45,7 +49,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
     @Override
     public RequirementSpecFile upload(MultipartFile file) throws BusinessServiceException {
         try {
-            String saveLocation = Constants.SPEC_FOLDER + "temp/";
+            String saveLocation = Constants.REQ_FOLDER + "temp/";
             RequirementSpecFile requirementSpecFile = new RequirementSpecFile();
             UserFile userFile = fileService.storeFile(file, saveLocation);
 
@@ -64,7 +68,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
 
     @Override
     public Resource download(String id) {
-        RequirementSpecFile requirementSpecFile = requirementSpecFileRepository.findBy_id(id);
+        RequirementSpecFile requirementSpecFile = findById(id);
         String saveLocation = requirementSpecFile.getPath();
         String fileName = converterService.formatFileName(requirementSpecFile.getFileName(), requirementSpecFile.getTimeStamp(), requirementSpecFile.getFileExtension());
         return fileService.loadFileAsResource(fileName, saveLocation);

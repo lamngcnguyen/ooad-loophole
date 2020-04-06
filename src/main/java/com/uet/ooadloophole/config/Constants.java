@@ -12,6 +12,7 @@ public class Constants {
     public static final String AVATAR_FOLDER = "avatar/";
     public static final String DEFAULT_AVATAR = "default.png";
     public static final String SPEC_FOLDER = "topic/";
+    public static final String REQ_FOLDER = "requirement/";
     public static final String TOKEN_ACTIVATE = "activate";
     public static final String TOKEN_RESET = "reset";
     public static final int TOKEN_EXPIRATION = 60 * 24;

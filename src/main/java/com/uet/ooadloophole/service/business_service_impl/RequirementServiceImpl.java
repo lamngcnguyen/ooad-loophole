@@ -34,21 +34,10 @@ public class RequirementServiceImpl implements RequirementService {
     public void create(Requirement requirement) throws BusinessServiceException {
         try {
             requirementsRepository.save(requirement);
-
-            String reqId = requirement.get_id();
-            RequirementSpecFile requirementSpecFile = requirement.getRequirementSpecFile();
-            assignRequirementIdToFile(reqId, requirementSpecFile);
-            requirement.setRequirementSpecFile(requirementSpecFile);
         } catch (Exception e) {
             throw new BusinessServiceException("Error creating requirement: " + e.getMessage());
         }
     }
-
-
-//    @Override
-//    public void create(String name, String description, MultipartFile file, String savelocation) throws BusinessServiceException {
-//
-//    }
 
     @Override
     public Requirement update(String id, Requirement requirement) throws BusinessServiceException {

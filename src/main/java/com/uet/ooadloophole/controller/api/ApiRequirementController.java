@@ -19,12 +19,12 @@ public class ApiRequirementController {
         return requirementService.getAllRequirement();
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public void deleteRequirement(@RequestParam String id) throws BusinessServiceException {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteRequirement(@PathVariable String id) throws BusinessServiceException {
         requirementService.delete(id);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public Requirement createRequirement(@RequestBody Requirement requirement) throws BusinessServiceException {
         requirementService.create(requirement);
         return requirement;
@@ -36,13 +36,13 @@ public class ApiRequirementController {
         return requirementService.getById(id);
     }
 
-    @RequestMapping(value = "/id", method = RequestMethod.GET)
-    public Requirement getRequirement(@RequestParam String id) throws BusinessServiceException {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Requirement getRequirement(@PathVariable String id) throws BusinessServiceException {
         return requirementService.getById(id);
     }
 
-    @RequestMapping(value = "/id/child", method = RequestMethod.GET)
-    public List<Requirement> getChildRequirement(@RequestParam String id) throws BusinessServiceException {
+    @RequestMapping(value = "/{id}/child", method = RequestMethod.GET)
+    public List<Requirement> getChildRequirement(@PathVariable String id) throws BusinessServiceException {
         return requirementService.getById(id).getChildRequirements();
     }
 }

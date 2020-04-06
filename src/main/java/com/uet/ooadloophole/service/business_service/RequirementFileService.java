@@ -12,6 +12,8 @@ import java.io.IOException;
 public interface RequirementFileService {
     RequirementSpecFile upload(MultipartFile file) throws BusinessServiceException;
 
+    RequirementSpecFile findById(String id);
+
     void updateRequirementId(String specFileId, String requirementId) throws BusinessServiceException, IOException;
 
     Resource download(String id);
