@@ -100,7 +100,7 @@ public class StudentServiceImpl implements StudentService {
             studentRepository.save(student);
             return student;
         } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Unable to create student: " + e.getMessage());
+            throw new BusinessServiceException("Unable to createInvitation student: " + e.getMessage());
         }
     }
 

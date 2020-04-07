@@ -24,9 +24,9 @@ public interface UserService {
 
     List<User> getAllByRole(String roleName) throws BusinessServiceException;
 
-    User createActivatedUser(User user, String[] roleNames) throws BusinessServiceException; //create pre-activated user
+    User createActivatedUser(User user, String[] roleNames) throws BusinessServiceException; //createInvitation pre-activated user
 
-    User create(User user) throws BusinessServiceException; //default create user method
+    User create(User user) throws BusinessServiceException; //default createInvitation user method
 
     User update(String userId, User user) throws BusinessServiceException;
 

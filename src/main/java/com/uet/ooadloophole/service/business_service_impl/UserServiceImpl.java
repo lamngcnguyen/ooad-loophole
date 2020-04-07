@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 //            emailService.sendActivationEmail(user);
             return user;
         } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Unable to create user: " + e.getMessage());
+            throw new BusinessServiceException("Unable to createInvitation user: " + e.getMessage());
         }
     }
 
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return user;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BusinessServiceException("Unable to create user: " + e.getMessage());
+            throw new BusinessServiceException("Unable to createInvitation user: " + e.getMessage());
         }
     }
 

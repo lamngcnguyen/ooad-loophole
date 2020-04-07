@@ -125,15 +125,7 @@ public class ClassServiceImpl implements ClassService {
         students.forEach(student -> {
             try {
                 student.setClassId(classId);
-                if (groupService.findOneByName(student.getGroupName()) == null) {
-                    Group group = new Group();
-                    group.setGroupName(student.getGroupName());
-                    group.setClassId(classId);
-                    student.setGroupId(group.get_id());
-                } else {
-                    student.setGroupId(groupService.findOneByName(student.getGroupName()).get_id());
-                }
-//                createdStudents.add(studentService.create(student));
+//                createdStudents.add(studentService.createInvitation(student));
                 newStudentList.add(studentService.create(student));
             } catch (BusinessServiceException e) {
 //                students.remove(student);

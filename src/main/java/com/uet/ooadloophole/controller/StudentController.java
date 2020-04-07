@@ -1,13 +1,15 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.Invitation;
+import com.uet.ooadloophole.model.business.Group;
+import com.uet.ooadloophole.model.business.Request;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.InvitationService;
+import com.uet.ooadloophole.service.business_service.GroupService;
+import com.uet.ooadloophole.service.business_service.RequestService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,9 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private InvitationService invitationService;
+    private RequestService requestService;
+    @Autowired
+    private GroupService groupService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -41,15 +45,18 @@ public class StudentController {
 
     @RequestMapping(value = "/invitation/{id}", method = RequestMethod.GET)
     public ModelAndView getInvitationView(@PathVariable String id) {
-        String pageTitle = "Mời vào nhóm";
         try {
+            Request request = requestService.getById(id);
             ModelAndView modelAndView;
             User currentUser = secureUserDetailService.getCurrentUser();
-            Invitation invitation = invitationService.getById(id);
-            if (invitation != null) {
+            if (request != null) {
+                Group group = groupService.getById(request.getGroupId());
+                String pageTitle = "Bạn đã được mời vào nhóm " + group.getGroupName();
                 modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "body-content"), currentUser);
-                modelAndView.addObject("invitation", invitation);
+                modelAndView.addObject("invitation", request);
+                modelAndView.addObject("group", group);
             } else {
+                String pageTitle = "Lời mời không hợp lệ";
                 modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "invalid-content"), currentUser);
             }
             return modelAndView;
@@ -90,8 +97,7 @@ public class StudentController {
                 Student student = studentService.getByUserId(currentUser.get_id());
                 if (student.getGroupId() == null) {
                     modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/unassigned", "body-content"), currentUser);
-                }
-                else {
+                } else {
                     String roleFolder = currentUser.hasRole("group_leader") ? "leader" : "member";
                     bodyFragment.setFragment(roleFolder + "-" + bodyFragment.getFragment());
                     modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);

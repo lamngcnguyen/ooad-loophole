@@ -79,7 +79,7 @@ public class ApplicationSetup implements InitializingBean {
             user.setPhoneNumber("0915141031");
             userService.createActivatedUser(user, new String[]{"admin"});
         } catch (BusinessServiceException e) {
-            System.out.println("Error create default admin account: " + e.getMessage());
+            System.out.println("Error createInvitation default admin account: " + e.getMessage());
         }
     }
 

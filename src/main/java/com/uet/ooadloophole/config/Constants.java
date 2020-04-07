@@ -15,5 +15,7 @@ public class Constants {
     public static final String REQ_FOLDER = "requirement/";
     public static final String TOKEN_ACTIVATE = "activate";
     public static final String TOKEN_RESET = "reset";
+    public static final String INVITATION = "invitation";
+    public static final String REQUEST = "request";
     public static final int TOKEN_EXPIRATION = 60 * 24;
 }

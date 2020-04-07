@@ -2,12 +2,13 @@ package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 
-public class Invitation {
+public class Request {
     @Id
     private String _id;
     private String groupId;
     private String receiverId;
     private String message;
+    private String type;
 
     public String get_id() {
         return _id;
@@ -39,5 +40,13 @@ public class Invitation {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

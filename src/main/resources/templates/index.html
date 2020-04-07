@@ -48,7 +48,7 @@
                 Thông báo
             </div>
             <div class="ui relaxed divided animated small list">
-                <a class="item" th:each="noti: ${notifications}" th:href="${noti.getUrl()}" target="_blank">
+                <a class="item" th:each="noti: ${notifications}" th:href="${noti.getUrl()}">
                     <img th:src="@{/images/default.png}" class="ui avatar image">
                     <div class="content">
                         <div class="header" th:text="${noti.getSubject()}"></div>

@@ -58,7 +58,7 @@ public class GroupServiceImpl implements GroupService {
             studentService.assignGroup(group.getLeader().get_id(), group.get_id());
             return group;
         } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Unable to create group: " + e.getMessage());
+            throw new BusinessServiceException("Unable to createInvitation group: " + e.getMessage());
         }
     }
 

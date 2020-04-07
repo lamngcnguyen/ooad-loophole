@@ -59,7 +59,7 @@ public class FileServiceImpl implements FileService {
         File saveLocation = new File(newPath);
         if (!saveLocation.exists()) {
             if (!saveLocation.mkdir()) {
-                throw new BusinessServiceException("Unable to create path " + newPath);
+                throw new BusinessServiceException("Unable to createInvitation path " + newPath);
             }
         }
         if (!file.renameTo(new File(newPath + filename))) {

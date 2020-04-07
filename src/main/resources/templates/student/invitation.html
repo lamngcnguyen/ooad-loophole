@@ -5,11 +5,47 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="body-content">
-    This is invitation view
+<div th:fragment="body-content" class="ui stackable black grid">
+    <div class="row"></div>
+    <div class="row">
+        <div class="six wide centered column">
+            <div class="ui grid segment">
+
+                <div class="row">
+                    <div class="column">
+                        <div class="ui large header">
+                            <span th:text="${group.getLeader().getFullName()}"></span>
+                            đã gửi bạn lời mời vào nhóm
+                            <span th:text="${group.getGroupName()}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="row">
+                    <div class="column">
+                        <div class="ui medium header">Nội dung lời mời</div>
+                        <p th:text="${invitation.getMessage()}"></p>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="row">
+                    <div class="eight wide column">
+                        <div class="ui red fluid button" onclick="window.history.back()">
+                            Từ chối
+                        </div>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui green fluid button">
+                            Chấp nhận
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div th:fragment="invalid-content">
-    This is invalid invitation view
+    This is invalid request view
 </div>
 </body>
 </html>

@@ -47,7 +47,7 @@ public class ApiTopicController {
         }
     }
 
-    //TODO: create Spring Security Rules for these requests
+    //TODO: createInvitation Spring Security Rules for these requests
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Topic> createTopic(@RequestBody Topic topic) {
         Topic newTopic = topicService.create(topic);

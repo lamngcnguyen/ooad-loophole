@@ -74,13 +74,13 @@ public class AuthController {
     @RequestMapping(value = "/activate-account", method = RequestMethod.GET)
     private ModelAndView activateAccount(@RequestParam String token) {
         if (tokenService.isValid(token) && tokenService.isTypeValid(token, Constants.TOKEN_ACTIVATE)) {
-            //TODO: create activate account view
+            //TODO: createInvitation activate account view
             ModelAndView model = new ModelAndView();
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());
             model.setViewName("security/activate");
             return model;
         } else {
-            //TODO: create error view
+            //TODO: createInvitation error view
             ModelAndView errorView = new ModelAndView();
             errorView.setViewName("error");
             return errorView;
@@ -115,13 +115,13 @@ public class AuthController {
     @RequestMapping(value = "/resetAccount", method = RequestMethod.GET)
     private ModelAndView resetAccount(@RequestParam String token) {
         if (tokenService.isValid(token) && tokenService.isTypeValid(token, Constants.TOKEN_RESET)) {
-            //TODO: create activate account view
+            //TODO: createInvitation activate account view
             ModelAndView model = new ModelAndView();
             model.addObject("userId", tokenService.getByTokenString(token).getUserId());
             model.setViewName("security/reset");
             return model;
         } else {
-            //TODO: create error view
+            //TODO: createInvitation error view
             ModelAndView errorView = new ModelAndView();
             errorView.setViewName("error");
             return errorView;

@@ -3,13 +3,13 @@ package com.uet.ooadloophole.controller.api;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.model.business.Group;
-import com.uet.ooadloophole.model.business.Invitation;
+import com.uet.ooadloophole.model.business.Request;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.Topic;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
-import com.uet.ooadloophole.service.business_service.InvitationService;
+import com.uet.ooadloophole.service.business_service.RequestService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import com.uet.ooadloophole.service.business_service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class ApiGroupController {
     @Autowired
     private ConverterService converterService;
     @Autowired
-    private InvitationService invitationService;
+    private RequestService requestService;
 
     private Gson gson = new Gson();
 
@@ -134,8 +134,8 @@ public class ApiGroupController {
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     public ResponseEntity<Object> inviteMembers(@RequestBody IInvitation iInvitation) {
         try {
-            List<Invitation> invitations = invitationService.create(iInvitation.getGroupId(), iInvitation.getMembers(), iInvitation.getMessage());
-            return ResponseEntity.status(HttpStatus.OK).body(invitations);
+            List<Request> requests = requestService.createInvitation(iInvitation.getGroupId(), iInvitation.getMembers(), iInvitation.getMessage());
+            return ResponseEntity.status(HttpStatus.OK).body(requests);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

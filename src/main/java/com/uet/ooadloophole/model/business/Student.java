@@ -8,16 +8,14 @@ public class Student {
     private String userId;
     private String classId;
     private String groupId;
-    private String groupName;
     private String studentId;
     private String fullName;
 
     public Student() {
     }
 
-    public Student(String fullName, String groupName, String studentId) {
+    public Student(String fullName, String studentId) {
         this.fullName = fullName;
-        this.groupName = groupName;
         this.studentId = studentId;
     }
 
@@ -51,14 +49,6 @@ public class Student {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
     }
 
     public String getStudentId() {
