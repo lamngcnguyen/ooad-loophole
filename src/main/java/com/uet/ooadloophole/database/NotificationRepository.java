@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface NotificationRepository extends MongoRepository<Notification, String> {
     List<Notification> findAllByReceiverId(String receiverId);
-
     Notification findBy_id(String _id);
 }

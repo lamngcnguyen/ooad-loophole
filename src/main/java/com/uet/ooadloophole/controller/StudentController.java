@@ -49,12 +49,14 @@ public class StudentController {
             Request request = requestService.getById(id);
             ModelAndView modelAndView;
             User currentUser = secureUserDetailService.getCurrentUser();
+            Student student = studentService.getByUserId(currentUser.get_id());
             if (request != null) {
                 Group group = groupService.getById(request.getGroupId());
                 String pageTitle = "Bạn đã được mời vào nhóm " + group.getGroupName();
                 modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "body-content"), currentUser);
                 modelAndView.addObject("invitation", request);
                 modelAndView.addObject("group", group);
+                modelAndView.addObject("student", student);
             } else {
                 String pageTitle = "Lời mời không hợp lệ";
                 modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "invalid-content"), currentUser);

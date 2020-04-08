@@ -9,43 +9,56 @@
     <div class="row"></div>
     <div class="row">
         <div class="six wide centered column">
-            <div class="ui grid segment">
-
-                <div class="row">
-                    <div class="column">
-                        <div class="ui large header">
-                            <span th:text="${group.getLeader().getFullName()}"></span>
-                            đã gửi bạn lời mời vào nhóm
-                            <span th:text="${group.getGroupName()}"></span>
+            <div class="ui labeled icon button" onclick="window.history.back()">
+                <i class="arrow left icon"></i>
+                Quay lại
+            </div>
+            <div class="ui form invitation-form">
+                <div class="ui grid segment">
+                    <input type="hidden" id="student_id" th:value="${student.get_id()}">
+                    <input type="hidden" id="invitationId" th:value="${invitation.get_id()}">
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui large header">
+                                <i class="envelope icon"></i>
+                                <div class="content">
+                                    <span th:text="${group.getLeader().getFullName()}"></span>
+                                    đã gửi bạn lời mời vào nhóm
+                                    <span th:text="${group.getGroupName()}"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="row">
-                    <div class="column">
-                        <div class="ui medium header">Nội dung lời mời</div>
-                        <p th:text="${invitation.getMessage()}"></p>
-                    </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="row">
-                    <div class="eight wide column">
-                        <div class="ui red fluid button" onclick="window.history.back()">
-                            Từ chối
+                    <div class="ui divider"></div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui medium header">Nội dung lời mời</div>
+                            <p th:text="${invitation.getMessage()}"></p>
                         </div>
                     </div>
-                    <div class="eight wide column">
-                        <div class="ui green fluid button">
-                            Chấp nhận
+                    <div class="ui divider"></div>
+                    <div class="ui error message"></div>
+                    <div class="row">
+                        <div class="eight wide column">
+                            <div class="ui red fluid button" onclick="denyInvitation()">
+                                Từ chối
+                            </div>
+                        </div>
+                        <div class="eight wide column">
+                            <button class="ui green fluid button" onclick="acceptInvitation()">
+                                Chấp nhận
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="/js/student/common/api.js"></script>
+    <script type="text/javascript" src="/js/student/common/invitation.js"></script>
 </div>
 <div th:fragment="invalid-content">
-    This is invalid request view
+    This is invalid invitation view
 </div>
 </body>
 </html>
