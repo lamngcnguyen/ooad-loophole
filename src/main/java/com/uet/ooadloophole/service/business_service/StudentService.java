@@ -24,6 +24,8 @@ public interface StudentService {
 
     List<Student> getByGroup(String groupId);
 
+    List<Student> getStudentsWithoutGroup(String classId);
+
     Student create(Student student) throws BusinessServiceException;
 
     boolean studentIdExists(String studentId);

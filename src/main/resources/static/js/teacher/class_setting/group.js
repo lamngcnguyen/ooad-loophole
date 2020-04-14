@@ -57,13 +57,11 @@ const groupTable = $(".group .ui.table").DataTable({
             .click(function () {
                 $('.form.edit-group').form('set values', {
                     id: data._id,
-                    name: data.name,
-                    descriptions: data.descriptions,
-                    groupId: data.groupId
+                    name: data.name
                 });
                 showModal('.modal.edit-group');
             });
-        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa đề tài" data-inverted=""><i class="trash icon"></i></button>')
+        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa nhóm" data-inverted=""><i class="trash icon"></i></button>')
             .click(function () {
                 showModal('.modal.delete-group');
             });
@@ -89,8 +87,68 @@ $('.form.create-group').form({
             method: 'post',
             dataType: 'json',
             data: JSON.stringify(data),
-            //TODO: finish this
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;char=utf-8');
+            },
+            onSuccess: function () {
+                hideDimmer('.modal.create-group');
+                hideModal('.modal.create-group');
+                reloadGroupTable()
+            },
+            onFailure: function (response) {
+                hideDimmer('.modal.create-group');
+                $('.form.create-group').form('add errors', [response]);
+            }
         })
+    }
+});
+
+$('.form.edit-group').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.form.create-group');
+        data['classId'] = classId;
+        $.api({
+            action: 'edit group',
+            on: 'now',
+            method: 'put',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;char=utf-8');
+            },
+            onSuccess: function () {
+                hideDimmer('.modal.create-group');
+                hideModal('.modal.create-group');
+                reloadGroupTable()
+            },
+            onFailure: function (response) {
+                hideDimmer('.modal.create-group');
+                $('.form.create-group').form('add errors', [response]);
+            }
+        })
+    }
+});
+
+$('.form.delete-group').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-group');
+        $.api({
+            action: 'delete group',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-group');
+                hideModal('.modal.delete-group');
+                reloadGroupTable();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-group');
+                $('.form.delete-group').form('add errors', [res]);
+            }
+        });
     }
 });
 
@@ -131,3 +189,8 @@ $('.modal.create-group').modal({
         });
     }
 });
+
+function reloadGroupTable() {
+    groupRowIndex = 0;
+    groupTable.ajax.reload();
+}

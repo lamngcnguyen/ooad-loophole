@@ -78,6 +78,10 @@ public class ClassServiceImpl implements ClassService {
         return studentService.getByClass(classId);
     }
 
+    @Override
+    public List<Student> getStudentsWithoutGroup(String classId) {
+        return studentService.getStudentsWithoutGroup(classId);
+    }
 
     @Override
     public void delete(String classId) throws BusinessServiceException {

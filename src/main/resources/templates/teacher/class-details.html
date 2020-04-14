@@ -452,6 +452,79 @@
             </div>
         </div>
     </div>
+    <div class="ui small modal edit-group">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="blue pencil icon"></i>
+            Sửa thông tin nhóm
+        </div>
+        <div class="content">
+            <div class="ui form edit-group">
+                <div class="field">
+                    <div class="fields">
+                        <input type="hidden" name="id">
+                        <div class="eight wide required field">
+                            <label>Tên nhóm</label>
+                            <input type="text" name="name" placeholder="Group name">
+                        </div>
+                        <div class="eight wide required field">
+                            <label>Trưởng nhóm</label>
+                            <div class="ui search selection dropdown leader">
+                                <input type="hidden" name="leaderId">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Select leader</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Thành viên</label>
+                    <div class="ui multiple search selection dropdown member">
+                        <input type="hidden" name="memberId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select member</div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-group')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated blue labeled icon submit button">
+                    <i class="pencil icon"></i>
+                    Sửa
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal delete-group">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Cảnh báo
+        </div>
+        <div class="content">
+            <div class="ui form delete-group">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Bạn có chắc chắn muốn xóa nhóm này không?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Có
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-group')">
+                    <i class="close icon"></i>
+                    Không
+                </div>
+            </div>
+        </div>
+    </div>
     <!---------------------------------Topic modals--------------------------------->
     <div class="ui large modal create-topic">
         <div class="ui dimmer">
@@ -671,6 +744,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <!---------------------------------Assignment modals--------------------------------->
+    <div class="ui large modal add assignment">
+
     </div>
     <div class="ui modal jquery-template">
         <table>

@@ -142,6 +142,20 @@ public class ApiClassController {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoStudents)));
     }
 
+    @RequestMapping(value = "/{classId}/students/withoutGroup", method = RequestMethod.GET)
+    public ResponseEntity<String> getStudentsWithoutGroup(@PathVariable String classId) {
+        List<DTOStudent> dtoStudents = new ArrayList<>();
+        classService.getStudentsWithoutGroup(classId).forEach(student -> {
+            try {
+                dtoStudents.add(converterService.convertToDTOStudent(student));
+            } catch (BusinessServiceException e) {
+                //TODO: add logger here
+                e.printStackTrace();
+            }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoStudents)));
+    }
+
     @RequestMapping(value = "/{id}/students/import", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Object> importStudents(@PathVariable String id, @RequestBody List<Student> students) {
         try {

@@ -23,6 +23,8 @@ public interface StudentRepository extends MongoRepository<Student, String> {
 
     List<Student> findAllByGroupId(String groupId);
 
+    List<Student> findAllByClassIdAndGroupId(String classId, String groupId);
+
     List<Student> deleteAllByClassId(String classId);
 
     List<Student> findAllByFullNameLikeIgnoreCaseOrStudentIdLike(String fullName, String studentId);

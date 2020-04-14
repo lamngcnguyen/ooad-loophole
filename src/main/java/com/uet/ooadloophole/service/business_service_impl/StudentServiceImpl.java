@@ -81,6 +81,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> getStudentsWithoutGroup(String classId) {
+        return studentRepository.findAllByClassIdAndGroupId(classId, null);
+    }
+
+    @Override
     public Student create(Student student) throws BusinessServiceException {
         try {
             if (studentIdExists(student.getStudentId())) {

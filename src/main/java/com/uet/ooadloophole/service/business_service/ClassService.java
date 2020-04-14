@@ -23,6 +23,8 @@ public interface ClassService {
 
     List<Student> getAllStudents(String classId);
 
+    List<Student> getStudentsWithoutGroup(String classId);
+
     void delete(String classId) throws BusinessServiceException;
 
     Class update(String id, Class ooadClass) throws BusinessServiceException;
