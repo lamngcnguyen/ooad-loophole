@@ -6,6 +6,7 @@ public class UserFile {
     private String timeStamp;
     private String uploaderId;
     private String path;
+    private String previousVersionId;
 
     public String getFileName() {
         return fileName;
@@ -45,5 +46,13 @@ public class UserFile {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getPreviousVersionId() {
+        return previousVersionId;
+    }
+
+    public void setPreviousVersionId(String previousVersionId) {
+        this.previousVersionId = previousVersionId;
     }
 }

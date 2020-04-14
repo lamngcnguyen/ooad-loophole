@@ -27,6 +27,7 @@
                 <a class="active student item" onclick="showTab('student')">Sinh viên</a>
                 <a class="group item" onclick="showTab('group')">Nhóm</a>
                 <a class="topic item" onclick="showTab('topic')">Đề tài</a>
+                <a class="assignment item" onclick="showTab('assignment')">Bài tập</a>
             </div>
             <!---------------------------------Student table--------------------------------->
             <div class="ui active student tab segment stackable grid">
@@ -191,6 +192,45 @@
                             </tr>
                             </thead>
                         </table>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------Assignment tab--------------------------------->
+            <div class="ui assignment tab segment stackable grid">
+                <div class="row">
+                    <div class="column">
+                        <button type="button" class="ui labeled icon green button"
+                                onclick="showModal('.modal.create-topic')">
+                            <i class="plus icon"></i>
+                            Thêm mới
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="three wide column">
+                        <div class="ui vertical fluid menu">
+                            <div class="active blue item assignment-item">
+                                Bài tập tuần 1
+                            </div>
+                            <div class="item assignment-item">
+                                Bài tập tuần 2
+                            </div>
+                            <div class="item assignment-item">
+                                Bài tập tuần 3
+                            </div>
+                            <div class="item assignment-item">
+                                Bài tập tuần 4
+                            </div>
+                        </div>
+                    </div>
+                    <div class="thirteen wide stretched column">
+                        <div class="ui active tab segment assignment">
+                            <div class="ui header">
+                                Bài tập tuần 1
+                            </div>
+                            <div class="ui divider" style="margin: 0 !important;"></div>
+                            <div class=""></div>
+                        </div>
                     </div>
                 </div>
             </div>

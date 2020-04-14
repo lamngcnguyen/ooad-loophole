@@ -10,8 +10,8 @@ public class Iteration {
     private String name;
     private String groupId;
     private String objective;
-    private LocalDate endDateTime;
-    private LocalDate startDateTime;
+    private String endDateTime;
+    private String startDateTime;
 
     public String get_id() {
         return _id;
@@ -37,11 +37,11 @@ public class Iteration {
         this.objective = objective;
     }
 
-    public LocalDate getEndDateTime() {
+    public String getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(LocalDate endDateTime) {
+    public void setEndDateTime(String endDateTime) {
         this.endDateTime = endDateTime;
     }
 
@@ -53,11 +53,11 @@ public class Iteration {
         this.groupId = groupId;
     }
 
-    public LocalDate getStartDateTime() {
+    public String getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(LocalDate startDateTime) {
+    public void setStartDateTime(String startDateTime) {
         this.startDateTime = startDateTime;
     }
 }

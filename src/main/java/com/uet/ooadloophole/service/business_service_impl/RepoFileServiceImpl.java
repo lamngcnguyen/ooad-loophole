@@ -62,8 +62,4 @@ public class RepoFileServiceImpl implements RepoFileService {
         return fileService.loadFileAsResource(fileName, path);
     }
 
-    @Override
-    public void score(RepoFile repoFile, int score) {
-
-    }
 }
