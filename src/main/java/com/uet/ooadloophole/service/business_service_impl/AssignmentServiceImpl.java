@@ -19,12 +19,26 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public List<Assignment> getByClass(String classId) {
+    public List<Assignment> getAllByClass(String classId) {
         return assignmentRepository.findByClassId(classId);
     }
 
     @Override
     public Assignment create(Assignment assignment) {
         return assignmentRepository.save(assignment);
+    }
+
+    @Override
+    public Assignment edit(String id, Assignment assignment) {
+        Assignment dbAssignment = getById(id);
+        dbAssignment.setName(assignment.getName());
+        dbAssignment.setDescription(assignment.getDescription());
+        dbAssignment.setDeadline(assignment.getDeadline());
+        return assignmentRepository.save(dbAssignment);
+    }
+
+    @Override
+    public void delete(String id) {
+        assignmentRepository.delete(getById(id));
     }
 }

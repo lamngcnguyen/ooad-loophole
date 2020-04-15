@@ -1,10 +1,19 @@
-package com.uet.ooadloophole.controller.interface_model.interfaces;
+package com.uet.ooadloophole.controller.interface_model.dto;
 
-public class IAssignment {
+public class DTOAssignment {
+    private String _id;
     private String name;
     private String classId;
     private String description;
     private String deadline;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getName() {
         return name;

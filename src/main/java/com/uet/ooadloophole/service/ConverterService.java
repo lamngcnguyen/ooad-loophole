@@ -204,4 +204,14 @@ public class ConverterService {
         assignment.setDeadline(LocalDate.parse(iAssignment.getDeadline(), formatter));
         return assignment;
     }
+
+    public DTOAssignment convertToDTOAssignment(Assignment assignment) {
+        DTOAssignment dtoAssignment = new DTOAssignment();
+        dtoAssignment.set_id(assignment.get_id());
+        dtoAssignment.setName(assignment.getName());
+        dtoAssignment.setClassId(assignment.getClassId());
+        dtoAssignment.setDescription(assignment.getDescription());
+        dtoAssignment.setDeadline(assignment.getDeadline().toString());
+        return dtoAssignment;
+    }
 }

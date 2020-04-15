@@ -17,7 +17,11 @@ $.fn.api.settings.api = {
     'upload multiple spec': '/api/files/spec/topic/multiple',
     'assign topic spec': '/api/files/spec/topic/assign/{id}',
     'assign topic multiple spec': '/api/files/spec/topic/multi/assign/{id}',
-    'create assignment': '/api/assignments'
+    'get assignments': '/api/classes/{classId}/assignments',
+    'get assignment': '/api/assignments/{id}',
+    'create assignment': '/api/assignments',
+    'edit assignment': '/api/assignments/{id}',
+    'delete assignment': '/api/assignments/{id}'
 };
 
 const UPLOAD_TIMEOUT = 10000;

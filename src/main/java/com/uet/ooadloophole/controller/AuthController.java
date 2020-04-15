@@ -33,9 +33,9 @@ public class AuthController {
     @Autowired
     private NotificationService notificationService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String indexView() {
-        return "redirect:/login";
+        return "redirect:/home";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

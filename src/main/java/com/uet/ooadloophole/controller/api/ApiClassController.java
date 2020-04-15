@@ -3,19 +3,13 @@ package com.uet.ooadloophole.controller.api;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
-import com.uet.ooadloophole.controller.interface_model.dto.DTOClass;
-import com.uet.ooadloophole.controller.interface_model.dto.DTOGroup;
-import com.uet.ooadloophole.controller.interface_model.dto.DTOStudent;
-import com.uet.ooadloophole.controller.interface_model.dto.DTOTopic;
+import com.uet.ooadloophole.controller.interface_model.dto.*;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.SecureUserDetailService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.ClassService;
-import com.uet.ooadloophole.service.business_service.GroupService;
-import com.uet.ooadloophole.service.business_service.TokenService;
-import com.uet.ooadloophole.service.business_service.TopicService;
+import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +31,8 @@ public class ApiClassController {
     private TopicService topicService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private AssignmentService assignmentService;
     @Autowired
     private ConverterService converterService;
 
@@ -223,5 +219,13 @@ public class ApiClassController {
         List<DTOGroup> dtoGroups = new ArrayList<>();
         groups.forEach(group -> dtoGroups.add(converterService.convertToDTOGroup(group)));
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoGroups)));
+    }
+
+    @RequestMapping(value = "/{classId}/assignments", method = RequestMethod.GET)
+    public ResponseEntity<String> getAssignments(@PathVariable String classId) {
+        List<Assignment> assignments = assignmentService.getAllByClass(classId);
+        List<DTOAssignment> dtoAssignments = new ArrayList<>();
+        assignments.forEach(assignment -> dtoAssignments.add(converterService.convertToDTOAssignment(assignment)));
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoAssignments)));
     }
 }

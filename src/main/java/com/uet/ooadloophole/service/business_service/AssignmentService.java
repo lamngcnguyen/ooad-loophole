@@ -9,7 +9,11 @@ import java.util.List;
 public interface AssignmentService {
     Assignment getById(String id);
 
-    List<Assignment> getByClass(String classId);
+    List<Assignment> getAllByClass(String classId);
 
     Assignment create(Assignment assignment);
+
+    Assignment edit(String id, Assignment assignment);
+
+    void delete(String id);
 }
