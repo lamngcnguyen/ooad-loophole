@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Set;
 
-public class User {
+public class LoopholeUser {
     @Id
     private String _id;
     private String username;
@@ -18,11 +18,11 @@ public class User {
     private boolean active;
     private String phoneNumber;
 
-    public User() {
+    public LoopholeUser() {
 
     }
 
-    public User(String username, String password) {
+    public LoopholeUser(String username, String password) {
         this.username = username;
         this.password = password;
     }

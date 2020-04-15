@@ -1,9 +1,9 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.MasterPageService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/home")
 public class HomeController {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
 
     @Autowired
     private MasterPageService masterPageService;
@@ -27,7 +27,7 @@ public class HomeController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomePage() {
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             ModelAndView modelAndView = masterPageService.getMasterPage("Nhà", new BodyFragment("index", "body-content"), currentUser);
             modelAndView.addObject("notifications", notificationService.getAllByReceiverId(currentUser.get_id()));
             return modelAndView;

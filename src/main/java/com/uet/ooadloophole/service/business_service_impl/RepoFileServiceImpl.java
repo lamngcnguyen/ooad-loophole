@@ -4,7 +4,7 @@ import com.uet.ooadloophole.database.RepoFileRepository;
 import com.uet.ooadloophole.model.business.RepoFile;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.UserFile;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;
 import com.uet.ooadloophole.service.business_service.FileService;
@@ -20,7 +20,7 @@ import java.time.Instant;
 @Service
 public class RepoFileServiceImpl implements RepoFileService {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private StudentService studentService;
     @Autowired
@@ -33,7 +33,7 @@ public class RepoFileServiceImpl implements RepoFileService {
         try {
             String saveLocation;
             RepoFile repoFile = new RepoFile();
-            String userId = secureUserDetailService.getCurrentUser().get_id();
+            String userId = secureUserService.getCurrentUser().get_id();
             Student currentStudent = studentService.getById(userId);
 
             String groupId = currentStudent.getGroupId();

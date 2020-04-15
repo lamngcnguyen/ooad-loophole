@@ -2,11 +2,11 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.model.business.Group;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.model.business.Request;
 import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.MasterPageService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.RequestService;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/student")
 public class StudentController {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private MasterPageService masterPageService;
     @Autowired
@@ -36,7 +36,7 @@ public class StudentController {
     public ModelAndView getHomeView() {
         String pageTitle = "Sinh viên";
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             return masterPageService.getMasterPage(pageTitle, new BodyFragment("student/home", "body-content"), currentUser);
         } catch (BusinessServiceException e) {
             return new ModelAndView("forbidden");
@@ -48,7 +48,7 @@ public class StudentController {
         try {
             Request request = requestService.getById(id);
             ModelAndView modelAndView;
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             Student student = studentService.getByUserId(currentUser.get_id());
             if (request != null) {
                 Group group = groupService.getById(request.getGroupId());
@@ -94,7 +94,7 @@ public class StudentController {
     private ModelAndView getStudentView(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             if (currentUser.hasRole("student")) {
                 Student student = studentService.getByUserId(currentUser.get_id());
                 if (student.getGroupId() == null) {

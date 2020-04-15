@@ -39,9 +39,9 @@ public class ConverterService {
     @Autowired
     private TopicSpecFileService topicSpecFileService;
 
-    public User convertUserInterface(IUser iUser) throws BusinessServiceException {
+    public LoopholeUser convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
-        User user = new User();
+        LoopholeUser user = new LoopholeUser();
         user.setUsername(iUser.getUsername());
         user.setFullName(iUser.getFullName());
         user.setEmail(iUser.getEmail());
@@ -78,7 +78,7 @@ public class ConverterService {
     public DTOStudent convertToDTOStudent(Student student) throws BusinessServiceException {
         DTOStudent dtoStudent = new DTOStudent();
         Class ooadClass = classService.getById(student.getClassId());
-        User user = userService.getById(student.getUserId());
+        LoopholeUser user = userService.getById(student.getUserId());
         dtoStudent.set_id(student.get_id());
         dtoStudent.setStudentId(student.getStudentId());
         dtoStudent.setClassId(student.getClassId());
@@ -92,7 +92,7 @@ public class ConverterService {
 
     public DTOClass convertToDTOClass(Class ooadClass) throws BusinessServiceException {
         DTOClass dtoClass = new DTOClass();
-        User user = userService.getById(ooadClass.getTeacherId());
+        LoopholeUser user = userService.getById(ooadClass.getTeacherId());
         Semester semester = semesterService.getById(ooadClass.getSemesterId());
 
         dtoClass.set_id(ooadClass.get_id());
@@ -124,7 +124,7 @@ public class ConverterService {
         return dtoSemester;
     }
 
-    public DTOUser convertToDTOUser(User user) {
+    public DTOUser convertToDTOUser(LoopholeUser user) {
         DTOUser dtoUser = new DTOUser();
         dtoUser.set_id(user.get_id());
         dtoUser.setUsername(user.getUsername());

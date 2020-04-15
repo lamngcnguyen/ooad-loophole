@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.uet.ooadloophole.model.Token;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
 import com.uet.ooadloophole.service.business_service.RoleService;
@@ -64,14 +64,14 @@ public class ApplicationSetup implements InitializingBean {
 
     private void createAdmin() {
         try {
-            User user;
+            LoopholeUser user;
             try {
                 userService.getByUsername("admin-loophole");
                 return;
             } catch (BusinessServiceException ignored) {
                 System.out.println("Default admin does not exists, creating one...");
             }
-            user = new User();
+            user = new LoopholeUser();
             user.setFullName("Loophole Admin");
             user.setUsername("admin-loophole");
             user.setPassword("a@123456");

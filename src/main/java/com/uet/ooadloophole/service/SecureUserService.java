@@ -1,5 +1,6 @@
 package com.uet.ooadloophole.service;
 
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 
-public class SecureUserDetailService {
+public class SecureUserService {
     @Autowired
     private UserService userService;
 
@@ -30,7 +31,7 @@ public class SecureUserDetailService {
         }
     }
 
-    public com.uet.ooadloophole.model.business.User getCurrentUser() throws BusinessServiceException {
+    public LoopholeUser getCurrentUser() throws BusinessServiceException {
         try {
             return userService.getByUsername(getUsername());
         } catch (BusinessServiceException e) {

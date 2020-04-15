@@ -2,7 +2,7 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.model.business.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
@@ -30,7 +30,7 @@ import java.util.Objects;
 @Service
 public class FileServiceImpl implements FileService {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private ConverterService converterService;
 
@@ -81,7 +81,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public UserFile storeFile(MultipartFile file, String saveLocation) throws FileStorageException, BusinessServiceException {
         UserFile uploadedUserFile = new UserFile();
-        String userId = secureUserDetailService.getCurrentUser().get_id();
+        String userId = secureUserService.getCurrentUser().get_id();
 
         Path savePath = createPath(saveLocation);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());

@@ -1,10 +1,9 @@
 package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
-import com.uet.ooadloophole.service.business_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,7 +13,7 @@ public class MasterPageService {
     @Autowired
     private NavigationGroupService navigationGroupService;
 
-    public ModelAndView getMasterPage(String pageTitle, BodyFragment bodyFragment, User user) throws BusinessServiceException {
+    public ModelAndView getMasterPage(String pageTitle, BodyFragment bodyFragment, LoopholeUser user) throws BusinessServiceException {
         try {
             ModelAndView modelAndView = new ModelAndView("master");
             modelAndView.addObject("pageTitle", pageTitle);

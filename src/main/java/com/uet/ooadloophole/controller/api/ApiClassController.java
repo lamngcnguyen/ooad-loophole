@@ -7,7 +7,7 @@ import com.uet.ooadloophole.controller.interface_model.dto.*;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.ConverterService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping(value = "/api/classes")
 public class ApiClassController {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private ClassService classService;
     @Autowired
@@ -39,7 +39,7 @@ public class ApiClassController {
     private Gson gson = new Gson();
 
     private boolean userCanNotCreateClass() throws BusinessServiceException {
-        User user = secureUserDetailService.getCurrentUser();
+        LoopholeUser user = secureUserService.getCurrentUser();
         return (!user.hasRole("teacher") && !user.hasRole("admin"));
     }
 

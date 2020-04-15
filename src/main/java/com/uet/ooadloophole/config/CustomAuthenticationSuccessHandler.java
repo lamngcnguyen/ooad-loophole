@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.config;
 
 import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.User;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.model.business.LoopholeUser;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
-    private SecureUserDetailService userDetailService;
+    private SecureUserService userDetailService;
     @Autowired
     private StudentService studentService;
 
@@ -31,7 +31,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
         try {
-            User currentUser = userDetailService.getCurrentUser();
+            LoopholeUser currentUser = userDetailService.getCurrentUser();
             httpServletResponse.addCookie(new Cookie("userId", currentUser.get_id()));
             if (userDetailService.getCurrentUser().hasRole("student")) {
                 Student currentStudent = studentService.getByUserId(currentUser.get_id());

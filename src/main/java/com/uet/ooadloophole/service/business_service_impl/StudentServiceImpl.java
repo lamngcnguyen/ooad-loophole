@@ -5,7 +5,7 @@ import com.uet.ooadloophole.database.StudentRepository;
 import com.uet.ooadloophole.database.UserRepository;
 import com.uet.ooadloophole.model.business.Role;
 import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.StudentService;
@@ -94,7 +94,7 @@ public class StudentServiceImpl implements StudentService {
             Set<Role> roles = new HashSet<>();
             roles.add(roleService.getByName(Constants.ROLE_STUDENT));
 
-            User user = new User();
+            LoopholeUser user = new LoopholeUser();
             user.setEmail(student.getStudentId() + Constants.EMAIL_SUFFIX);
             user.setUsername(student.getStudentId());
             user.setFullName(student.getFullName());
@@ -134,7 +134,7 @@ public class StudentServiceImpl implements StudentService {
     public Student update(String id, Student student) throws BusinessServiceException {
         try {
             Student dbStudent = getById(id);
-            User dbUser = userService.getById(dbStudent.getUserId());
+            LoopholeUser dbUser = userService.getById(dbStudent.getUserId());
             dbUser.setEmail(student.getStudentId() + Constants.EMAIL_SUFFIX);
             dbUser.setFullName(student.getFullName());
             dbUser.setUsername(student.getStudentId());
