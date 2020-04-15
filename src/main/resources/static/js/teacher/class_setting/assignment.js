@@ -91,7 +91,32 @@ $('.form.edit-assignment').form({
             },
             onFailure: function (response) {
                 hideDimmer('.modal.edit-assignment');
-                $('.form.create-assignment').form('add errors', [response]);
+                $('.form.edit-assignment').form('add errors', [response]);
+            }
+        })
+    }
+});
+
+$('.form.delete-assignment').form({
+    onSuccess: function (evt, data) {
+        const id = data.id;
+        showDimmer('.form.delete-assignment');
+        $.api({
+            action: 'delete assignment',
+            on: 'now',
+            method: 'delete',
+            urlData: {
+                id: id
+            },
+            onSuccess: function () {
+                hideDimmer('.modal.delete-assignment');
+                hideModal('.modal.delete-assignment');
+                $(`#${id}`).remove();
+                $('.assignment-menu').children().get(0).click();
+            },
+            onFailure: function (response) {
+                hideDimmer('.modal.delete-assignment');
+                $('.form.delete-assignment').form('add errors', [response]);
             }
         })
     }
