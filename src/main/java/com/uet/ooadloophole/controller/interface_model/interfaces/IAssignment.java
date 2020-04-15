@@ -1,16 +1,11 @@
-package com.uet.ooadloophole.model.business;
+package com.uet.ooadloophole.controller.interface_model.interfaces;
 
-import org.springframework.data.annotation.Id;
-
-import java.time.LocalDate;
-
-public class Assignment {
-    @Id
+public class IAssignment {
     private String _id;
     private String name;
     private String classId;
     private String description;
-    private LocalDate deadline;
+    private String deadline;
 
     public String get_id() {
         return _id;
@@ -44,11 +39,11 @@ public class Assignment {
         this.description = description;
     }
 
-    public LocalDate getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDate deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 }

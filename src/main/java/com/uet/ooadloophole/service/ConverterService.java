@@ -1,7 +1,8 @@
 package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.controller.interface_model.*;
+import com.uet.ooadloophole.controller.interface_model.dto.*;
+import com.uet.ooadloophole.controller.interface_model.interfaces.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -192,5 +193,15 @@ public class ConverterService {
         notification.setTimeStamp(timeStamp);
         notification.setUrl("/home");
         return notification;
+    }
+
+    public Assignment convertAssignmentInterface(IAssignment iAssignment) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        Assignment assignment = new Assignment();
+        assignment.setName(iAssignment.getName());
+        assignment.setDescription(iAssignment.getDescription());
+        assignment.setClassId(iAssignment.getClassId());
+        assignment.setDeadline(LocalDate.parse(iAssignment.getDeadline(), formatter));
+        return assignment;
     }
 }

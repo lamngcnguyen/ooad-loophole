@@ -2,6 +2,9 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.*;
+import com.uet.ooadloophole.controller.interface_model.dto.DTOGroup;
+import com.uet.ooadloophole.controller.interface_model.interfaces.IGroup;
+import com.uet.ooadloophole.controller.interface_model.interfaces.IInvitation;
 import com.uet.ooadloophole.model.business.Group;
 import com.uet.ooadloophole.model.business.Request;
 import com.uet.ooadloophole.model.business.Student;

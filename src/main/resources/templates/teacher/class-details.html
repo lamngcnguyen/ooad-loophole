@@ -200,7 +200,7 @@
                 <div class="row">
                     <div class="column">
                         <button type="button" class="ui labeled icon green button"
-                                onclick="showModal('.modal.create-topic')">
+                                onclick="showModal('.modal.create-assignment')">
                             <i class="plus icon"></i>
                             Thêm mới
                         </button>
@@ -746,8 +746,48 @@
         </div>
     </div>
     <!---------------------------------Assignment modals--------------------------------->
-    <div class="ui large modal add assignment">
-
+    <div class="ui medium modal create-assignment">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green lightbulb outline icon"></i>
+            Thêm mới
+        </div>
+        <div class="content">
+            <div class="ui form create-assignment">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Tên bài tập</label>
+                            <input type="text" name="name" placeholder="Assignment name">
+                        </div>
+                        <div class="seven wide required field">
+                            <label>Deadline</label>
+                            <div class="ui calendar deadline-picker">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="deadline" placeholder="Date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Mô tả</label>
+                    <textarea name="description" placeholder="Description"></textarea>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-topic')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
+            </div>
+        </div>
     </div>
     <div class="ui modal jquery-template">
         <table>
@@ -776,6 +816,7 @@
     <script type="text/javascript" th:src="@{/js/teacher/class_setting/import.js}"></script>
     <script type="text/javascript" th:src="@{/js/teacher/class_setting/topic.js}"></script>
     <script type="text/javascript" th:src="@{/js/teacher/class_setting/group.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_setting/assignment.js}"></script>
 </div>
 </body>
 </html>

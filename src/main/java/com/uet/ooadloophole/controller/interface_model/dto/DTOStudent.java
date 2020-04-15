@@ -1,4 +1,4 @@
-package com.uet.ooadloophole.controller.interface_model;
+package com.uet.ooadloophole.controller.interface_model.dto;
 
 public class DTOStudent {
     private String _id;

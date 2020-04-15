@@ -2,8 +2,8 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.controller.interface_model.DTOUser;
-import com.uet.ooadloophole.controller.interface_model.IUser;
+import com.uet.ooadloophole.controller.interface_model.dto.DTOUser;
+import com.uet.ooadloophole.controller.interface_model.interfaces.IUser;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.User;
