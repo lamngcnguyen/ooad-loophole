@@ -1,14 +1,12 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.Group;
-import com.uet.ooadloophole.model.business.LoopholeUser;
-import com.uet.ooadloophole.model.business.Request;
-import com.uet.ooadloophole.model.business.Student;
+import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
+import com.uet.ooadloophole.service.business_service.IterationService;
 import com.uet.ooadloophole.service.business_service.RequestService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/student")
@@ -31,6 +31,8 @@ public class StudentController {
     private RequestService requestService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private IterationService iterationService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -75,8 +77,19 @@ public class StudentController {
 
     @RequestMapping(value = "/iteration", method = RequestMethod.GET)
     public ModelAndView getIterationView() {
-        String pageTitle = "Vòng lặp phát triển";
-        return getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
+        try {
+            String pageTitle = "Vòng lặp phát triển";
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
+            Student student = studentService.getByUserId(currentUser.get_id());
+            List<Iteration> iterations = iterationService.getAllByGroup(student.getGroupId());
+            if (iterations.size() == 0) {
+                return getStudentView(pageTitle, new BodyFragment("student/setup_iteration", "content"));
+            } else {
+                return getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
+            }
+        } catch (BusinessServiceException e) {
+            return new ModelAndView("error");
+        }
     }
 
     @RequestMapping(value = "/evaluation", method = RequestMethod.GET)

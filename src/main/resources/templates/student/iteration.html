@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="leader-content">
+    <div class="ui stackable grid segment">
+        <div class="four wide column">
+            <div class="ui fluid vertical menu">
+                <div class="header item">Danh sách vòng lặp</div>
+                <a class="active item">Vòng lặp 1</a>
+                <a class="item">Vòng lặp 2</a>
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <div class="ui segment">
+                <div class="ui blue large header">Vòng lặp 1</div>
+                <div class="ui divider"></div>
+                <div class="ui medium header">
+                    <div class="ui grid">
+                        <div class="eight wide column">
+                            Ngày bắt đầu:
+                            <span>29/04/2020</span>
+                        </div>
+                        <div class="eight wide column">
+                            Ngày kết thúc:
+                            <span>30/05/2020</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="ui medium header">Mục tiêu</div>
+                <div class="content">
+                    <span>something something</span>
+                </div>
+                <div class="ui divider"></div>
+                <div class="ui medium header">Code</div>
+                <div class="ui segment file stackable grid">
+                    <div class="row">
+                        <div class="column">
+                            <button class="ui labeled icon green button">
+                                <i class="upload icon"></i>
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <table class="ui celled black sortable table" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th class="one wide">#</th>
+                                    <th class="three wide">Thao tác</th>
+                                    <th class="four wide">Tên file</th>
+                                    <th class="four wide">Người upload</th>
+                                    <th class="four wide">Ngày upload</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/student/leader/api.js"></script>
+    <script type="text/javascript" src="/js/student/leader/iteration.js"></script>
+</div>
+<div th:fragment="member-content">
+    <div class="ui stackable grid segment">
+        <div class="four wide column">
+            <div class="ui fluid vertical menu">
+                <div class="header item">Các vòng lặp</div>
+                <a class="active item">Vòng lặp 1</a>
+                <a class="item">Vòng lặp 2</a>
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <div class="ui segment">
+                <div class="ui blue large header">Vòng lặp 1</div>
+                <div class="ui divider"></div>
+                <div class="ui medium header">
+                    <div class="ui grid">
+                        <div class="eight wide column">
+                            Ngày bắt đầu:
+                            <span>29/04/2020</span>
+                        </div>
+                        <div class="eight wide column">
+                            Ngày kết thúc:
+                            <span>30/05/2020</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="ui medium header">Mục tiêu</div>
+                <div class="content">
+                    <span>something something</span>
+                </div>
+                <div class="ui divider"></div>
+                <div class="ui medium header">Code</div>
+                <div class="ui segment file stackable grid">
+                    <div class="row">
+                        <div class="column">
+                            <button class="ui labeled icon green button">
+                                <i class="upload icon"></i>
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <table class="ui celled black sortable table" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th class="one wide">#</th>
+                                    <th class="three wide">Thao tác</th>
+                                    <th class="four wide">Tên file</th>
+                                    <th class="four wide">Người upload</th>
+                                    <th class="four wide">Ngày upload</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/student/member/api.js"></script>
+    <script type="text/javascript" src="/js/student/member/iteration.js"></script>
+</div>
+</body>
+</html>
