@@ -10,6 +10,7 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.RequirementFileService;
 import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
+import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -127,6 +128,33 @@ public class ApiFileController {
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
+    @RequestMapping(value = "/spec/topic/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteSpecFile(@PathVariable String id) {
+        try {
+            if (topicSpecFileService.delete(id)) {
+                return ResponseEntity.status(HttpStatus.OK).body("deleted");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not deleted");
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/topic/multi", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteMultiSpecFile(@RequestBody List<String> specFileIds) {
+        try {
+            List<String> deletedSpecs = new ArrayList<>();
+            for (String specFileId : specFileIds) {
+                if (topicSpecFileService.delete(specFileId)) {
+                    deletedSpecs.add(specFileId);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("deleted " + deletedSpecs);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
     //    ---------------------- REQUIREMENTS ----------------------
     @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
@@ -174,7 +202,7 @@ public class ApiFileController {
         }
     }
 
-    @RequestMapping(value = "/spec/requirement/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/spec/req/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> findReqSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = requirementFileService.download(id);
         String timeStamp = requirementFileService.findById(id).getTimeStamp();

@@ -54,10 +54,10 @@ public class ApiTopicController {
         return ResponseEntity.status(HttpStatus.OK).body(newTopic);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateTopic(@RequestBody Topic topic) {
+    @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateTopic(@RequestBody Topic topic, @PathVariable String id) {
         try {
-            Topic updatedTopic = topicService.update(topic);
+            Topic updatedTopic = topicService.update(id, topic);
             return ResponseEntity.status(HttpStatus.OK).body(updatedTopic);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

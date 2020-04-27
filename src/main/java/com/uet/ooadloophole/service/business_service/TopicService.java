@@ -16,7 +16,7 @@ public interface TopicService {
 
     Topic create(Topic topic);
 
-    Topic update(Topic topic) throws BusinessServiceException;
+    Topic update(String id, Topic topic) throws BusinessServiceException;
 
     void delete(String topicId) throws BusinessServiceException;
 

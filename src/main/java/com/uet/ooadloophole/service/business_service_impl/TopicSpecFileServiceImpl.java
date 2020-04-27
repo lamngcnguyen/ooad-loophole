@@ -80,4 +80,12 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
     public List<TopicSpecFile> getByTopicId(String topicId) {
         return specFileRepository.findAllByTopicId(topicId);
     }
+
+    @Override
+    public boolean delete(String id) throws IOException {
+        TopicSpecFile topicSpecFile = specFileRepository.findBy_id(id);
+        String fileName = converterService.formatFileName(topicSpecFile.getFileName(), topicSpecFile.getTimeStamp(), topicSpecFile.getFileExtension());
+        String dir = topicSpecFile.getPath() + "/" + fileName;
+        return fileService.deleteFile(dir);
+    }
 }

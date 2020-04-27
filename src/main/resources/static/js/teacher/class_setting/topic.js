@@ -150,24 +150,14 @@ $('.modal.create-topic').modal({
     onShow: function () {
         $('.form.create-topic').form('clear');
         $('.form.create-topic table').find('tr:gt(1)').remove();
-        $('.dropdown.assigned-group').dropdown().api({
-            action: 'get groups',
-            on: 'now',
-            urlData: {
-                'classId': classId
-            },
-            onSuccess(res, el, xhr) {
-                const values = [];
-                xhr.responseJSON.data.forEach(function (group) {
-                    values.push({
-                        value: group._id,
-                        name: group.groupName
-                    })
-                });
-                $(el).dropdown('change values', values);
-            }
-        });
     },
+    onHide: function () {
+        var specIds = [];
+        $('.create-topic .spec-upload-status input[name="id"]').each(function (i, el) {
+            specIds.push($(el).val());
+        });
+        clearTempSpecs(specIds, '.modal.create-topic');
+    }
 });
 
 $('.form.create-topic').form({
@@ -202,6 +192,47 @@ $('.form.create-topic').form({
     }
 });
 
+$('.modal.edit-topic').modal({
+    onShow: function () {
+        $('.form.edit-topic table').find('tr:gt(1)').remove();
+    },
+});
+
+$('.form.edit-topic').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.edit-topic');
+        data['classId'] = classId;
+        $.api({
+            action: 'edit topic',
+            on: 'now',
+            method: 'put',
+            urlData: {
+                'topicId': data.id
+            },
+            dataType: 'json',
+            data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            },
+            onSuccess: function (res) {
+                var topicId = res._id;
+                var specIds = [];
+                $('.create-topic .spec-upload-status input[name="id"]').each(function (i, el) {
+                    specIds.push($(el).val());
+                });
+                assignSpecsToTopic(topicId, specIds, '.modal.edit-topic');
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.edit-topic');
+                $('.form.edit-topic').form('add errors', [res]);
+            }
+        });
+    },
+    fields: {
+        name: validationRules.topicName,
+    }
+});
+
 function assignSpecsToTopic(topicId, specIds, modal) {
     $.api({
         action: 'assign topic multiple spec',
@@ -219,6 +250,27 @@ function assignSpecsToTopic(topicId, specIds, modal) {
             hideDimmer(modal);
             hideModal(modal);
             reloadTopicTable();
+        },
+        onFailure: function (res) {
+            hideDimmer(modal);
+            $(`${modal} .form`).form('add errors', [res]);
+        }
+    });
+}
+
+function clearTempSpecs(specIds, modal) {
+    $.api({
+        action: 'delete multiple spec',
+        on: 'now',
+        method: 'delete',
+        dataType: 'json',
+        data: JSON.stringify(specIds),
+        beforeXHR: function (xhr) {
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+        },
+        onSuccess: function () {
+            hideDimmer(modal);
+            hideModal(modal);
         },
         onFailure: function (res) {
             hideDimmer(modal);
@@ -249,6 +301,26 @@ $('.form.delete-topic').form({
         });
     }
 });
+
+$(document).ready(function () {
+    $('.dropdown.assigned-group').dropdown().api({
+        action: 'get groups',
+        on: 'now',
+        urlData: {
+            'classId': classId
+        },
+        onSuccess(res, el, xhr) {
+            const values = [];
+            xhr.responseJSON.data.forEach(function (group) {
+                values.push({
+                    value: group._id,
+                    name: group.groupName
+                })
+            });
+            $(el).dropdown('change values', values);
+        }
+    });
+})
 
 function reloadTopicTable() {
     topicRowIndex = 0;
