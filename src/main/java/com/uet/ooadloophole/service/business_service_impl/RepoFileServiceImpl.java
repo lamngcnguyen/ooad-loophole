@@ -37,7 +37,12 @@ public class RepoFileServiceImpl implements RepoFileService {
     }
 
     @Override
-    public RepoFile upload(MultipartFile file, String path) throws BusinessServiceException {
+    public List<RepoFile> getAllByGroupAndIteration(String groupId, String iterationId) {
+        return repoFileRepository.findAllByGroupIdAndIterationId(groupId, iterationId);
+    }
+
+    @Override
+    public RepoFile upload(MultipartFile file, String path, String iterationId) throws BusinessServiceException {
         try {
             String saveLocation;
             String userId = secureUserService.getCurrentUser().get_id();
@@ -59,7 +64,9 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setFileExtension(userFile.getFileExtension());
             repoFile.setUploaderId(userFile.getUploaderId());
             repoFile.setTimeStamp(userFile.getTimeStamp());
-            repoFile.setPath(userFile.getPath());
+            repoFile.setPath(path);
+            repoFile.setIterationId(iterationId);
+            repoFile.setClassId(classId);
             repoFile.setGroupId(groupId);
             return repoFileRepository.save(repoFile);
         } catch (BusinessServiceException e) {
@@ -71,7 +78,7 @@ public class RepoFileServiceImpl implements RepoFileService {
     public Resource download(String fileId) {
         RepoFile repoFile = getById(fileId);
         String fileName = converterService.formatFileName(repoFile.getFileName(), repoFile.getTimeStamp(), repoFile.getFileExtension());
-        String path = repoFile.getPath();
+        String path = Constants.REPO_FOLDER + repoFile.getClassId() + "/" + repoFile.getGroupId() + "/" + repoFile.getPath();
         return fileService.loadFileAsResource(fileName, path);
     }
 
@@ -83,6 +90,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             String userId = secureUserService.getCurrentUser().get_id();
             Student currentStudent = studentService.getByUserId(userId);
             String groupId = currentStudent.getGroupId();
+            String classId = currentStudent.getClassId();
 
             if (checkExists(file.getOriginalFilename(), groupId, saveLocation)) {
                 throw new BusinessServiceException("This file name is already exists");
@@ -94,6 +102,8 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setUploaderId(userFile.getUploaderId());
             repoFile.setTimeStamp(userFile.getTimeStamp());
             repoFile.setPath(userFile.getPath());
+            repoFile.setIterationId(previousVersion.getIterationId());
+            repoFile.setClassId(classId);
             repoFile.setGroupId(groupId);
             repoFile.setPreviousVersionId(previousVersionId);
             return repoFileRepository.save(repoFile);
@@ -106,5 +116,12 @@ public class RepoFileServiceImpl implements RepoFileService {
     public boolean checkExists(String filename, String groupId, String path) {
         List<RepoFile> repoFiles = repoFileRepository.findAllByGroupIdAndFileNameAndPath(groupId, filename, path);
         return repoFiles.size() != 0;
+    }
+
+    @Override
+    public RepoFile delete(String id) {
+        RepoFile repoFile = getById(id);
+        repoFile.setDeleted(true);
+        return repoFile;
     }
 }

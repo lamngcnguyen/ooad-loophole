@@ -67,6 +67,11 @@
         "name": "Yêu cầu",
         "url": "/student/requirement",
         "description": null
+      },
+      {
+        "name": "Bài tập",
+        "url": "/student/assignment",
+        "description": null
       }
     ]
   }

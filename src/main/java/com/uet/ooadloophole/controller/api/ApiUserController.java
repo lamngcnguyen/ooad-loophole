@@ -12,12 +12,14 @@ import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.TokenService;
 import com.uet.ooadloophole.service.business_service.UserService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,7 +157,17 @@ public class ApiUserController {
 
     @RequestMapping(value = "/avatar/{id}", method = RequestMethod.GET)
     public byte[] getAvatar(@PathVariable String id) throws IOException, BusinessServiceException {
-        return userService.loadAvatar(id);
+        try {
+            return userService.loadAvatar(id);
+        } catch (IOException e) {
+            String saveLocation = Constants.AVATAR_FOLDER;
+            String fileName = Constants.DEFAULT_AVATAR;
+            String imagePath = saveLocation + "/" + fileName;
+            FileInputStream imageStream = new FileInputStream(imagePath);
+            byte[] imageBytes = IOUtils.toByteArray(imageStream);
+            imageStream.close();
+            return imageBytes;
+        }
     }
 
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)

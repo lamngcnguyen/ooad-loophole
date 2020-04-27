@@ -91,6 +91,12 @@ public class StudentController {
         return getStudentView(pageTitle, new BodyFragment("student/requirement", "content"));
     }
 
+    @RequestMapping(value = "/assignment", method = RequestMethod.GET)
+    public ModelAndView getAssignmentView() {
+        String pageTitle = "Bài tập";
+        return getStudentView(pageTitle, new BodyFragment("student/assignment", "content"));
+    }
+
     private ModelAndView getStudentView(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {

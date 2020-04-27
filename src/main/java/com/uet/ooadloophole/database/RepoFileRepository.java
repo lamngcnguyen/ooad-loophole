@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface RepoFileRepository extends MongoRepository<RepoFile, String> {
-    List<RepoFile> findAllByGroupId(String groupId);
+    List<RepoFile> findAllByGroupIdAndIterationId(String groupId, String iterationId);
 
     List<RepoFile> findAllByGroupIdAndFileNameAndPath(String groupId, String fileName, String path);
 

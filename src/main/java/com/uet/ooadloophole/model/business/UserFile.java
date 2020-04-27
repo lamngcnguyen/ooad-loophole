@@ -7,6 +7,7 @@ public class UserFile {
     private String uploaderId;
     private String path;
     private String previousVersionId;
+    private boolean deleted;
 
     public String getFileName() {
         return fileName;
@@ -54,5 +55,13 @@ public class UserFile {
 
     public void setPreviousVersionId(String previousVersionId) {
         this.previousVersionId = previousVersionId;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

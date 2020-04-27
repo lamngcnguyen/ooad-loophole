@@ -2,6 +2,7 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.RepoFile;
 import com.uet.ooadloophole.model.business.RequirementSpecFile;
 import com.uet.ooadloophole.model.business.TopicSpecFile;
@@ -11,10 +12,7 @@ import com.uet.ooadloophole.service.business_service.RequirementFileService;
 import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,9 +37,9 @@ public class ApiFileController {
 
     //    ---------------------- Repo files ----------------------
     @RequestMapping(value = "/repo", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadRepoFile(@RequestParam("file") MultipartFile file, String path) {
+    public ResponseEntity<Object> uploadRepoFile(@RequestParam("file") MultipartFile file, String path, String iterationId) {
         try {
-            RepoFile repoFile = repoFileService.upload(file, path);
+            RepoFile repoFile = repoFileService.upload(file, path, iterationId);
             return ResponseEntity.status(HttpStatus.OK).body(repoFile);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -63,6 +61,17 @@ public class ApiFileController {
         Resource resource = repoFileService.download(id);
         String timeStamp = repoFileService.getById(id).getTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
+    }
+
+    @RequestMapping(value = "/repo/{groupId}/{iterationId}", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllFiles(@PathVariable String groupId, @PathVariable String iterationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getAllByGroupAndIteration(groupId, iterationId))));
+    }
+
+    @RequestMapping(value = "/repo/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RepoFile> deleteRepoFile(@PathVariable String id) {
+        RepoFile repoFile = repoFileService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(repoFile);
     }
 
     //    ---------------------- Topic specifications  ----------------------

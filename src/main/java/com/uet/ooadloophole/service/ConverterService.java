@@ -214,4 +214,25 @@ public class ConverterService {
         dtoAssignment.setDeadline(assignment.getDeadline().toString());
         return dtoAssignment;
     }
+
+    public Iteration convertIterationInterface(IIteration iIteration) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        Iteration iteration = new Iteration();
+        iteration.setName(iIteration.getName());
+        iteration.setGroupId(iIteration.getGroupId());
+        iteration.setObjective(iIteration.getObjective());
+        iteration.setStartDateTime(LocalDate.parse(iIteration.getStartDateTime(), formatter));
+        iteration.setEndDateTime(LocalDate.parse(iIteration.getEndDateTime(), formatter));
+        return iteration;
+    }
+
+    public DTOIteration convertToDTOIteration(Iteration iteration) {
+        DTOIteration dtoIteration = new DTOIteration();
+        dtoIteration.setName(iteration.getName());
+        dtoIteration.setGroupId(iteration.getGroupId());
+        dtoIteration.setObjective(iteration.getObjective());
+        dtoIteration.setStartDateTime(iteration.getStartDateTime().toString());
+        dtoIteration.setEndDateTime(iteration.getEndDateTime().toString());
+        return dtoIteration;
+    }
 }

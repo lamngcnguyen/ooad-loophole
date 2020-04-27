@@ -28,7 +28,7 @@ const topicTable = $(".topic .ui.table").DataTable({
             data: "files",
             defaultContent: "No attachments",
             render: function (files) {
-                var html = $('<div class="ui middle aligned animated list"></div>');
+                var html = $('<div class="ui middle aligned list"></div>');
                 $.each(files, function (index, file) {
                     var item = $(`<a class="item" href="/api/files/spec/topic/${file._id}" target="_blank"></a>`);
                     item.append(`<div class="ui avatar image"><i class="large file ${getFileIconClass(file.fileExtension)} icon"></i></div>`);
