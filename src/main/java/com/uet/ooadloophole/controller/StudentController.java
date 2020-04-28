@@ -82,6 +82,7 @@ public class StudentController {
             LoopholeUser currentUser = secureUserService.getCurrentUser();
             Student student = studentService.getByUserId(currentUser.get_id());
             List<Iteration> iterations = iterationService.getAllByGroup(student.getGroupId());
+            System.out.println(iterations.size());
             if (iterations.size() == 0) {
                 return getStudentView(pageTitle, new BodyFragment("student/setup_iteration", "content"));
             } else {
