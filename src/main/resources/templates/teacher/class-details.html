@@ -202,11 +202,21 @@
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-assignment')">
                             <i class="plus icon"></i>
-                            Thêm mới
+                            Add
                         </button>
                     </div>
                 </div>
-                <div class="row">
+                <div class="no-assignment row" style="display: none">
+                    <div class="sixteen wide column">
+                        <div class="ui segment">
+                            <div class="ui center aligned yellow large header">
+                                <i class="exclamation triangle icon"></i>
+                                There has been no assignment yet!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="assignment row" style="display: flex">
                     <div class="three wide column">
                         <div class="ui vertical fluid menu assignment-menu"></div>
                     </div>

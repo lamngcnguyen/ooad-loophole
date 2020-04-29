@@ -50,13 +50,17 @@ $('.form.create-assignment').form({
                 hideDimmer('.modal.create-assignment');
                 hideModal('.modal.create-assignment');
                 const assignmentMenu = $('.assignment-menu');
-                const assignmentItem = $(`<a class="item assignment-item" id="${assignment._id}">${assignment.name}</a>`)
-                    .click(function () {
-                        $('.assignment-menu').children().removeClass("blue active");
-                        $(this).addClass('blue active');
-                        loadAssignment(assignment._id);
-                    });
-                assignmentMenu.append(assignmentItem);
+                if (assignmentMenu.children().length === 0) {
+                    loadAssignments();
+                } else {
+                    const assignmentItem = $(`<a class="item assignment-item" id="${assignment._id}">${assignment.name}</a>`)
+                        .click(function () {
+                            $('.assignment-menu').children().removeClass("blue active");
+                            $(this).addClass('blue active');
+                            loadAssignment(assignment._id);
+                        });
+                    assignmentMenu.append(assignmentItem);
+                }
             },
             onFailure: function (response) {
                 hideDimmer('.modal.create-assignment');
@@ -109,10 +113,16 @@ $('.form.delete-assignment').form({
                 id: id
             },
             onSuccess: function () {
+                const assignmentMenu = $('.assignment-menu');
                 hideDimmer('.modal.delete-assignment');
                 hideModal('.modal.delete-assignment');
                 $(`#${id}`).remove();
-                $('.assignment-menu').children().get(0).click();
+                if (assignmentMenu.children().length === 0) {
+                    $('.no-assignment.row').show();
+                    $('.assignment.row').hide();
+                } else {
+                    assignmentMenu.children().get(0).click();
+                }
             },
             onFailure: function (response) {
                 hideDimmer('.modal.delete-assignment');
@@ -136,18 +146,25 @@ function loadAssignments() {
         },
         onSuccess: function (res, element, xhr) {
             const assignmentMenu = $('.assignment-menu');
-            xhr.responseJSON.data.forEach(function (assignment) {
-                const assignmentItem = $(`<a class="item assignment-item" id="${assignment._id}">${assignment.name}</a>`)
-                    .click(function () {
-                        $('.assignment-menu').children().removeClass("blue active");
-                        $(this).addClass('blue active');
-                        loadAssignment(assignment._id);
-                    });
-                assignmentMenu.append(assignmentItem);
-                const firstElement = assignmentMenu.children().get(0);
-                firstElement.click();
-                $(firstElement).addClass('blue active');
-            });
+            if (xhr.responseJSON.data.length === 0) {
+                $('.no-assignment.row').show();
+                $('.assignment.row').hide();
+            } else {
+                $('.no-assignment.row').hide();
+                $('.assignment.row').show();
+                xhr.responseJSON.data.forEach(function (assignment) {
+                    const assignmentItem = $(`<a class="item assignment-item" id="${assignment._id}">${assignment.name}</a>`)
+                        .click(function () {
+                            $('.assignment-menu').children().removeClass("active");
+                            $(this).addClass('active');
+                            loadAssignment(assignment._id);
+                        });
+                    assignmentMenu.append(assignmentItem);
+                    const firstElement = assignmentMenu.children().get(0);
+                    firstElement.click();
+                    $(firstElement).addClass('active');
+                });
+            }
         },
         onFailure: function (res) {
             console.log(res);

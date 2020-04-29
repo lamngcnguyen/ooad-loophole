@@ -5,131 +5,157 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="leader-content">
-    <div class="ui stackable grid segment">
-        <div class="four wide column">
-            <div class="ui fluid vertical menu">
-                <div class="header item">Danh sách vòng lặp</div>
-                <a class="active item">Vòng lặp 1</a>
-                <a class="item">Vòng lặp 2</a>
+<div th:fragment="leader-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large blue label">
+                    <i class="recycle icon"></i>
+                    Planning
+                </div>
             </div>
         </div>
-        <div class="twelve wide column">
+    </div>
+    <div class="row">
+        <div class="column">
             <div class="ui segment">
-                <div class="ui blue large header">Vòng lặp 1</div>
-                <div class="ui divider"></div>
-                <div class="ui medium header">
-                    <div class="ui grid">
-                        <div class="eight wide column">
-                            Ngày bắt đầu:
-                            <span>29/04/2020</span>
-                        </div>
-                        <div class="eight wide column">
-                            Ngày kết thúc:
-                            <span>30/05/2020</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="ui medium header">Mục tiêu</div>
-                <div class="content">
-                    <span>something something</span>
-                </div>
-                <div class="ui divider"></div>
-                <div class="ui medium header">Code</div>
-                <div class="ui segment file stackable grid">
+                <div class="ui grid">
                     <div class="row">
-                        <div class="column">
-                            <button class="ui labeled icon green button">
-                                <i class="upload icon"></i>
-                                Upload
-                            </button>
+                        <div class="four wide column">
+                            <div class="ui vertical fluid tabular menu" style="min-height: 50vh">
+                                <a class="item active" id="item_1" onclick="showIteration(1)">
+                                    Iteration 1
+                                </a>
+                                <a class="item new">
+                                    <div class="ui fluid blue button" id="newIteration">New</div>
+                                    <div class="ui fluid input" id="nameInput" style="display: none">
+                                        <input type="text" style="margin-right: 0.5em" placeholder="iteration name...">
+                                        <div class="ui blue icon button" style="margin-right: 0"
+                                             onclick="createIterationForm()"><i class="plus icon"></i></div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="column">
-                            <table class="ui celled black sortable table" style="width: 100%">
-                                <thead>
-                                <tr>
-                                    <th class="one wide">#</th>
-                                    <th class="three wide">Thao tác</th>
-                                    <th class="four wide">Tên file</th>
-                                    <th class="four wide">Người upload</th>
-                                    <th class="four wide">Ngày upload</th>
-                                </tr>
-                                </thead>
-                            </table>
+                        <div class="twelve wide stretched column" id="segmentContainer">
+                            <div class="ui iteration segment" id="iteration_1">
+                                <div class="ui grid">
+                                    <div class="row">
+                                        <div class="column">
+                                            <div class="ui blue large header">Iteration 1</div>
+                                            <div class="ui divider"></div>
+                                            <div class="ui grey icon label">
+                                                <i class="clock icon"></i>&nbsp
+                                                From - To
+                                            </div>
+                                            <div class="ui segment" style="padding-top: 30px">
+                                                <a class="ui top attached icon grey label">
+                                                    <i class="check icon"></i>&nbsp
+                                                    Objective
+                                                </a>
+                                                <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
+                                            </div>
+                                            <div class="ui divider"></div>
+                                            <div class="ui blue icon labeled button">
+                                                <i class="code icon"></i>
+                                                Submit Code
+                                            </div>
+                                            <table class="ui grey celled table">
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Tên</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>
+                                                        main.java
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/js/student/leader/api.js"></script>
-    <script type="text/javascript" src="/js/student/leader/iteration.js"></script>
-</div>
-<div th:fragment="member-content">
-    <div class="ui stackable grid segment">
-        <div class="four wide column">
-            <div class="ui fluid vertical menu">
-                <div class="header item">Các vòng lặp</div>
-                <a class="active item">Vòng lặp 1</a>
-                <a class="item">Vòng lặp 2</a>
+    <div class="ui modal" id="templates">
+        <div class="ui iteration form">
+            <div class="ui large blue header">Iteration Name</div>
+            <div class="field">
+                <div class="fields">
+                    <div class="eight wide required field">
+                        <label>Start date</label>
+                        <input name="startDate" placeholder="dd/mm/yyyy">
+                    </div>
+                    <div class="eight wide required field">
+                        <label>End date</label>
+                        <input name="endDate" placeholder="dd/mm/yyyy">
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Objective</label>
+                <textarea placeholder="TODO..."></textarea>
+            </div>
+            <div class="ui grey icon labeled button" onclick="cancelIterationForm()"><i class="close icon"></i>Cancel</div>
+            <div class="ui blue icon labeled right floated submit button"><i class="save icon"></i>Save
             </div>
         </div>
-        <div class="twelve wide column">
-            <div class="ui segment">
-                <div class="ui blue large header">Vòng lặp 1</div>
-                <div class="ui divider"></div>
-                <div class="ui medium header">
-                    <div class="ui grid">
-                        <div class="eight wide column">
-                            Ngày bắt đầu:
-                            <span>29/04/2020</span>
-                        </div>
-                        <div class="eight wide column">
-                            Ngày kết thúc:
-                            <span>30/05/2020</span>
-                        </div>
+        <div class="ui iteration grid">
+            <div class="row">
+                <div class="column">
+                    <div class="ui blue large header">Iteration Name</div>
+                    <div class="ui divider"></div>
+                    <div class="ui grey icon label">
+                        <i class="clock icon"></i>&nbsp
+                        From - To
                     </div>
-                </div>
-                <div class="ui divider"></div>
-                <div class="ui medium header">Mục tiêu</div>
-                <div class="content">
-                    <span>something something</span>
-                </div>
-                <div class="ui divider"></div>
-                <div class="ui medium header">Code</div>
-                <div class="ui segment file stackable grid">
-                    <div class="row">
-                        <div class="column">
-                            <button class="ui labeled icon green button">
-                                <i class="upload icon"></i>
-                                Upload
-                            </button>
-                        </div>
+                    <div class="ui segment" style="padding-top: 30px">
+                        <a class="ui top attached icon grey label">
+                            <i class="check icon"></i>&nbsp
+                            Objective
+                        </a>
+                        <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
                     </div>
-                    <div class="row">
-                        <div class="column">
-                            <table class="ui celled black sortable table" style="width: 100%">
-                                <thead>
-                                <tr>
-                                    <th class="one wide">#</th>
-                                    <th class="three wide">Thao tác</th>
-                                    <th class="four wide">Tên file</th>
-                                    <th class="four wide">Người upload</th>
-                                    <th class="four wide">Ngày upload</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
+                    <div class="ui divider"></div>
+                    <div class="ui blue icon labeled button">
+                        <i class="code icon"></i>
+                        Submit Code
                     </div>
+                    <table class="ui grey celled table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                main.java
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="/js/student/member/api.js"></script>
-    <script type="text/javascript" src="/js/student/member/iteration.js"></script>
+    <script th:src="@{/js/student/leader/setup_iteration.js}" type="text/javascript"></script>
+    <style>
+        .iteration.segment {
+            margin: 0;
+        }
+    </style>
 </div>
+<div th:fragment="member-content"></div>
 </body>
 </html>
