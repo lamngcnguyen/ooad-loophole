@@ -18,8 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/** Converts Interface models to business models and business models to DTO models
- *
+/**
+ * Converts Interface models to business models and business models to DTO models
  */
 
 @Service
@@ -234,5 +234,18 @@ public class ConverterService {
         dtoIteration.setStartDateTime(iteration.getStartDateTime().toString());
         dtoIteration.setEndDateTime(iteration.getEndDateTime().toString());
         return dtoIteration;
+    }
+
+    public DTOClassConfig convertToDTOClassConfig(ClassConfig classSetting) {
+        DTOClassConfig dtoClassConfig = new DTOClassConfig();
+        dtoClassConfig.set_id(classSetting.get_id());
+        dtoClassConfig.setClassId(classSetting.getClassId());
+        dtoClassConfig.setGroupLimitMax(classSetting.getGroupLimitMax());
+        dtoClassConfig.setGroupLimitMin(classSetting.getGroupLimitMin());
+        dtoClassConfig.setGroupRegistrationDeadline(classSetting.getGroupRegistrationDeadline().toString());
+        dtoClassConfig.setDefaultIterationLength(classSetting.getDefaultIterationLength());
+        dtoClassConfig.setMaxIterationLength(classSetting.getMaxIterationLength());
+        dtoClassConfig.setIterationSetupDeadline(classSetting.getIterationSetupDeadline().toString());
+        return dtoClassConfig;
     }
 }

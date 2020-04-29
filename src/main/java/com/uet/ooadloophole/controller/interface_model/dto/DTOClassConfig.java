@@ -1,19 +1,14 @@
-package com.uet.ooadloophole.model.business;
+package com.uet.ooadloophole.controller.interface_model.dto;
 
-import org.springframework.data.annotation.Id;
-
-import java.time.LocalDate;
-
-public class ClassConfig {
-    @Id
+public class DTOClassConfig {
     private String _id;
     private String classId;
     private int groupLimitMax;
     private int groupLimitMin;
-    private LocalDate groupRegistrationDeadline;
+    private String groupRegistrationDeadline;
     private int defaultIterationLength;
     private int maxIterationLength;
-    private LocalDate iterationSetupDeadline;
+    private String iterationSetupDeadline;
 
     public String get_id() {
         return _id;
@@ -47,11 +42,11 @@ public class ClassConfig {
         this.groupLimitMin = groupLimitMin;
     }
 
-    public LocalDate getGroupRegistrationDeadline() {
+    public String getGroupRegistrationDeadline() {
         return groupRegistrationDeadline;
     }
 
-    public void setGroupRegistrationDeadline(LocalDate groupRegistrationDeadline) {
+    public void setGroupRegistrationDeadline(String groupRegistrationDeadline) {
         this.groupRegistrationDeadline = groupRegistrationDeadline;
     }
 
@@ -71,11 +66,11 @@ public class ClassConfig {
         this.maxIterationLength = maxIterationLength;
     }
 
-    public LocalDate getIterationSetupDeadline() {
+    public String getIterationSetupDeadline() {
         return iterationSetupDeadline;
     }
 
-    public void setIterationSetupDeadline(LocalDate iterationSetupDeadline) {
+    public void setIterationSetupDeadline(String iterationSetupDeadline) {
         this.iterationSetupDeadline = iterationSetupDeadline;
     }
 }

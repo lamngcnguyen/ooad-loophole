@@ -4,8 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.uet.ooadloophole.database.PhaseRepository;
 import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.model.business.LoopholeUser;
+import com.uet.ooadloophole.model.business.Phase;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
 import com.uet.ooadloophole.service.business_service.RoleService;
@@ -26,6 +28,8 @@ public class ApplicationSetup implements InitializingBean {
     private String navConfigFile;
     @Value("${roles.config}")
     private String roleConfigFile;
+    @Value("${phases.config}")
+    private String phaseConfigFile;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -34,6 +38,8 @@ public class ApplicationSetup implements InitializingBean {
     private UserService userService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private PhaseRepository phaseRepository;
 
     //Cleanup old nav items and groups
     @Override
@@ -42,6 +48,7 @@ public class ApplicationSetup implements InitializingBean {
         createNavigations();
         createAdmin();
         clearExpiredTokens();
+        createPhase();
     }
 
     private void createNavigations() throws FileNotFoundException {
@@ -60,6 +67,19 @@ public class ApplicationSetup implements InitializingBean {
                 roleService.create(data.getAsString());
             }
         }
+    }
+
+    private void createPhase() throws FileNotFoundException {
+        JsonArray phasesArray = JsonParser.parseReader(new FileReader(phaseConfigFile)).getAsJsonArray();
+        phasesArray.forEach(p -> {
+            Phase phase = phaseRepository.findByName(p.getAsJsonObject().get("name").getAsString());
+            if(phase == null) {
+                Phase newPhase = new Phase();
+                newPhase.setName(p.getAsJsonObject().get("name").getAsString());
+                newPhase.setDescription(p.getAsJsonObject().get("description").getAsString());
+                phaseRepository.save(newPhase);
+            }
+        });
     }
 
     private void createAdmin() {

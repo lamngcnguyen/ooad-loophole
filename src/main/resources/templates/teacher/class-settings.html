@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="body-content" class="ui stackable grid">
+    <input type="hidden" name="classId" th:value="${class.get_id()}">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -28,37 +29,25 @@
                             <div class="fields">
                                 <div class="required four wide field">
                                     <label>Số thành viên tối thiểu</label>
-                                    <input type="text" name="groupMin" value="3">
+                                    <input type="text" name="groupMin">
                                 </div>
                                 <div class="required four wide field">
                                     <label>Số thành viên tối đa</label>
-                                    <input type="text" name="groupMax" value="5">
+                                    <input type="text" name="groupMax">
                                 </div>
                             </div>
                         </div>
                         <div class="required eight wide field">
-                            <label>Thời hạn sinh viên chọn nhóm</label>
-                            <div class="fields">
-                                <div class="required field eight wide">
-                                    <div class="ui calendar range-start">
-                                        <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
-                                            <input type="text" name="startDate" placeholder="Start">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="required field eight wide">
-                                    <div class="ui calendar range-end">
-                                        <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
-                                            <input type="text" name="endDate" placeholder="End">
-                                        </div>
-                                    </div>
+                            <label>Group registration deadline</label>
+                            <div class="ui calendar deadline-picker">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="deadline" placeholder="Deadline">
                                 </div>
                             </div>
                         </div>
                         <div class="ui error message"></div>
-                        <button class="ui large icon labeled green submit button">
+                        <button class="ui small icon labeled green submit button">
                             <i class="save icon"></i>
                             Save
                         </button>
@@ -72,28 +61,17 @@
                             <div class="fields">
                                 <div class="required five wide field">
                                     <label>Thời lượng mặc định (ngày)</label>
-                                    <input type="text" name="iterationLengthDefault" value="14">
+                                    <input type="text" name="defaultLength">
                                 </div>
                                 <div class="required five wide field">
                                     <label>Thời lượng tối đa (ngày)</label>
-                                    <input type="text" name="iterationLengthMax" value="21">
+                                    <input type="text" name="maxLength">
                                 </div>
                             </div>
                         </div>
-                        <div class="ui error message"></div>
-                        <button class="ui large icon labeled green submit button">
-                            <i class="save icon"></i>
-                            Save
-                        </button>
-                    </div>
-                </div>
-                <div class="ui segment">
-                    <div class="ui iteration-setup-setting form">
-                        <div class="ui blue large header">Iteration setup</div>
-                        <div class="ui divider"></div>
-                        <div class="required field eight wide">
+                        <div class="required field ten wide">
                             <label>Iteration setup deadline</label>
-                            <div class="ui calendar">
+                            <div class="ui calendar deadline-picker">
                                 <div class="ui input left icon">
                                     <i class="calendar icon"></i>
                                     <input type="text" name="deadline" placeholder="Deadline">
@@ -101,7 +79,7 @@
                             </div>
                         </div>
                         <div class="ui error message"></div>
-                        <button class="ui large icon labeled green submit button">
+                        <button class="ui small icon labeled green submit button">
                             <i class="save icon"></i>
                             Save
                         </button>
@@ -173,7 +151,7 @@
                             </tbody>
                         </table>
                         <div class="ui error message"></div>
-                        <button class="ui large icon labeled green submit button">
+                        <button class="ui small icon labeled green submit button">
                             <i class="save icon"></i>
                             Save
                         </button>

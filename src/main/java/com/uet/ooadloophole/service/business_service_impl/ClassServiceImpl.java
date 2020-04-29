@@ -1,10 +1,11 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.database.ClassConfigRepository;
+import com.uet.ooadloophole.database.ClassPhaseConfigRepository;
 import com.uet.ooadloophole.database.ClassRepository;
 import com.uet.ooadloophole.database.IterationRepository;
+import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
-import com.uet.ooadloophole.model.business.Group;
-import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.FileService;
@@ -13,7 +14,10 @@ import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,11 +27,13 @@ public class ClassServiceImpl implements ClassService {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private IterationRepository iterationRepository;
-    @Autowired
     private FileService fileService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private ClassConfigRepository classConfigRepository;
+    @Autowired
+    private ClassPhaseConfigRepository classPhaseConfigRepository;
 
     @Override
     public List<Class> getAll() {
@@ -69,7 +75,11 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public Class create(Class ooadClass) {
         ooadClass.setActive(true);
-        classRepository.save(ooadClass);
+        Class newClass = classRepository.save(ooadClass);
+        Date date = new Date();
+        LocalDate defaultDeadline = LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")).plusDays(14));
+        groupSetting(newClass.get_id(), 3, 5, defaultDeadline);
+        iterationSetting(newClass.get_id(), 14, 21, defaultDeadline);
         return ooadClass;
     }
 
@@ -147,5 +157,54 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public boolean classNameExists(String teacherId, String className) {
         return !classRepository.findAllByTeacherIdAndClassNameLikeIgnoreCase(teacherId, className).isEmpty();
+    }
+
+    @Override
+    public ClassConfig getClassConfig(String classId) {
+        return classConfigRepository.findByClassId(classId);
+    }
+
+    @Override
+    public ClassConfig groupSetting(String classId, int min, int max, LocalDate deadline) {
+        ClassConfig classConfig;
+        if (classConfigRepository.findByClassId(classId) != null) {
+            classConfig = classConfigRepository.findByClassId(classId);
+        } else {
+            classConfig = new ClassConfig();
+            classConfig.setClassId(classId);
+        }
+        classConfig.setGroupLimitMin(min);
+        classConfig.setGroupLimitMax(max);
+        classConfig.setGroupRegistrationDeadline(deadline);
+        return classConfigRepository.save(classConfig);
+    }
+
+    @Override
+    public ClassConfig iterationSetting(String classId, int defaultLength, int maxLength, LocalDate deadline) {
+        ClassConfig classConfig;
+        if (classConfigRepository.findByClassId(classId) != null) {
+            classConfig = classConfigRepository.findByClassId(classId);
+        } else {
+            classConfig = new ClassConfig();
+            classConfig.setClassId(classId);
+        }
+        classConfig.setDefaultIterationLength(defaultLength);
+        classConfig.setMaxIterationLength(maxLength);
+        classConfig.setIterationSetupDeadline(deadline);
+        return classConfigRepository.save(classConfig);
+    }
+
+    @Override
+    public ClassPhaseConfig phaseSetting(String classId, String phaseId, boolean enabled) {
+        ClassPhaseConfig classPhaseConfig;
+        if (classPhaseConfigRepository.findByClassIdAndPhaseId(classId, phaseId) != null) {
+            classPhaseConfig = classPhaseConfigRepository.findByClassIdAndPhaseId(classId, phaseId);
+        } else {
+            classPhaseConfig = new ClassPhaseConfig();
+            classPhaseConfig.setClassId(classId);
+            classPhaseConfig.setPhaseId(phaseId);
+        }
+        classPhaseConfig.setEnabled(enabled);
+        return classPhaseConfigRepository.save(classPhaseConfig);
     }
 }

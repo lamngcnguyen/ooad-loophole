@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Analysis",
+    "description": "Requirement analysis"
+  },
+  {
+    "name": "Design",
+    "description": "System design"
+  },
+  {
+    "name": "Implement",
+    "description": "System implementation"
+  },
+  {
+    "name": "Test",
+    "description": "Product testing"
+  },
+  {
+    "name": "Deployment",
+    "description": "Product deployment"
+  }
+]

@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -227,5 +229,25 @@ public class ApiClassController {
         List<DTOAssignment> dtoAssignments = new ArrayList<>();
         assignments.forEach(assignment -> dtoAssignments.add(converterService.convertToDTOAssignment(assignment)));
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoAssignments)));
+    }
+
+    @RequestMapping(value = "/{classId}/settings", method = RequestMethod.GET)
+    public ResponseEntity<DTOClassConfig> getClassConfig(@PathVariable String classId) {
+        DTOClassConfig classConfig = converterService.convertToDTOClassConfig(classService.getClassConfig(classId));
+        return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+    }
+
+    @RequestMapping(value = "/{classId}/settings/group", method = RequestMethod.POST)
+    public ResponseEntity<ClassConfig> groupSetting(@PathVariable String classId, int groupMin, int groupMax, String deadline) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        ClassConfig classConfig = classService.groupSetting(classId, groupMin, groupMax, LocalDate.parse(deadline, formatter));
+        return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+    }
+
+    @RequestMapping(value = "/{classId}/settings/iteration", method = RequestMethod.POST)
+    public ResponseEntity<ClassConfig> iterationSetting(@PathVariable String classId, int defaultLength, int maxLength, String deadline) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        ClassConfig classConfig = classService.iterationSetting(classId, defaultLength, maxLength, LocalDate.parse(deadline, formatter));
+        return ResponseEntity.status(HttpStatus.OK).body(classConfig);
     }
 }

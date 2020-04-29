@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
+import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
