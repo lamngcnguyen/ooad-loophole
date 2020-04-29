@@ -19,7 +19,10 @@ btnNewIteration.click(function () {
 function createIterationForm() {
     var name = $('#nameInput input').val().trim();
     if (name === '') {
-        alert('name must not be empty');
+        $('body').toast({
+            message: 'Name must not be empty',
+            class: 'red'
+        });
         return;
     }
     var navItem = $(`<a class="item" id="item_0" onclick="showIteration(0)">${name}</a>`);

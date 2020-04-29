@@ -10,11 +10,16 @@
     <div class="row">
         <div class="column">
             <div class="header">
-                <div class="ui grey label">
-                    <i class="cog icon"></i>
-                    Class settings
+                <div class="ui large labels">
+                    <div class="ui blue label">
+                        <i class="users icon nav-icon"></i>
+                        <span th:text="${class.getClassName()}"></span>
+                    </div>
+                    <div class="ui grey label">
+                        <i class="cog icon"></i>
+                        Class settings
+                    </div>
                 </div>
-                <div class="ui blue label" th:text="${class.getClassName()}"></div>
             </div>
         </div>
     </div>

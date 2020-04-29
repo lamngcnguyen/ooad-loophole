@@ -5,11 +5,6 @@
     "url": "/admin",
     "navigationItems": [
       {
-        "name": "Thiết lập hệ thống",
-        "url": "/admin/business",
-        "description": "Quản lý các thông tin chung của hệ thống, VD: học kỳ, bảng tin..."
-      },
-      {
         "name": "Quản lý người dùng",
         "url": "/admin/user",
         "description": null

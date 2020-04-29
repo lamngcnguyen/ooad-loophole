@@ -43,15 +43,6 @@ public class AuthController {
         return "security/login";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView showRegistrationForm() {
-        ModelAndView model = new ModelAndView();
-        LoopholeUser userDto = new LoopholeUser();
-        model.addObject("user", userDto);
-        model.setViewName("security/registration");
-        return model;
-    }
-
     @ResponseBody
     @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
     public ResponseEntity<Object> teacherRegistration(String username, String email, String password, String fullName) {
