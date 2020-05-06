@@ -221,13 +221,14 @@ public class ConverterService {
         iteration.setName(iIteration.getName());
         iteration.setGroupId(iIteration.getGroupId());
         iteration.setObjective(iIteration.getObjective());
-        iteration.setStartDateTime(LocalDate.parse(iIteration.getStartDateTime(), formatter));
-        iteration.setEndDateTime(LocalDate.parse(iIteration.getEndDateTime(), formatter));
+        iteration.setStartDateTime(LocalDate.parse(iIteration.getStartDate(), formatter));
+        iteration.setEndDateTime(LocalDate.parse(iIteration.getEndDate(), formatter));
         return iteration;
     }
 
     public DTOIteration convertToDTOIteration(Iteration iteration) {
         DTOIteration dtoIteration = new DTOIteration();
+        dtoIteration.set_id(iteration.get_id());
         dtoIteration.setName(iteration.getName());
         dtoIteration.setGroupId(iteration.getGroupId());
         dtoIteration.setObjective(iteration.getObjective());

@@ -3,6 +3,8 @@ $.fn.api.settings.api = {
     'get group members': '/api/groups/{id}/members',
     'get students with no group': '/api/classes/{classId}/students/withoutGroup',
     'get iterations': '/api/iterations/{groupId}/group',
+    'create iteration': '/api/iterations',
+    'delete iteration': '/api/iterations/{id}',
 };
 
 const validationRules = {

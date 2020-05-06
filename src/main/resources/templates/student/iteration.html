@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:fragment="leader-content" class="ui stackable grid">
-    <input type="hidden" name="groupId" th:value="groupId">
+    <input type="hidden" name="groupId" th:value="${groupId}">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -24,63 +24,18 @@
                     <div class="row">
                         <div class="four wide column">
                             <div class="ui vertical fluid tabular menu" style="min-height: 50vh">
-                                <a class="item active" id="item_1" onclick="showIteration(1)">
-                                    Iteration 1
-                                </a>
                                 <a class="item new" th:if="${isSetupPhase}">
                                     <div class="ui fluid blue button" id="newIteration">New</div>
                                     <div class="ui fluid input" id="nameInput" style="display: none">
-                                        <input type="text" style="margin-right: 0.5em" placeholder="iteration name...">
+                                        <input class="new-iteration" type="text" style="margin-right: 0.5em"
+                                               placeholder="iteration name...">
                                         <div class="ui blue icon button" style="margin-right: 0"
                                              onclick="createIterationForm()"><i class="plus icon"></i></div>
                                     </div>
                                 </a>
                             </div>
                         </div>
-                        <div class="twelve wide stretched column" id="segmentContainer">
-                            <div class="ui iteration segment" id="iteration_1">
-                                <div class="ui grid">
-                                    <div class="row">
-                                        <div class="column">
-                                            <div class="ui blue large header">Iteration 1</div>
-                                            <div class="ui divider"></div>
-                                            <div class="ui grey icon label">
-                                                <i class="clock icon"></i>&nbsp
-                                                From - To
-                                            </div>
-                                            <div class="ui segment" style="padding-top: 30px">
-                                                <a class="ui top attached icon grey label">
-                                                    <i class="check icon"></i>&nbsp
-                                                    Objective
-                                                </a>
-                                                <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
-                                            </div>
-                                            <div class="ui divider"></div>
-                                            <div class="ui blue icon labeled button">
-                                                <i class="code icon"></i>
-                                                Submit Code
-                                            </div>
-                                            <table class="ui grey celled table">
-                                                <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Tên</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>
-                                                        main.java
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="twelve wide stretched column" id="segmentContainer"></div>
                     </div>
                 </div>
             </div>
@@ -93,37 +48,54 @@
                 <div class="fields">
                     <div class="eight wide required field">
                         <label>Start date</label>
-                        <input name="startDate" placeholder="dd/mm/yyyy">
+                        <div class="ui calendar start-date-picker">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" name="startDate" placeholder="Start date">
+                            </div>
+                        </div>
                     </div>
                     <div class="eight wide required field">
                         <label>End date</label>
-                        <input name="endDate" placeholder="dd/mm/yyyy">
+                        <div class="ui calendar end-date-picker">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input type="text" name="endDate" placeholder="End date">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="field">
                 <label>Objective</label>
-                <textarea placeholder="TODO..."></textarea>
+                <textarea name="objective" placeholder="TODO..."></textarea>
             </div>
-            <div class="ui grey icon labeled button" onclick="cancelIterationForm()"><i class="close icon"></i>Cancel</div>
+            <div class="ui grey icon labeled button" onclick="cancelIterationForm()"><i class="close icon"></i>Cancel
+            </div>
             <div class="ui blue icon labeled right floated submit button"><i class="save icon"></i>Save
             </div>
         </div>
         <div class="ui iteration grid">
             <div class="row">
                 <div class="column">
-                    <div class="ui blue large header">Iteration Name</div>
+                    <div class="ui blue large header">
+                        <span class="iteration-name">Iteration Name</span>
+                        <button class="ui right floated red small basic icon button" th:if="${isSetupPhase}"
+                                style="padding-top: 10px" onclick="showModal('.modal.delete-iteration')">
+                            <i class="trash icon"></i>
+                        </button>
+                    </div>
                     <div class="ui divider"></div>
                     <div class="ui grey icon label">
                         <i class="clock icon"></i>&nbsp
-                        From - To
+                        <span class="form-date"></span> - <span class="to-date"></span>
                     </div>
                     <div class="ui segment" style="padding-top: 30px">
                         <a class="ui top attached icon grey label">
                             <i class="check icon"></i>&nbsp
                             Objective
                         </a>
-                        <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span>
+                        <span class="objective-text"></span>
                     </div>
                     <div class="ui divider"></div>
                     <div class="ui blue icon labeled button">
@@ -146,6 +118,32 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal delete-iteration">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Warning
+        </div>
+        <div class="content">
+            <div class="ui form delete-iteration">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Do you really want to delete this iteration?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Yes
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-iteration')">
+                    <i class="close icon"></i>
+                    No
                 </div>
             </div>
         </div>

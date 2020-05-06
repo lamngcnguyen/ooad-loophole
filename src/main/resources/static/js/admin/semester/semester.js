@@ -82,6 +82,7 @@ $('.form.create-semester').form({
                 $('.form.create-semester').form('add errors', [response]);
             },
             onSuccess: function () {
+                $('.form.create-semester').form('reset');
                 hideDimmer('.modal.create-semester');
                 hideModal('.modal.create-semester');
                 reloadSemesterTable()
@@ -135,7 +136,7 @@ $('.modal.create-semester').modal({
         $('.modal.create-semester .range-start').calendar({
             type: 'date',
             formatter: {
-                date: function (date, settings) {
+                date: function (date) {
                     if (!date) return '';
                     const day = ('0' + date.getDate()).slice(-2);
                     const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -148,7 +149,7 @@ $('.modal.create-semester').modal({
         $('.modal.create-semester .range-end').calendar({
             type: 'date',
             formatter: {
-                date: function (date, settings) {
+                date: function (date) {
                     if (!date) return '';
                     const day = ('0' + date.getDate()).slice(-2);
                     const month = ('0' + (date.getMonth() + 1)).slice(-2);

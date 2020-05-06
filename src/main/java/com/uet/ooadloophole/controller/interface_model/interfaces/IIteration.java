@@ -4,8 +4,8 @@ public class IIteration {
     private String name;
     private String groupId;
     private String objective;
-    private String endDateTime;
-    private String startDateTime;
+    private String endDate;
+    private String startDate;
 
     public String getName() {
         return name;
@@ -31,19 +31,19 @@ public class IIteration {
         this.objective = objective;
     }
 
-    public String getEndDateTime() {
-        return endDateTime;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setEndDateTime(String endDateTime) {
-        this.endDateTime = endDateTime;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    public String getStartDateTime() {
-        return startDateTime;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setStartDateTime(String startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }

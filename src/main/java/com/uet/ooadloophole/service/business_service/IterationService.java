@@ -10,4 +10,6 @@ public interface IterationService {
     Iteration getById(String id);
     Iteration create(Iteration iteration);
     List<Iteration> getAllByGroup(String groupId);
+
+    void delete(String id);
 }

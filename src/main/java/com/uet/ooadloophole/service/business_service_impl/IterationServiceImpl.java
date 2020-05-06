@@ -27,4 +27,9 @@ public class IterationServiceImpl implements IterationService {
     public List<Iteration> getAllByGroup(String groupId) {
         return iterationRepository.findAllByGroupId(groupId);
     }
+
+    @Override
+    public void delete(String id) {
+        iterationRepository.delete(getById(id));
+    }
 }

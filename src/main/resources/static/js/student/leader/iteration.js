@@ -9,6 +9,7 @@ function showIteration(id) {
     $(`#item_${id}`).addClass('active');
     $('.segment.iteration').hide();
     $(`#iteration_${id}`).show();
+    $('.form.delete-iteration').form('set value', 'id', id);
 }
 
 btnNewIteration.click(function () {
@@ -17,8 +18,14 @@ btnNewIteration.click(function () {
     $('#nameInput input').focus();
 });
 
+$('.new-iteration').on('keydown', function (e) {
+    if (e.which === 13 || e.keyCode === 13) {
+        createIterationForm()
+    }
+})
+
 function createIterationForm() {
-    var name = $('#nameInput input').val().trim();
+    const name = $('#nameInput input').val().trim();
     if (name === '') {
         $('body').toast({
             message: 'Name must not be empty',
@@ -26,18 +33,58 @@ function createIterationForm() {
         });
         return;
     }
-    var navItem = $(`<a class="item" id="item_0" onclick="showIteration(0)">${name}</a>`);
-    var segment = $('<div class="ui iteration segment" id="iteration_0"></div>');
-    var form = $('#templates .iteration.form').clone();
-    form.children('.header').text(name);
+    const navItem = $(`<a class="item" id="item_0" onclick="showIteration(0)">${name}</a>`);
+    const segment = $('<div class="ui iteration segment" id="iteration_0"></div>');
+    const form = $('#templates .iteration.form').clone();
+    form.find('.iteration-name').text(name);
+    form.find('.start-date-picker').calendar({
+        type: 'date',
+        formatter: {
+            date: function (date) {
+                if (!date) return '';
+                const day = ('0' + date.getDate()).slice(-2);
+                const month = ('0' + (date.getMonth() + 1)).slice(-2);
+                const year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+        },
+        endCalendar: form.find('.end-date-picker')
+    });
+    form.find('.end-date-picker').calendar({
+        type: 'date',
+        formatter: {
+            date: function (date) {
+                if (!date) return '';
+                const day = ('0' + date.getDate()).slice(-2);
+                const month = ('0' + (date.getMonth() + 1)).slice(-2);
+                const year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+        },
+        startCalendar: form.find('.start-date-picker')
+    });
     form.form({
-        onSuccess: function () {
-            // call api
-            // api success function below
-            createIterationGrid({
-                id: 2,
-                name: name
-            });
+        onSuccess: function (evt, data) {
+            data['name'] = name;
+            data['groupId'] = groupId;
+            data['startDate'] = $('input[name=startDate]').val();
+            data['endDate'] = $('input[name=endDate]').val();
+            $.api({
+                action: 'create iteration',
+                on: 'now',
+                method: 'post',
+                dataType: 'json',
+                data: JSON.stringify(data),
+                beforeXHR: (xhr) => {
+                    xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
+                },
+                onFailure: function (response) {
+                    $(form).form('add errors', [response])
+                },
+                onSuccess: function (response) {
+                    createIterationGrid(response)
+                }
+            })
             btnNewIteration.show();
             newIterationItem.show();
             $('#nameInput').hide();
@@ -53,25 +100,45 @@ function createIterationForm() {
 }
 
 function createIterationGrid(data) {
-    var segment = $('#iteration_0');
-    segment.empty();
-    segment.attr('id', `iteration_${data.id}`);
-    var navItem = $('#item_0');
+    const startDate = new Date(data.startDateTime);
+    const endDate = new Date(data.endDateTime);
+
+    //create iteration segment
+    let segment;
+    if ($('#iteration_0').length !== 0) {
+        segment = $('#iteration_0');
+        segment.empty();
+    } else {
+        segment = $('<div class="ui iteration segment"></div>');
+    }
+    segment.attr('id', `iteration_${data._id}`);
+    const navItem = $('#item_0');
     navItem.unbind().click(function () {
-        showIteration(data.id);
+        showIteration(data._id);
     });
-    navItem.attr('id', `item_${data.id}`);
-    var grid = $('#templates .iteration.grid').clone();
-    grid.find('.header').text(data.name);
+    navItem.attr('id', `item_${data._id}`);
+    navItem.removeAttr('onclick');
+    $('.form.delete-iteration').form('set value', 'id', data._id);
+
+    //create iteration data grid
+    const grid = $('#templates .iteration.grid').clone();
+    grid.find('.iteration-name').text(data.name);
+    grid.find('.form-date').text(startDate.toLocaleDateString("en-GB"));
+    grid.find('.to-date').text(endDate.toLocaleDateString("en-GB"));
+    grid.find('.objective-text').text(data.objective);
     segment.append(grid);
+    segmentContainer.append(segment);
 }
 
 function cancelIterationForm() {
     $('#iteration_0').remove();
+    $('#item_0').remove();
     btnNewIteration.show();
     $('#nameInput').hide();
     $('#nameInput input').val('');
     newIterationItem.show();
+    const firstElement = navMenu.children().get(0);
+    firstElement.click();
 }
 
 function loadIterations() {
@@ -84,17 +151,43 @@ function loadIterations() {
         },
         onSuccess: function (res, element, xhr) {
             xhr.responseJSON.data.forEach(function (iteration) {
-                const iterationItem = $(`<a class="item" id="${iteration._id}">${iteration.name}</a>`)
+                createIterationGrid(iteration);
+                const iterationItem = $(`<a class="item" id="item_${iteration._id}">${iteration.name}</a>`)
                     .click(function () {
                         showIteration(iteration._id);
                     })
-                navMenu.append(iterationItem);
+                newIterationItem.before(iterationItem);
                 const firstElement = navMenu.children().get(0);
                 firstElement.click();
             })
         }
     })
 }
+
+$('.form.delete-iteration').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-iteration');
+        $.api({
+            action: 'delete iteration',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-iteration');
+                hideModal('.modal.delete-iteration');
+                $(`#item_${data.id}`).prev().click();
+                $(`#item_${data.id}`).remove();
+                $(`#iteration_${data.id}`).remove();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-iteration');
+                $('.form.delete-iteration').form('add errors', [res]);
+            }
+        });
+    },
+});
 
 $(document).ready(function () {
     loadIterations();

@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.controller.interface_model.dto.DTOIteration;
 import com.uet.ooadloophole.controller.interface_model.interfaces.IIteration;
@@ -37,11 +38,17 @@ public class ApiIterationController {
         return ResponseEntity.status(HttpStatus.OK).body(dtoIteration);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteById(@PathVariable String id) {
+        iterationService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("deleted")));
+    }
+
     @RequestMapping(value = "/{groupId}/group", method = RequestMethod.GET)
     public ResponseEntity<String> getByGroup(@PathVariable String groupId) {
         List<DTOIteration> dtoIterations = new ArrayList<>();
         List<Iteration> iterations = iterationService.getAllByGroup(groupId);
-        for(Iteration iteration : iterations) {
+        for (Iteration iteration : iterations) {
             DTOIteration dtoIteration = converterService.convertToDTOIteration(iteration);
             dtoIterations.add(dtoIteration);
         }
