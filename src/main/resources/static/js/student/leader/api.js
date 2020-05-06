@@ -5,6 +5,7 @@ $.fn.api.settings.api = {
     'get iterations': '/api/iterations/{groupId}/group',
     'create iteration': '/api/iterations',
     'delete iteration': '/api/iterations/{id}',
+    'get class configs': '/api/classes/{classId}/settings'
 };
 
 const validationRules = {

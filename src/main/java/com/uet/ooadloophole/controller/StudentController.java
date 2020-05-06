@@ -90,6 +90,7 @@ public class StudentController {
             ModelAndView iterationView = getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
             iterationView.addObject("isSetupPhase", !iterationDeadlineMet);
             iterationView.addObject("groupId", student.getGroupId());
+            iterationView.addObject("classId", student.getClassId());
             return iterationView;
         } catch (BusinessServiceException e) {
             return new ModelAndView("error");

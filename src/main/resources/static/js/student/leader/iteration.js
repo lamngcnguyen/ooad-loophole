@@ -1,8 +1,30 @@
 const groupId = $("input[name='groupId']").val();
+const classId = $("input[name='classId']").val();
 const navMenu = $('.tabular.menu');
 const segmentContainer = $('#segmentContainer');
 const newIterationItem = $('.item.new');
 const btnNewIteration = $('#newIteration');
+let defaultIterationLength;
+let maxIterationLength;
+
+$(document).ready(function () {
+    getClassConfigs();
+})
+
+function getClassConfigs() {
+    $.api({
+        action: 'get class configs',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            classId: classId,
+        },
+        onSuccess: function (res, element, xhr) {
+            defaultIterationLength = res.defaultIterationLength;
+            maxIterationLength = res.maxIterationLength;
+        }
+    })
+}
 
 function showIteration(id) {
     $('.item').removeClass('active');
@@ -22,6 +44,9 @@ $('.new-iteration').on('keydown', function (e) {
     if (e.which === 13 || e.keyCode === 13) {
         createIterationForm()
     }
+    if (e.which === 27 || e.keyCode === 27) {
+        cancelIterationInput()
+    }
 })
 
 function createIterationForm() {
@@ -36,7 +61,7 @@ function createIterationForm() {
     const navItem = $(`<a class="item" id="item_0" onclick="showIteration(0)">${name}</a>`);
     const segment = $('<div class="ui iteration segment" id="iteration_0"></div>');
     const form = $('#templates .iteration.form').clone();
-    form.find('.iteration-name').text(name);
+    form.children('.header').text(name);
     form.find('.start-date-picker').calendar({
         type: 'date',
         formatter: {
@@ -48,7 +73,15 @@ function createIterationForm() {
                 return day + '/' + month + '/' + year;
             }
         },
-        endCalendar: form.find('.end-date-picker')
+        endCalendar: form.find('.end-date-picker'),
+        onChange: function (date) {
+            const maxDate = new Date();
+            const defaultDate = new Date()
+            maxDate.setDate(date.getDate() + maxIterationLength);
+            defaultDate.setDate(date.getDate() + defaultIterationLength);
+            form.find('.end-date-picker').calendar('set maxDate', maxDate);
+            form.find('.end-date-picker').calendar('set date', defaultDate);
+        }
     });
     form.find('.end-date-picker').calendar({
         type: 'date',
@@ -139,6 +172,13 @@ function cancelIterationForm() {
     newIterationItem.show();
     const firstElement = navMenu.children().get(0);
     firstElement.click();
+}
+
+function cancelIterationInput() {
+    btnNewIteration.show();
+    $('#nameInput').hide();
+    $('#nameInput input').val('');
+    newIterationItem.show();
 }
 
 function loadIterations() {
