@@ -23,9 +23,17 @@ $('.form.group-setting').form({
                 });
             },
             onFailure: function (response) {
-                $('.form.group-setting').form('add errors', [response]);
+                if (response.error !== undefined) {
+                    $('.form.iteration-setting').form('add errors', [response.error]);
+                } else {
+                    $('.form.group-setting').form('add errors', [response.message]);
+                }
             }
         })
+    },
+    fields: {
+        groupMin: validationRules.groupMin,
+        groupMax: validationRules.groupMax
     }
 })
 
@@ -53,9 +61,17 @@ $('.form.iteration-setting').form({
                 });
             },
             onFailure: function (response) {
-                $('.form.iteration-setting').form('add errors', [response]);
+                if (response.error !== undefined) {
+                    $('.form.iteration-setting').form('add errors', [response.error]);
+                } else {
+                    $('.form.iteration-setting').form('add errors', [response.message]);
+                }
             }
         })
+    },
+    fields: {
+        defaultLength: validationRules.defaultLength,
+        maxLength: validationRules.maxLength
     }
 })
 
@@ -80,7 +96,7 @@ function initForms() {
             })
         },
         onFailure: function (response) {
-            $('.form.iteration-setting').form('add errors', [response]);
+            $('.form.iteration-setting').form('add errors', [response.error]);
         }
     })
 }

@@ -1,66 +1,101 @@
-var fileRowIndex = 0;
-const fileTable = $(".file .ui.table").DataTable({
-    ordering: true,
-    searching: true,
-    paging: true,
-    autoWidth: false,
-    lengthChange: true,
-    ajax: "/api/classes/" + classId + "/topics",
-    sDom: stringDom,
-    language: languageOption,
-    columns: [
-        {
-            data: null,
-            render: function () {
-                return ++topicRowIndex;
-            }
-        },
-        {
-            data: null,
-            render: function () {
-                return "";
-            }
-        },
-        {data: "name"},
-        {data: "descriptions", defaultContent: "Not set"},
-        {data: "groupName", defaultContent: "Not set"},
-        {
-            data: "files",
-            defaultContent: "No attachments",
-            render: function (files) {
-                var html = $('<div class="ui middle aligned list"></div>');
-                $.each(files, function (index, file) {
-                    var item = $(`<a class="item" href="/api/files/spec/topic/${file._id}" target="_blank"></a>`);
-                    item.append(`<div class="ui avatar image"><i class="large file ${getFileIconClass(file.fileExtension)} icon"></i></div>`);
-                    item.append(`<div class="content"><div class="header">${file.fileName}</div></div>`);
-                    html.append(item);
-                });
-                return html.prop('outerHTML');
-            }
-        }
-    ],
-    columnDefs: [
-        {targets: [0, 1], className: "center aligned"}
-    ],
-    createdRow: function (row, data) {
-        const actionCell = $(row).children().eq(1);
-        const btnEdit = $('<button type="button" class="ui mini icon blue button" data-tooltip="Chỉnh sửa thông tin" data-inverted=""><i class="pencil icon"></i></button>')
-            .click(function () {
-                $('.form.edit-topic').form('set values', {
-                    id: data._id,
-                    name: data.name,
-                    descriptions: data.descriptions,
-                    groupId: data.groupId
-                });
-                showModal('.modal.edit-topic');
-            });
-        const btnDelete = $('<button type="button" class="ui mini icon grey button" data-tooltip="Xóa đề tài" data-inverted=""><i class="trash icon"></i></button>')
-            .click(function () {
-                $('.form.delete-topic').form('set values', {
-                    id: data._id,
-                });
-                showModal('.modal.delete-topic');
-            });
-        actionCell.append(btnEdit, btnDelete);
-    }
+const groupId = $("input[name='groupId']").val();
+const navMenu = $('.tabular.menu');
+const segmentContainer = $('#segmentContainer');
+const newIterationItem = $('.item.new');
+const btnNewIteration = $('#newIteration');
+
+function showIteration(id) {
+    $('.item').removeClass('active');
+    $(`#item_${id}`).addClass('active');
+    $('.segment.iteration').hide();
+    $(`#iteration_${id}`).show();
+}
+
+btnNewIteration.click(function () {
+    $(this).hide();
+    $('#nameInput').show();
+    $('#nameInput input').focus();
 });
+
+function createIterationForm() {
+    var name = $('#nameInput input').val().trim();
+    if (name === '') {
+        $('body').toast({
+            message: 'Name must not be empty',
+            class: 'red'
+        });
+        return;
+    }
+    var navItem = $(`<a class="item" id="item_0" onclick="showIteration(0)">${name}</a>`);
+    var segment = $('<div class="ui iteration segment" id="iteration_0"></div>');
+    var form = $('#templates .iteration.form').clone();
+    form.children('.header').text(name);
+    form.form({
+        onSuccess: function () {
+            // call api
+            // api success function below
+            createIterationGrid({
+                id: 2,
+                name: name
+            });
+            btnNewIteration.show();
+            newIterationItem.show();
+            $('#nameInput').hide();
+            $('#nameInput input').val('');
+        }
+    });
+    segment.append(form);
+
+    segmentContainer.append(segment);
+    newIterationItem.before(navItem);
+    newIterationItem.hide();
+    showIteration(0);
+}
+
+function createIterationGrid(data) {
+    var segment = $('#iteration_0');
+    segment.empty();
+    segment.attr('id', `iteration_${data.id}`);
+    var navItem = $('#item_0');
+    navItem.unbind().click(function () {
+        showIteration(data.id);
+    });
+    navItem.attr('id', `item_${data.id}`);
+    var grid = $('#templates .iteration.grid').clone();
+    grid.find('.header').text(data.name);
+    segment.append(grid);
+}
+
+function cancelIterationForm() {
+    $('#iteration_0').remove();
+    btnNewIteration.show();
+    $('#nameInput').hide();
+    $('#nameInput input').val('');
+    newIterationItem.show();
+}
+
+function loadIterations() {
+    $.api({
+        action: 'get iterations',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            groupId: groupId,
+        },
+        onSuccess: function (res, element, xhr) {
+            xhr.responseJSON.data.forEach(function (iteration) {
+                const iterationItem = $(`<a class="item" id="${iteration._id}">${iteration.name}</a>`)
+                    .click(function () {
+                        showIteration(iteration._id);
+                    })
+                navMenu.append(iterationItem);
+                const firstElement = navMenu.children().get(0);
+                firstElement.click();
+            })
+        }
+    })
+}
+
+$(document).ready(function () {
+    loadIterations();
+})

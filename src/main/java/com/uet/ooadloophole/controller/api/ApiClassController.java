@@ -238,16 +238,24 @@ public class ApiClassController {
     }
 
     @RequestMapping(value = "/{classId}/settings/group", method = RequestMethod.POST)
-    public ResponseEntity<ClassConfig> groupSetting(@PathVariable String classId, int groupMin, int groupMax, String deadline) {
+    public ResponseEntity<Object> groupSetting(@PathVariable String classId, int groupMin, int groupMax, String deadline) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-        ClassConfig classConfig = classService.groupSetting(classId, groupMin, groupMax, LocalDate.parse(deadline, formatter));
-        return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+        if (groupMax < groupMin) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(gson.toJson(new ResponseMessage("Minimum group size must not be greater than maximum group size")));
+        } else {
+            ClassConfig classConfig = classService.groupSetting(classId, groupMin, groupMax, LocalDate.parse(deadline, formatter));
+            return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+        }
     }
 
     @RequestMapping(value = "/{classId}/settings/iteration", method = RequestMethod.POST)
-    public ResponseEntity<ClassConfig> iterationSetting(@PathVariable String classId, int defaultLength, int maxLength, String deadline) {
+    public ResponseEntity<Object> iterationSetting(@PathVariable String classId, int defaultLength, int maxLength, String deadline) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-        ClassConfig classConfig = classService.iterationSetting(classId, defaultLength, maxLength, LocalDate.parse(deadline, formatter));
-        return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+        if (maxLength < defaultLength) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(gson.toJson(new ResponseMessage("Default iteration length must not be greater than minimum iteration length")));
+        } else {
+            ClassConfig classConfig = classService.iterationSetting(classId, defaultLength, maxLength, LocalDate.parse(deadline, formatter));
+            return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+        }
     }
 }

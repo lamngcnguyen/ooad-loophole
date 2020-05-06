@@ -34,11 +34,11 @@
                             <div class="fields">
                                 <div class="required four wide field">
                                     <label>Số thành viên tối thiểu</label>
-                                    <input type="text" name="groupMin">
+                                    <input type="number" name="groupMin" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                                 <div class="required four wide field">
                                     <label>Số thành viên tối đa</label>
-                                    <input type="text" name="groupMax">
+                                    <input type="number" name="groupMax" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                             </div>
                         </div>
@@ -66,11 +66,11 @@
                             <div class="fields">
                                 <div class="required five wide field">
                                     <label>Thời lượng mặc định (ngày)</label>
-                                    <input type="text" name="defaultLength">
+                                    <input type="number" name="defaultLength" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                                 <div class="required five wide field">
                                     <label>Thời lượng tối đa (ngày)</label>
-                                    <input type="text" name="maxLength">
+                                    <input type="number" name="maxLength" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                             </div>
                         </div>

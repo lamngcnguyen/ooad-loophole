@@ -5,10 +5,7 @@ import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.GroupService;
-import com.uet.ooadloophole.service.business_service.IterationService;
-import com.uet.ooadloophole.service.business_service.RequestService;
-import com.uet.ooadloophole.service.business_service.StudentService;
+import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/student")
@@ -33,6 +32,8 @@ public class StudentController {
     private GroupService groupService;
     @Autowired
     private IterationService iterationService;
+    @Autowired
+    private ClassService classService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -78,12 +79,17 @@ public class StudentController {
     @RequestMapping(value = "/iteration", method = RequestMethod.GET)
     public ModelAndView getIterationView() {
         try {
+            Date date = new Date();
+            LocalDate today = LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")));
             String pageTitle = "Vòng lặp phát triển";
             LoopholeUser currentUser = secureUserService.getCurrentUser();
             Student student = studentService.getByUserId(currentUser.get_id());
-            List<Iteration> iterations = iterationService.getAllByGroup(student.getGroupId());
+            ClassConfig classConfig = classService.getClassConfig(student.getClassId());
+            boolean iterationDeadlineMet = today.compareTo(classConfig.getIterationSetupDeadline()) > 0;
+
             ModelAndView iterationView = getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
-            iterationView.addObject("isSetupPhase", true);
+            iterationView.addObject("isSetupPhase", !iterationDeadlineMet);
+            iterationView.addObject("groupId", student.getGroupId());
             return iterationView;
         } catch (BusinessServiceException e) {
             return new ModelAndView("error");
