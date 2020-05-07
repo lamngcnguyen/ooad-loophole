@@ -196,7 +196,11 @@ function loadIterations() {
                     .click(function () {
                         showIteration(iteration._id);
                     })
-                newIterationItem.before(iterationItem);
+                if (newIterationItem.length !== 0) {
+                    newIterationItem.before(iterationItem);
+                } else {
+                    navMenu.append(iterationItem);
+                }
                 const firstElement = navMenu.children().get(0);
                 firstElement.click();
             })
