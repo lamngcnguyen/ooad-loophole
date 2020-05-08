@@ -12,7 +12,7 @@ import java.util.List;
 public interface RepoFileService {
     RepoFile getById(String id);
 
-    List<RepoFile> getAllByGroupAndIteration(String groupId, String iterationId);
+    List<RepoFile> getAllByIteration(String iterationId);
 
     RepoFile upload(MultipartFile file, String path, String iterationId) throws BusinessServiceException;
 

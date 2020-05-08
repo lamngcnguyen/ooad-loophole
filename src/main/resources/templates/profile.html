@@ -5,7 +5,6 @@
     <title>Profile</title>
 </head>
 <body>
-<!--<div class="ui middle aligned center aligned black grid">-->
 <div th:fragment="body-content" class="ui middle aligned black grid">
     <input type="hidden" id="userId" th:value="${user.get_id()}">
     <div class="row"></div>
@@ -56,8 +55,7 @@
                                 </div>
                             </div>
                             <div class="ui error message"></div>
-                            <button class="ui green submit button" style="display: none"
-                                    onclick="console.log('clicked')"></button>
+                            <button class="ui green submit button" style="display: none"></button>
                         </div>
                     </div>
                 </div>

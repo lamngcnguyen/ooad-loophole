@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -84,7 +85,8 @@ public class FileServiceImpl implements FileService {
         String userId = secureUserService.getCurrentUser().get_id();
 
         Path savePath = createPath(saveLocation);
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        String fileTimeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        LocalDateTime timeStamp = LocalDateTime.now();
         String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String extension = FilenameUtils.getExtension(originalFileName);
         try {
@@ -93,13 +95,14 @@ public class FileServiceImpl implements FileService {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + originalFileName);
             }
             // Copy file to the target location (Replacing existing file with the same name)
-            String fileName = converterService.formatFileName(originalFileName, timeStamp, extension);
+            String fileName = converterService.formatFileName(originalFileName, fileTimeStamp, extension);
             assert savePath != null;
             Path targetLocation = savePath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             uploadedUserFile.setFileName(originalFileName);
             uploadedUserFile.setFileExtension(extension);
+            uploadedUserFile.setFileTimeStamp(fileTimeStamp);
             uploadedUserFile.setTimeStamp(timeStamp);
             uploadedUserFile.setUploaderId(userId);
             uploadedUserFile.setPath(saveLocation);

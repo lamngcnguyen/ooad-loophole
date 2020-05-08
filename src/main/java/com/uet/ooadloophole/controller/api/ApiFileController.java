@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -62,13 +63,13 @@ public class ApiFileController {
     @RequestMapping(value = "/repo/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadRepoFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = repoFileService.download(id);
-        String timeStamp = repoFileService.getById(id).getTimeStamp();
+        LocalDateTime timeStamp = repoFileService.getById(id).getTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
-    @RequestMapping(value = "/repo/{groupId}/{iterationId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getAllFiles(@PathVariable String groupId, @PathVariable String iterationId) {
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getAllByGroupAndIteration(groupId, iterationId))));
+    @RequestMapping(value = "/repo/{iterationId}/iteration", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllFiles(@PathVariable String iterationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getAllByIteration(iterationId))));
     }
 
     @RequestMapping(value = "/repo/{id}", method = RequestMethod.DELETE)
@@ -126,7 +127,7 @@ public class ApiFileController {
     @RequestMapping(value = "/spec/topic/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = topicSpecFileService.download(id);
-        String timeStamp = topicSpecFileService.findById(id).getTimeStamp();
+        LocalDateTime timeStamp = topicSpecFileService.findById(id).getTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
@@ -207,11 +208,11 @@ public class ApiFileController {
     @RequestMapping(value = "/spec/req/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> findReqSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = requirementFileService.download(id);
-        String timeStamp = requirementFileService.findById(id).getTimeStamp();
+        LocalDateTime timeStamp = requirementFileService.findById(id).getTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
-    private ResponseEntity<Resource> getResourceResponseEntity(HttpServletRequest request, Resource resource, String timeStamp) {
+    private ResponseEntity<Resource> getResourceResponseEntity(HttpServletRequest request, Resource resource, LocalDateTime timeStamp) {
         String contentType = null;
         String fileName = Objects.requireNonNull(resource.getFilename()).replace("_" + timeStamp, "");
         try {

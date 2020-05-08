@@ -88,6 +88,7 @@
                             <i class="trash icon"></i>
                         </button>
                     </div>
+                    <input type="hidden" name="iterationId">
                     <div class="ui divider"></div>
                     <div class="ui grey icon label">
                         <i class="clock icon"></i>&nbsp
@@ -101,30 +102,37 @@
                         <span class="objective-text"></span>
                     </div>
                     <div class="ui divider"></div>
-                    <input type="file" id="upload-code" hidden>
+                    <input type="file" id="upload-code" hidden onchange="uploadCode()">
                     <a class="ui blue icon labeled button" onclick="$('#upload-code').click()">
                         <i class="code icon"></i>
                         Submit Code
                     </a>
-                    <table class="ui grey celled table">
+                    <table class="ui grey celled table repo-file">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Tên</th>
+                            <th class="one wide">#</th>
+                            <th class="seven wide">Name</th>
+                            <th class="four wide">Timestamp</th>
+                            <th class="three wide center aligned"></th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                main.java
-                            </td>
-                        </tr>
-                        </tbody>
+                        <tbody class="repo-table"></tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <table>
+            <tbody>
+            <tr class="code-cell">
+                <td class="number"></td>
+                <td class="name"></td>
+                <td class="timestamp"></td>
+                <td class="center aligned">
+                    <button class="ui icon button delete-file"><i class="trash icon"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div class="ui small modal delete-iteration">
         <div class="ui dimmer">

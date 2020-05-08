@@ -37,7 +37,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
         String newPath = Constants.SPEC_FOLDER + topicId + "/";
         dbTopicSpecFile.setTopicId(topicId);
         //specFile.getPath() may indicate the spec file is in temp folder
-        String fileName = converterService.formatFileName(dbTopicSpecFile.getFileName(), dbTopicSpecFile.getTimeStamp(), dbTopicSpecFile.getFileExtension());
+        String fileName = converterService.formatFileName(dbTopicSpecFile.getFileName(), dbTopicSpecFile.getFileTimeStamp(), dbTopicSpecFile.getFileExtension());
         try {
             fileService.moveFile(fileName, dbTopicSpecFile.getPath(), newPath);
         } catch (BusinessServiceException | IOException e) {
@@ -58,6 +58,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
             topicSpecFile.setFileName(userFile.getFileName());
             topicSpecFile.setFileExtension(userFile.getFileExtension());
             topicSpecFile.setTimeStamp(userFile.getTimeStamp());
+            topicSpecFile.setFileTimeStamp(userFile.getFileTimeStamp());
             topicSpecFile.setUploaderId(userFile.getUploaderId());
             topicSpecFile.setPath(saveLocation);
 
@@ -72,7 +73,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
     public Resource download(String id) {
         TopicSpecFile topicSpecFile = findById(id);
         String saveLocation = topicSpecFile.getPath();
-        String fileName = converterService.formatFileName(topicSpecFile.getFileName(), topicSpecFile.getTimeStamp(), topicSpecFile.getFileExtension());
+        String fileName = converterService.formatFileName(topicSpecFile.getFileName(), topicSpecFile.getFileTimeStamp(), topicSpecFile.getFileExtension());
         return fileService.loadFileAsResource(fileName, saveLocation);
     }
 
@@ -84,7 +85,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
     @Override
     public boolean delete(String id) throws IOException {
         TopicSpecFile topicSpecFile = specFileRepository.findBy_id(id);
-        String fileName = converterService.formatFileName(topicSpecFile.getFileName(), topicSpecFile.getTimeStamp(), topicSpecFile.getFileExtension());
+        String fileName = converterService.formatFileName(topicSpecFile.getFileName(), topicSpecFile.getFileTimeStamp(), topicSpecFile.getFileExtension());
         String dir = topicSpecFile.getPath() + "/" + fileName;
         return fileService.deleteFile(dir);
     }

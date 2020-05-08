@@ -1,9 +1,12 @@
 package com.uet.ooadloophole.model.business;
 
+import java.time.LocalDateTime;
+
 public class UserFile {
     private String fileName;
     private String fileExtension;
-    private String timeStamp;
+    private String fileTimeStamp;
+    private LocalDateTime timeStamp;
     private String uploaderId;
     private String path;
     private String previousVersionId;
@@ -25,11 +28,19 @@ public class UserFile {
         this.fileExtension = fileExtension;
     }
 
-    public String getTimeStamp() {
+    public String getFileTimeStamp() {
+        return fileTimeStamp;
+    }
+
+    public void setFileTimeStamp(String fileTimeStamp) {
+        this.fileTimeStamp = fileTimeStamp;
+    }
+
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 

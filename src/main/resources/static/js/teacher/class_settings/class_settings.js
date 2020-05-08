@@ -104,7 +104,7 @@ function initForms() {
 $(document).ready(function () {
     const today = new Date();
     $('.form.group-setting .deadline-picker').calendar({
-        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+        // minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
         type: 'date',
         formatter: {
             date: function (date, settings) {
@@ -117,7 +117,7 @@ $(document).ready(function () {
         }
     });
     $('.form.iteration-setting .deadline-picker').calendar({
-        minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+        // minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
         type: 'date',
         formatter: {
             date: function (date, settings) {

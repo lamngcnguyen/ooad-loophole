@@ -37,8 +37,8 @@ public class RepoFileServiceImpl implements RepoFileService {
     }
 
     @Override
-    public List<RepoFile> getAllByGroupAndIteration(String groupId, String iterationId) {
-        return repoFileRepository.findAllByGroupIdAndIterationId(groupId, iterationId);
+    public List<RepoFile> getAllByIteration(String iterationId) {
+        return repoFileRepository.findAllByIterationId(iterationId);
     }
 
     @Override
@@ -64,6 +64,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setFileExtension(userFile.getFileExtension());
             repoFile.setUploaderId(userFile.getUploaderId());
             repoFile.setTimeStamp(userFile.getTimeStamp());
+            repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
             repoFile.setPath(path);
             repoFile.setIterationId(iterationId);
             repoFile.setClassId(classId);
@@ -77,7 +78,7 @@ public class RepoFileServiceImpl implements RepoFileService {
     @Override
     public Resource download(String fileId) {
         RepoFile repoFile = getById(fileId);
-        String fileName = converterService.formatFileName(repoFile.getFileName(), repoFile.getTimeStamp(), repoFile.getFileExtension());
+        String fileName = converterService.formatFileName(repoFile.getFileName(), repoFile.getFileTimeStamp(), repoFile.getFileExtension());
         String path = Constants.REPO_FOLDER + repoFile.getClassId() + "/" + repoFile.getGroupId() + "/" + repoFile.getPath();
         return fileService.loadFileAsResource(fileName, path);
     }
@@ -101,6 +102,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setFileExtension(userFile.getFileExtension());
             repoFile.setUploaderId(userFile.getUploaderId());
             repoFile.setTimeStamp(userFile.getTimeStamp());
+            repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
             repoFile.setPath(userFile.getPath());
             repoFile.setIterationId(previousVersion.getIterationId());
             repoFile.setClassId(classId);

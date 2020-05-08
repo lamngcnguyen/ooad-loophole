@@ -19,7 +19,7 @@ function getClassConfigs() {
         urlData: {
             classId: classId,
         },
-        onSuccess: function (res, element, xhr) {
+        onSuccess: function (res) {
             defaultIterationLength = res.defaultIterationLength;
             maxIterationLength = res.maxIterationLength;
         }
@@ -32,6 +32,8 @@ function showIteration(id) {
     $('.segment.iteration').hide();
     $(`#iteration_${id}`).show();
     $('.form.delete-iteration').form('set value', 'id', id);
+    $('input[name=iterationId]').val(id);
+    getRepoFile(id);
 }
 
 btnNewIteration.click(function () {
@@ -201,9 +203,9 @@ function loadIterations() {
                 } else {
                     navMenu.append(iterationItem);
                 }
-                const firstElement = navMenu.children().get(0);
-                firstElement.click();
             })
+            const firstElement = navMenu.children().get(0);
+            firstElement.click();
         }
     })
 }
@@ -232,6 +234,56 @@ $('.form.delete-iteration').form({
         });
     },
 });
+
+function getRepoFile(iterationId) {
+    $.api({
+        action: 'get repo file',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            iterationId: iterationId
+        },
+        onSuccess: function (res, element, xhr) {
+            let fileCount = 0;
+            xhr.responseJSON.data.forEach(function (file) {
+                const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+                fileCount++;
+                const fileCell = $('#templates .code-cell').clone();
+                fileCell.find('.number').text(fileCount);
+                fileCell.find('.name').text(file.fileName);
+                fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+                fileCell.find('.delete-file').click(function () {
+                    console.log(file._id);
+                });
+                $('.repo-table').append(fileCell);
+            })
+        }
+    })
+}
+
+function uploadCode() {
+    const file = $('#upload-code').prop('files')[0];
+    const iterationId = $('input[name=iterationId]').val();
+    console.log(file.name);
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('path', '');
+    fd.append('iterationId', iterationId);
+    $.api({
+        action: 'upload code',
+        on: 'now',
+        method: 'POST',
+        data: fd,
+        contentType: false,
+        processData: false,
+        onSuccess: function (response) {
+            console.log(response)
+        },
+        onFailure: function (xhr) {
+            $('.form').form('add errors', [xhr]);
+        }
+    });
+}
 
 $(document).ready(function () {
     loadIterations();
