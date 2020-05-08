@@ -2,7 +2,7 @@ package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 
-public class Phase {
+public class Discipline {
     @Id
     private String _id;
     private String name;
