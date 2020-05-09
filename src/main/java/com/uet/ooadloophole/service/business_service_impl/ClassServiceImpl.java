@@ -113,7 +113,7 @@ public class ClassServiceImpl implements ClassService {
 //            });
 
 //            iterationRepository.deleteAllByClassId(classId);
-            fileService.deleteDirectory("repo/" + classId);
+//            fileService.deleteDirectory("repo/" + classId);
         } catch (Exception e) {
             throw new BusinessServiceException("Unable to delete class: " + e.getMessage());
         }

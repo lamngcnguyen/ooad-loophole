@@ -10,5 +10,5 @@ public interface GradingTemplateRepository extends MongoRepository<GradingTempla
 
 	List<GradingTemplate> findAllByTeacherId(String teacherId);
 
-
+	List<GradingTemplate> findAllBySprintId(String sprintId);
 }

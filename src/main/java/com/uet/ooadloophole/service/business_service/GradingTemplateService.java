@@ -13,7 +13,7 @@ public interface GradingTemplateService {
 	List<GradingTemplate> getByTeacherId(String teacherId) throws BusinessServiceException;
 
 	//Cần trao đổi lại xem 1 sprint có thể có nhiều template ko
-	List<GradingTemplate> getByTeacherIdAndSprintId(String teacherId, String sprintId) throws BusinessServiceException;
+	List<GradingTemplate> getBySprintId(String sprintId) throws BusinessServiceException;
 
 	GradingTemplate getById(String id) throws BusinessServiceException;
 
@@ -22,7 +22,6 @@ public interface GradingTemplateService {
 	void delete(String gradingTemplateId) throws BusinessServiceException;
 
 	GradingTemplate update(String gradingTemplateId, GradingTemplate gradingTemplate) throws BusinessServiceException;
-
 
 }
 

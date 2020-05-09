@@ -51,4 +51,12 @@ public class GradingTemplate {
 	public void setCriteria(List<Criteria> criteria) {
 		this.criteria = criteria;
 	}
+
+	public float getTotalPoint() {
+		float result = 0;
+		for (Criteria cr : criteria) {
+			result += cr.getPoint();
+		}
+		return result;
+	}
 }
