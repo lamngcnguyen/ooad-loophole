@@ -2,14 +2,15 @@ package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
+
 public class Assignment {
     @Id
     private String _id;
     private String name;
     private String classId;
     private String description;
-    private String startDate;
-    private String endDate;
+    private LocalDate deadline;
 
     public String get_id() {
         return _id;
@@ -43,19 +44,11 @@ public class Assignment {
         this.description = description;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public LocalDate getDeadline() {
+        return deadline;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
     }
 }

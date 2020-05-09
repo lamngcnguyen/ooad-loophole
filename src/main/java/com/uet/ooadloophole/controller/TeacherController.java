@@ -1,10 +1,11 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.Class;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/teacher")
 public class TeacherController {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
 
     @Autowired
     private MasterPageService masterPageService;
@@ -78,7 +79,7 @@ public class TeacherController {
     private ModelAndView getTeacherView(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             if (currentUser.hasRole("teacher")) {
                 modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
             } else {

@@ -2,6 +2,12 @@ $.fn.api.settings.api = {
     'invite student': '/api/groups/invite',
     'get group members': '/api/groups/{id}/members',
     'get students with no group': '/api/classes/{classId}/students/withoutGroup',
+    'get iterations': '/api/iterations/{groupId}/group',
+    'create iteration': '/api/iterations',
+    'delete iteration': '/api/iterations/{id}',
+    'get class configs': '/api/classes/{classId}/settings',
+    'upload code': '/api/files/repo',
+    'get repo file': '/api/files/repo/{iterationId}/iteration',
 };
 
 const validationRules = {

@@ -3,20 +3,20 @@ package com.uet.ooadloophole.controller.api;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
+import com.uet.ooadloophole.controller.interface_model.dto.*;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.ConverterService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.ClassService;
-import com.uet.ooadloophole.service.business_service.GroupService;
-import com.uet.ooadloophole.service.business_service.TokenService;
-import com.uet.ooadloophole.service.business_service.TopicService;
+import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping(value = "/api/classes")
 public class ApiClassController {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private ClassService classService;
     @Autowired
@@ -34,12 +34,14 @@ public class ApiClassController {
     @Autowired
     private GroupService groupService;
     @Autowired
+    private AssignmentService assignmentService;
+    @Autowired
     private ConverterService converterService;
 
     private Gson gson = new Gson();
 
     private boolean userCanNotCreateClass() throws BusinessServiceException {
-        User user = secureUserDetailService.getCurrentUser();
+        LoopholeUser user = secureUserService.getCurrentUser();
         return (!user.hasRole("teacher") && !user.hasRole("admin"));
     }
 
@@ -219,5 +221,41 @@ public class ApiClassController {
         List<DTOGroup> dtoGroups = new ArrayList<>();
         groups.forEach(group -> dtoGroups.add(converterService.convertToDTOGroup(group)));
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoGroups)));
+    }
+
+    @RequestMapping(value = "/{classId}/assignments", method = RequestMethod.GET)
+    public ResponseEntity<String> getAssignments(@PathVariable String classId) {
+        List<Assignment> assignments = assignmentService.getAllByClass(classId);
+        List<DTOAssignment> dtoAssignments = new ArrayList<>();
+        assignments.forEach(assignment -> dtoAssignments.add(converterService.convertToDTOAssignment(assignment)));
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoAssignments)));
+    }
+
+    @RequestMapping(value = "/{classId}/settings", method = RequestMethod.GET)
+    public ResponseEntity<DTOClassConfig> getClassConfig(@PathVariable String classId) {
+        DTOClassConfig classConfig = converterService.convertToDTOClassConfig(classService.getClassConfig(classId));
+        return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+    }
+
+    @RequestMapping(value = "/{classId}/settings/group", method = RequestMethod.POST)
+    public ResponseEntity<Object> groupSetting(@PathVariable String classId, int groupMin, int groupMax, String deadline) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        if (groupMax < groupMin) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(gson.toJson(new ResponseMessage("Minimum group size must not be greater than maximum group size")));
+        } else {
+            ClassConfig classConfig = classService.groupSetting(classId, groupMin, groupMax, LocalDate.parse(deadline, formatter));
+            return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+        }
+    }
+
+    @RequestMapping(value = "/{classId}/settings/iteration", method = RequestMethod.POST)
+    public ResponseEntity<Object> iterationSetting(@PathVariable String classId, int defaultLength, int maxLength, String deadline) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        if (maxLength < defaultLength) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(gson.toJson(new ResponseMessage("Default iteration length must not be greater than minimum iteration length")));
+        } else {
+            ClassConfig classConfig = classService.iterationSetting(classId, defaultLength, maxLength, LocalDate.parse(deadline, formatter));
+            return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+        }
     }
 }

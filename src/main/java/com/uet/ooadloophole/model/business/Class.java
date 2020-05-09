@@ -6,7 +6,7 @@ public class Class {
     @Id
     private String _id;
     private String className;
-    private String teacherId; //Points to User
+    private String teacherId; //Points to LoopholeUser
     private String semesterId;
     private int scheduledDayOfWeek;
     private int limit;

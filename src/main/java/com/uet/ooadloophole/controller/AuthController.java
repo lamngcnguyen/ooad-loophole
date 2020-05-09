@@ -2,9 +2,9 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.MasterPageService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NotificationService;
 import com.uet.ooadloophole.service.business_service.TokenService;
@@ -29,13 +29,13 @@ public class AuthController {
     @Autowired
     private MasterPageService masterPageService;
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private NotificationService notificationService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String indexView() {
-        return "redirect:/login";
+        return "redirect:/home";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -43,26 +43,17 @@ public class AuthController {
         return "security/login";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ModelAndView showRegistrationForm() {
-        ModelAndView model = new ModelAndView();
-        User userDto = new User();
-        model.addObject("user", userDto);
-        model.setViewName("security/registration");
-        return model;
-    }
-
     @ResponseBody
     @RequestMapping(value = "/register/teacher", method = RequestMethod.POST)
     public ResponseEntity<Object> teacherRegistration(String username, String email, String password, String fullName) {
-        User newUser = new User();
+        LoopholeUser newUser = new LoopholeUser();
         newUser.setUsername(username);
         newUser.setEmail(email);
         newUser.setPassword(password);
         newUser.setFullName(fullName);
         try {
             //TODO: remove confirmation URL
-            User user = userService.createActivatedUser(newUser, new String[]{"TEACHER"});
+            LoopholeUser user = userService.createActivatedUser(newUser, new String[]{"TEACHER"});
             String token = tokenService.createToken(user.get_id(), Constants.TOKEN_ACTIVATE);
             String confirmationUrl = Constants.CONFIRMATION_URL + token;
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(confirmationUrl);
@@ -91,7 +82,7 @@ public class AuthController {
     private ResponseEntity<String> sendResetAccount(String email) {
         try {
             //TODO: remove confirmation URL
-            User user = userService.resetAccount(email);
+            LoopholeUser user = userService.resetAccount(email);
             String token = tokenService.createToken(user.get_id(), Constants.TOKEN_RESET);
             String resetLink = Constants.RESET_LINK + token;
             return ResponseEntity.status(HttpStatus.OK).body(resetLink);
@@ -103,7 +94,7 @@ public class AuthController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ModelAndView getHomePage() {
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             ModelAndView modelAndView = masterPageService.getMasterPage("Chỉnh sửa trang cá nhân", new BodyFragment("profile", "body-content"), currentUser);
             modelAndView.addObject("notifications", notificationService.getAllByReceiverId(currentUser.get_id()));
             return modelAndView;

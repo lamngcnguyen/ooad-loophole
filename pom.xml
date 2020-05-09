@@ -123,9 +123,9 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.kohsuke</groupId>
-            <artifactId>github-api</artifactId>
-            <version>1.110</version>
+            <groupId>org.gitlab4j</groupId>
+            <artifactId>gitlab4j-api</artifactId>
+            <version>4.14.26</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

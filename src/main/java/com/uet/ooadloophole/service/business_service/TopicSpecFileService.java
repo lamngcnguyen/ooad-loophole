@@ -20,4 +20,6 @@ public interface TopicSpecFileService {
     Resource download(String id);
 
     List<TopicSpecFile> getByTopicId(String topicId);
+
+    boolean delete(String id) throws IOException;
 }

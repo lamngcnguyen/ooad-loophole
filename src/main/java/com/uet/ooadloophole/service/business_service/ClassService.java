@@ -1,10 +1,13 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.business.Class;
+import com.uet.ooadloophole.model.business.ClassConfig;
+import com.uet.ooadloophole.model.business.ClassPhaseConfig;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -34,4 +37,12 @@ public interface ClassService {
     List<Class> searchByName(String className);
 
     boolean classNameExists(String teacherId, String className);
+
+    ClassConfig getClassConfig(String classId);
+
+    ClassConfig groupSetting(String classId, int min, int max, LocalDate deadline);
+
+    ClassConfig iterationSetting(String classId, int defaultLength, int maxLength, LocalDate deadline);
+
+    ClassPhaseConfig phaseSetting(String classId, String phaseId, boolean enabled);
 }

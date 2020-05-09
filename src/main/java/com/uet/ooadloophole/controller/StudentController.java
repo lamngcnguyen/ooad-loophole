@@ -1,16 +1,11 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.Group;
-import com.uet.ooadloophole.model.business.Request;
-import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.MasterPageService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.GroupService;
-import com.uet.ooadloophole.service.business_service.RequestService;
-import com.uet.ooadloophole.service.business_service.StudentService;
+import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
 @Controller
 @RequestMapping(value = "/student")
 public class StudentController {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private MasterPageService masterPageService;
     @Autowired
@@ -31,12 +30,16 @@ public class StudentController {
     private RequestService requestService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private IterationService iterationService;
+    @Autowired
+    private ClassService classService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
         String pageTitle = "Sinh viên";
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             return masterPageService.getMasterPage(pageTitle, new BodyFragment("student/home", "body-content"), currentUser);
         } catch (BusinessServiceException e) {
             return new ModelAndView("forbidden");
@@ -48,7 +51,7 @@ public class StudentController {
         try {
             Request request = requestService.getById(id);
             ModelAndView modelAndView;
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             Student student = studentService.getByUserId(currentUser.get_id());
             if (request != null) {
                 Group group = groupService.getById(request.getGroupId());
@@ -75,8 +78,23 @@ public class StudentController {
 
     @RequestMapping(value = "/iteration", method = RequestMethod.GET)
     public ModelAndView getIterationView() {
-        String pageTitle = "Vòng lặp phát triển";
-        return getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
+        try {
+            Date date = new Date();
+            LocalDate today = LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")));
+            String pageTitle = "Vòng lặp phát triển";
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
+            Student student = studentService.getByUserId(currentUser.get_id());
+            ClassConfig classConfig = classService.getClassConfig(student.getClassId());
+            boolean iterationDeadlineMet = today.compareTo(classConfig.getIterationSetupDeadline()) > 0;
+
+            ModelAndView iterationView = getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
+            iterationView.addObject("isSetupPhase", !iterationDeadlineMet);
+            iterationView.addObject("groupId", student.getGroupId());
+            iterationView.addObject("classId", student.getClassId());
+            return iterationView;
+        } catch (BusinessServiceException e) {
+            return new ModelAndView("error");
+        }
     }
 
     @RequestMapping(value = "/evaluation", method = RequestMethod.GET)
@@ -91,10 +109,16 @@ public class StudentController {
         return getStudentView(pageTitle, new BodyFragment("student/requirement", "content"));
     }
 
+    @RequestMapping(value = "/assignment", method = RequestMethod.GET)
+    public ModelAndView getAssignmentView() {
+        String pageTitle = "Bài tập";
+        return getStudentView(pageTitle, new BodyFragment("student/assignment", "content"));
+    }
+
     private ModelAndView getStudentView(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             if (currentUser.hasRole("student")) {
                 Student student = studentService.getByUserId(currentUser.get_id());
                 if (student.getGroupId() == null) {

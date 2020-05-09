@@ -2,22 +2,24 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.controller.interface_model.DTOUser;
-import com.uet.ooadloophole.controller.interface_model.IUser;
+import com.uet.ooadloophole.controller.interface_model.dto.DTOUser;
+import com.uet.ooadloophole.controller.interface_model.interfaces.IUser;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.ConverterService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.TokenService;
 import com.uet.ooadloophole.service.business_service.UserService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +34,14 @@ public class ApiUserController {
     @Autowired
     private ConverterService converterService;
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
 
     private Gson gson = new Gson();
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> getUsers() {
         List<DTOUser> dtoUsers = new ArrayList<>();
-        for (User user : userService.getAll()) {
+        for (LoopholeUser user : userService.getAll()) {
             dtoUsers.add(converterService.convertToDTOUser(user));
         }
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoUsers)));
@@ -49,7 +51,7 @@ public class ApiUserController {
     public ResponseEntity<String> getUsersByRole(@PathVariable String roleName) {
         try {
             List<DTOUser> dtoUsers = new ArrayList<>();
-            for (User user : userService.getAllByRole(roleName)) {
+            for (LoopholeUser user : userService.getAllByRole(roleName)) {
                 dtoUsers.add(converterService.convertToDTOUser(user));
             }
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoUsers)));
@@ -61,7 +63,7 @@ public class ApiUserController {
     @RequestMapping(value = "/changePassword", method = RequestMethod.PUT)
     public ResponseEntity<String> changePassword(String oldPassword, String password) {
         try {
-            User user = secureUserDetailService.getCurrentUser();
+            LoopholeUser user = secureUserService.getCurrentUser();
             if (!userService.matchPassword(user, oldPassword)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Old Password doesn't match");
             } else {
@@ -107,11 +109,11 @@ public class ApiUserController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createUser(@RequestBody IUser iUser) {
         try {
-            User user = converterService.convertUserInterface(iUser);
+            LoopholeUser user = converterService.convertUserInterface(iUser);
             if (userService.emailExists(user.getEmail())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(new ResponseMessage("Email already exists")));
             } else {
-                User newUser = userService.create(user);
+                LoopholeUser newUser = userService.create(user);
                 //TODO: remove confirmation URL
                 String token = tokenService.createToken(newUser.get_id(), Constants.TOKEN_ACTIVATE);
                 String confirmationUrl = Constants.CONFIRMATION_URL + token;
@@ -125,8 +127,8 @@ public class ApiUserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateUser(@PathVariable String id, @RequestBody IUser iUser) {
         try {
-            User user = converterService.convertUserInterface(iUser);
-            User updatedUser = userService.update(id, user);
+            LoopholeUser user = converterService.convertUserInterface(iUser);
+            LoopholeUser updatedUser = userService.update(id, user);
             return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -155,7 +157,17 @@ public class ApiUserController {
 
     @RequestMapping(value = "/avatar/{id}", method = RequestMethod.GET)
     public byte[] getAvatar(@PathVariable String id) throws IOException, BusinessServiceException {
-        return userService.loadAvatar(id);
+        try {
+            return userService.loadAvatar(id);
+        } catch (IOException e) {
+            String saveLocation = Constants.AVATAR_FOLDER;
+            String fileName = Constants.DEFAULT_AVATAR;
+            String imagePath = saveLocation + "/" + fileName;
+            FileInputStream imageStream = new FileInputStream(imagePath);
+            byte[] imageBytes = IOUtils.toByteArray(imageStream);
+            imageStream.close();
+            return imageBytes;
+        }
     }
 
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
@@ -170,7 +182,7 @@ public class ApiUserController {
 //    @PutMapping(value = "/{id}")
 //    public ResponseEntity<Object> updateUser2(@PathVariable String id, @RequestBody IUser iUser){
 //        try {
-//            User user = converterService.convertUserInterface(iUser);
+//            LoopholeUser user = converterService.convertUserInterface(iUser);
 //
 //        } catch (BusinessServiceException e) {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

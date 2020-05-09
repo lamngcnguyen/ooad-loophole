@@ -2,12 +2,12 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.controller.interface_model.DTOStudent;
-import com.uet.ooadloophole.controller.interface_model.IStudent;
+import com.uet.ooadloophole.controller.interface_model.dto.DTOStudent;
+import com.uet.ooadloophole.controller.interface_model.interfaces.IStudent;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.User;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.StudentService;
@@ -49,7 +49,7 @@ public class ApiStudentController {
     @RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
     public ResponseEntity<Object> getUser(@PathVariable String id) {
         try {
-            User user = userService.getById(id);
+            LoopholeUser user = userService.getById(id);
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

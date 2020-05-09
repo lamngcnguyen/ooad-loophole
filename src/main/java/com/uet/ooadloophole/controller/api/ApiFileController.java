@@ -2,10 +2,11 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
+import com.uet.ooadloophole.model.business.RepoFile;
 import com.uet.ooadloophole.model.business.RequirementSpecFile;
 import com.uet.ooadloophole.model.business.TopicSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.RequirementFileService;
 import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,8 +31,6 @@ import java.util.Objects;
 @RequestMapping(value = "/api/files")
 public class ApiFileController {
     @Autowired
-    private FileService fileService;
-    @Autowired
     private RepoFileService repoFileService;
     @Autowired
     private TopicSpecFileService topicSpecFileService;
@@ -39,36 +39,46 @@ public class ApiFileController {
 
     private Gson gson = new Gson();
 
-    //TODO: fix this
-    @RequestMapping(value = "/{filePath}", method = RequestMethod.GET)
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filePath, HttpServletRequest request) {
-        String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
-        String path = filePath.substring(0, filePath.lastIndexOf('/'));
-
-        Resource resource = fileService.loadFileAsResource(fileName, path);
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException e) {
-            System.out.println("Could not determine file type!");
-        }
-        if (contentType == null) contentType = "application/octet-stream";
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-    }
-
+    //    ---------------------- Repo files ----------------------
     @RequestMapping(value = "/repo", method = RequestMethod.POST)
-    public ResponseEntity<String> uploadRepoFile(@RequestParam("file") MultipartFile file, String path) {
+    public ResponseEntity<Object> uploadRepoFile(@RequestParam("file") MultipartFile file, String path, String iterationId) {
         try {
-            repoFileService.upload(file, path);
-            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
+            RepoFile repoFile = repoFileService.upload(file, path, iterationId);
+            return ResponseEntity.status(HttpStatus.OK).body(repoFile);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
+    @RequestMapping(value = "/repo", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateRepoFile(@RequestParam("file") MultipartFile file, String previousVersionId) {
+        try {
+            RepoFile newVersion = repoFileService.updateFile(file, previousVersionId);
+            return ResponseEntity.status(HttpStatus.OK).body(newVersion);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/repo/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadRepoFile(@PathVariable String id, HttpServletRequest request) {
+        Resource resource = repoFileService.download(id);
+        LocalDateTime timeStamp = repoFileService.getById(id).getTimeStamp();
+        return getResourceResponseEntity(request, resource, timeStamp);
+    }
+
+    @RequestMapping(value = "/repo/{iterationId}/iteration", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllFiles(@PathVariable String iterationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getAllByIteration(iterationId))));
+    }
+
+    @RequestMapping(value = "/repo/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RepoFile> deleteRepoFile(@PathVariable String id) {
+        RepoFile repoFile = repoFileService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(repoFile);
+    }
+
+    //    ---------------------- Topic specifications  ----------------------
     @RequestMapping(value = "/spec/topic", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadTopicSpecFile(@RequestParam("file") MultipartFile file) {
         try {
@@ -117,22 +127,37 @@ public class ApiFileController {
     @RequestMapping(value = "/spec/topic/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = topicSpecFileService.download(id);
-        String timeStamp = topicSpecFileService.findById(id).getTimeStamp();
-
-        String contentType = null;
-        String fileName = Objects.requireNonNull(resource.getFilename()).replace("_" + timeStamp, "");
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException e) {
-            System.out.println("Could not determine file type!");
-        }
-        if (contentType == null) contentType = "application/octet-stream";
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                .body(resource);
+        LocalDateTime timeStamp = topicSpecFileService.findById(id).getTimeStamp();
+        return getResourceResponseEntity(request, resource, timeStamp);
     }
 
+    @RequestMapping(value = "/spec/topic/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteSpecFile(@PathVariable String id) {
+        try {
+            if (topicSpecFileService.delete(id)) {
+                return ResponseEntity.status(HttpStatus.OK).body("deleted");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("not deleted");
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/spec/topic/multi", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteMultiSpecFile(@RequestBody List<String> specFileIds) {
+        try {
+            List<String> deletedSpecs = new ArrayList<>();
+            for (String specFileId : specFileIds) {
+                if (topicSpecFileService.delete(specFileId)) {
+                    deletedSpecs.add(specFileId);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("deleted " + deletedSpecs);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
     //    ---------------------- REQUIREMENTS ----------------------
     @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
@@ -180,9 +205,25 @@ public class ApiFileController {
         }
     }
 
-    @RequestMapping(value = "/spec/requirement/{id}", method = RequestMethod.GET)
-    public RequirementSpecFile findReqSpecFile(@PathVariable String id) {
-        return requirementFileService.findById(id);
+    @RequestMapping(value = "/spec/req/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> findReqSpecFile(@PathVariable String id, HttpServletRequest request) {
+        Resource resource = requirementFileService.download(id);
+        LocalDateTime timeStamp = requirementFileService.findById(id).getTimeStamp();
+        return getResourceResponseEntity(request, resource, timeStamp);
+    }
 
+    private ResponseEntity<Resource> getResourceResponseEntity(HttpServletRequest request, Resource resource, LocalDateTime timeStamp) {
+        String contentType = null;
+        String fileName = Objects.requireNonNull(resource.getFilename()).replace("_" + timeStamp, "");
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException e) {
+            System.out.println("Could not determine file type!");
+        }
+        if (contentType == null) contentType = "application/octet-stream";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
     }
 }

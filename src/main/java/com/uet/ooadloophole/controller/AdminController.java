@@ -1,9 +1,9 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.MasterPageService;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
 
     @Autowired
     private MasterPageService masterPageService;
@@ -59,7 +59,7 @@ public class AdminController {
     private ModelAndView getAdminPage(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {
-            User currentUser = secureUserDetailService.getCurrentUser();
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
             if (currentUser.hasRole("admin")) {
                 modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
             } else {

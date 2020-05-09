@@ -1,12 +1,13 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.RepoFileRepository;
 import com.uet.ooadloophole.model.business.RepoFile;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.model.business.UserFile;
-import com.uet.ooadloophole.service.SecureUserDetailService;
+import com.uet.ooadloophole.service.ConverterService;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
-import com.uet.ooadloophole.service.business_exceptions.CustomFileNotFoundException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.StudentService;
@@ -15,51 +16,114 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Instant;
+import java.util.List;
 
 @Service
 public class RepoFileServiceImpl implements RepoFileService {
     @Autowired
-    private SecureUserDetailService secureUserDetailService;
+    private SecureUserService secureUserService;
     @Autowired
     private StudentService studentService;
     @Autowired
     private FileService fileService;
     @Autowired
     private RepoFileRepository repoFileRepository;
+    @Autowired
+    private ConverterService converterService;
 
     @Override
-    public void upload(MultipartFile file, String path) throws BusinessServiceException {
+    public RepoFile getById(String id) {
+        return repoFileRepository.findBy_id(id);
+    }
+
+    @Override
+    public List<RepoFile> getAllByIteration(String iterationId) {
+        return repoFileRepository.findAllByIterationId(iterationId);
+    }
+
+    @Override
+    public RepoFile upload(MultipartFile file, String path, String iterationId) throws BusinessServiceException {
         try {
             String saveLocation;
-            RepoFile repoFile = new RepoFile();
-            String userId = secureUserDetailService.getCurrentUser().get_id();
-            Student currentStudent = studentService.getById(userId);
-
+            String userId = secureUserService.getCurrentUser().get_id();
+            Student currentStudent = studentService.getByUserId(userId);
             String groupId = currentStudent.getGroupId();
             String classId = currentStudent.getClassId();
 
             if (path == null) {
-                saveLocation = "repo/" + classId + "/" + groupId;
+                saveLocation = Constants.REPO_FOLDER + classId + "/" + groupId;
             } else {
-                saveLocation = "repo/" + classId + "/" + groupId + "/" + path;
+                saveLocation = Constants.REPO_FOLDER + classId + "/" + groupId + "/" + path;
+            }
+            if (checkExists(file.getOriginalFilename(), groupId, saveLocation)) {
+                throw new BusinessServiceException("This file name is already exists");
             }
             UserFile userFile = fileService.storeFile(file, saveLocation);
-
+            RepoFile repoFile = new RepoFile();
             repoFile.setFileName(userFile.getFileName());
+            repoFile.setFileExtension(userFile.getFileExtension());
             repoFile.setUploaderId(userFile.getUploaderId());
-            repoFile.setPath(saveLocation);
+            repoFile.setTimeStamp(userFile.getTimeStamp());
+            repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
+            repoFile.setPath(path);
+            repoFile.setIterationId(iterationId);
+            repoFile.setClassId(classId);
             repoFile.setGroupId(groupId);
-            repoFile.setTimeStamp(Instant.now().toString());
-            repoFileRepository.save(repoFile);
+            return repoFileRepository.save(repoFile);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to upload repo file. " + e.getMessage());
         }
     }
 
     @Override
-    public Resource download(String fileName, String path) throws CustomFileNotFoundException {
+    public Resource download(String fileId) {
+        RepoFile repoFile = getById(fileId);
+        String fileName = converterService.formatFileName(repoFile.getFileName(), repoFile.getFileTimeStamp(), repoFile.getFileExtension());
+        String path = Constants.REPO_FOLDER + repoFile.getClassId() + "/" + repoFile.getGroupId() + "/" + repoFile.getPath();
         return fileService.loadFileAsResource(fileName, path);
     }
 
+    @Override
+    public RepoFile updateFile(MultipartFile file, String previousVersionId) throws BusinessServiceException {
+        try {
+            RepoFile previousVersion = getById(previousVersionId);
+            String saveLocation = previousVersion.getPath();
+            String userId = secureUserService.getCurrentUser().get_id();
+            Student currentStudent = studentService.getByUserId(userId);
+            String groupId = currentStudent.getGroupId();
+            String classId = currentStudent.getClassId();
+
+            if (checkExists(file.getOriginalFilename(), groupId, saveLocation)) {
+                throw new BusinessServiceException("This file name is already exists");
+            }
+            UserFile userFile = fileService.storeFile(file, saveLocation);
+            RepoFile repoFile = new RepoFile();
+            repoFile.setFileName(userFile.getFileName());
+            repoFile.setFileExtension(userFile.getFileExtension());
+            repoFile.setUploaderId(userFile.getUploaderId());
+            repoFile.setTimeStamp(userFile.getTimeStamp());
+            repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
+            repoFile.setPath(userFile.getPath());
+            repoFile.setIterationId(previousVersion.getIterationId());
+            repoFile.setClassId(classId);
+            repoFile.setGroupId(groupId);
+            repoFile.setPreviousVersionId(previousVersionId);
+            return repoFileRepository.save(repoFile);
+        } catch (BusinessServiceException e) {
+            throw new BusinessServiceException("Unable to update repo file. " + e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean checkExists(String filename, String groupId, String path) {
+        List<RepoFile> repoFiles = repoFileRepository.findAllByGroupIdAndFileNameAndPath(groupId, filename, path);
+        return repoFiles.size() != 0;
+    }
+
+    @Override
+    public RepoFile delete(String id) {
+        RepoFile repoFile = getById(id);
+        repoFile.setDeleted(true);
+        return repoFile;
+    }
 }

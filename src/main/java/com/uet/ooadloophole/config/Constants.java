@@ -13,6 +13,7 @@ public class Constants {
     public static final String DEFAULT_AVATAR = "default.png";
     public static final String SPEC_FOLDER = "topic/";
     public static final String REQ_FOLDER = "requirement/";
+    public static final String REPO_FOLDER = "repo/";
     public static final String TOKEN_ACTIVATE = "activate";
     public static final String TOKEN_RESET = "reset";
     public static final String INVITATION = "invitation";

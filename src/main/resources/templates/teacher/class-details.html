@@ -17,6 +17,9 @@
                         <span th:text="${class.getClassName()}"></span>
                     </div>
                     <div class="ui grey label" th:text="${class.getSemesterName()}"></div>
+                    <a class="ui small icon button" onclick="window.location = window.location.href + '/settings'">
+                        <i class="cog icon"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -200,40 +203,38 @@
                 <div class="row">
                     <div class="column">
                         <button type="button" class="ui labeled icon green button"
-                                onclick="showModal('.modal.create-topic')">
+                                onclick="showModal('.modal.create-assignment')">
                             <i class="plus icon"></i>
-                            Thêm mới
+                            Add
                         </button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="three wide column">
-                        <div class="ui vertical fluid menu">
-                            <div class="active blue item assignment-item">
-                                Bài tập tuần 1
-                            </div>
-                            <div class="item assignment-item">
-                                Bài tập tuần 2
-                            </div>
-                            <div class="item assignment-item">
-                                Bài tập tuần 3
-                            </div>
-                            <div class="item assignment-item">
-                                Bài tập tuần 4
+                <div class="no-assignment row" style="display: none">
+                    <div class="sixteen wide column">
+                        <div class="ui segment">
+                            <div class="ui center aligned yellow large header">
+                                <i class="exclamation triangle icon"></i>
+                                There has been no assignment yet!
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="assignment row" style="display: flex">
+                    <div class="three wide column">
+                        <div class="ui vertical fluid menu assignment-menu"></div>
                     </div>
                     <div class="thirteen wide stretched column">
                         <div class="ui active tab segment assignment">
                             <div class="ui large fluid header">
-                                Bài tập tuần 1
+                                <span class="assignment-name"></span>
                                 <div class="ui right floated icon buttons" style="margin: inherit">
                                     <button class="ui basic icon blue button edit-assignment" type="button"
-                                            data-tooltip="Chỉnh sửa thông tin">
+                                            data-tooltip="Chỉnh sửa thông tin"
+                                            onclick="showModal('.modal.edit-assignment')">
                                         <i class="pencil icon"></i>
                                     </button>
                                     <button class="ui basic icon red button delete-assignment" type="button"
-                                            data-tooltip="Xoá bài tập">
+                                            data-tooltip="Xoá bài tập" onclick="showModal('.modal.delete-assignment')">
                                         <i class="trash icon"></i>
                                     </button>
                                 </div>
@@ -244,20 +245,10 @@
                                     <i class="red stopwatch icon" style="margin: 0 !important;"></i>
                                     Deadline:
                                 </span>
-                                <span class="deadline">14/04/2020</span>
+                                <span class="deadline"></span>
                             </div>
                             <div class="content">
-                                <span class="detail-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ac massa arcu.
-                                    Donec pellentesque vel mauris consectetur vehicula. Phasellus sit amet tincidunt risus.
-                                    In velit nunc, accumsan at varius at, dictum a turpis. Duis bibendum at nulla vitae convallis.
-                                    Donec quis erat mi. Integer molestie sed massa ac efficitur.
-                                    Fusce a neque neque. Aenean rutrum sapien vel nulla congue, eu interdum magna lobortis.
-                                    <br/>
-                                    Integer quis nulla a enim suscipit blandit. Fusce sollicitudin accumsan eros, vitae lobortis justo vehicula et.
-                                    In eu vehicula justo. Praesent quis lacus magna. Etiam mattis velit ligula, ut viverra turpis tristique ut.
-                                    Proin sodales justo nec justo maximus rutrum. In turpis erat, rutrum vel velit eu, porttitor pretium tellus.
-                                </span>
+                                <span class="detail-text"></span>
                             </div>
                         </div>
                     </div>
@@ -620,7 +611,7 @@
             Chỉnh sửa
         </div>
         <div class="content">
-            <div class="ui form create-topic">
+            <div class="ui form edit-topic">
                 <input type="hidden" name="id">
                 <div class="field">
                     <div class="fields">
@@ -746,8 +737,118 @@
         </div>
     </div>
     <!---------------------------------Assignment modals--------------------------------->
-    <div class="ui large modal add assignment">
-
+    <div class="ui medium modal create-assignment">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="green book open icon"></i>
+            Thêm mới
+        </div>
+        <div class="content">
+            <div class="ui form create-assignment">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Tên bài tập</label>
+                            <input type="text" name="name" placeholder="Assignment name">
+                        </div>
+                        <div class="seven wide required field">
+                            <label>Deadline</label>
+                            <div class="ui calendar deadline-picker">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="deadline" placeholder="Date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Mô tả</label>
+                    <textarea name="description" placeholder="Description"></textarea>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-assignment')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated green labeled icon submit button">
+                    <i class="plus icon"></i>
+                    Thêm
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui medium modal edit-assignment">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="blue pencil icon"></i>
+            Sửa thông tin
+        </div>
+        <div class="content">
+            <div class="ui form edit-assignment">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <div class="fields">
+                        <div class="nine wide required field">
+                            <label>Tên bài tập</label>
+                            <input type="text" name="name" placeholder="Assignment name">
+                        </div>
+                        <div class="seven wide required field">
+                            <label>Deadline</label>
+                            <div class="ui calendar deadline-picker">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="deadline" placeholder="Date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Mô tả</label>
+                    <textarea name="description" placeholder="Description"></textarea>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-assignment')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <button class="ui right floated blue labeled icon submit button">
+                    <i class="pencil icon"></i>
+                    Sửa
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal delete-assignment">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Cảnh báo
+        </div>
+        <div class="content">
+            <div class="ui form delete-assignment">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Bạn có chắc chắn muốn xóa bài tập này không?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Có
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-assignment')">
+                    <i class="close icon"></i>
+                    Không
+                </div>
+            </div>
+        </div>
     </div>
     <div class="ui modal jquery-template">
         <table>
@@ -769,13 +870,14 @@
             </tbody>
         </table>
     </div>
-    <script type="text/javascript" th:src="@{/js/teacher/class_setting/class_setting.js}"></script>
-    <script type="text/javascript" th:src="@{/js/teacher/class_setting/api.js}"></script>
-    <script type="text/javascript" th:src="@{/js/teacher/class_setting/student.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_details/class_setting.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_details/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_details/student.js}"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.5/dist/xlsx.full.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/teacher/class_setting/import.js}"></script>
-    <script type="text/javascript" th:src="@{/js/teacher/class_setting/topic.js}"></script>
-    <script type="text/javascript" th:src="@{/js/teacher/class_setting/group.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_details/import.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_details/topic.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_details/group.js}"></script>
+    <script type="text/javascript" th:src="@{/js/teacher/class_details/assignment.js}"></script>
 </div>
 </body>
 </html>

@@ -35,7 +35,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
         RequirementSpecFile dbRequirementSpecFile = findById(specFileId);
         String newPath = Constants.REQ_FOLDER + requirementId + "/";
         dbRequirementSpecFile.setRequirementId(requirementId);
-        String fileName = converterService.formatFileName(dbRequirementSpecFile.getFileName(), dbRequirementSpecFile.getTimeStamp(), dbRequirementSpecFile.getFileExtension());
+        String fileName = converterService.formatFileName(dbRequirementSpecFile.getFileName(), dbRequirementSpecFile.getFileTimeStamp(), dbRequirementSpecFile.getFileExtension());
         try {
             fileService.moveFile(fileName, dbRequirementSpecFile.getPath(), newPath);
         } catch (BusinessServiceException | IOException e) {
@@ -56,6 +56,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
             requirementSpecFile.setFileName(userFile.getFileName());
             requirementSpecFile.setFileExtension(userFile.getFileExtension());
             requirementSpecFile.setTimeStamp(userFile.getTimeStamp());
+            requirementSpecFile.setFileTimeStamp(userFile.getFileTimeStamp());
             requirementSpecFile.setUploaderId(userFile.getUploaderId());
             requirementSpecFile.setPath(saveLocation);
 
@@ -70,7 +71,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
     public Resource download(String id) {
         RequirementSpecFile requirementSpecFile = findById(id);
         String saveLocation = requirementSpecFile.getPath();
-        String fileName = converterService.formatFileName(requirementSpecFile.getFileName(), requirementSpecFile.getTimeStamp(), requirementSpecFile.getFileExtension());
+        String fileName = converterService.formatFileName(requirementSpecFile.getFileName(), requirementSpecFile.getFileTimeStamp(), requirementSpecFile.getFileExtension());
         return fileService.loadFileAsResource(fileName, saveLocation);
     }
 }

@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.model.business.User;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.EmailService;
 import com.uet.ooadloophole.service.business_service.TokenService;
@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender javaMailSender;
 
     @Override
-    public void sendActivationEmail(User user) throws BusinessServiceException {
+    public void sendActivationEmail(LoopholeUser user) throws BusinessServiceException {
         try {
             String token = tokenService.createToken(user.get_id(), Constants.TOKEN_ACTIVATE);
             String recipientAddress = user.getEmail();
@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendResetPasswordEmail(User user) throws BusinessServiceException {
+    public void sendResetPasswordEmail(LoopholeUser user) throws BusinessServiceException {
         try {
             String token = tokenService.createToken(user.get_id(), Constants.TOKEN_RESET);
             String recipientAddress = user.getEmail();

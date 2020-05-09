@@ -6,83 +6,100 @@
 </head>
 <body>
 <div th:fragment="body-content" class="ui stackable grid">
+    <input type="hidden" name="classId" th:value="${class.get_id()}">
     <div class="row">
         <div class="column">
             <div class="header">
-                <div class="ui grey label">
-                    <i class="cog icon"></i>
-                    Cài đặt lớp
+                <div class="ui large labels">
+                    <div class="ui blue label">
+                        <i class="users icon nav-icon"></i>
+                        <span th:text="${class.getClassName()}"></span>
+                    </div>
+                    <div class="ui grey label">
+                        <i class="cog icon"></i>
+                        Class settings
+                    </div>
                 </div>
-                <div class="ui blue label" th:text="${class.getClassName()}"></div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="twelve wide column">
             <div class="ui segment">
-                <div class="ui form">
-                    <div class="ui segment">
-                        <div class="ui blue large header">Nhóm</div>
+                <div class="ui segment">
+                    <div class="ui group-setting form">
+                        <div class="ui blue large header">Group</div>
                         <div class="ui divider"></div>
                         <div class="field">
                             <div class="fields">
                                 <div class="required four wide field">
                                     <label>Số thành viên tối thiểu</label>
-                                    <input type="text" name="groupMin" value="3">
+                                    <input type="number" name="groupMin" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                                 <div class="required four wide field">
                                     <label>Số thành viên tối đa</label>
-                                    <input type="text" name="groupMax" value="5">
+                                    <input type="number" name="groupMax" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                             </div>
                         </div>
                         <div class="required eight wide field">
-                            <label>Thời hạn sinh viên chọn nhóm</label>
-                            <div class="fields">
-                                <div class="required field eight wide">
-                                    <div class="ui calendar range-start">
-                                        <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
-                                            <input type="text" name="startDate" placeholder="Start">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="required field eight wide">
-                                    <div class="ui calendar range-end">
-                                        <div class="ui input left icon">
-                                            <i class="calendar icon"></i>
-                                            <input type="text" name="endDate" placeholder="End">
-                                        </div>
-                                    </div>
+                            <label>Group registration deadline</label>
+                            <div class="ui calendar deadline-picker">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="deadline" placeholder="Deadline">
                                 </div>
                             </div>
                         </div>
+                        <div class="ui error message"></div>
+                        <button class="ui small icon labeled green submit button">
+                            <i class="save icon"></i>
+                            Save
+                        </button>
                     </div>
-                    <div class="ui segment">
+                </div>
+                <div class="ui segment">
+                    <div class="ui iteration-setting form">
                         <div class="ui blue large header">Chu kỳ phát triển - Iteration</div>
                         <div class="ui divider"></div>
                         <div class="field">
                             <div class="fields">
-                                <div class="required four wide field">
+                                <div class="required five wide field">
                                     <label>Thời lượng mặc định (ngày)</label>
-                                    <input type="text" name="iterationLengthDefault" value="14">
+                                    <input type="number" name="defaultLength" min="1" max="100" pattern="[^0-9]+">
                                 </div>
-                                <div class="required four wide field">
+                                <div class="required five wide field">
                                     <label>Thời lượng tối đa (ngày)</label>
-                                    <input type="text" name="iterationLengthMax" value="21">
+                                    <input type="number" name="maxLength" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                             </div>
                         </div>
+                        <div class="required field ten wide">
+                            <label>Iteration setup deadline</label>
+                            <div class="ui calendar deadline-picker">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" name="deadline" placeholder="Deadline">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui error message"></div>
+                        <button class="ui small icon labeled green submit button">
+                            <i class="save icon"></i>
+                            Save
+                        </button>
                     </div>
-                    <div class="ui segment">
-                        <div class="ui blue large header">Giai đoạn chu kỳ - Phase</div>
+                </div>
+                <div class="ui segment">
+                    <div class="ui discipline-setting form">
+                        <div class="ui blue large header">Disciplines</div>
                         <div class="ui divider"></div>
                         <table class="ui celled black table">
                             <thead>
                             <tr>
-                                <th class="four wide">Chu kỳ</th>
-                                <th class="ten wide">Mô tả</th>
-                                <th class="two wide center aligned">Trạng thái</th>
+                                <th class="four wide">Discipline</th>
+                                <th class="ten wide">Description</th>
+                                <th class="two wide center aligned">Status</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -138,11 +155,18 @@
                             </tr>
                             </tbody>
                         </table>
+                        <div class="ui error message"></div>
+                        <button class="ui small icon labeled green submit button">
+                            <i class="save icon"></i>
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="/js/teacher/class_settings/api.js"></script>
+    <script type="text/javascript" src="/js/teacher/class_settings/class_settings.js"></script>
 </div>
 </body>
 </html>

@@ -1,7 +1,8 @@
 package com.uet.ooadloophole.service;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.controller.interface_model.*;
+import com.uet.ooadloophole.controller.interface_model.dto.*;
+import com.uet.ooadloophole.controller.interface_model.interfaces.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -11,14 +12,15 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/** Converts Interface models to business models and business models to DTO models
- *
+/**
+ * Converts Interface models to business models and business models to DTO models
  */
 
 @Service
@@ -38,9 +40,9 @@ public class ConverterService {
     @Autowired
     private TopicSpecFileService topicSpecFileService;
 
-    public User convertUserInterface(IUser iUser) throws BusinessServiceException {
+    public LoopholeUser convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
-        User user = new User();
+        LoopholeUser user = new LoopholeUser();
         user.setUsername(iUser.getUsername());
         user.setFullName(iUser.getFullName());
         user.setEmail(iUser.getEmail());
@@ -77,7 +79,7 @@ public class ConverterService {
     public DTOStudent convertToDTOStudent(Student student) throws BusinessServiceException {
         DTOStudent dtoStudent = new DTOStudent();
         Class ooadClass = classService.getById(student.getClassId());
-        User user = userService.getById(student.getUserId());
+        LoopholeUser user = userService.getById(student.getUserId());
         dtoStudent.set_id(student.get_id());
         dtoStudent.setStudentId(student.getStudentId());
         dtoStudent.setClassId(student.getClassId());
@@ -91,7 +93,7 @@ public class ConverterService {
 
     public DTOClass convertToDTOClass(Class ooadClass) throws BusinessServiceException {
         DTOClass dtoClass = new DTOClass();
-        User user = userService.getById(ooadClass.getTeacherId());
+        LoopholeUser user = userService.getById(ooadClass.getTeacherId());
         Semester semester = semesterService.getById(ooadClass.getSemesterId());
 
         dtoClass.set_id(ooadClass.get_id());
@@ -123,7 +125,7 @@ public class ConverterService {
         return dtoSemester;
     }
 
-    public DTOUser convertToDTOUser(User user) {
+    public DTOUser convertToDTOUser(LoopholeUser user) {
         DTOUser dtoUser = new DTOUser();
         dtoUser.set_id(user.get_id());
         dtoUser.setUsername(user.getUsername());
@@ -192,5 +194,60 @@ public class ConverterService {
         notification.setTimeStamp(timeStamp);
         notification.setUrl("/home");
         return notification;
+    }
+
+    public Assignment convertAssignmentInterface(IAssignment iAssignment) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        Assignment assignment = new Assignment();
+        assignment.setName(iAssignment.getName());
+        assignment.setDescription(iAssignment.getDescription());
+        assignment.setClassId(iAssignment.getClassId());
+        assignment.setDeadline(LocalDate.parse(iAssignment.getDeadline(), formatter));
+        return assignment;
+    }
+
+    public DTOAssignment convertToDTOAssignment(Assignment assignment) {
+        DTOAssignment dtoAssignment = new DTOAssignment();
+        dtoAssignment.set_id(assignment.get_id());
+        dtoAssignment.setName(assignment.getName());
+        dtoAssignment.setClassId(assignment.getClassId());
+        dtoAssignment.setDescription(assignment.getDescription());
+        dtoAssignment.setDeadline(assignment.getDeadline().toString());
+        return dtoAssignment;
+    }
+
+    public Iteration convertIterationInterface(IIteration iIteration) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        Iteration iteration = new Iteration();
+        iteration.setName(iIteration.getName());
+        iteration.setGroupId(iIteration.getGroupId());
+        iteration.setObjective(iIteration.getObjective());
+        iteration.setStartDateTime(LocalDate.parse(iIteration.getStartDate(), formatter));
+        iteration.setEndDateTime(LocalDate.parse(iIteration.getEndDate(), formatter));
+        return iteration;
+    }
+
+    public DTOIteration convertToDTOIteration(Iteration iteration) {
+        DTOIteration dtoIteration = new DTOIteration();
+        dtoIteration.set_id(iteration.get_id());
+        dtoIteration.setName(iteration.getName());
+        dtoIteration.setGroupId(iteration.getGroupId());
+        dtoIteration.setObjective(iteration.getObjective());
+        dtoIteration.setStartDateTime(iteration.getStartDateTime().toString());
+        dtoIteration.setEndDateTime(iteration.getEndDateTime().toString());
+        return dtoIteration;
+    }
+
+    public DTOClassConfig convertToDTOClassConfig(ClassConfig classSetting) {
+        DTOClassConfig dtoClassConfig = new DTOClassConfig();
+        dtoClassConfig.set_id(classSetting.get_id());
+        dtoClassConfig.setClassId(classSetting.getClassId());
+        dtoClassConfig.setGroupLimitMax(classSetting.getGroupLimitMax());
+        dtoClassConfig.setGroupLimitMin(classSetting.getGroupLimitMin());
+        dtoClassConfig.setGroupRegistrationDeadline(classSetting.getGroupRegistrationDeadline().toString());
+        dtoClassConfig.setDefaultIterationLength(classSetting.getDefaultIterationLength());
+        dtoClassConfig.setMaxIterationLength(classSetting.getMaxIterationLength());
+        dtoClassConfig.setIterationSetupDeadline(classSetting.getIterationSetupDeadline().toString());
+        return dtoClassConfig;
     }
 }

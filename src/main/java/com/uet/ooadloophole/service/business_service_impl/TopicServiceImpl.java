@@ -54,9 +54,9 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic update(Topic topic) throws BusinessServiceException {
+    public Topic update(String id, Topic topic) throws BusinessServiceException {
         try {
-            Topic dbTopic = getById(topic.get_id());
+            Topic dbTopic = getById(id);
             dbTopic.setName(topic.getName());
             dbTopic.setDescriptions(topic.getDescriptions());
             topicRepository.save(dbTopic);

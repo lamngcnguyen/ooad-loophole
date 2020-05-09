@@ -1,34 +1,32 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.business.User;
-import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public interface UserService {
-    List<User> getAll();
+    List<LoopholeUser> getAll();
 
-    User getById(String id) throws BusinessServiceException;
+    LoopholeUser getById(String id) throws BusinessServiceException;
 
-    User getByEmail(String email) throws BusinessServiceException;
+    LoopholeUser getByEmail(String email) throws BusinessServiceException;
 
-    User getByUsername(String username) throws BusinessServiceException;
+    LoopholeUser getByUsername(String username) throws BusinessServiceException;
 
-    List<User> searchByFullName(String fullName);
+    List<LoopholeUser> searchByFullName(String fullName);
 
-    List<User> getAllByRole(String roleName) throws BusinessServiceException;
+    List<LoopholeUser> getAllByRole(String roleName) throws BusinessServiceException;
 
-    User createActivatedUser(User user, String[] roleNames) throws BusinessServiceException; //createInvitation pre-activated user
+    LoopholeUser createActivatedUser(LoopholeUser user, String[] roleNames) throws BusinessServiceException; //createInvitation pre-activated user
 
-    User create(User user) throws BusinessServiceException; //default createInvitation user method
+    LoopholeUser create(LoopholeUser user) throws BusinessServiceException; //default createInvitation user method
 
-    User update(String userId, User user) throws BusinessServiceException;
+    LoopholeUser update(String userId, LoopholeUser user) throws BusinessServiceException;
 
     void delete(String userId) throws BusinessServiceException;
 
@@ -36,7 +34,7 @@ public interface UserService {
 
 //    void changePassword(String userId, String newPassword) throws BusinessServiceException;
 
-    User resetAccount(String email) throws BusinessServiceException;
+    LoopholeUser resetAccount(String email) throws BusinessServiceException;
 
     void assignRole(String userId, String roleName) throws BusinessServiceException;
 
@@ -44,13 +42,13 @@ public interface UserService {
 
     void removeRole(String userId, String roleName) throws BusinessServiceException;
 
-    User setStatus(String userId, boolean status) throws BusinessServiceException;
+    LoopholeUser setStatus(String userId, boolean status) throws BusinessServiceException;
 
-    boolean getStatus(User user);
+    boolean getStatus(LoopholeUser user);
 
-    boolean matchPassword(User user, String password);
+    boolean matchPassword(LoopholeUser user, String password);
 
-    void changePassword(User user, String password);
+    void changePassword(LoopholeUser user, String password);
 
     byte[] loadAvatar(String id) throws IOException, BusinessServiceException;
 
