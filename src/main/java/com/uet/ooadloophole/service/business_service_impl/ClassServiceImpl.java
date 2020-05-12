@@ -1,14 +1,13 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.controller.interface_model.interfaces.IClassDisciplineConfig;
 import com.uet.ooadloophole.database.ClassConfigRepository;
-import com.uet.ooadloophole.database.ClassPhaseConfigRepository;
+import com.uet.ooadloophole.database.ClassDisciplineConfigRepository;
 import com.uet.ooadloophole.database.ClassRepository;
-import com.uet.ooadloophole.database.IterationRepository;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
-import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +26,11 @@ public class ClassServiceImpl implements ClassService {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private FileService fileService;
-    @Autowired
     private GroupService groupService;
     @Autowired
     private ClassConfigRepository classConfigRepository;
     @Autowired
-    private ClassPhaseConfigRepository classPhaseConfigRepository;
+    private ClassDisciplineConfigRepository classDisciplineConfigRepository;
 
     @Override
     public List<Class> getAll() {
@@ -165,6 +162,11 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    public List<ClassDisciplineConfig> getClassDisciplineConfig(String classId) {
+        return classDisciplineConfigRepository.findAllByClassId(classId);
+    }
+
+    @Override
     public ClassConfig groupSetting(String classId, int min, int max, LocalDate deadline) {
         ClassConfig classConfig;
         if (classConfigRepository.findByClassId(classId) != null) {
@@ -195,16 +197,19 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public ClassPhaseConfig phaseSetting(String classId, String phaseId, boolean enabled) {
-        ClassPhaseConfig classPhaseConfig;
-        if (classPhaseConfigRepository.findByClassIdAndPhaseId(classId, phaseId) != null) {
-            classPhaseConfig = classPhaseConfigRepository.findByClassIdAndPhaseId(classId, phaseId);
+    public ClassDisciplineConfig disciplineSetting(IClassDisciplineConfig iClassDisciplineConfig) {
+        ClassDisciplineConfig classDisciplineConfig;
+        String classId = iClassDisciplineConfig.getClassId();
+        String disciplineId = iClassDisciplineConfig.getDisciplineId();
+        boolean enabled = iClassDisciplineConfig.isEnabled();
+        if (classDisciplineConfigRepository.findByClassIdAndDisciplineId(classId, disciplineId) != null) {
+            classDisciplineConfig = classDisciplineConfigRepository.findByClassIdAndDisciplineId(classId, disciplineId);
         } else {
-            classPhaseConfig = new ClassPhaseConfig();
-            classPhaseConfig.setClassId(classId);
-            classPhaseConfig.setPhaseId(phaseId);
+            classDisciplineConfig = new ClassDisciplineConfig();
+            classDisciplineConfig.setClassId(classId);
+            classDisciplineConfig.setDisciplineId(disciplineId);
         }
-        classPhaseConfig.setEnabled(enabled);
-        return classPhaseConfigRepository.save(classPhaseConfig);
+        classDisciplineConfig.setEnabled(enabled);
+        return classDisciplineConfigRepository.save(classDisciplineConfig);
     }
 }

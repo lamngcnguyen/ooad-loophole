@@ -1,8 +1,9 @@
 package com.uet.ooadloophole.service.business_service;
 
+import com.uet.ooadloophole.controller.interface_model.interfaces.IClassDisciplineConfig;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.ClassConfig;
-import com.uet.ooadloophole.model.business.ClassPhaseConfig;
+import com.uet.ooadloophole.model.business.ClassDisciplineConfig;
 import com.uet.ooadloophole.model.business.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,11 @@ public interface ClassService {
 
     ClassConfig getClassConfig(String classId);
 
+    List<ClassDisciplineConfig> getClassDisciplineConfig(String classId);
+
     ClassConfig groupSetting(String classId, int min, int max, LocalDate deadline);
 
     ClassConfig iterationSetting(String classId, int defaultLength, int maxLength, LocalDate deadline);
 
-    ClassPhaseConfig phaseSetting(String classId, String phaseId, boolean enabled);
+    ClassDisciplineConfig disciplineSetting(IClassDisciplineConfig iClassDisciplineConfig);
 }

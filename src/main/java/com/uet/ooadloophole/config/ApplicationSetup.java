@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.uet.ooadloophole.database.PhaseRepository;
+import com.uet.ooadloophole.database.DisciplineRepository;
 import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.model.business.Discipline;
 import com.uet.ooadloophole.model.business.LoopholeUser;
@@ -39,7 +39,7 @@ public class ApplicationSetup implements InitializingBean {
     @Autowired
     private TokenService tokenService;
     @Autowired
-    private PhaseRepository phaseRepository;
+    private DisciplineRepository disciplineRepository;
 
     //Cleanup old nav items and groups
     @Override
@@ -72,12 +72,12 @@ public class ApplicationSetup implements InitializingBean {
     private void createPhase() throws FileNotFoundException {
         JsonArray phasesArray = JsonParser.parseReader(new FileReader(phaseConfigFile)).getAsJsonArray();
         phasesArray.forEach(p -> {
-            Discipline discipline = phaseRepository.findByName(p.getAsJsonObject().get("name").getAsString());
+            Discipline discipline = disciplineRepository.findByName(p.getAsJsonObject().get("name").getAsString());
             if (discipline == null) {
                 Discipline newDiscipline = new Discipline();
                 newDiscipline.setName(p.getAsJsonObject().get("name").getAsString());
                 newDiscipline.setDescription(p.getAsJsonObject().get("description").getAsString());
-                phaseRepository.save(newDiscipline);
+                disciplineRepository.save(newDiscipline);
             }
         });
     }

@@ -1,12 +1,11 @@
-package com.uet.ooadloophole.model.business;
+package com.uet.ooadloophole.controller.interface_model.dto;
 
-import org.springframework.data.annotation.Id;
+import com.uet.ooadloophole.model.business.Discipline;
 
-public class ClassPhaseConfig {
-    @Id
+public class DTOClassDisciplineConfig {
     private String _id;
     private String classId;
-    private String phaseId;
+    private Discipline discipline;
     private boolean enabled;
 
     public String get_id() {
@@ -25,12 +24,12 @@ public class ClassPhaseConfig {
         this.classId = classId;
     }
 
-    public String getPhaseId() {
-        return phaseId;
+    public Discipline getDiscipline() {
+        return discipline;
     }
 
-    public void setPhaseId(String phaseId) {
-        this.phaseId = phaseId;
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
     }
 
     public boolean isEnabled() {

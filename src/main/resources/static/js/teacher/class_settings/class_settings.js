@@ -101,13 +101,31 @@ function initForms() {
     })
 }
 
+function getClassDisciplineConfig() {
+    $.api({
+        action: 'get class disciplines config',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            classId: classId
+        },
+        onSuccess: function (response, element, xhr) {
+            xhr.responseJSON.data.forEach(function (discipline) {
+                const disciplineCell = $('#templates .discipline-cell').clone();
+
+                $('.discipline-table').append(disciplineCell);
+            })
+        }
+    })
+}
+
 $(document).ready(function () {
-    const today = new Date();
+    // const today = new Date();
     $('.form.group-setting .deadline-picker').calendar({
         // minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
         type: 'date',
         formatter: {
-            date: function (date, settings) {
+            date: function (date) {
                 if (!date) return '';
                 const day = ('0' + date.getDate()).slice(-2);
                 const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -120,7 +138,7 @@ $(document).ready(function () {
         // minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
         type: 'date',
         formatter: {
-            date: function (date, settings) {
+            date: function (date) {
                 if (!date) return '';
                 const day = ('0' + date.getDate()).slice(-2);
                 const month = ('0' + (date.getMonth() + 1)).slice(-2);

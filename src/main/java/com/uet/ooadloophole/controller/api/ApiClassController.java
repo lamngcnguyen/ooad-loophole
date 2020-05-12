@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.*;
 import com.uet.ooadloophole.controller.interface_model.dto.*;
+import com.uet.ooadloophole.controller.interface_model.interfaces.IClassDisciplineConfig;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.service.ConverterService;
@@ -237,6 +238,17 @@ public class ApiClassController {
         return ResponseEntity.status(HttpStatus.OK).body(classConfig);
     }
 
+    @RequestMapping(value = "/{classId}/settings/disciplines", method = RequestMethod.GET)
+    public ResponseEntity<String> getClassDisciplineConfig(@PathVariable String classId) {
+        List<ClassDisciplineConfig> classDisciplineConfigs = classService.getClassDisciplineConfig(classId);
+        List<DTOClassDisciplineConfig> dtoClassDisciplineConfigs = new ArrayList<>();
+        for(ClassDisciplineConfig classDisciplineConfig : classDisciplineConfigs) {
+            DTOClassDisciplineConfig dtoClassDisciplineConfig = converterService.convertToDTOClassDisciplineConfig(classDisciplineConfig);
+            dtoClassDisciplineConfigs.add(dtoClassDisciplineConfig);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClassDisciplineConfigs)));
+    }
+
     @RequestMapping(value = "/{classId}/settings/group", method = RequestMethod.POST)
     public ResponseEntity<Object> groupSetting(@PathVariable String classId, int groupMin, int groupMax, String deadline) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
@@ -257,5 +269,14 @@ public class ApiClassController {
             ClassConfig classConfig = classService.iterationSetting(classId, defaultLength, maxLength, LocalDate.parse(deadline, formatter));
             return ResponseEntity.status(HttpStatus.OK).body(classConfig);
         }
+    }
+
+    @RequestMapping(value = "/settings/disciplines", method = RequestMethod.POST)
+    public ResponseEntity<String> classDisciplineConfig(@RequestBody List<IClassDisciplineConfig> iClassDisciplineConfigs) {
+        List<ClassDisciplineConfig> classDisciplineConfigs = new ArrayList<>();
+        for(IClassDisciplineConfig iClassDisciplineConfig : iClassDisciplineConfigs) {
+            classDisciplineConfigs.add(classService.disciplineSetting(iClassDisciplineConfig));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(classDisciplineConfigs)));
     }
 }

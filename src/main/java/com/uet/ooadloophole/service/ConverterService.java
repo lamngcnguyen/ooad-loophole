@@ -3,6 +3,7 @@ package com.uet.ooadloophole.service;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.dto.*;
 import com.uet.ooadloophole.controller.interface_model.interfaces.*;
+import com.uet.ooadloophole.database.DisciplineRepository;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.*;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -39,6 +39,8 @@ public class ConverterService {
     private GroupService groupService;
     @Autowired
     private TopicSpecFileService topicSpecFileService;
+    @Autowired
+    private DisciplineRepository disciplineRepository;
 
     public LoopholeUser convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -249,5 +251,14 @@ public class ConverterService {
         dtoClassConfig.setMaxIterationLength(classSetting.getMaxIterationLength());
         dtoClassConfig.setIterationSetupDeadline(classSetting.getIterationSetupDeadline().toString());
         return dtoClassConfig;
+    }
+
+    public DTOClassDisciplineConfig convertToDTOClassDisciplineConfig(ClassDisciplineConfig classDisciplineConfig) {
+        Discipline discipline = disciplineRepository.findBy_id(classDisciplineConfig.getDisciplineId());
+        DTOClassDisciplineConfig dtoClassDisciplineConfig = new DTOClassDisciplineConfig();
+        dtoClassDisciplineConfig.set_id(classDisciplineConfig.get_id());
+        dtoClassDisciplineConfig.setDiscipline(discipline);
+        dtoClassDisciplineConfig.setEnabled(classDisciplineConfig.isEnabled());
+        return dtoClassDisciplineConfig;
     }
 }
