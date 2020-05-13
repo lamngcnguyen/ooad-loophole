@@ -3,6 +3,7 @@ package com.uet.ooadloophole.service;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.controller.interface_model.dto.*;
 import com.uet.ooadloophole.controller.interface_model.interfaces.*;
+import com.uet.ooadloophole.database.DisciplineFileTypeRepository;
 import com.uet.ooadloophole.database.DisciplineRepository;
 import com.uet.ooadloophole.model.business.Class;
 import com.uet.ooadloophole.model.business.*;
@@ -41,6 +42,8 @@ public class ConverterService {
     private TopicSpecFileService topicSpecFileService;
     @Autowired
     private DisciplineRepository disciplineRepository;
+    @Autowired
+    private DisciplineFileTypeRepository disciplineFileTypeRepository;
 
     public LoopholeUser convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -260,5 +263,15 @@ public class ConverterService {
         dtoClassDisciplineConfig.setDiscipline(discipline);
         dtoClassDisciplineConfig.setEnabled(classDisciplineConfig.isEnabled());
         return dtoClassDisciplineConfig;
+    }
+
+    public DTODiscipline convertToDTODiscipline(Discipline discipline) {
+        List<DisciplineFileType> disciplineFileTypes = disciplineFileTypeRepository.findAllByDisciplineName(discipline.getName());
+        DTODiscipline dtoDiscipline = new DTODiscipline();
+        dtoDiscipline.set_id(discipline.get_id());
+        dtoDiscipline.setName(discipline.getName());
+        dtoDiscipline.setDescription(discipline.getDescription());
+        dtoDiscipline.setDisciplineFileTypeList(disciplineFileTypes);
+        return dtoDiscipline;
     }
 }

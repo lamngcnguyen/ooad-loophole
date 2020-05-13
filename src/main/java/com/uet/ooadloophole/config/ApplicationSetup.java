@@ -4,9 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.uet.ooadloophole.database.DisciplineFileTypeRepository;
 import com.uet.ooadloophole.database.DisciplineRepository;
 import com.uet.ooadloophole.model.Token;
-import com.uet.ooadloophole.model.business.Discipline;
 import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NavigationGroupService;
@@ -40,6 +40,8 @@ public class ApplicationSetup implements InitializingBean {
     private TokenService tokenService;
     @Autowired
     private DisciplineRepository disciplineRepository;
+    @Autowired
+    private DisciplineFileTypeRepository disciplineFileTypeRepository;
 
     //Cleanup old nav items and groups
     @Override
@@ -48,12 +50,16 @@ public class ApplicationSetup implements InitializingBean {
         createNavigations();
         createAdmin();
         clearExpiredTokens();
-        createPhase();
+        createDisciplines();
     }
 
     private void createNavigations() throws FileNotFoundException {
         navigationGroupService.deleteAll();
         new NavigationSetup(navConfigFile, roleService, navigationGroupService).initNavGroups();
+    }
+
+    private void createDisciplines() throws FileNotFoundException {
+        new DisciplineSetup(phaseConfigFile, disciplineRepository, disciplineFileTypeRepository).createDisciplines();
     }
 
     private void createRole() throws FileNotFoundException {
@@ -67,19 +73,6 @@ public class ApplicationSetup implements InitializingBean {
                 roleService.create(data.getAsString());
             }
         }
-    }
-
-    private void createPhase() throws FileNotFoundException {
-        JsonArray phasesArray = JsonParser.parseReader(new FileReader(phaseConfigFile)).getAsJsonArray();
-        phasesArray.forEach(p -> {
-            Discipline discipline = disciplineRepository.findByName(p.getAsJsonObject().get("name").getAsString());
-            if (discipline == null) {
-                Discipline newDiscipline = new Discipline();
-                newDiscipline.setName(p.getAsJsonObject().get("name").getAsString());
-                newDiscipline.setDescription(p.getAsJsonObject().get("description").getAsString());
-                disciplineRepository.save(newDiscipline);
-            }
-        });
     }
 
     private void createAdmin() {

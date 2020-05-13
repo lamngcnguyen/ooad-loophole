@@ -1,22 +1,108 @@
 [
   {
     "name": "Business modelling",
-    "description": "Business modelling"
+    "description": "Business modelling",
+    "types": [
+      {
+        "name": "Business use-case model",
+        "fileType": "model"
+      },
+      {
+        "name": "Supplementary business specification",
+        "fileType": "doc"
+      },
+      {
+        "name": "Business use-case realizations",
+        "fileType": "model"
+      },
+      {
+        "name": "Business object model",
+        "fileType": "model"
+      }
+    ]
   },
   {
     "name": "Requirements",
-    "description": "Requirement analysis"
+    "description": "Requirement analysis",
+    "types": [
+      {
+        "name": "Glossary",
+        "fileType": "doc"
+      },
+      {
+        "name": "Vision document",
+        "fileType": "doc"
+      },
+      {
+        "name": "Use-case model",
+        "fileType": "model"
+      },
+      {
+        "name": "Supplementary specification",
+        "fileType": "doc"
+      },
+      {
+        "name": "User Interface Prototype",
+        "fileType": "code"
+      }
+    ]
   },
   {
     "name": "Analysis & Design",
-    "description": "Requirement analysis"
+    "description": "Requirement analysis",
+    "types": [
+      {
+        "name": "Analysis model",
+        "fileType": "model"
+      },
+      {
+        "name": "Design Model",
+        "fileType": "model"
+      },
+      {
+        "name": "Data Model",
+        "fileType": "model"
+      },
+      {
+        "name": "Deployment Model",
+        "fileType": "model"
+      },
+      {
+        "name": "Software Architecture Document",
+        "fileType": "doc"
+      }
+    ]
   },
   {
     "name": "Implement",
-    "description": "System implementation"
+    "description": "System implementation",
+    "types": [
+      {
+        "name": "Integration Build Plan",
+        "fileType": "doc"
+      },
+      {
+        "name": "Code",
+        "fileType": "code"
+      }
+    ]
   },
   {
     "name": "Test",
-    "description": "Product testing"
+    "description": "Product testing",
+    "types": [
+      {
+        "name": "Test plan",
+        "fileType": "doc"
+      },
+      {
+        "name": "Test Evaluation Summary",
+        "fileType": "doc"
+      },
+      {
+        "name": "Test cases and scripts",
+        "fileType": "code"
+      }
+    ]
   }
 ]

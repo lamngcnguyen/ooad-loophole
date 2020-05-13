@@ -1,14 +1,14 @@
-package com.uet.ooadloophole.model.business;
+package com.uet.ooadloophole.controller.interface_model.dto;
 
-import org.springframework.data.annotation.Id;
+import com.uet.ooadloophole.model.business.DisciplineFileType;
 
 import java.util.List;
 
-public class Discipline {
-    @Id
+public class DTODiscipline {
     private String _id;
     private String name;
     private String description;
+    private List<DisciplineFileType> disciplineFileTypeList;
 
     public String get_id() {
         return _id;
@@ -34,4 +34,11 @@ public class Discipline {
         this.description = description;
     }
 
+    public List<DisciplineFileType> getDisciplineFileTypeList() {
+        return disciplineFileTypeList;
+    }
+
+    public void setDisciplineFileTypeList(List<DisciplineFileType> disciplineFileTypeList) {
+        this.disciplineFileTypeList = disciplineFileTypeList;
+    }
 }
