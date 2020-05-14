@@ -244,6 +244,7 @@ function getRepoFile(iterationId) {
             iterationId: iterationId
         },
         onSuccess: function (res, element, xhr) {
+            $('.repo-table').empty();
             let fileCount = 0;
             xhr.responseJSON.data.forEach(function (file) {
                 const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();

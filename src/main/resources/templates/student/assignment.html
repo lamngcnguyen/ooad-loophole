@@ -1,12 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="leader-content">
-    This is student assignment view
+<div th:fragment="leader-content" class="ui stackable grid">
+    <input type="hidden" name="classId" th:value="${classId}">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large blue label">
+                    <i class="recycle icon"></i>
+                    Planning
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui segment">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="four wide column">
+                            <div class="ui vertical fluid tabular menu" style="min-height: 50vh">
+                                <a class="item new" th:if="${isSetupPhase}">
+                                    <div class="ui fluid blue button" id="newIteration">New</div>
+                                    <div class="ui fluid input" id="nameInput" style="display: none">
+                                        <input class="new-iteration" type="text" style="margin-right: 0.5em"
+                                               placeholder="iteration name...">
+                                        <div class="ui blue icon button" style="margin-right: 0"
+                                             onclick="createIterationForm()"><i class="plus icon"></i></div>
+                                        <div class="ui red icon button" style="margin-right: 0; margin-left: 0.2em"
+                                             onclick="cancelIterationInput()"><i class="times icon"></i></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--content go here-->
+                        <div class="twelve wide stretched column" id="segmentContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div th:fragment="member-content">
     This is member assignment view
