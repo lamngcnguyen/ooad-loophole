@@ -19,6 +19,11 @@
       "name": "phases.config",
       "type": "java.lang.String",
       "description": "Description for phases.config."
+    },
+    {
+      "name": "team_roles.config",
+      "type": "java.lang.String",
+      "description": "Description for team_roles.config."
     }
   ]
 }

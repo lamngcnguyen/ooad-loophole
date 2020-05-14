@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.uet.ooadloophole.database.DisciplineFileTypeRepository;
 import com.uet.ooadloophole.database.DisciplineRepository;
+import com.uet.ooadloophole.database.team_rbac.TeamRoleRepository;
 import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.model.business.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -30,6 +31,8 @@ public class ApplicationSetup implements InitializingBean {
     private String roleConfigFile;
     @Value("${phases.config}")
     private String phaseConfigFile;
+    @Value("${team_roles.config}")
+    private String teamRoleConfigFile;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -42,6 +45,8 @@ public class ApplicationSetup implements InitializingBean {
     private DisciplineRepository disciplineRepository;
     @Autowired
     private DisciplineFileTypeRepository disciplineFileTypeRepository;
+    @Autowired
+    private TeamRoleRepository teamRoleRepository;
 
     //Cleanup old nav items and groups
     @Override
@@ -51,6 +56,7 @@ public class ApplicationSetup implements InitializingBean {
         createAdmin();
         clearExpiredTokens();
         createDisciplines();
+        createTeamRoles();
     }
 
     private void createNavigations() throws FileNotFoundException {
@@ -103,5 +109,9 @@ public class ApplicationSetup implements InitializingBean {
                 tokenService.deleteToken(token);
             }
         }
+    }
+
+    private void createTeamRoles() throws FileNotFoundException {
+        new TeamRoleSetup(teamRoleConfigFile, teamRoleRepository).createTeamRoles();
     }
 }

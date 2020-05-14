@@ -59,13 +59,18 @@
         "description": null
       },
       {
-        "name": "Yêu cầu",
+        "name": "Requirement Management",
         "url": "/student/requirement",
         "description": null
       },
       {
         "name": "Bài tập",
         "url": "/student/assignment",
+        "description": null
+      },
+      {
+        "name": "Boards",
+        "url": "student/boards",
         "description": null
       }
     ]
