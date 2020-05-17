@@ -8,6 +8,7 @@ import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
+import com.uet.ooadloophole.service.business_service.GradingTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -30,6 +31,9 @@ public class TeacherController {
 
     @Autowired
     private ClassService classService;
+
+    @Autowired
+    private GradingTemplateService gradingTemplateService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -74,6 +78,19 @@ public class TeacherController {
     public ModelAndView getEvaluateView() {
         String pageTitle = "Chấm bài";
         return getTeacherView(pageTitle, new BodyFragment("teacher/evaluate", "body-content"));
+    }
+
+    @RequestMapping(value = "/edit-template/{templateId}", method = RequestMethod.GET)
+    public ModelAndView getGradingTemplateView(@PathVariable String templateId) {
+        ModelAndView modelAndView;
+        try {
+            String pageTitle = "Edit grading template";
+            modelAndView = getTeacherView(pageTitle, new BodyFragment("teacher/grading-template", "body-content-teacher"));
+            modelAndView.addObject("template", gradingTemplateService.getById(templateId));
+        } catch (BusinessServiceException e) {
+            modelAndView = new ModelAndView("error");
+        }
+        return modelAndView;
     }
 
     private ModelAndView getTeacherView(String pageTitle, BodyFragment bodyFragment) {

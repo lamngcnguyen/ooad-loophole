@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.model.business;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
@@ -10,7 +11,12 @@ public class GradingTemplate {
 	private String teacherId;
 	private String sprintId;
 	private String gradingTemplateName;
+	@DBRef
 	private List<Criteria> criteria;
+
+	GradingTemplate() {
+
+	}
 
 	public String get_id() {
 		return _id;
@@ -50,13 +56,5 @@ public class GradingTemplate {
 
 	public void setCriteria(List<Criteria> criteria) {
 		this.criteria = criteria;
-	}
-
-	public float getTotalPoint() {
-		float result = 0;
-		for (Criteria cr : criteria) {
-			result += cr.getPoint();
-		}
-		return result;
 	}
 }

@@ -5,25 +5,36 @@ import org.springframework.data.annotation.Id;
 import java.util.List;
 
 public class Criteria {
-	private String criteriaName;
+	@Id
+	private String _id;
+	private String name;
 	private float weight;
+	private String description;
 	private List<Level> levels;
 
 	public Criteria() {
 
 	}
 
-	public Criteria(String criteriaName, float weight) {
-		this.criteriaName = criteriaName;
+	public Criteria(String name, float weight) {
+		this.name = name;
 		this.weight = weight;
 	}
 
-	public String getCriteriaName() {
-		return criteriaName;
+	public String get_id() {
+		return _id;
 	}
 
-	public void setCriteriaName(String criteriaName) {
-		this.criteriaName = criteriaName;
+	public void set_id(String _id) {
+		this._id = _id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public float getWeight() {
@@ -34,21 +45,19 @@ public class Criteria {
 		this.weight = weight;
 	}
 
-	public void addLevel(Level level) {
-		levels.add(level);
+	public List<Level> getLevels() {
+		return levels;
 	}
 
-	public void removeLevel(Level level) {
-		levels.remove(level);
+	public void setLevels(List<Level> levels) {
+		this.levels = levels;
 	}
 
-	public float getPoint() {
-		float result = 0;
-		for (Level lv : levels) {
-			if (lv.isSelected()) {
-				result = lv.getWeight() * this.weight;
-			}
-		}
-		return result;
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

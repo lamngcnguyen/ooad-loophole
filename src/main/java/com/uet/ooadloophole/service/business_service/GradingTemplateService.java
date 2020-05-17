@@ -1,5 +1,6 @@
 package com.uet.ooadloophole.service.business_service;
 
+import com.uet.ooadloophole.model.business.Criteria;
 import com.uet.ooadloophole.model.business.GradingTemplate;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,10 @@ public interface GradingTemplateService {
 
 	GradingTemplate update(String gradingTemplateId, GradingTemplate gradingTemplate) throws BusinessServiceException;
 
+	Criteria editCriteria(String id, Criteria criteria);
+
+	Criteria createCriteria(String templateId, Criteria criteria);
+
+	List<Criteria> getAllCriteriaByTemplateId(String templateId);
 }
 
