@@ -1,10 +1,10 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.controller.interface_model.interfaces.IClassDisciplineConfig;
-import com.uet.ooadloophole.model.business.Class;
-import com.uet.ooadloophole.model.business.ClassConfig;
-import com.uet.ooadloophole.model.business.ClassDisciplineConfig;
-import com.uet.ooadloophole.model.business.Student;
+import com.uet.ooadloophole.model.business.class_elements.Class;
+import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
+import com.uet.ooadloophole.model.business.class_elements.ClassDisciplineConfig;
+import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 

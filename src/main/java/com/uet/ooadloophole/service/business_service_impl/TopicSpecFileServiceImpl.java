@@ -1,9 +1,9 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.database.SpecFileRepository;
-import com.uet.ooadloophole.model.business.TopicSpecFile;
-import com.uet.ooadloophole.model.business.UserFile;
+import com.uet.ooadloophole.database.class_repositories.TopicSpecFileRepository;
+import com.uet.ooadloophole.model.business.class_elements.TopicSpecFile;
+import com.uet.ooadloophole.model.business.system_elements.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
@@ -24,7 +24,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
     @Autowired
     private FileService fileService;
     @Autowired
-    private SpecFileRepository specFileRepository;
+    private TopicSpecFileRepository specFileRepository;
 
     @Override
     public TopicSpecFile findById(String id) {

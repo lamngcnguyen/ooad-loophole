@@ -3,10 +3,10 @@ package com.uet.ooadloophole.config;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.uet.ooadloophole.database.DisciplineFileTypeRepository;
-import com.uet.ooadloophole.database.DisciplineRepository;
-import com.uet.ooadloophole.model.business.Discipline;
-import com.uet.ooadloophole.model.business.DisciplineFileType;
+import com.uet.ooadloophole.database.rup_repositories.DisciplineFileTypeRepository;
+import com.uet.ooadloophole.database.rup_repositories.DisciplineRepository;
+import com.uet.ooadloophole.model.business.rup_elements.Discipline;
+import com.uet.ooadloophole.model.business.rup_elements.DisciplineFileType;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

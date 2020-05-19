@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.controller.api;
 
-import com.uet.ooadloophole.model.business.Requirement;
+import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RequirementService;
 import org.springframework.beans.factory.annotation.Autowired;

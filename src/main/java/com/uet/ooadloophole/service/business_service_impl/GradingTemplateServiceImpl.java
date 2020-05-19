@@ -1,10 +1,10 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 
-import com.uet.ooadloophole.database.CriteriaRepository;
-import com.uet.ooadloophole.database.GradingTemplateRepository;
-import com.uet.ooadloophole.model.business.Criteria;
-import com.uet.ooadloophole.model.business.GradingTemplate;
+import com.uet.ooadloophole.database.grading_repositories.CriteriaRepository;
+import com.uet.ooadloophole.database.grading_repositories.GradingTemplateRepository;
+import com.uet.ooadloophole.model.business.grading_elements.Criteria;
+import com.uet.ooadloophole.model.business.grading_elements.GradingTemplate;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GradingTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;

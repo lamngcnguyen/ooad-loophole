@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.TokenRepository;
+import com.uet.ooadloophole.database.system_repositories.TokenRepository;
 import com.uet.ooadloophole.model.Token;
 import com.uet.ooadloophole.service.business_service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.TopicRepository;
-import com.uet.ooadloophole.model.business.Group;
-import com.uet.ooadloophole.model.business.Topic;
+import com.uet.ooadloophole.database.class_repositories.TopicRepository;
+import com.uet.ooadloophole.model.business.group_elements.Group;
+import com.uet.ooadloophole.model.business.class_elements.Topic;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.TopicService;

@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.model.business.LoopholeUser;
+import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.EmailService;
 import com.uet.ooadloophole.service.business_service.TokenService;

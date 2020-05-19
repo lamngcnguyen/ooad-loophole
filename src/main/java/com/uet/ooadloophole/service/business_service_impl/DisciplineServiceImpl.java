@@ -1,9 +1,9 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.DisciplineFileTypeRepository;
-import com.uet.ooadloophole.database.DisciplineRepository;
-import com.uet.ooadloophole.model.business.Discipline;
-import com.uet.ooadloophole.model.business.DisciplineFileType;
+import com.uet.ooadloophole.database.rup_repositories.DisciplineFileTypeRepository;
+import com.uet.ooadloophole.database.rup_repositories.DisciplineRepository;
+import com.uet.ooadloophole.model.business.rup_elements.Discipline;
+import com.uet.ooadloophole.model.business.rup_elements.DisciplineFileType;
 import com.uet.ooadloophole.service.business_service.DisciplineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

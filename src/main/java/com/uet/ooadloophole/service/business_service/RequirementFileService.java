@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.business.RequirementSpecFile;
+import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;

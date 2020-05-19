@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.frontend_element.NavigationItem;
-import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.business.system_elements.Role;
 
 import java.util.List;
 import java.util.Set;

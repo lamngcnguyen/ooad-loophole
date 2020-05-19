@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.business.Iteration;
+import com.uet.ooadloophole.model.business.rup_elements.Iteration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
