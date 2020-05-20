@@ -9,6 +9,4 @@ public interface BoardRepository extends MongoRepository<Board, String> {
     Board findBy_id(String _id);
 
     List<Board> findByGroupId(String groupId);
-
-    List<Board> findByGroupIdAndIterationId(String groupId, String iterationId);
 }
