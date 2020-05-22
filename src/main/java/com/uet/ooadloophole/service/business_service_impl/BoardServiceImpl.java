@@ -34,12 +34,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Task createTask(Task task) {
-        Task savedTask = taskRepository.save(task);
-        String boardId = task.getBoardId();
-        Board board = getBoardById(boardId);
-        List<Task> tasks = board.getTasks();
-        tasks.add(savedTask);
-        boardRepository.save(board);
-        return savedTask;
+        return taskRepository.save(task);
     }
 }

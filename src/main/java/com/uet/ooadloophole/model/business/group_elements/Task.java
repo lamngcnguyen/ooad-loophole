@@ -19,7 +19,7 @@ public class Task {
     private List<Student> assignedMember;
     @DBRef
     private List<TaskFile> taskFiles;
-    private boolean completed;
+    private String status;
 
     public String get_id() {
         return _id;
@@ -85,11 +85,11 @@ public class Task {
         this.taskFiles = taskFiles;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

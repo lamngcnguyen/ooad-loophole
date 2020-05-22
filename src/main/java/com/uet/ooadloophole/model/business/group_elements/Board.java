@@ -9,8 +9,6 @@ public class Board {
     @Id
     private String _id;
     private String groupId;
-    @DBRef
-    private List<Task> tasks;
 
     public String get_id() {
         return _id;
@@ -28,11 +26,4 @@ public class Board {
         this.groupId = groupId;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
 }
