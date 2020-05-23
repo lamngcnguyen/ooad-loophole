@@ -1,6 +1,9 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.model.business.grading_elements.Criteria;
+import com.uet.ooadloophole.model.business.grading_elements.GradingTemplate;
+import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.model.business.Criteria;
 import com.uet.ooadloophole.model.business.GradingTemplate;

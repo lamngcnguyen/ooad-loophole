@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.uet.ooadloophole.controller.interface_model.interfaces.INotification;
-import com.uet.ooadloophole.model.business.Notification;
+import com.uet.ooadloophole.model.business.system_elements.Notification;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.NotificationService;

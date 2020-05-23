@@ -1,11 +1,11 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.database.StudentRepository;
-import com.uet.ooadloophole.database.UserRepository;
-import com.uet.ooadloophole.model.business.Role;
-import com.uet.ooadloophole.model.business.Student;
-import com.uet.ooadloophole.model.business.LoopholeUser;
+import com.uet.ooadloophole.database.system_repositories.StudentRepository;
+import com.uet.ooadloophole.database.system_repositories.UserRepository;
+import com.uet.ooadloophole.model.business.system_elements.Role;
+import com.uet.ooadloophole.model.business.system_elements.Student;
+import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RoleService;
 import com.uet.ooadloophole.service.business_service.StudentService;

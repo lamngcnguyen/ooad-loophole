@@ -1,11 +1,13 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.controller.interface_model.interfaces.IClassDisciplineConfig;
-import com.uet.ooadloophole.database.ClassConfigRepository;
-import com.uet.ooadloophole.database.ClassDisciplineConfigRepository;
-import com.uet.ooadloophole.database.ClassRepository;
-import com.uet.ooadloophole.model.business.*;
-import com.uet.ooadloophole.model.business.Class;
+import com.uet.ooadloophole.database.class_repositories.ClassConfigRepository;
+import com.uet.ooadloophole.database.class_repositories.ClassDisciplineConfigRepository;
+import com.uet.ooadloophole.database.class_repositories.ClassRepository;
+import com.uet.ooadloophole.model.business.class_elements.Class;
+import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
+import com.uet.ooadloophole.model.business.class_elements.ClassDisciplineConfig;
+import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.GroupService;

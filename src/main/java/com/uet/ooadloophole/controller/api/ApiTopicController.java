@@ -2,8 +2,8 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
-import com.uet.ooadloophole.model.business.Group;
-import com.uet.ooadloophole.model.business.Topic;
+import com.uet.ooadloophole.model.business.group_elements.Group;
+import com.uet.ooadloophole.model.business.class_elements.Topic;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.TopicService;

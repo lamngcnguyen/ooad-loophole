@@ -5,7 +5,7 @@ import com.uet.ooadloophole.controller.interface_model.dto.DTOSemester;
 import com.uet.ooadloophole.controller.interface_model.interfaces.ISemester;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
-import com.uet.ooadloophole.model.business.Semester;
+import com.uet.ooadloophole.model.business.class_elements.Semester;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.SemesterService;

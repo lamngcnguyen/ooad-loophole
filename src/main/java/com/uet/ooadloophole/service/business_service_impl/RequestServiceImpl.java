@@ -1,10 +1,10 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.database.InvitationRepository;
-import com.uet.ooadloophole.model.business.Group;
-import com.uet.ooadloophole.model.business.Request;
-import com.uet.ooadloophole.model.business.Notification;
+import com.uet.ooadloophole.database.group_repositories.InvitationRepository;
+import com.uet.ooadloophole.model.business.group_elements.Group;
+import com.uet.ooadloophole.model.business.group_elements.Request;
+import com.uet.ooadloophole.model.business.system_elements.Notification;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.RequestService;

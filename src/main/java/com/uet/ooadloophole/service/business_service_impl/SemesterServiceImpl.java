@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.SemesterRepository;
-import com.uet.ooadloophole.model.business.Semester;
+import com.uet.ooadloophole.database.class_repositories.SemesterRepository;
+import com.uet.ooadloophole.model.business.class_elements.Semester;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;

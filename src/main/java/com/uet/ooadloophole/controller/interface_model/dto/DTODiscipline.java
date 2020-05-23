@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.controller.interface_model.dto;
 
-import com.uet.ooadloophole.model.business.DisciplineFileType;
+import com.uet.ooadloophole.model.business.rup_elements.DisciplineFileType;
 
 import java.util.List;
 

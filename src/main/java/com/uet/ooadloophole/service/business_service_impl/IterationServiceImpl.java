@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.IterationRepository;
-import com.uet.ooadloophole.model.business.Iteration;
+import com.uet.ooadloophole.database.rup_repositories.IterationRepository;
+import com.uet.ooadloophole.model.business.rup_elements.Iteration;
 import com.uet.ooadloophole.service.business_service.IterationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

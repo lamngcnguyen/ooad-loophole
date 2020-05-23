@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.AssignmentRepository;
-import com.uet.ooadloophole.model.business.Assignment;
+import com.uet.ooadloophole.database.class_repositories.AssignmentRepository;
+import com.uet.ooadloophole.model.business.class_elements.Assignment;
 import com.uet.ooadloophole.service.business_service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

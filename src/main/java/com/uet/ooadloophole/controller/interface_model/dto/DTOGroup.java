@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.controller.interface_model.dto;
 
-import com.uet.ooadloophole.model.business.Student;
+import com.uet.ooadloophole.model.business.system_elements.Student;
 
 import java.util.List;
 

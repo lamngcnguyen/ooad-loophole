@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.controller.interface_model.dto;
 
-import com.uet.ooadloophole.model.business.TopicSpecFile;
+import com.uet.ooadloophole.model.business.class_elements.TopicSpecFile;
 
 import java.util.List;
 

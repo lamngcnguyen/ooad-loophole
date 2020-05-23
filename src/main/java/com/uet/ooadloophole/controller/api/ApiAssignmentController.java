@@ -3,7 +3,7 @@ package com.uet.ooadloophole.controller.api;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.interfaces.IAssignment;
-import com.uet.ooadloophole.model.business.Assignment;
+import com.uet.ooadloophole.model.business.class_elements.Assignment;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;

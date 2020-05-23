@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.business.Discipline;
-import com.uet.ooadloophole.model.business.DisciplineFileType;
+import com.uet.ooadloophole.model.business.rup_elements.Discipline;
+import com.uet.ooadloophole.model.business.rup_elements.DisciplineFileType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

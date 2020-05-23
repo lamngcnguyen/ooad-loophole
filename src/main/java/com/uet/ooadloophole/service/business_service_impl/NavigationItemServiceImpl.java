@@ -1,8 +1,8 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.NavigationItemRepository;
+import com.uet.ooadloophole.database.system_repositories.NavigationItemRepository;
 import com.uet.ooadloophole.model.frontend_element.NavigationItem;
-import com.uet.ooadloophole.model.business.Role;
+import com.uet.ooadloophole.model.business.system_elements.Role;
 import com.uet.ooadloophole.service.business_service.NavigationItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,11 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
-import com.uet.ooadloophole.model.business.*;
+import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
+import com.uet.ooadloophole.model.business.group_elements.Group;
+import com.uet.ooadloophole.model.business.group_elements.Request;
+import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
+import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -113,6 +117,12 @@ public class StudentController {
     public ModelAndView getAssignmentView() {
         String pageTitle = "Bài tập";
         return getStudentView(pageTitle, new BodyFragment("student/assignment", "content"));
+    }
+
+    @RequestMapping(value = "/boards", method = RequestMethod.GET)
+    public ModelAndView getBoardsView() {
+        String pageTitle = "Boards";
+        return getStudentView(pageTitle, new BodyFragment("student/boards", "content"));
     }
 
     private ModelAndView getStudentView(String pageTitle, BodyFragment bodyFragment) {

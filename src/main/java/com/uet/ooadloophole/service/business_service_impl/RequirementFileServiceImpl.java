@@ -1,9 +1,9 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
-import com.uet.ooadloophole.database.RequirementSpecFileRepository;
-import com.uet.ooadloophole.model.business.RequirementSpecFile;
-import com.uet.ooadloophole.model.business.UserFile;
+import com.uet.ooadloophole.database.requirement_repositories.RequirementSpecFileRepository;
+import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
+import com.uet.ooadloophole.model.business.system_elements.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;

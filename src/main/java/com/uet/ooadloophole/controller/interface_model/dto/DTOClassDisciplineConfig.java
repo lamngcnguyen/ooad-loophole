@@ -1,6 +1,6 @@
 package com.uet.ooadloophole.controller.interface_model.dto;
 
-import com.uet.ooadloophole.model.business.Discipline;
+import com.uet.ooadloophole.model.business.rup_elements.Discipline;
 
 public class DTOClassDisciplineConfig {
     private String _id;

@@ -1,7 +1,7 @@
 package com.uet.ooadloophole.service.business_service;
 
-import com.uet.ooadloophole.model.business.Criteria;
-import com.uet.ooadloophole.model.business.GradingTemplate;
+import com.uet.ooadloophole.model.business.grading_elements.Criteria;
+import com.uet.ooadloophole.model.business.grading_elements.GradingTemplate;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 

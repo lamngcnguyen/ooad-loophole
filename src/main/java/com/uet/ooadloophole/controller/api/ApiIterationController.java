@@ -5,7 +5,7 @@ import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.controller.interface_model.dto.DTOIteration;
 import com.uet.ooadloophole.controller.interface_model.interfaces.IIteration;
-import com.uet.ooadloophole.model.business.Iteration;
+import com.uet.ooadloophole.model.business.rup_elements.Iteration;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_service.IterationService;
 import org.springframework.beans.factory.annotation.Autowired;
