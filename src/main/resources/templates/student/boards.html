@@ -5,8 +5,77 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="leader-content">
-    This is leader task board view
+<div th:fragment="leader-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large black label"><i class="trello icon"></i>Board</div>
+            </div>
+        </div>
+    </div>
+    <div class="four column row">
+        <div class="column">
+            <div class="ui segment">
+                <div class="ui stackable grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="header">
+                                <div class="ui basic grey label">New</div>
+                            </div>
+<!--                            <div class="ui small blue icon labeled button"><i class="plus icon"></i>New task</div>-->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui cards">
+                                <div class="fluid task card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <i class="teal tasks icon"></i>
+                                            <span class="task-id">1</span>
+                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                        </div>
+                                        <div class="description">
+                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="extra content">
+                                        Status<span class="task-status" style="float: right">New</span>
+                                    </div>
+                                </div>
+                                <div class="fluid task card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <i class="teal tasks icon"></i>
+                                            <span class="task-id">2</span>
+                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                        </div>
+                                        <div class="description">
+                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="extra content">
+                                        Status<span class="task-status" style="float: right">New</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="ui segment"></div>
+        </div>
+        <div class="column">
+            <div class="ui segment"></div>
+        </div>
+        <div class="column">
+            <div class="ui segment"></div>
+        </div>
+    </div>
+    <style>
+    </style>
 </div>
 <div th:fragment="member-content">
     This is member task board view
