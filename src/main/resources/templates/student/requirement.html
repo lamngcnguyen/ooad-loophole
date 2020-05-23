@@ -5,8 +5,212 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="leader-content">
-    This is requirement management view
+<div th:fragment="leader-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large blue label"><i class="glasses icon"></i>Requirement Management</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui segment">
+                <div class="ui stackable grid">
+                    <div class="four wide column">
+                        <div class="ui segment">
+                            <div class="ui large bulleted relaxed list">
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="header"><span class="requirement bullet">1</span>.<span
+                                                class="requirement title">Title 1</span><i
+                                                class="angle right icon right floated" onclick="$('#1').show()"></i>
+                                        </div>
+                                        <div class="list" id="1">
+                                            <div class="item">
+                                                <div class="content">
+                                                    <div class="header"><span
+                                                            class="requirement bullet">1.1</span>.<span
+                                                            class="requirement title">Title 1.1</span><i
+                                                            class="angle right icon right floated"
+                                                            onclick="$('#1').show()"></i></div>
+                                                </div>
+                                                <div class="list">
+                                                    <div class="item">
+                                                        <div class="header"><span
+                                                                class="requirement bullet">1.1.1</span>.<span
+                                                                class="requirement title">Title 1.1.1</span><i
+                                                                class="angle right icon right floated"
+                                                                onclick="$('#1').show()"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <div class="header"><span
+                                                            class="requirement bullet">1.2</span>.<span
+                                                            class="requirement title">Title 1.2</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="header"><span class="requirement bullet">2</span>.<span
+                                                class="requirement title">Title 2</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="twelve wide column">
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="row">
+                                    <div class="column">
+                                        <div class="ui header"><i class="blue file alternate icon"></i>Requirement Title
+                                        </div>
+                                        <div class="ui divider"></div>
+                                        <div class="ui form">
+                                            <div class="ten wide required field">
+                                                <label>Title</label>
+                                                <input type="text" name="title" placeholder="Title">
+                                            </div>
+                                            <div class="required field">
+                                                <label>Description</label>
+                                                <textarea name="description" placeholder="Description"></textarea>
+                                            </div>
+                                            <div class="ui blue icon labeled submit button"><i class="save icon"></i>Save
+                                            </div>
+                                            <div class="ui grey icon labeled button right floated"><i
+                                                    class="trash icon"></i>Delete
+                                            </div>
+                                        </div>
+                                        <div class="ui divider"></div>
+                                        <div class="ui header">
+                                            <i class="blue copy icon"></i>Attachments
+                                        </div>
+                                        <div class="ui tiny icon labeled green button"><i class="upload icon"></i>Upload
+                                        </div>
+                                        <div class="ui bulleted relaxed list">
+                                            <a class="item">
+                                                spec.docx
+                                            </a>
+                                            <a class="item">
+                                                spec2.docx
+                                            </a>
+                                        </div>
+                                        <div class="ui divider"></div>
+                                        <div class="ui header"><i class="blue linkify icon"></i>Work items</div>
+                                        <div class="ui grid">
+                                            <div class="row">
+                                                <div class="column">
+                                                    <div class="ui raised cards">
+                                                        <a class="card">
+                                                            <div class="content">
+                                                                <div class="header">Work item #1</div>
+                                                                <div class="description">
+                                                                    Assigned to:
+                                                                    <div class="ui avatar image">
+                                                                        <img th:src="@{/images/default.png}">
+                                                                    </div>
+                                                                    Vo Le Minh Tam
+                                                                </div>
+                                                            </div>
+                                                            <div class="extra content">
+                                                                State:<span style="float: right">Approved</span>
+                                                            </div>
+                                                        </a>
+                                                        <a class="card">
+                                                            <div class="content">
+                                                                <div class="header">Work item #2</div>
+                                                                <div class="description">
+                                                                    Assigned to:
+                                                                    <div class="ui avatar image">
+                                                                        <img th:src="@{/images/default.png}">
+                                                                    </div>
+                                                                    Vo Le Minh Tam
+                                                                </div>
+                                                            </div>
+                                                            <div class="extra content">
+                                                                State:<span style="float: right">Approved</span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ui divider"></div>
+                                        <div class="ui header"><i class="blue clock icon"></i>Change history</div>
+                                        <div class="ui grid">
+                                            <div class="two column row">
+                                                <div class="six wide column">
+                                                    <div class="ui segment">
+                                                        <div class="ui vertical fluid tabular menu">
+                                                            <div class="item">
+                                                                <div class="content">
+                                                                    <div class="header">Change log 22/1</div>
+                                                                    <div class="description">
+                                                                        Updated by: <img class="ui avatar image"
+                                                                                         th:src="@{/images/default.png}">
+                                                                        Vo Le Minh Tam
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="active item">
+                                                                <div class="content">
+                                                                    <div class="header">Change log 23/1</div>
+                                                                    <div class="description">
+                                                                        Updated by: <img class="ui avatar image"
+                                                                                         th:src="@{/images/default.png}">
+                                                                        Vo Le Minh Tam
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ten wide column">
+                                                    <div class="ui segment full height">
+                                                        <div class="ui grid">
+                                                            <div class="row">
+                                                                <div class="column">
+                                                                    <div class="ui header">Change log 22/1</div>
+                                                                    <div class="ui divider"></div>
+                                                                    <div>
+                                                                        <span style="font-weight: bold">Title: </span><span
+                                                                            class="requirement title">something</span>
+                                                                    </div>
+                                                                    <p><span
+                                                                            style="font-weight: bold">Description: </span>As
+                                                                        visitor I get the most-searched hotels in the
+                                                                        neighborhood right away, while other hotels are
+                                                                        loading in the background, so I more quickly get
+                                                                        results;</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .list .header:hover > span {
+            color: #2185D0 !important;
+            text-decoration: underline !important;
+            cursor: pointer;
+        }
+    </style>
 </div>
 <div th:fragment="member-content">
     This is member requirement management view
