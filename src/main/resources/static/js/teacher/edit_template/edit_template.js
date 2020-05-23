@@ -35,7 +35,8 @@ class CriteriaSegment {
         this.btn_save = $(this.html.find('.button.save'));
         this.btn_close = $(this.html.find('.button.close'));
         this.btn_add_level = $(this.html.find('.add-level'));
-        this.btn_delete = $(this.html.find('.button.delete'))
+        this.btn_delete = $(this.html.find('.button.delete'));
+        this.error_message = $(this.html.find('.row.error'));
         if (data != null) {
             this.setValues(data);
             this.isNew = false;
@@ -60,6 +61,20 @@ class CriteriaSegment {
         });
         this.btn_save.click(function () {
             // TODO: validate data
+            const data = ref.getValues();
+            let message;
+            if (data.name.length === 0) {
+                message = 'name is required';
+            }
+            if (data.weight.length === 0 || !data.weight.match('[+-]?([0-9]*[.])?[0-9]+')) {
+                message = 'weight is invalid'
+            }
+            if (typeof message !== 'undefined') {
+                ref.error_message.show().find('.message').text(message);
+                return;
+            } else {
+                ref.error_message.hide();
+            }
             let url;
             let method;
             if (ref.isNew) {
@@ -72,7 +87,7 @@ class CriteriaSegment {
             $.ajax({
                 method: method,
                 url: url,
-                data: JSON.stringify(ref.getValues()),
+                data: JSON.stringify(data),
                 contentType: 'application/json; charset=utf-8',
                 success: function (jqXHR) {
                     alert('criteria saved successfully');
