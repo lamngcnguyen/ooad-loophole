@@ -1,6 +1,8 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
+import com.uet.ooadloophole.controller.interface_model.dto.DTOGradingTemplate;
+import com.uet.ooadloophole.model.business.grading_elements.GradingTemplate;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
@@ -8,6 +10,7 @@ import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.GradingTemplateService;
+import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/teacher")
@@ -79,7 +85,23 @@ public class TeacherController {
         return getTeacherView(pageTitle, new BodyFragment("teacher/evaluate", "body-content"));
     }
 
-    @RequestMapping(value = "/edit-template/{templateId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/template", method = RequestMethod.GET)
+    public ModelAndView getGradingTemplateListView() {
+        ModelAndView modelAndView;
+        try {
+            modelAndView = getTeacherView("Grading Template Management", new BodyFragment("teacher/grading-template-list", "body-content"));
+            List<DTOGradingTemplate> templateList = gradingTemplateService.getByTeacherId(secureUserService.getCurrentUser().get_id())
+                    .stream()
+                    .map(template -> new DTOGradingTemplate(template)).collect(Collectors.toList());
+            //templateList.forEach(x -> System.out.println(x.get_id() + "/" + x.getGradingTemplateName()));
+            modelAndView.addObject("templates", templateList);
+        } catch (Exception e) {
+            modelAndView = new ModelAndView("error");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/template/{templateId}", method = RequestMethod.GET)
     public ModelAndView getGradingTemplateView(@PathVariable String templateId) {
         ModelAndView modelAndView;
         try {

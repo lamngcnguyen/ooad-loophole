@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="body-content-teacher" class="ui stackable grid">
+    <link rel="stylesheet" th:href="@{/css/teacher/grading-template.css}">
     <input hidden="" name="templateId" th:value="${template.get_id()}">
     <div class="row">
         <div class="column">
@@ -110,13 +111,21 @@
         </div>
     </div>
     <script type="text/javascript" th:src="@{/js/teacher/edit_template/edit_template.js}"></script>
-    <style>
-        .criteria.header:hover {
-            color: #008080;
-            cursor: pointer;
-            text-decoration: none;
-        }
-    </style>
+<!--    <style>-->
+<!--        .criteria.header:hover {-->
+<!--            color: #008080;-->
+<!--            cursor: pointer;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+
+<!--        .error {-->
+<!--            background-color: #fff6f6;-->
+<!--            border-color: #e0b4b4;-->
+<!--            color: #9f3a38;-->
+<!--            -webkit-box-shadow: none;-->
+<!--            box-shadow: none;-->
+<!--        }-->
+<!--    </style>-->
 </div>
 </body>
 </html>

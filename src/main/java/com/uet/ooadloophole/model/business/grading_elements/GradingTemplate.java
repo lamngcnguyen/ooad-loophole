@@ -3,6 +3,7 @@ package com.uet.ooadloophole.model.business.grading_elements;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class GradingTemplate {
@@ -13,6 +14,7 @@ public class GradingTemplate {
 	private String gradingTemplateName;
 	@DBRef
 	private List<Criteria> criteria;
+	private LocalDateTime timestamp;
 
 	GradingTemplate() {
 
@@ -56,5 +58,13 @@ public class GradingTemplate {
 
 	public void setCriteria(List<Criteria> criteria) {
 		this.criteria = criteria;
+	}
+
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
 	}
 }

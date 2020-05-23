@@ -1,60 +1,65 @@
 [
   {
-    "name": "Quản trị viên",
+    "name": "Admin",
     "role": "ADMIN",
     "url": "/admin",
     "navigationItems": [
       {
-        "name": "Quản lý người dùng",
+        "name": "Users",
         "url": "/admin/user",
         "description": null
       },
       {
-        "name": "Quản lý lớp học",
+        "name": "Classes",
         "url": "/admin/class",
         "description": null
       },
       {
-        "name": "Quản lý học kì",
+        "name": "Semesters",
         "url": "/admin/semester",
         "description": null
       }
     ]
   },
   {
-    "name": "Giáo viên",
+    "name": "Teacher",
     "role": "TEACHER",
     "url": "/teacher",
     "navigationItems": [
       {
-        "name": "Lớp học của tôi",
+        "name": "My Classes",
         "url": "/teacher/class",
         "description": null
       },
       {
-        "name": "Chấm bài",
+        "name": "Grading",
         "url": "/teacher/evaluate",
+        "description": null
+      },
+      {
+        "name": "Grading Template Management",
+        "url": "/teacher/template",
         "description": null
       }
     ]
   },
   {
-    "name": "Sinh viên",
+    "name": "Student",
     "role": "STUDENT",
     "url": "/student",
     "navigationItems": [
       {
-        "name": "Nhóm",
+        "name": "Group Setting",
         "url": "/student/group",
         "description": null
       },
       {
-        "name": "Kế hoạch phát triển",
+        "name": "Iterations",
         "url": "/student/iteration",
         "description": null
       },
       {
-        "name": "Chấm điểm",
+        "name": "Grading",
         "url": "/student/evaluation",
         "description": null
       },
@@ -64,12 +69,12 @@
         "description": null
       },
       {
-        "name": "Bài tập",
+        "name": "Assignments",
         "url": "/student/assignment",
         "description": null
       },
       {
-        "name": "Boards",
+        "name": "Work Items",
         "url": "/student/boards",
         "description": null
       }

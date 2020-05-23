@@ -31,7 +31,8 @@ public class ApiGradingTemplateController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Object> createGradingTemplate(@RequestBody GradingTemplate gradingTemplate) {
+    public ResponseEntity<Object> createGradingTemplate(@RequestBody GradingTemplate gradingTemplate) throws BusinessServiceException {
+        gradingTemplate.setTeacherId(secureUserService.getCurrentUser().get_id());
         GradingTemplate newGradingTemplate = gradingTemplateService.create(gradingTemplate);
         return ResponseEntity.status(HttpStatus.OK).body(newGradingTemplate);
     }

@@ -10,6 +10,7 @@ import com.uet.ooadloophole.service.business_service.GradingTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class GradingTemplateServiceImpl implements GradingTemplateService {
 
     @Override
     public GradingTemplate create(GradingTemplate gradingTemplate) {
+        gradingTemplate.setTimestamp(LocalDateTime.now());
         GradingTemplate newGradingTemplate = gradingTemplateRepository.save(gradingTemplate);
         return gradingTemplate;
     }

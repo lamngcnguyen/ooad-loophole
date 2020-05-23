@@ -62,15 +62,44 @@ class CriteriaSegment {
         this.btn_save.click(function () {
             // TODO: validate data
             const data = ref.getValues();
-            let message;
+            // let message;
+            let isError = false;
+
+            // Valid level name
+            const levelName = ref.input_levels.find('.level-name');
+            levelName.each(function () {
+                if ($(this).val() === undefined || $(this).val() === "") {
+                    $(this).addClass('error');
+                    isError = true;
+                } else {
+                    $(this).removeClass('error');
+                }
+            })
+
+            const levelWeight = ref.input_levels.find('.level-weight');
+            levelWeight.each(function () {
+                if ($(this).val().length === 0 || !$(this).val().match('[+-]?([0-9]*[.])?[0-9]+')) {
+                    $(this).addClass('error');
+                    isError = true;
+                } else {
+                    $(this).removeClass('error');
+                }
+            })
+
             if (data.name.length === 0) {
-                message = 'name is required';
+                ref.input_name.addClass('error');
+                isError = true;
+            } else {
+                ref.input_name.removeClass('error');
             }
             if (data.weight.length === 0 || !data.weight.match('[+-]?([0-9]*[.])?[0-9]+')) {
-                message = 'weight is invalid'
+                ref.input_weight.addClass('error');
+                isError = true;
+            } else {
+                ref.input_weight.removeClass('error');
             }
-            if (typeof message !== 'undefined') {
-                ref.error_message.show().find('.message').text(message);
+            if (isError) {
+                ref.error_message.show().find('.message').text("Correct data required");
                 return;
             } else {
                 ref.error_message.hide();
@@ -105,7 +134,15 @@ class CriteriaSegment {
             ref.showForm();
         });
         this.btn_add_level.click(function () {
-            const newLevel = $('<tr><td><input type="text" placeholder="name"></td><td><input type="number" placeholder="weight"></td></tr>');
+            const newLevel = $('' +
+                '<tr>' +
+                    '<td>' +
+                        '<input class="level-name" type="text" placeholder="name">' +
+                    '</td>' +
+                    '<td>' +
+                        '<input class="level-weight" type="number" placeholder="weight">' +
+                    '</td>' +
+                '</tr>');
             ref.input_levels.find('tbody tr:last-child').before(newLevel);
         });
         this.btn_delete.click(function () {
@@ -152,7 +189,7 @@ class CriteriaSegment {
         this.input_description.val(data['description']);
         const lastLevel = this.input_levels.find('tbody tr:last-child');
         $.each(data['levels'], function (index, level) {
-            const newLevel = $(`<tr><td><input type="text" placeholder="name" value="${level.levelName}"></td><td><input type="number" placeholder="weight" value="${level.weight}"></td></tr>`);
+            const newLevel = $(`<tr><td><input class="level-name" type="text" placeholder="name" value="${level.levelName}"></td><td><input class="level-weight" type="number" placeholder="weight" value="${level.weight}"></td></tr>`);
             lastLevel.before(newLevel);
         });
     };

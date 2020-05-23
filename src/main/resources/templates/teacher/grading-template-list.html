@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="body-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large black label"><i class="wpforms icon"></i>Grading Template Management</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui blue icon labeled button" onclick="$('.modal.create-template').modal('show')"><i
+                    class="plus icon"></i>Add
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui fluid cards">
+                <a class="card" th:each="template: ${templates}" th:href="@{'/teacher/template/' + ${template.get_id()}}">
+                    <div class="content">
+                        <div class="header" th:text="${template.getName()}"></div>
+                    </div>
+                    <div class="extra content" th:text="'Created on: ' + ${template.getTimestamp()}"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal create-template">
+        <div class="ui large header">
+            <i class="blue wpforms icon"></i>New Template
+        </div>
+        <div class="content">
+            <div class="ui form create-template">
+                <div class="required field">
+                    <label>Name</label>
+                    <input type="text" placeholder="Name" name="gradingTemplateName">
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui blue icon labeled submit button"><i class="save icon"></i>Save</div>
+                <div class="ui grey icon labeled button right floated"
+                     onclick="$('.modal.create-template').modal('hide')"><i class="cancel icon"></i>Cancel
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.modal.create-template').modal({
+                onShow: function () {
+                    $('.form.create-template').form('clear');
+                }
+            });
+
+            $('.form.create-template').form({
+                fields: {
+                    name: {
+                        identifier: 'name',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Name must not be empty'
+                            }
+                        ]
+                    }
+                },
+                onSuccess: function (event, data) {
+                    $.ajax({
+                        url: '/api/grading-template',
+                        method: 'post',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function () {
+                            window.location.reload();
+                        },
+                        error: function (msg) {
+                            $('.form.create-template').form('add errors', [msg.responseJSON.error + ': ' + msg.responseJSON.message]);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
