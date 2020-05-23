@@ -76,13 +76,15 @@ class CriteriaSegment {
                 contentType: 'application/json; charset=utf-8',
                 success: function (jqXHR) {
                     alert('criteria saved successfully');
-                    ref.id = jqXHR.id;
+                    ref.id = jqXHR._id;
+                    console.log(jqXHR._id);
                 },
                 error: function () {
                     alert('error saving criteria');
                 },
             });
             //console.log(JSON.stringify(ref.getValues()));
+//            console.log(ref);
         });
         this.btn_close.click(function () {
             ref.showForm();
@@ -92,17 +94,37 @@ class CriteriaSegment {
             ref.input_levels.find('tbody tr:last-child').before(newLevel);
         });
         this.btn_delete.click(function () {
+            console.log(ref);
             if (ref.id !== 0) {
                 $.ajax({
                     method: 'DELETE',
                     url: '/api/grading-template/criteria/' + ref.id,
                     success: function () {
-                        alert('criteria deleted successfully');
+//                        alert('criteria deleted successfully');
+                        $('body')
+                          .toast({
+                            class: 'success',
+                            message: `criteria deleted successfully!`
+                          })
+                        ;
                     },
                     error: function () {
-                        alert('error deleting criteria');
+//                        alert('error deleting criteria');
+                        $('body')
+                          .toast({
+                            class: 'error',
+                            message: `error deleting criteria!`
+                          })
+                        ;
                     }
                 });
+            } else {
+                $('body')
+                  .toast({
+                    class: 'success',
+                    message: `criteria deleted successfully!`
+                  })
+                ;
             }
             ref.html.remove();
         });

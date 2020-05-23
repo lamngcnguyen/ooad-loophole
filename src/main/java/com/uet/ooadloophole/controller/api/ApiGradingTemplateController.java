@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.model.business.Criteria;
 import com.uet.ooadloophole.model.business.GradingTemplate;
 import com.uet.ooadloophole.model.business.LoopholeUser;
@@ -59,4 +60,14 @@ public class ApiGradingTemplateController {
     public ResponseEntity<Criteria> editCriteria(@PathVariable String criteriaId, @RequestBody Criteria criteria) {
         return ResponseEntity.status(HttpStatus.OK).body(gradingTemplateService.editCriteria(criteriaId, criteria));
     }
+
+    @RequestMapping(value = "/criteria/{criteriaId}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteCriteria(@PathVariable String criteriaId) {
+		try {
+			gradingTemplateService.deleteCriteria(criteriaId);
+			return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
 }

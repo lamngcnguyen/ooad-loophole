@@ -46,11 +46,6 @@ public class GradingTemplateServiceImpl implements GradingTemplateService {
         return gradingTemplate;
     }
 
-    @Override
-    public void delete(String gradingTemplateId) throws BusinessServiceException {
-        GradingTemplate gradingTemplateToDelete = getById(gradingTemplateId);
-        gradingTemplateRepository.delete(gradingTemplateToDelete);
-    }
 
     @Override
     public GradingTemplate update(String gradingTemplateId, GradingTemplate gradingTemplate) throws BusinessServiceException {
@@ -90,4 +85,10 @@ public class GradingTemplateServiceImpl implements GradingTemplateService {
         GradingTemplate template = getById(templateId);
         return template.getCriteria();
     }
+
+	@Override
+	public void deleteCriteria(String criteriaId) {
+		Criteria criteriaToDelete = criteriaRepository.findBy_id(criteriaId);
+		criteriaRepository.delete(criteriaToDelete);
+	}
 }

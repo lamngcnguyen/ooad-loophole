@@ -20,8 +20,6 @@ public interface GradingTemplateService {
 
 	GradingTemplate create(GradingTemplate gradingTemplate);
 
-	void delete(String gradingTemplateId) throws BusinessServiceException;
-
 	GradingTemplate update(String gradingTemplateId, GradingTemplate gradingTemplate) throws BusinessServiceException;
 
 	Criteria editCriteria(String id, Criteria criteria);
@@ -29,5 +27,7 @@ public interface GradingTemplateService {
 	Criteria createCriteria(String templateId, Criteria criteria);
 
 	List<Criteria> getAllCriteriaByTemplateId(String templateId);
+
+	void deleteCriteria(String criteriaId);
 }
 
