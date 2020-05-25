@@ -131,6 +131,11 @@ public class StudentController {
         return getStudentView(pageTitle, new BodyFragment("student/boards", "content"));
     }
 
+    @RequestMapping(value = "/work-item", method = RequestMethod.GET)
+    public ModelAndView getWorkItemView() {
+        return getStudentView("Work Item", new BodyFragment("student/work-item", "content"));
+    }
+
     private ModelAndView getStudentView(String pageTitle, BodyFragment bodyFragment) {
         ModelAndView modelAndView;
         try {
