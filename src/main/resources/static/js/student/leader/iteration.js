@@ -63,7 +63,7 @@ function createIterationForm() {
     const navItem = $(`<a class="item" id="item_0" onclick="showIteration(0)">${name}</a>`);
     const segment = $('<div class="ui iteration segment" id="iteration_0"></div>');
     const form = $('#templates .iteration.form').clone();
-    form.children('.header').text(name);
+    form.find('.header input').val(name);
     form.find('.start-date-picker').calendar({
         type: 'date',
         formatter: {
@@ -77,8 +77,8 @@ function createIterationForm() {
         },
         endCalendar: form.find('.end-date-picker'),
         onChange: function (date) {
-            const maxDate = new Date();
-            const defaultDate = new Date()
+            const maxDate = new Date(date);
+            const defaultDate = new Date(date);
             maxDate.setDate(date.getDate() + maxIterationLength);
             defaultDate.setDate(date.getDate() + defaultIterationLength);
             form.find('.end-date-picker').calendar('set maxDate', maxDate);
@@ -100,7 +100,7 @@ function createIterationForm() {
     });
     form.form({
         onSuccess: function (evt, data) {
-            data['name'] = name;
+            data['name'] = $('input[name=name]').val();
             data['groupId'] = groupId;
             data['startDate'] = $('input[name=startDate]').val();
             data['endDate'] = $('input[name=endDate]').val();
@@ -134,6 +134,109 @@ function createIterationForm() {
     showIteration(0);
 }
 
+function showEditIterationForm(id) {
+    $.api({
+        action: 'get iteration',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            id: id,
+        },
+        onFailure: function (response) {
+            console.log(response)
+        },
+        onSuccess: function (response) {
+            editIterationForm(response)
+        }
+    })
+}
+
+function editIterationForm(data) {
+    const iterationId = data._id;
+    const name = data.name;
+    const startDate = data.startDateTime;
+    const endDate = data.endDateTime;
+    const segment = $('#iteration_' + iterationId);
+    const form = $('#templates .iteration.form').clone();
+    segment.children('.iteration.grid').hide();
+    form.find('.grey.button').unbind().click(function () {
+        segment.children('.iteration.grid').show();
+        form.hide();
+    })
+    form.find('.header input').val(name);
+    form.find('.start-date-picker').calendar({
+        type: 'date',
+        formatter: {
+            date: function (date) {
+                if (!date) return '';
+                const day = ('0' + date.getDate()).slice(-2);
+                const month = ('0' + (date.getMonth() + 1)).slice(-2);
+                const year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+        },
+        endCalendar: form.find('.end-date-picker'),
+        onChange: function (date) {
+            const maxDate = new Date(date);
+            const defaultDate = new Date(date);
+            maxDate.setDate(date.getDate() + maxIterationLength);
+            defaultDate.setDate(date.getDate() + defaultIterationLength);
+            form.find('.end-date-picker').calendar('set maxDate', maxDate);
+            form.find('.end-date-picker').calendar('set date', defaultDate);
+        }
+    });
+    form.find('.end-date-picker').calendar({
+        type: 'date',
+        formatter: {
+            date: function (date) {
+                if (!date) return '';
+                const day = ('0' + date.getDate()).slice(-2);
+                const month = ('0' + (date.getMonth() + 1)).slice(-2);
+                const year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+            }
+        },
+        startCalendar: form.find('.start-date-picker')
+    });
+    form.find('.start-date-picker').calendar('set date', new Date(startDate));
+    form.find('.end-date-picker').calendar('set date', new Date(endDate));
+    form.find('textarea[name=objective]').val(data.objective);
+    form.form({
+        onSuccess: function (evt, data) {
+            data['name'] = $('input[name=name]').val();
+            data['groupId'] = groupId;
+            data['startDate'] = $('input[name=startDate]').val();
+            data['endDate'] = $('input[name=endDate]').val();
+            $.api({
+                action: 'edit iteration',
+                on: 'now',
+                method: 'put',
+                urlData: {
+                    id: iterationId,
+                },
+                dataType: 'json',
+                data: JSON.stringify(data),
+                beforeXHR: (xhr) => {
+                    xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
+                },
+                onFailure: function (response) {
+                    $(form).form('add errors', [response])
+                },
+                onSuccess: function (response) {
+                    segment.remove();
+                    $('#item_' + response._id).text(response.name);
+                    createIterationGrid(response)
+                }
+            })
+            btnNewIteration.show();
+            newIterationItem.show();
+            $('#nameInput').hide();
+            $('#nameInput input').val('');
+        }
+    });
+    segment.append(form);
+}
+
 function createIterationGrid(data) {
     const startDate = new Date(data.startDateTime);
     const endDate = new Date(data.endDateTime);
@@ -152,6 +255,7 @@ function createIterationGrid(data) {
         showIteration(data._id);
     });
     navItem.attr('id', `item_${data._id}`);
+    navItem.text(data.name);
     navItem.removeAttr('onclick');
     $('.form.delete-iteration').form('set value', 'id', data._id);
 
@@ -161,6 +265,9 @@ function createIterationGrid(data) {
     grid.find('.form-date').text(startDate.toLocaleDateString("en-GB"));
     grid.find('.to-date').text(endDate.toLocaleDateString("en-GB"));
     grid.find('.objective-text').text(data.objective);
+    grid.find('.edit-iteration').click(function () {
+        showEditIterationForm(data._id)
+    });
     segment.append(grid);
     segmentContainer.append(segment);
 }

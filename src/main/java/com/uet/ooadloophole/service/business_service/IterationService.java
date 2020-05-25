@@ -11,5 +11,7 @@ public interface IterationService {
     Iteration create(Iteration iteration);
     List<Iteration> getAllByGroup(String groupId);
 
+    Iteration edit(String id, Iteration iteration);
+
     void delete(String id);
 }

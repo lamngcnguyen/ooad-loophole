@@ -29,6 +29,16 @@ public class IterationServiceImpl implements IterationService {
     }
 
     @Override
+    public Iteration edit(String id, Iteration iteration) {
+        Iteration dbIteration = iterationRepository.findBy_id(id);
+        dbIteration.setName(iteration.getName());
+        dbIteration.setObjective(iteration.getObjective());
+        dbIteration.setStartDateTime(iteration.getStartDateTime());
+        dbIteration.setEndDateTime(iteration.getEndDateTime());
+        return iterationRepository.save(dbIteration);
+    }
+
+    @Override
     public void delete(String id) {
         iterationRepository.delete(getById(id));
     }

@@ -32,6 +32,12 @@ public class ApiIterationController {
         return ResponseEntity.status(HttpStatus.OK).body(iterationService.create(iteration));
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Iteration> editIteration(@PathVariable String id, @RequestBody IIteration iIteration) {
+        Iteration iteration = converterService.convertIterationInterface(iIteration);
+        return ResponseEntity.status(HttpStatus.OK).body(iterationService.edit(id, iteration));
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<DTOIteration> getById(@PathVariable String id) {
         DTOIteration dtoIteration = converterService.convertToDTOIteration(iterationService.getById(id));

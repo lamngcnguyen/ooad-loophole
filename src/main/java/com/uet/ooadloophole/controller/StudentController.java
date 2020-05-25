@@ -89,7 +89,13 @@ public class StudentController {
             LoopholeUser currentUser = secureUserService.getCurrentUser();
             Student student = studentService.getByUserId(currentUser.get_id());
             ClassConfig classConfig = classService.getClassConfig(student.getClassId());
-            boolean iterationDeadlineMet = today.compareTo(classConfig.getIterationSetupDeadline()) > 0;
+            boolean iterationDeadlineMet;
+            try {
+                iterationDeadlineMet = today.compareTo(classConfig.getIterationSetupDeadline()) > 0;
+            } catch (Exception e) {
+                //TODO: Show class not configured page
+                return new ModelAndView("error");
+            }
 
             ModelAndView iterationView = getStudentView(pageTitle, new BodyFragment("student/iteration", "content"));
             iterationView.addObject("isSetupPhase", !iterationDeadlineMet);

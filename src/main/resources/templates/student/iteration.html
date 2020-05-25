@@ -47,7 +47,11 @@
     </div>
     <div class="ui modal" id="templates">
         <div class="ui iteration form">
-            <div class="ui large blue header">Iteration Name</div>
+            <div class="ui large blue header">
+                <div class="ui fluid input">
+                    <input type="text" name="name" placeholder="Iteration name">
+                </div>
+            </div>
             <div class="field">
                 <div class="fields">
                     <div class="eight wide required field">
@@ -85,8 +89,14 @@
                     <div class="ui blue large header">
                         <span class="iteration-name">Iteration Name</span>
                         <button class="ui right floated red small basic icon button" th:if="${isSetupPhase}"
-                                style="padding-top: 10px" onclick="showModal('.modal.delete-iteration')">
+                                style="padding-top: 10px" onclick="showModal('.modal.delete-iteration')"
+                                data-tooltip="Delete iteration">
                             <i class="trash icon"></i>
+                        </button>
+                        <button class="ui right floated blue small basic icon edit-iteration button"
+                                th:if="${isSetupPhase}"
+                                style="padding-top: 10px" data-tooltip="Edit iteration">
+                            <i class="pencil icon"></i>
                         </button>
                     </div>
                     <input type="hidden" name="iterationId">
