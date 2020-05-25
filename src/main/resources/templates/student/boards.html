@@ -22,13 +22,22 @@
                             <div class="header">
                                 <div class="ui basic grey label">New</div>
                             </div>
-<!--                            <div class="ui small blue icon labeled button"><i class="plus icon"></i>New task</div>-->
                         </div>
                     </div>
                     <div class="row">
                         <div class="column">
-                            <div class="ui cards">
-                                <div class="fluid task card">
+                            <div class="ui grey fluid centered cards">
+                                <div class="task card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <div class="ui mini fluid action input">
+                                                <input type="text" placeholder="title...">
+                                                <button class="ui blue button">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="task card" href="/student/work-item">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
@@ -40,24 +49,9 @@
                                         </div>
                                     </div>
                                     <div class="extra content">
-                                        Status<span class="task-status" style="float: right">New</span>
+                                        Status:<span class="task-status" style="float: right"><i class="grey circle icon"></i>New</span>
                                     </div>
-                                </div>
-                                <div class="fluid task card">
-                                    <div class="content">
-                                        <div class="header">
-                                            <i class="teal tasks icon"></i>
-                                            <span class="task-id">2</span>
-                                            <span class="task-title" style="font-weight: normal">Task title</span>
-                                        </div>
-                                        <div class="description">
-                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 2</span>
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        Status<span class="task-status" style="float: right">New</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -65,13 +59,106 @@
             </div>
         </div>
         <div class="column">
-            <div class="ui segment"></div>
+            <div class="ui segment">
+                <div class="ui stackable grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="header">
+                                <div class="ui basic orange label">Approved</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui orange fluid centered cards">
+                                <a class="task card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <i class="teal tasks icon"></i>
+                                            <span class="task-id">1</span>
+                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                        </div>
+                                        <div class="description">
+                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="extra content">
+                                        Status:<span class="task-status" style="float: right"><i class="orange circle icon"></i>Approved</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="column">
-            <div class="ui segment"></div>
+            <div class="ui segment">
+                <div class="ui stackable grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="header">
+                                <div class="ui basic blue label">Committed</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui blue fluid centered cards">
+                                <a class="task card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <i class="teal tasks icon"></i>
+                                            <span class="task-id">1</span>
+                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                        </div>
+                                        <div class="description">
+                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="extra content">
+                                        Status:<span class="task-status" style="float: right"><i class="blue circle icon"></i>Committed</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="column">
-            <div class="ui segment"></div>
+            <div class="ui segment">
+                <div class="ui stackable grid">
+                    <div class="row">
+                        <div class="column">
+                            <div class="header">
+                                <div class="ui basic green label">Done</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column">
+                            <div class="ui fluid centered green cards">
+                                <a class="task card">
+                                    <div class="content">
+                                        <div class="header">
+                                            <i class="teal tasks icon"></i>
+                                            <span class="task-id">1</span>
+                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                        </div>
+                                        <div class="description">
+                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="extra content">
+                                        Status:<span class="task-status" style="float: right"><i class="green circle icon"></i>Done</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <style>
