@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="four column row">
-        <div class="column">
+        <div class="new-item column">
             <div class="ui segment">
                 <div class="ui stackable grid">
                     <div class="row">
@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="column">
                             <div class="ui grey fluid centered cards">
-                                <div class="task card">
+                                <div class="workItem card">
                                     <div class="content">
                                         <div class="header">
                                             <div class="ui mini fluid action input">
@@ -37,19 +37,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a class="task card" href="/student/work-item">
+                                <a class="workItem card" href="/student/work-item">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
-                                            <span class="task-id">1</span>
-                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-id">1</span>
+                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
                                         </div>
                                         <div class="description">
-                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
+                                                class="workItem user">Assigned User 1</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
-                                        Status:<span class="task-status" style="float: right"><i class="grey circle icon"></i>New</span>
+                                        Status:<span class="workItem-status" style="float: right"><i
+                                            class="grey circle icon"></i>New</span>
                                     </div>
                                 </a>
                             </div>
@@ -71,19 +73,21 @@
                     <div class="row">
                         <div class="column">
                             <div class="ui orange fluid centered cards">
-                                <a class="task card">
+                                <a class="workItem card">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
-                                            <span class="task-id">1</span>
-                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-id">1</span>
+                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
                                         </div>
                                         <div class="description">
-                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
+                                                class="workItem user">Assigned User 1</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
-                                        Status:<span class="task-status" style="float: right"><i class="orange circle icon"></i>Approved</span>
+                                        Status:<span class="workItem-status" style="float: right"><i
+                                            class="orange circle icon"></i>Approved</span>
                                     </div>
                                 </a>
                             </div>
@@ -105,19 +109,21 @@
                     <div class="row">
                         <div class="column">
                             <div class="ui blue fluid centered cards">
-                                <a class="task card">
+                                <a class="workItem card">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
-                                            <span class="task-id">1</span>
-                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-id">1</span>
+                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
                                         </div>
                                         <div class="description">
-                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
+                                                class="workItem user">Assigned User 1</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
-                                        Status:<span class="task-status" style="float: right"><i class="blue circle icon"></i>Committed</span>
+                                        Status:<span class="workItem-status" style="float: right"><i
+                                            class="blue circle icon"></i>Committed</span>
                                     </div>
                                 </a>
                             </div>
@@ -139,19 +145,21 @@
                     <div class="row">
                         <div class="column">
                             <div class="ui fluid centered green cards">
-                                <a class="task card">
+                                <a class="workItem card">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
-                                            <span class="task-id">1</span>
-                                            <span class="task-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-id">1</span>
+                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
                                         </div>
                                         <div class="description">
-                                            <img class="ui task avatar image" th:src="@{/images/default.png}"/><span class="task user">Assigned User 1</span>
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
+                                                class="workItem user">Assigned User 1</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
-                                        Status:<span class="task-status" style="float: right"><i class="green circle icon"></i>Done</span>
+                                        Status:<span class="workItem-status" style="float: right"><i
+                                            class="green circle icon"></i>Done</span>
                                     </div>
                                 </a>
                             </div>
@@ -161,11 +169,10 @@
             </div>
         </div>
     </div>
-    <style>
-    </style>
+    <script type="text/javascript" src="/js/student/leader/boards.js"></script>
 </div>
 <div th:fragment="member-content">
-    This is member task board view
+    This is member workItem board view
 </div>
 </body>
 </html>

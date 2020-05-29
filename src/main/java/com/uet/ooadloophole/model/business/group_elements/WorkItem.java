@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Task {
+public class WorkItem {
     @Id
     private String _id;
     private String boardId;
@@ -18,7 +18,7 @@ public class Task {
     @DBRef
     private List<Student> assignedMember;
     @DBRef
-    private List<TaskFile> taskFiles;
+    private List<WorkItemFile> workItemFiles;
     private String status;
 
     public String get_id() {
@@ -77,12 +77,12 @@ public class Task {
         this.assignedMember = assignedMember;
     }
 
-    public List<TaskFile> getTaskFiles() {
-        return taskFiles;
+    public List<WorkItemFile> getWorkItemFiles() {
+        return workItemFiles;
     }
 
-    public void setTaskFiles(List<TaskFile> taskFiles) {
-        this.taskFiles = taskFiles;
+    public void setWorkItemFiles(List<WorkItemFile> workItemFiles) {
+        this.workItemFiles = workItemFiles;
     }
 
     public String getStatus() {

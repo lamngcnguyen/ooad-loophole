@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 
-public class TaskLog {
+public class WorkItemLog {
     @Id
     private String _id;
     private String studentId;
