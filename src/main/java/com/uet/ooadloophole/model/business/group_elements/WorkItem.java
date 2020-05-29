@@ -16,6 +16,8 @@ public class WorkItem {
     private String priority;
     private LocalDateTime assignedDate;
     @DBRef
+    private Student creator;
+    @DBRef
     private List<Student> assignedMember;
     @DBRef
     private List<WorkItemFile> workItemFiles;
@@ -67,6 +69,14 @@ public class WorkItem {
 
     public void setAssignedDate(LocalDateTime assignedDate) {
         this.assignedDate = assignedDate;
+    }
+
+    public Student getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Student creator) {
+        this.creator = creator;
     }
 
     public List<Student> getAssignedMember() {

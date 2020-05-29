@@ -8,5 +8,5 @@ import java.util.List;
 public interface BoardRepository extends MongoRepository<Board, String> {
     Board findBy_id(String _id);
 
-    List<Board> findByGroupId(String groupId);
+    Board findByGroupId(String groupId);
 }
