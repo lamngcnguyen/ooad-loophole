@@ -8,6 +8,7 @@ import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.AssignmentService;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.GradingTemplateService;
 import org.bouncycastle.math.raw.Mod;
@@ -39,6 +40,9 @@ public class TeacherController {
 
     @Autowired
     private GradingTemplateService gradingTemplateService;
+
+    @Autowired
+    private AssignmentService assignmentService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -110,6 +114,21 @@ public class TeacherController {
             modelAndView.addObject("template", gradingTemplateService.getById(templateId));
         } catch (BusinessServiceException e) {
             modelAndView = new ModelAndView("error");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/grading/{assignmentId}", method = RequestMethod.GET)
+    public ModelAndView getGradingView(@PathVariable String assignmentId) {
+        System.out.println("");
+        ModelAndView modelAndView;
+        try {
+            String pageTitle = "Grading";
+            String templateId = assignmentService.getById(assignmentId).getGradingTemplateId();
+            modelAndView = getTeacherView(pageTitle, new BodyFragment("teacher/grading", "body-content-teacher"));
+            modelAndView.addObject("template", gradingTemplateService.getById(templateId));
+        } catch (Exception e) {
+            modelAndView = new ModelAndView(("error"));
         }
         return modelAndView;
     }
