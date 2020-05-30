@@ -12,9 +12,9 @@ import java.util.List;
 public interface RepoFileService {
     RepoFile getById(String id);
 
-    List<RepoFile> getAllByIteration(String iterationId);
+    List<RepoFile> getAllByIteration(String iterationId, String type);
 
-    RepoFile upload(MultipartFile file, String path, String iterationId) throws BusinessServiceException;
+    RepoFile upload(MultipartFile file, String path, String iterationId, String type) throws BusinessServiceException;
 
     Resource download(String fileId);
 
