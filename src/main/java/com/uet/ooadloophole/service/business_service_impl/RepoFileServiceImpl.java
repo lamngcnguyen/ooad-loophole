@@ -38,7 +38,7 @@ public class RepoFileServiceImpl implements RepoFileService {
 
     @Override
     public List<RepoFile> getAllByIteration(String iterationId) {
-        return repoFileRepository.findAllByIterationId(iterationId);
+        return repoFileRepository.findAllByIterationIdAndDeleted(iterationId, false);
     }
 
     @Override
@@ -124,6 +124,6 @@ public class RepoFileServiceImpl implements RepoFileService {
     public RepoFile delete(String id) {
         RepoFile repoFile = getById(id);
         repoFile.setDeleted(true);
-        return repoFile;
+        return repoFileRepository.save(repoFile);
     }
 }

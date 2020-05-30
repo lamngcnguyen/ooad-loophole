@@ -8,6 +8,8 @@ import java.util.List;
 public interface RepoFileRepository extends MongoRepository<RepoFile, String> {
     List<RepoFile> findAllByIterationId(String iterationId);
 
+    List<RepoFile> findAllByIterationIdAndDeleted(String iterationId, boolean deleted);
+
     List<RepoFile> findAllByGroupIdAndFileNameAndPath(String groupId, String fileName, String path);
 
     RepoFile findBy_id(String _id);

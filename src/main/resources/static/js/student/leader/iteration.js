@@ -342,6 +342,29 @@ $('.form.delete-iteration').form({
     },
 });
 
+$('.form.delete-code').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-code');
+        $.api({
+            action: 'delete code',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-code');
+                hideModal('.modal.delete-code');
+                $(`#code_${data.id}`).remove();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-code');
+                $('.form.delete-code').form('add errors', [res]);
+            }
+        });
+    },
+});
+
 function getRepoFile(iterationId) {
     $.api({
         action: 'get repo file',
@@ -351,19 +374,24 @@ function getRepoFile(iterationId) {
             iterationId: iterationId
         },
         onSuccess: function (res, element, xhr) {
-            $('.repo-table').empty();
+            const repoTable = $('#iteration_' + iterationId).find('.repo-file');
+            // repoTable.empty();
             let fileCount = 0;
             xhr.responseJSON.data.forEach(function (file) {
                 const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
                 fileCount++;
                 const fileCell = $('#templates .code-cell').clone();
+                console.log(fileCell);
+                fileCell.prop('id', 'code_' + file._id);
                 fileCell.find('.number').text(fileCount);
                 fileCell.find('.name').text(file.fileName);
                 fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
                 fileCell.find('.delete-file').click(function () {
-                    console.log(file._id);
+                    $('.form.delete-code').form('set value', 'id', file._id);
+                    showModal('.modal.delete-code');
                 });
-                $('.repo-table').append(fileCell);
+                repoTable.append(fileCell);
+                $('#templates table').remove(fileCell);
             })
         }
     })
@@ -372,7 +400,6 @@ function getRepoFile(iterationId) {
 function uploadCode() {
     const file = $('#upload-code').prop('files')[0];
     const iterationId = $('input[name=iterationId]').val();
-    console.log(file.name);
     const fd = new FormData();
     fd.append('file', file, file.name);
     fd.append('path', '');
@@ -384,8 +411,19 @@ function uploadCode() {
         data: fd,
         contentType: false,
         processData: false,
-        onSuccess: function (response) {
-            console.log(response)
+        onSuccess: function (file) {
+            const repoTable = $('#iteration_' + file.iterationId).find('.repo-file');
+            console.log($(repoTable).length);
+            const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+            const fileCell = $('#templates .code-cell').clone();
+            fileCell.find('.number').text($(repoTable).children().length + 1);
+            fileCell.find('.name').text(file.fileName);
+            fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.delete-file').click(function () {
+                $('.form.delete-code').form('set value', 'id', file._id);
+                showModal('.modal.delete-code');
+            });
+            repoTable.append(fileCell);
         },
         onFailure: function (xhr) {
             $('.form').form('add errors', [xhr]);

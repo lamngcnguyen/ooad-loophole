@@ -129,6 +129,24 @@
                         </thead>
                         <tbody class="repo-table"></tbody>
                     </table>
+                    <div class="ui divider"></div>
+                    <input type="file" id="upload-diagram" hidden onchange="uploadCode()">
+                    <a class="ui blue icon labeled button" onclick="$('#upload-diagram').click()">
+                        <i class="code icon"></i>
+                        Submit Diagram
+                    </a>
+                    <table class="ui grey celled table repo-file">
+                        <thead>
+                        <tr>
+                            <th class="one wide">#</th>
+                            <th class="seven wide">Name</th>
+                            <th class="four wide">Timestamp</th>
+
+                            <th class="three wide center aligned"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="repo-table"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -165,6 +183,32 @@
                     Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-iteration')">
+                    <i class="close icon"></i>
+                    No
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal delete-code">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Warning
+        </div>
+        <div class="content">
+            <div class="ui form delete-code">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Do you really want to delete this file?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Yes
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-code')">
                     <i class="close icon"></i>
                     No
                 </div>
