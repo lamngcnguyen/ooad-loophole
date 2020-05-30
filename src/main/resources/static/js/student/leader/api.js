@@ -8,8 +8,13 @@ $.fn.api.settings.api = {
     'edit iteration': '/api/iterations/{id}',
     'delete iteration': '/api/iterations/{id}',
     'get class configs': '/api/classes/{classId}/settings',
-    'upload code': '/api/files/repo',
-    'get repo file': '/api/files/repo/{iterationId}/iteration',
+    'upload code': '/api/files/repo/code',
+    'get code': '/api/files/repo/{iterationId}/iteration/code',
+    'upload diagram': '/api/files/repo/diagram',
+    'get diagram': '/api/files/repo/{iterationId}/iteration/diagram',
+    'upload doc': '/api/files/repo/doc',
+    'get doc': '/api/files/repo/{iterationId}/iteration/doc',
+    'delete file': '/api/files/repo/{id}',
 };
 
 const validationRules = {

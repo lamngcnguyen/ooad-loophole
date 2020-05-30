@@ -9,6 +9,7 @@ public class RepoFile extends UserFile {
     private String iterationId;
     private String classId;
     private String groupId;
+    private String type;
 
     public String get_id() {
         return _id;
@@ -40,5 +41,13 @@ public class RepoFile extends UserFile {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

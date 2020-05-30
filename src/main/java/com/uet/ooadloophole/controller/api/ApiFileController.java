@@ -40,10 +40,10 @@ public class ApiFileController {
     private Gson gson = new Gson();
 
     //    ---------------------- Repo files ----------------------
-    @RequestMapping(value = "/repo", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadRepoFile(@RequestParam("file") MultipartFile file, String path, String iterationId) {
+    @RequestMapping(value = "/repo/{type}", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadRepoFile(@RequestParam("file") MultipartFile file, @PathVariable String type, String path, String iterationId) {
         try {
-            RepoFile repoFile = repoFileService.upload(file, path, iterationId);
+            RepoFile repoFile = repoFileService.upload(file, path, iterationId, type);
             return ResponseEntity.status(HttpStatus.OK).body(repoFile);
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -67,9 +67,9 @@ public class ApiFileController {
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
-    @RequestMapping(value = "/repo/{iterationId}/iteration", method = RequestMethod.GET)
-    public ResponseEntity<String> getAllFiles(@PathVariable String iterationId) {
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getAllByIteration(iterationId))));
+    @RequestMapping(value = "/repo/{iterationId}/iteration/{type}", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllFiles(@PathVariable String iterationId, @PathVariable String type) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getAllByIteration(iterationId, type))));
     }
 
     @RequestMapping(value = "/repo/{id}", method = RequestMethod.DELETE)

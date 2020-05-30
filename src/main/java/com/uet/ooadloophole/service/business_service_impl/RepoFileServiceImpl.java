@@ -37,12 +37,12 @@ public class RepoFileServiceImpl implements RepoFileService {
     }
 
     @Override
-    public List<RepoFile> getAllByIteration(String iterationId) {
-        return repoFileRepository.findAllByIterationId(iterationId);
+    public List<RepoFile> getAllByIteration(String iterationId, String type) {
+        return repoFileRepository.findAllByIterationIdAndDeletedAndType(iterationId, false, type);
     }
 
     @Override
-    public RepoFile upload(MultipartFile file, String path, String iterationId) throws BusinessServiceException {
+    public RepoFile upload(MultipartFile file, String path, String iterationId, String type) throws BusinessServiceException {
         try {
             String saveLocation;
             String userId = secureUserService.getCurrentUser().get_id();
@@ -51,9 +51,9 @@ public class RepoFileServiceImpl implements RepoFileService {
             String classId = currentStudent.getClassId();
 
             if (path == null) {
-                saveLocation = Constants.REPO_FOLDER + classId + "/" + groupId;
+                saveLocation = Constants.REPO_FOLDER + classId + "/" + groupId + "/" + type;
             } else {
-                saveLocation = Constants.REPO_FOLDER + classId + "/" + groupId + "/" + path;
+                saveLocation = Constants.REPO_FOLDER + classId + "/" + groupId + "/" + type + "/" + path;
             }
             if (checkExists(file.getOriginalFilename(), groupId, saveLocation)) {
                 throw new BusinessServiceException("This file name is already exists");
@@ -62,6 +62,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             RepoFile repoFile = new RepoFile();
             repoFile.setFileName(userFile.getFileName());
             repoFile.setFileExtension(userFile.getFileExtension());
+            repoFile.setType(type);
             repoFile.setUploaderId(userFile.getUploaderId());
             repoFile.setTimeStamp(userFile.getTimeStamp());
             repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
@@ -124,6 +125,6 @@ public class RepoFileServiceImpl implements RepoFileService {
     public RepoFile delete(String id) {
         RepoFile repoFile = getById(id);
         repoFile.setDeleted(true);
-        return repoFile;
+        return repoFileRepository.save(repoFile);
     }
 }

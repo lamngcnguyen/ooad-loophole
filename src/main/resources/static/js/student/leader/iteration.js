@@ -34,6 +34,8 @@ function showIteration(id) {
     $('.form.delete-iteration').form('set value', 'id', id);
     $('input[name=iterationId]').val(id);
     getRepoFile(id);
+    getDiagramFile(id);
+    getDocumentationFile(id);
 }
 
 btnNewIteration.click(function () {
@@ -342,28 +344,117 @@ $('.form.delete-iteration').form({
     },
 });
 
+$('.form.delete-file').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-file');
+        $.api({
+            action: 'delete file',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-file');
+                hideModal('.modal.delete-file');
+                $(`#file_${data.id}`).remove();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-file');
+                $('.form.delete-file').form('add errors', [res]);
+            }
+        });
+    },
+});
+
 function getRepoFile(iterationId) {
     $.api({
-        action: 'get repo file',
+        action: 'get code',
         on: 'now',
         method: 'get',
         urlData: {
             iterationId: iterationId
         },
         onSuccess: function (res, element, xhr) {
-            $('.repo-table').empty();
+            const repoTable = $('#iteration_' + iterationId).find('.repo-table');
+            // repoTable.empty();
             let fileCount = 0;
             xhr.responseJSON.data.forEach(function (file) {
                 const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
                 fileCount++;
                 const fileCell = $('#templates .code-cell').clone();
+                fileCell.prop('id', 'file_' + file._id);
                 fileCell.find('.number').text(fileCount);
                 fileCell.find('.name').text(file.fileName);
                 fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
                 fileCell.find('.delete-file').click(function () {
-                    console.log(file._id);
+                    $('.form.delete-file').form('set value', 'id', file._id);
+                    showModal('.modal.delete-file');
                 });
-                $('.repo-table').append(fileCell);
+                repoTable.append(fileCell);
+                $('#templates table').remove(fileCell);
+            })
+        }
+    })
+}
+
+function getDocumentationFile(iterationId) {
+    $.api({
+        action: 'get doc',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            iterationId: iterationId
+        },
+        onSuccess: function (res, element, xhr) {
+            const docTable = $('#iteration_' + iterationId).find('.doc-table');
+            // repoTable.empty();
+            let fileCount = 0;
+            xhr.responseJSON.data.forEach(function (file) {
+                const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+                fileCount++;
+                const fileCell = $('#templates .code-cell').clone();
+                fileCell.prop('id', 'file_' + file._id);
+                fileCell.find('.number').text(fileCount);
+                fileCell.find('.name').text(file.fileName);
+                fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+                fileCell.find('.delete-file').click(function () {
+                    $('.form.delete-file').form('set value', 'id', file._id);
+                    showModal('.modal.delete-file');
+                });
+                docTable.append(fileCell);
+                $('#templates table').remove(fileCell);
+            })
+        }
+    })
+}
+
+function getDiagramFile(iterationId) {
+    $.api({
+        action: 'get diagram',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            iterationId: iterationId
+        },
+        onSuccess: function (res, element, xhr) {
+            const diagramTable = $('#iteration_' + iterationId).find('.diagram-table');
+            // repoTable.empty();
+            let fileCount = 0;
+            xhr.responseJSON.data.forEach(function (file) {
+                const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+                fileCount++;
+                const fileCell = $('#templates .code-cell').clone();
+                fileCell.prop('id', 'file_' + file._id);
+                fileCell.find('.number').text(fileCount);
+                fileCell.find('.name').text(file.fileName);
+                fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+                fileCell.find('.delete-file').click(function () {
+                    $('.form.delete-file').form('set value', 'id', file._id);
+                    showModal('.modal.delete-file');
+                });
+                diagramTable.append(fileCell);
+                $('#templates table').remove(fileCell);
             })
         }
     })
@@ -372,7 +463,6 @@ function getRepoFile(iterationId) {
 function uploadCode() {
     const file = $('#upload-code').prop('files')[0];
     const iterationId = $('input[name=iterationId]').val();
-    console.log(file.name);
     const fd = new FormData();
     fd.append('file', file, file.name);
     fd.append('path', '');
@@ -384,8 +474,90 @@ function uploadCode() {
         data: fd,
         contentType: false,
         processData: false,
-        onSuccess: function (response) {
-            console.log(response)
+        onSuccess: function (file) {
+            const repoTable = $('#iteration_' + file.iterationId).find('.repo-table');
+            console.log($(repoTable).length);
+            const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+            const fileCell = $('#templates .code-cell').clone();
+            fileCell.prop('id', 'file_' + file._id);
+            fileCell.find('.number').text($(repoTable).children().length + 1);
+            fileCell.find('.name').text(file.fileName);
+            fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.delete-file').click(function () {
+                $('.form.delete-file').form('set value', 'id', file._id);
+                showModal('.modal.delete-file');
+            });
+            repoTable.append(fileCell);
+        },
+        onFailure: function (xhr) {
+            $('.form').form('add errors', [xhr]);
+        }
+    });
+}
+
+function uploadDoc() {
+    const file = $('#upload-doc').prop('files')[0];
+    const iterationId = $('input[name=iterationId]').val();
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('path', '');
+    fd.append('iterationId', iterationId);
+    $.api({
+        action: 'upload doc',
+        on: 'now',
+        method: 'POST',
+        data: fd,
+        contentType: false,
+        processData: false,
+        onSuccess: function (file) {
+            const docTable = $('#iteration_' + file.iterationId).find('.doc-table');
+            console.log($(docTable).length);
+            const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+            const fileCell = $('#templates .code-cell').clone();
+            fileCell.prop('id', 'file_' + file._id);
+            fileCell.find('.number').text($(docTable).children().length + 1);
+            fileCell.find('.name').text(file.fileName);
+            fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.delete-file').click(function () {
+                $('.form.delete-file').form('set value', 'id', file._id);
+                showModal('.modal.delete-file');
+            });
+            docTable.append(fileCell);
+        },
+        onFailure: function (xhr) {
+            $('.form').form('add errors', [xhr]);
+        }
+    });
+}
+
+function uploadDiagram() {
+    const file = $('#upload-diagram').prop('files')[0];
+    const iterationId = $('input[name=iterationId]').val();
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('path', '');
+    fd.append('iterationId', iterationId);
+    $.api({
+        action: 'upload diagram',
+        on: 'now',
+        method: 'POST',
+        data: fd,
+        contentType: false,
+        processData: false,
+        onSuccess: function (file) {
+            const diagramTable = $('#iteration_' + file.iterationId).find('.diagram-table');
+            console.log($(diagramTable).length);
+            const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+            const fileCell = $('#templates .code-cell').clone();
+            fileCell.prop('id', 'file_' + file._id);
+            fileCell.find('.number').text($(diagramTable).children().length + 1);
+            fileCell.find('.name').text(file.fileName);
+            fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.delete-file').click(function () {
+                $('.form.delete-file').form('set value', 'id', file._id);
+                showModal('.modal.delete-file');
+            });
+            diagramTable.append(fileCell);
         },
         onFailure: function (xhr) {
             $('.form').form('add errors', [xhr]);
