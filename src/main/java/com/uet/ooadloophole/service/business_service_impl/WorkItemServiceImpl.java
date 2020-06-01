@@ -14,6 +14,10 @@ import com.uet.ooadloophole.service.business_service.WorkItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class WorkItemServiceImpl implements WorkItemService {
     @Autowired
@@ -28,13 +32,18 @@ public class WorkItemServiceImpl implements WorkItemService {
     private GroupRepository groupRepository;
 
     @Override
-    public Board getBoardByGroup(String groupId) {
-        return boardRepository.findByGroupId(groupId);
+    public List<WorkItem> getByGroupAndStatus(String groupId, String status) {
+        try {
+            Board board = getBoardByGroup(groupId);
+            return workItemRepository.findAllByBoardIdAndStatus(board.get_id(), status);
+        } catch (NullPointerException e) {
+            return new ArrayList<>();
+        }
     }
 
     @Override
-    public Board createBoard(Board board) {
-        return boardRepository.save(board);
+    public Board getBoardByGroup(String groupId) {
+        return boardRepository.findByGroupId(groupId);
     }
 
     @Override
@@ -45,6 +54,13 @@ public class WorkItemServiceImpl implements WorkItemService {
         WorkItem workItem = new WorkItem();
         workItem.setName(name);
         workItem.setCreator(creator);
+        if (board == null) {
+            Board newBoard = new Board();
+            newBoard.setGroupId(group.get_id());
+            board = boardRepository.save(newBoard);
+        }
+        workItem.setAssignedDate(LocalDateTime.now());
+        workItem.setStatus("New");
         workItem.setBoardId(board.get_id());
         return workItemRepository.save(workItem);
     }

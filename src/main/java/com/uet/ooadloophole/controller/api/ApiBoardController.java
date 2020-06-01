@@ -1,6 +1,8 @@
 package com.uet.ooadloophole.controller.api;
 
+import com.uet.ooadloophole.controller.interface_model.interfaces.IWorkItem;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.WorkItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class ApiBoardController {
     @Autowired
     private WorkItemService workItemService;
+    @Autowired
+    private ConverterService converterService;
 
     @RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
     public ResponseEntity<WorkItem> getItem(@PathVariable String id) {
@@ -29,8 +33,14 @@ public class ApiBoardController {
     }
 
     @RequestMapping(value = "/item/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<WorkItem> editItem(@PathVariable String id, @RequestBody WorkItem workItem) {
-        return ResponseEntity.status(HttpStatus.OK).body(workItemService.edit(id, workItem));
+    public ResponseEntity<Object> editItem(@PathVariable String id, @RequestBody IWorkItem iWorkItem) {
+        try {
+            WorkItem workItem = converterService.convertWorkItemInterface(iWorkItem);
+            return ResponseEntity.status(HttpStatus.OK).body(workItemService.edit(id, workItem));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
 
     @RequestMapping(value = "/item/{id}", method = RequestMethod.DELETE)

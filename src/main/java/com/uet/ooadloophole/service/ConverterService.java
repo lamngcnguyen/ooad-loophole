@@ -25,10 +25,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Converts Interface models to business models and business models to DTO models
@@ -283,5 +280,21 @@ public class ConverterService {
         dtoDiscipline.setDescription(discipline.getDescription());
         dtoDiscipline.setDisciplineFileTypeList(disciplineFileTypes);
         return dtoDiscipline;
+    }
+
+    public WorkItem convertWorkItemInterface(IWorkItem iWorkItem) throws BusinessServiceException {
+        List<Student> assignedMemberList = new ArrayList<>();
+        WorkItem workItem = new WorkItem();
+        workItem.setBoardId(iWorkItem.getBoardId());
+        workItem.setName(iWorkItem.getName());
+        workItem.setDescription(iWorkItem.getDescription());
+        workItem.setPriority(iWorkItem.getPriority());
+        for (String memberId : iWorkItem.getAssignedMember()) {
+            Student member = studentService.getById(memberId);
+            assignedMemberList.add(member);
+        }
+        workItem.setAssignedMember(assignedMemberList);
+        workItem.setStatus(iWorkItem.getStatus());
+        return workItem;
     }
 }

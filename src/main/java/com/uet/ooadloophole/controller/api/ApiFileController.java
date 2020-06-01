@@ -63,7 +63,7 @@ public class ApiFileController {
     @RequestMapping(value = "/repo/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadRepoFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = repoFileService.download(id);
-        LocalDateTime timeStamp = repoFileService.getById(id).getTimeStamp();
+        String timeStamp = repoFileService.getById(id).getFileTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
@@ -127,7 +127,7 @@ public class ApiFileController {
     @RequestMapping(value = "/spec/topic/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = topicSpecFileService.download(id);
-        LocalDateTime timeStamp = topicSpecFileService.findById(id).getTimeStamp();
+        String timeStamp = topicSpecFileService.findById(id).getFileTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
@@ -208,11 +208,11 @@ public class ApiFileController {
     @RequestMapping(value = "/spec/req/{id}", method = RequestMethod.GET)
     public ResponseEntity<Resource> findReqSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = requirementFileService.download(id);
-        LocalDateTime timeStamp = requirementFileService.findById(id).getTimeStamp();
+        String timeStamp = requirementFileService.findById(id).getFileTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
-    private ResponseEntity<Resource> getResourceResponseEntity(HttpServletRequest request, Resource resource, LocalDateTime timeStamp) {
+    private ResponseEntity<Resource> getResourceResponseEntity(HttpServletRequest request, Resource resource, String timeStamp) {
         String contentType = null;
         String fileName = Objects.requireNonNull(resource.getFilename()).replace("_" + timeStamp, "");
         try {

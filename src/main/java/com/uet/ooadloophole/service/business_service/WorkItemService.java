@@ -5,12 +5,13 @@ import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface WorkItemService {
+    List<WorkItem> getByGroupAndStatus(String groupId, String status);
 
     Board getBoardByGroup(String groupId);
-
-    Board createBoard(Board board);
 
     WorkItem createTask(String name) throws BusinessServiceException;
 

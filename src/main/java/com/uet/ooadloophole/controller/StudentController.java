@@ -4,6 +4,7 @@ import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
 import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.model.business.group_elements.Request;
+import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.MasterPageService;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/student")
@@ -35,7 +37,7 @@ public class StudentController {
     @Autowired
     private GroupService groupService;
     @Autowired
-    private IterationService iterationService;
+    private WorkItemService workItemService;
     @Autowired
     private ClassService classService;
 
@@ -127,13 +129,33 @@ public class StudentController {
 
     @RequestMapping(value = "/boards", method = RequestMethod.GET)
     public ModelAndView getBoardsView() {
-        String pageTitle = "Boards";
-        return getStudentView(pageTitle, new BodyFragment("student/boards", "content"));
+        ModelAndView modelAndView;
+        try {
+            String pageTitle = "Boards";
+            Student student = studentService.getByUserId(secureUserService.getCurrentUser().get_id());
+            List<WorkItem> newItems = workItemService.getByGroupAndStatus(student.getGroupId(), "New");
+            List<WorkItem> approvedItems = workItemService.getByGroupAndStatus(student.getGroupId(), "Approved");
+            List<WorkItem> committedItems = workItemService.getByGroupAndStatus(student.getGroupId(), "Committed");
+            List<WorkItem> domeItems = workItemService.getByGroupAndStatus(student.getGroupId(), "Done");
+            modelAndView = getStudentView(pageTitle, new BodyFragment("student/boards", "content"));
+            modelAndView.addObject("newItems", newItems);
+            modelAndView.addObject("approvedItems", approvedItems);
+            modelAndView.addObject("committedItems", committedItems);
+            modelAndView.addObject("doneItems", domeItems);
+            newItems.forEach(System.out::println);
+            return modelAndView;
+        } catch (BusinessServiceException e) {
+            modelAndView = new ModelAndView("error");
+            return modelAndView;
+        }
     }
 
-    @RequestMapping(value = "/work-item", method = RequestMethod.GET)
-    public ModelAndView getWorkItemView() {
-        return getStudentView("Work Item", new BodyFragment("student/work-item", "content"));
+    @RequestMapping(value = "/work-item/{id}", method = RequestMethod.GET)
+    public ModelAndView getWorkItemView(@PathVariable String id) {
+        WorkItem workItem = workItemService.getById(id);
+        ModelAndView modelAndView = getStudentView("Work Item", new BodyFragment("student/work-item", "content"));
+        modelAndView.addObject("workItem", workItem);
+        return modelAndView;
     }
 
     private ModelAndView getStudentView(String pageTitle, BodyFragment bodyFragment) {

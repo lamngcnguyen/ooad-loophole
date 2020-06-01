@@ -80,7 +80,7 @@ public class RepoFileServiceImpl implements RepoFileService {
     public Resource download(String fileId) {
         RepoFile repoFile = getById(fileId);
         String fileName = converterService.formatFileName(repoFile.getFileName(), repoFile.getFileTimeStamp(), repoFile.getFileExtension());
-        String path = Constants.REPO_FOLDER + repoFile.getClassId() + "/" + repoFile.getGroupId() + "/" + repoFile.getPath();
+        String path = Constants.REPO_FOLDER + repoFile.getClassId() + "/" + repoFile.getGroupId() + "/" + repoFile.getType() + "/" + repoFile.getPath();
         return fileService.loadFileAsResource(fileName, path);
     }
 

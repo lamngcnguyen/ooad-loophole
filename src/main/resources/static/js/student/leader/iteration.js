@@ -26,7 +26,8 @@ function getClassConfigs() {
     })
 }
 
-function showIteration(id) {
+//Override iteration click event to load first iteration details
+function showIterationDetails(id) {
     $('.item').removeClass('active');
     $(`#item_${id}`).addClass('active');
     $('.segment.iteration').hide();
@@ -36,6 +37,12 @@ function showIteration(id) {
     getRepoFile(id);
     getDiagramFile(id);
     getDocumentationFile(id);
+}
+
+function showIteration(id) {
+    if (!$('#iteration_' + id).is(':visible')) {
+        showIterationDetails(id)
+    }
 }
 
 btnNewIteration.click(function () {
@@ -313,8 +320,8 @@ function loadIterations() {
                     navMenu.append(iterationItem);
                 }
             })
-            const firstElement = navMenu.children().get(0);
-            firstElement.click();
+            //Override iteration click event
+            showIterationDetails(xhr.responseJSON.data[0]._id);
         }
     })
 }
@@ -377,7 +384,7 @@ function getRepoFile(iterationId) {
         },
         onSuccess: function (res, element, xhr) {
             const repoTable = $('#iteration_' + iterationId).find('.repo-table');
-            // repoTable.empty();
+            repoTable.empty();
             let fileCount = 0;
             xhr.responseJSON.data.forEach(function (file) {
                 const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
@@ -387,6 +394,8 @@ function getRepoFile(iterationId) {
                 fileCell.find('.number').text(fileCount);
                 fileCell.find('.name').text(file.fileName);
                 fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+                fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
+                fileCell.find('.preview-file').remove();
                 fileCell.find('.delete-file').click(function () {
                     $('.form.delete-file').form('set value', 'id', file._id);
                     showModal('.modal.delete-file');
@@ -408,7 +417,7 @@ function getDocumentationFile(iterationId) {
         },
         onSuccess: function (res, element, xhr) {
             const docTable = $('#iteration_' + iterationId).find('.doc-table');
-            // repoTable.empty();
+            docTable.empty();
             let fileCount = 0;
             xhr.responseJSON.data.forEach(function (file) {
                 const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
@@ -418,6 +427,8 @@ function getDocumentationFile(iterationId) {
                 fileCell.find('.number').text(fileCount);
                 fileCell.find('.name').text(file.fileName);
                 fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+                fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
+                fileCell.find('.preview-file').remove();
                 fileCell.find('.delete-file').click(function () {
                     $('.form.delete-file').form('set value', 'id', file._id);
                     showModal('.modal.delete-file');
@@ -439,7 +450,7 @@ function getDiagramFile(iterationId) {
         },
         onSuccess: function (res, element, xhr) {
             const diagramTable = $('#iteration_' + iterationId).find('.diagram-table');
-            // repoTable.empty();
+            diagramTable.empty();
             let fileCount = 0;
             xhr.responseJSON.data.forEach(function (file) {
                 const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
@@ -449,6 +460,7 @@ function getDiagramFile(iterationId) {
                 fileCell.find('.number').text(fileCount);
                 fileCell.find('.name').text(file.fileName);
                 fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+                fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
                 fileCell.find('.delete-file').click(function () {
                     $('.form.delete-file').form('set value', 'id', file._id);
                     showModal('.modal.delete-file');
@@ -483,6 +495,8 @@ function uploadCode() {
             fileCell.find('.number').text($(repoTable).children().length + 1);
             fileCell.find('.name').text(file.fileName);
             fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
+            fileCell.find('.preview-file').remove();
             fileCell.find('.delete-file').click(function () {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');
@@ -518,6 +532,8 @@ function uploadDoc() {
             fileCell.find('.number').text($(docTable).children().length + 1);
             fileCell.find('.name').text(file.fileName);
             fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
+            fileCell.find('.preview-file').remove();
             fileCell.find('.delete-file').click(function () {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');
@@ -553,6 +569,7 @@ function uploadDiagram() {
             fileCell.find('.number').text($(diagramTable).children().length + 1);
             fileCell.find('.name').text(file.fileName);
             fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
             fileCell.find('.delete-file').click(function () {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');

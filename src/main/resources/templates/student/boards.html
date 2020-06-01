@@ -37,16 +37,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a class="workItem card" href="/student/work-item">
+                                <a class="workItem card" th:href="@{'/student/work-item/' + ${newItem.get_id()}}"
+                                   th:each="newItem: ${newItems}">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
-                                            <span class="workItem-id">1</span>
-                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-auto-increment">1</span>
+                                            <span class="workItem-title" style="font-weight: normal"
+                                                  th:text="${newItem.getName()}">Task title</span>
                                         </div>
-                                        <div class="description">
-                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
-                                                class="workItem user">Assigned User 1</span>
+                                        <div class="description" style="margin-top: 5px"
+                                             th:unless="${newItem.getAssignedMember() == null}"
+                                             th:each="member: ${newItem.getAssignedMember()}">
+                                            <img class="ui workItem avatar image"
+                                                 th:src="@{'/api/users/avatar/' + ${member.getUserId()}}"/>
+                                            <span class="workItem user" th:text="${member.getFullName()}">Assigned User 1</span>
+                                        </div>
+                                        <div class="description" th:if="${newItem.getAssignedMember() == null}">
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/>
+                                            <span class="workItem user">Unassigned</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
@@ -73,16 +82,25 @@
                     <div class="row">
                         <div class="column">
                             <div class="ui orange fluid centered cards">
-                                <a class="workItem card">
+                                <a class="workItem card" th:href="@{'/student/work-item/' + ${approvedItem.get_id()}}"
+                                   th:each="approvedItem: ${approvedItems}">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
                                             <span class="workItem-id">1</span>
-                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-title" style="font-weight: normal"
+                                                  th:text="${approvedItem.getName()}">Task title</span>
                                         </div>
-                                        <div class="description">
-                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
-                                                class="workItem user">Assigned User 1</span>
+                                        <div class="description" style="margin-top: 5px"
+                                             th:unless="${approvedItem.getAssignedMember() == null}"
+                                             th:each="member: ${approvedItem.getAssignedMember()}">
+                                            <img class="ui workItem avatar image"
+                                                 th:src="@{'/api/users/avatar/' + ${member.getUserId()}}"/>
+                                            <span class="workItem user" th:text="${member.getFullName()}">Assigned User 1</span>
+                                        </div>
+                                        <div class="description" th:if="${approvedItem.getAssignedMember() == null}">
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/>
+                                            <span class="workItem user">Unassigned</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
@@ -109,16 +127,25 @@
                     <div class="row">
                         <div class="column">
                             <div class="ui blue fluid centered cards">
-                                <a class="workItem card">
+                                <a class="workItem card" th:href="@{'/student/work-item/' + ${committedItem.get_id()}}"
+                                   th:each="committedItem: ${committedItems}">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
                                             <span class="workItem-id">1</span>
-                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-title" style="font-weight: normal"
+                                                  th:text="${committedItem.getName()}">Task title</span>
                                         </div>
-                                        <div class="description">
-                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
-                                                class="workItem user">Assigned User 1</span>
+                                        <div class="description" style="margin-top: 5px"
+                                             th:unless="${committedItem.getAssignedMember() == null}"
+                                             th:each="member: ${committedItem.getAssignedMember()}">
+                                            <img class="ui workItem avatar image"
+                                                 th:src="@{'/api/users/avatar/' + ${member.getUserId()}}"/>
+                                            <span class="workItem user" th:text="${member.getFullName()}">Assigned User 1</span>
+                                        </div>
+                                        <div class="description" th:if="${committedItem.getAssignedMember() == null}">
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/>
+                                            <span class="workItem user">Unassigned</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
@@ -145,16 +172,25 @@
                     <div class="row">
                         <div class="column">
                             <div class="ui fluid centered green cards">
-                                <a class="workItem card">
+                                <a class="workItem card" th:href="@{'/student/work-item/' + ${doneItem.get_id()}}"
+                                   th:each="doneItem: ${doneItems}">
                                     <div class="content">
                                         <div class="header">
                                             <i class="teal tasks icon"></i>
                                             <span class="workItem-id">1</span>
-                                            <span class="workItem-title" style="font-weight: normal">Task title</span>
+                                            <span class="workItem-title" style="font-weight: normal"
+                                                  th:text="${doneItem.getName()}">Task title</span>
                                         </div>
-                                        <div class="description">
-                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/><span
-                                                class="workItem user">Assigned User 1</span>
+                                        <div class="description" style="margin-top: 5px"
+                                             th:unless="${doneItem.getAssignedMember() == null}"
+                                             th:each="member: ${doneItem.getAssignedMember()}">
+                                            <img class="ui workItem avatar image"
+                                                 th:src="@{'/api/users/avatar/' + ${member.getUserId()}}"/>
+                                            <span class="workItem user" th:text="${member.getFullName()}">Assigned User 1</span>
+                                        </div>
+                                        <div class="description" th:if="${doneItem.getAssignedMember() == null}">
+                                            <img class="ui workItem avatar image" th:src="@{/images/default.png}"/>
+                                            <span class="workItem user">Unassigned</span>
                                         </div>
                                     </div>
                                     <div class="extra content">

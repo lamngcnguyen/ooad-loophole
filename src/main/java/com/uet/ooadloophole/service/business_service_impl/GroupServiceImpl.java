@@ -1,7 +1,9 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
+import com.uet.ooadloophole.database.group_repositories.BoardRepository;
 import com.uet.ooadloophole.database.group_repositories.GroupRepository;
+import com.uet.ooadloophole.model.business.group_elements.Board;
 import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
@@ -14,6 +16,9 @@ import java.util.List;
 
 @Service
 public class GroupServiceImpl implements GroupService {
+    @Autowired
+    private BoardRepository boardRepository;
+
     @Autowired
     private GroupRepository groupRepository;
 
@@ -53,7 +58,9 @@ public class GroupServiceImpl implements GroupService {
             if (groupNameExists(group.getGroupName())) {
                 throw new BusinessServiceException("Group name already exists");
             }
-            groupRepository.save(group);
+            Board board = new Board();
+            board.setGroupId(groupRepository.save(group).get_id());
+            boardRepository.save(board);
             userService.assignRoles(group.getLeader().getUserId(), new String[]{Constants.ROLE_LEADER, Constants.ROLE_MEMBER});
             studentService.assignGroup(group.getLeader().get_id(), group.get_id());
             return group;
