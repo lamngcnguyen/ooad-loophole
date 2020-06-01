@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="body-content-teacher" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large black label" ><i class="calculator icon"></i><span th:text="${template.getGradingTemplateName()}"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="column">
+            <div class="criteria" th:each="criteria: ${template.getCriteria()}">
+                <span th:text="a"></span>
+                <div class="ui slider" id="slider-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('.ui.slider')
+            .slider()
+        ;
+    </script>
+</div>
+</body>
+</html>

@@ -10,6 +10,7 @@ public class Assignment {
     private String name;
     private String classId;
     private String description;
+    private String gradingTemplateId;
     private LocalDate deadline;
 
     public String get_id() {
@@ -42,6 +43,14 @@ public class Assignment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getGradingTemplateId() {
+        return gradingTemplateId;
+    }
+
+    public void setGradingTemplateId(String gradingTemplateId) {
+        this.gradingTemplateId = gradingTemplateId;
     }
 
     public LocalDate getDeadline() {

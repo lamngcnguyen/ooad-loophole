@@ -44,8 +44,7 @@ public class GradingTemplateServiceImpl implements GradingTemplateService {
     @Override
     public GradingTemplate create(GradingTemplate gradingTemplate) {
         gradingTemplate.setTimestamp(LocalDateTime.now());
-        GradingTemplate newGradingTemplate = gradingTemplateRepository.save(gradingTemplate);
-        return gradingTemplate;
+        return gradingTemplateRepository.save(gradingTemplate);
     }
 
 
