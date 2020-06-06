@@ -181,9 +181,16 @@ function loadAssignment(id) {
             id: id,
         },
         onSuccess: function (res, element, xhr) {
+            const deadline = new Date(res.deadline);
             $('.segment.assignment .assignment-name').text(res.name);
-            $('.segment.assignment .deadline').text(new Date(res.deadline).toLocaleDateString('en-GB'));
+            $('.segment.assignment .deadline').text(deadline.toLocaleDateString('en-GB'));
             $('.segment.assignment .detail-text').text(res.description);
+            if (new Date() <= deadline) {
+                $('.segment.assignment .show-results').addClass('disabled');
+            } else {
+                $('.segment.assignment .show-results').removeClass('disabled');
+                $('.segment.assignment .show-results').prop('href', `/teacher/assignment/${res._id}/results`);
+            }
             $('.form.edit-assignment').form('set values', {
                 id: res._id,
                 name: res.name,

@@ -1,5 +1,6 @@
 package com.uet.ooadloophole.model.business.group_elements;
 
+import com.uet.ooadloophole.model.business.rup_elements.Iteration;
 import com.uet.ooadloophole.model.business.system_elements.Student;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -21,6 +22,8 @@ public class WorkItem {
     private List<Student> assignedMember;
     @DBRef
     private List<WorkItemFile> workItemFiles;
+    @DBRef
+    private Iteration iteration;
     private String status;
 
     public String get_id() {
@@ -93,6 +96,14 @@ public class WorkItem {
 
     public void setWorkItemFiles(List<WorkItemFile> workItemFiles) {
         this.workItemFiles = workItemFiles;
+    }
+
+    public Iteration getIteration() {
+        return iteration;
+    }
+
+    public void setIteration(Iteration iteration) {
+        this.iteration = iteration;
     }
 
     public String getStatus() {

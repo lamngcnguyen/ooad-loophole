@@ -228,13 +228,18 @@
                             <div class="ui large fluid header">
                                 <span class="assignment-name"></span>
                                 <div class="ui right floated icon buttons" style="margin: inherit">
+                                    <a class="ui basic icon green button show-results"
+                                       data-tooltip="View assignment results">
+                                        <i class="poll icon"></i>
+                                    </a>
                                     <button class="ui basic icon blue button edit-assignment" type="button"
-                                            data-tooltip="Chỉnh sửa thông tin"
+                                            data-tooltip="Edit assignment"
                                             onclick="showModal('.modal.edit-assignment')">
                                         <i class="pencil icon"></i>
                                     </button>
                                     <button class="ui basic icon red button delete-assignment" type="button"
-                                            data-tooltip="Xoá bài tập" onclick="showModal('.modal.delete-assignment')">
+                                            data-tooltip="Delete assignment"
+                                            onclick="showModal('.modal.delete-assignment')">
                                         <i class="trash icon"></i>
                                     </button>
                                 </div>

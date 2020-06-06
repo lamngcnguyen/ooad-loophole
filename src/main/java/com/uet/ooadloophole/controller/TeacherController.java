@@ -2,6 +2,9 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.controller.interface_model.dto.DTOGradingTemplate;
+import com.uet.ooadloophole.model.business.class_elements.Assignment;
+import com.uet.ooadloophole.model.business.group_elements.Group;
+import com.uet.ooadloophole.model.business.group_elements.RepoFile;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
@@ -10,6 +13,7 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import com.uet.ooadloophole.service.business_service.AssignmentService;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.GradingTemplateService;
+import com.uet.ooadloophole.service.business_service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -26,21 +30,18 @@ import java.util.stream.Collectors;
 public class TeacherController {
     @Autowired
     private SecureUserService secureUserService;
-
     @Autowired
     private MasterPageService masterPageService;
-
     @Autowired
     private ConverterService converterService;
-
     @Autowired
     private ClassService classService;
-
     @Autowired
     private GradingTemplateService gradingTemplateService;
-
     @Autowired
     private AssignmentService assignmentService;
+    @Autowired
+    private GroupService groupService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -116,6 +117,17 @@ public class TeacherController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/assignment/{assignmentId}/results", method = RequestMethod.GET)
+    public ModelAndView getAssignmentResult(@PathVariable String assignmentId) {
+        Assignment assignment = assignmentService.getById(assignmentId);
+        List<Group> groups = groupService.getAllByClassId(assignment.getClassId());
+        String pageTitle = "Assignment " + assignment.getName() + " results";
+        ModelAndView modelAndView = getTeacherView(pageTitle, new BodyFragment("teacher/assignment-results", "body-content"));
+        modelAndView.addObject("groups", groups);
+        modelAndView.addObject("assignment", assignment);
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/grading/{assignmentId}", method = RequestMethod.GET)
     public ModelAndView getGradingView(@PathVariable String assignmentId) {
         ModelAndView modelAndView;
@@ -137,7 +149,7 @@ public class TeacherController {
             if (currentUser.hasRole("teacher")) {
                 modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
             } else {
-                modelAndView = new ModelAndView("unauthorized");
+                modelAndView = new ModelAndView("forbidden");
             }
         } catch (BusinessServiceException e) {
             modelAndView = new ModelAndView("error");

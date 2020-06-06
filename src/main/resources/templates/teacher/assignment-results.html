@@ -6,7 +6,54 @@
 </head>
 <body>
 <div th:fragment="body-content" class="ui stackable grid">
-
+    <input type="hidden" name="assignmentId" th:value="${assignment.get_id()}">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large blue label">
+                    <i class="file alternate icon"></i>
+                    Assignment "<span th:text="${assignment.getName()}"></span>" Results
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui segment">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="four wide column">
+                            <div class="ui vertical fluid tabular menu" style="min-height: 50vh">
+                                <a class="assignment item" th:each="assignment: ${assignments}"
+                                   th:id="${assignment.get_id()}"
+                                   th:text="${assignment.getName()}"></a>
+                            </div>
+                        </div>
+                        <!--content go here-->
+                        <div class="twelve wide stretched column" id="segmentContainer">
+                            <div class="ui tab segment assignment hidden active" th:each="assignment: ${assignments}"
+                                 th:id="${assignment.get_id()}" style="display: none; margin-top: 0">
+                                <div class="ui large fluid header">
+                                    <span class="assignment-name" th:text="${assignment.getName()}"></span>
+                                </div>
+                                <div class="ui divider" style="margin: 0 !important;"></div>
+                                <div class="ui small header">
+                                <span class="ui red text">
+                                    <i class="red stopwatch icon" style="margin: 0 !important;"></i>
+                                    Deadline:
+                                </span>
+                                    <span th:text="${assignment.getDeadline()}"></span>
+                                </div>
+                                <div class="content">
+                                    <span th:text="${assignment.getDescription()}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
