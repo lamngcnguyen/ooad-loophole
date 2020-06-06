@@ -22,38 +22,32 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getAdminHome() {
-        String pageTitle = "Quản trị";
+        String pageTitle = "Admin";
         return getAdminPage(pageTitle, new BodyFragment("admin/home", "body-content"));
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ModelAndView getUserManagementView() {
-        String pageTitle = "Quản lý người dùng";
+        String pageTitle = "Users Management";
         return getAdminPage(pageTitle, new BodyFragment("admin/user", "body-content"));
     }
 
     @RequestMapping(value = "/class", method = RequestMethod.GET)
     public ModelAndView getClassManagementView() {
-        String pageTitle = "Quản lý lớp học";
+        String pageTitle = "Classes Management";
         return getAdminPage(pageTitle, new BodyFragment("admin/class", "body-content"));
     }
 
     @RequestMapping(value = "/site-config", method = RequestMethod.GET)
     public ModelAndView getSiteConfigView() {
-        String pageTitle = "Thiết lập hệ thống";
+        String pageTitle = "Site Configuration";
         return getAdminPage(pageTitle, new BodyFragment("admin/site-config", "body-content"));
     }
 
     @RequestMapping(value = "/semester", method = RequestMethod.GET)
     public ModelAndView getSemesterManagementView() {
-        String pageTitle = "Quản lý học kì";
+        String pageTitle = "Semester Management";
         return getAdminPage(pageTitle, new BodyFragment("admin/semester", "body-content"));
-    }
-
-    @RequestMapping(value = "/business", method = RequestMethod.GET)
-    public ModelAndView getBusinessView() {
-        String pageTitle = "Nghiệp vụ";
-        return getAdminPage(pageTitle, new BodyFragment("admin/business", "body-content"));
     }
 
     private ModelAndView getAdminPage(String pageTitle, BodyFragment bodyFragment) {

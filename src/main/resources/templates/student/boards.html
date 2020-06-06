@@ -26,13 +26,15 @@
                     </div>
                     <div class="row">
                         <div class="column">
-                            <div class="ui grey fluid centered cards">
+                            <div class="ui grey fluid centered new-item cards">
                                 <div class="workItem card">
                                     <div class="content">
                                         <div class="header">
-                                            <div class="ui mini fluid action input">
-                                                <input type="text" placeholder="title...">
-                                                <button class="ui blue button">Add</button>
+                                            <div class="ui add-item form">
+                                                <div class="ui mini fluid action input">
+                                                    <input type="text" name="name" placeholder="title...">
+                                                    <button class="ui blue submit button">Add</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -205,6 +207,7 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="/js/student/leader/api.js"></script>
     <script type="text/javascript" src="/js/student/leader/boards.js"></script>
 </div>
 <div th:fragment="member-content">

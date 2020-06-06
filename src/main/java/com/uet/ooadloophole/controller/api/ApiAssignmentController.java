@@ -2,6 +2,7 @@ package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.controller.interface_model.interfaces.IAssignment;
 import com.uet.ooadloophole.model.business.class_elements.Assignment;
 import com.uet.ooadloophole.service.ConverterService;
@@ -42,5 +43,10 @@ public class ApiAssignmentController {
     public ResponseEntity<String> delete(@PathVariable String id) {
         assignmentService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("deleted")));
+    }
+
+    @RequestMapping(value = "/{id}/student-work/{groupId}", method = RequestMethod.GET)
+    public ResponseEntity<String> getStudentAssignmentWork(@PathVariable String id, @PathVariable String groupId) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(assignmentService.getStudentAssignmentWork(id, groupId))));
     }
 }

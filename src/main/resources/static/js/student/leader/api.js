@@ -15,6 +15,7 @@ $.fn.api.settings.api = {
     'upload doc': '/api/files/repo/doc',
     'get doc': '/api/files/repo/{iterationId}/iteration/doc',
     'delete file': '/api/files/repo/{id}',
+    'create item': '/api/board/item'
 };
 
 const validationRules = {

@@ -1,12 +1,16 @@
 package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
+import com.uet.ooadloophole.controller.interface_model.dto.DTOAssignment;
+import com.uet.ooadloophole.model.business.class_elements.Assignment;
+import com.uet.ooadloophole.model.business.class_elements.Class;
 import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
 import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.model.business.group_elements.Request;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.model.business.system_elements.Student;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
@@ -22,6 +26,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/student")
@@ -40,10 +45,14 @@ public class StudentController {
     private WorkItemService workItemService;
     @Autowired
     private ClassService classService;
+    @Autowired
+    private AssignmentService assignmentService;
+    @Autowired
+    private ConverterService converterService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
-        String pageTitle = "Sinh viên";
+        String pageTitle = "Student";
         try {
             LoopholeUser currentUser = secureUserService.getCurrentUser();
             return masterPageService.getMasterPage(pageTitle, new BodyFragment("student/home", "body-content"), currentUser);
@@ -61,13 +70,13 @@ public class StudentController {
             Student student = studentService.getByUserId(currentUser.get_id());
             if (request != null) {
                 Group group = groupService.getById(request.getGroupId());
-                String pageTitle = "Bạn đã được mời vào nhóm " + group.getGroupName();
+                String pageTitle = "You have been invited to " + group.getGroupName();
                 modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "body-content"), currentUser);
                 modelAndView.addObject("invitation", request);
                 modelAndView.addObject("group", group);
                 modelAndView.addObject("student", student);
             } else {
-                String pageTitle = "Lời mời không hợp lệ";
+                String pageTitle = "Invalid Invitation";
                 modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "invalid-content"), currentUser);
             }
             return modelAndView;
@@ -78,7 +87,7 @@ public class StudentController {
 
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ModelAndView getGroupView() {
-        String pageTitle = "Nhóm";
+        String pageTitle = "Group Setting";
         return getStudentView(pageTitle, new BodyFragment("student/group", "content"));
     }
 
@@ -87,7 +96,7 @@ public class StudentController {
         try {
             Date date = new Date();
             LocalDate today = LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")));
-            String pageTitle = "Vòng lặp phát triển";
+            String pageTitle = "Iterations";
             LoopholeUser currentUser = secureUserService.getCurrentUser();
             Student student = studentService.getByUserId(currentUser.get_id());
             ClassConfig classConfig = classService.getClassConfig(student.getClassId());
@@ -111,20 +120,30 @@ public class StudentController {
 
     @RequestMapping(value = "/evaluation", method = RequestMethod.GET)
     public ModelAndView getEvaluationView() {
-        String pageTitle = "Chấm điểm";
+        String pageTitle = "Grading";
         return getStudentView(pageTitle, new BodyFragment("student/evaluation", "content"));
     }
 
     @RequestMapping(value = "/requirement", method = RequestMethod.GET)
     public ModelAndView getRequirementView() {
-        String pageTitle = "Yêu cầu";
+        String pageTitle = "Requirement Management";
         return getStudentView(pageTitle, new BodyFragment("student/requirement", "content"));
     }
 
     @RequestMapping(value = "/assignment", method = RequestMethod.GET)
     public ModelAndView getAssignmentView() {
-        String pageTitle = "Bài tập";
-        return getStudentView(pageTitle, new BodyFragment("student/assignment", "content"));
+        try {
+            Student student = studentService.getByUserId(secureUserService.getCurrentUser().get_id());
+            Class ooadClass = classService.getById(student.getClassId());
+            String pageTitle = "Assignments";
+            List<Assignment> assignments = assignmentService.getAllByClass(ooadClass.get_id());
+            List<DTOAssignment> dtoAssignments = assignments.stream().map(assignment -> converterService.convertToDTOAssignment(assignment)).collect(Collectors.toList());
+            ModelAndView modelAndView = getStudentView(pageTitle, new BodyFragment("student/assignment", "content"));
+            modelAndView.addObject("assignments", dtoAssignments);
+            return modelAndView;
+        } catch (BusinessServiceException e) {
+            return new ModelAndView("error");
+        }
     }
 
     @RequestMapping(value = "/boards", method = RequestMethod.GET)

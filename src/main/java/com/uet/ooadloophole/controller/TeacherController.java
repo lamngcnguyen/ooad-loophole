@@ -2,7 +2,6 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.controller.interface_model.dto.DTOGradingTemplate;
-import com.uet.ooadloophole.model.business.grading_elements.GradingTemplate;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
@@ -11,7 +10,6 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import com.uet.ooadloophole.service.business_service.AssignmentService;
 import com.uet.ooadloophole.service.business_service.ClassService;
 import com.uet.ooadloophole.service.business_service.GradingTemplateService;
-import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -46,13 +44,13 @@ public class TeacherController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
-        String pageTitle = "Giảng viên";
+        String pageTitle = "Teacher";
         return getTeacherView(pageTitle, new BodyFragment("teacher/home", "body-content"));
     }
 
     @RequestMapping(value = "/class", method = RequestMethod.GET)
     public ModelAndView getClassView() {
-        String pageTitle = "Lớp của tôi";
+        String pageTitle = "My Classes";
         return getTeacherView(pageTitle, new BodyFragment("teacher/class", "body-content"));
     }
 
@@ -85,7 +83,7 @@ public class TeacherController {
 
     @RequestMapping(value = "/evaluate", method = RequestMethod.GET)
     public ModelAndView getEvaluateView() {
-        String pageTitle = "Chấm bài";
+        String pageTitle = "Evaluate";
         return getTeacherView(pageTitle, new BodyFragment("teacher/evaluate", "body-content"));
     }
 
@@ -96,7 +94,7 @@ public class TeacherController {
             modelAndView = getTeacherView("Grading Template Management", new BodyFragment("teacher/grading-template-list", "body-content"));
             List<DTOGradingTemplate> templateList = gradingTemplateService.getByTeacherId(secureUserService.getCurrentUser().get_id())
                     .stream()
-                    .map(template -> new DTOGradingTemplate(template)).collect(Collectors.toList());
+                    .map(DTOGradingTemplate::new).collect(Collectors.toList());
             //templateList.forEach(x -> System.out.println(x.get_id() + "/" + x.getGradingTemplateName()));
             modelAndView.addObject("templates", templateList);
         } catch (Exception e) {
@@ -120,7 +118,6 @@ public class TeacherController {
 
     @RequestMapping(value = "/grading/{assignmentId}", method = RequestMethod.GET)
     public ModelAndView getGradingView(@PathVariable String assignmentId) {
-        System.out.println("");
         ModelAndView modelAndView;
         try {
             String pageTitle = "Grading";
