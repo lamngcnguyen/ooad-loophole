@@ -16,6 +16,7 @@ public class WorkItem {
     private String description;
     private String priority;
     private LocalDateTime assignedDate;
+    private LocalDateTime createdDateTime;
     @DBRef
     private Student creator;
     @DBRef
@@ -64,6 +65,14 @@ public class WorkItem {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 
     public LocalDateTime getAssignedDate() {

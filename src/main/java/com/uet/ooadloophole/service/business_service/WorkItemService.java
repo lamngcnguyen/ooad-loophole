@@ -17,6 +17,8 @@ public interface WorkItemService {
 
     WorkItem getById(String id);
 
+    WorkItem assignMember(List<String> studentIdList, String id);
+
     WorkItem edit(String id, WorkItem workItem);
 
     void delete(String id) throws BusinessServiceException;

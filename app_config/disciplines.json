@@ -2,6 +2,10 @@
   {
     "name": "Business modelling",
     "description": "Business modelling",
+    "fileTypes": [
+      "model",
+      "doc"
+    ],
     "types": [
       {
         "name": "Business use-case model",
@@ -24,6 +28,11 @@
   {
     "name": "Requirements",
     "description": "Requirement analysis",
+    "fileTypes": [
+      "model",
+      "doc",
+      "code"
+    ],
     "types": [
       {
         "name": "Glossary",
@@ -50,6 +59,10 @@
   {
     "name": "Analysis & Design",
     "description": "Requirement analysis",
+    "fileTypes": [
+      "model",
+      "doc"
+    ],
     "types": [
       {
         "name": "Analysis model",
@@ -74,8 +87,12 @@
     ]
   },
   {
-    "name": "Implement",
+    "name": "Implementation",
     "description": "System implementation",
+    "fileTypes": [
+      "doc",
+      "code"
+    ],
     "types": [
       {
         "name": "Integration Build Plan",
@@ -90,6 +107,10 @@
   {
     "name": "Test",
     "description": "Product testing",
+    "fileTypes": [
+      "doc",
+      "code"
+    ],
     "types": [
       {
         "name": "Test plan",

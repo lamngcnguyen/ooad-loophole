@@ -24,6 +24,10 @@
                 <div class="row">
                     <div class="four wide column">
                         <div class="ui tabular vertical fluid menu">
+                            <a class="item topic-management" onclick="showTab('topic-management')">
+                                <i class="book open icon"></i>
+                                Quản lí đề tài
+                            </a>
                             <a class="active blue item members" onclick="showTab('members')">
                                 <i class="users icon"></i>
                                 Quản lí thành viên
@@ -31,10 +35,6 @@
                             <a class="item roles" onclick="showTab('roles')">
                                 <i class="user tag icon"></i>
                                 Quản lí quyền
-                            </a>
-                            <a class="item github-connect" onclick="showTab('github-connect')">
-                                <i class="github icon"></i>
-                                Liên kết Github
                             </a>
                             <a class="item guests" onclick="showTab('guests')">
                                 <i class="eye icon"></i>
@@ -101,11 +101,12 @@
                                 Lưu
                             </div>
                         </div>
-                        <div class="ui tab segment github-connect">
+                        <div class="ui tab segment topic-management">
                             <div class="ui header">
-                                Connect to <span class="ui blue text"><i class="github icon"></i>Github</span> feature:
-                                <span class="ui red text">IN DEVELOPMENT</span>
+                                Đề tài: <span>Làm tool OOAD</span>
                             </div>
+                            <div class="ui divider"></div>
+                            <div class="ui segment"></div>
                         </div>
                         <div class="ui tab segment guests">
                             <div class="ui stackable grid">

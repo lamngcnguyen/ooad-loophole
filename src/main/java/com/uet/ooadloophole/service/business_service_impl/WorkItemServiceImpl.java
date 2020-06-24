@@ -59,7 +59,7 @@ public class WorkItemServiceImpl implements WorkItemService {
             newBoard.setGroupId(group.get_id());
             board = boardRepository.save(newBoard);
         }
-        workItem.setAssignedDate(LocalDateTime.now());
+        workItem.setCreatedDateTime(LocalDateTime.now());
         workItem.setStatus("New");
         workItem.setBoardId(board.get_id());
         return workItemRepository.save(workItem);
@@ -68,6 +68,18 @@ public class WorkItemServiceImpl implements WorkItemService {
     @Override
     public WorkItem getById(String id) {
         return workItemRepository.findBy_id(id);
+    }
+
+    @Override
+    public WorkItem assignMember(List<String> studentIdList, String id) {
+        WorkItem dbWorkItem = getById(id);
+        List<Student> studentList = new ArrayList<>();
+        for (String studentId : studentIdList) {
+            Student student = studentRepository.findBy_id(studentId);
+            studentList.add(student);
+        }
+        dbWorkItem.setAssignedMember(studentList);
+        return workItemRepository.save(dbWorkItem);
     }
 
     @Override
