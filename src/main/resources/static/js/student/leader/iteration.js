@@ -280,6 +280,10 @@ function createIterationGrid(data) {
     });
     segment.append(grid);
     segmentContainer.append(segment);
+
+    getRepoFile(data._id);
+    getDiagramFile(data._id);
+    getDocumentationFile(data._id);
 }
 
 function cancelIterationForm() {
