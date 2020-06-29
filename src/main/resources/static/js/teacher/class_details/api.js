@@ -36,7 +36,7 @@ var validationRules = {
         rules: [
             {
                 type: `regExp[/^[a-zA-Z\\s_${VN_ALPHABET}]+$/]`,
-                prompt: 'Họ tên không hợp lệ'
+                prompt: 'Full name invalid'
             }
         ]
     },
@@ -44,7 +44,7 @@ var validationRules = {
         identifier: 'studentId',
         rules: [{
             type: 'integer',
-            prompt: 'MSSV không hợp lệ'
+            prompt: 'Student ID invalid'
         }],
     },
     classId: {
@@ -52,7 +52,7 @@ var validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Vui lòng chọn lớp học'
+                prompt: 'Please select a class'
             }
         ]
     },
@@ -61,7 +61,7 @@ var validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Vui lòng điền tên đề tài'
+                prompt: 'Topic name empty'
             }
         ]
     }

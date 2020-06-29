@@ -9,16 +9,16 @@ var stringDom = "<'ui stackable grid'" +
     ">";
 
 var languageOption = {
-    "emptyTable": "Không có dữ liệu",
-    "info": "Hiển thị từ _START_ đến _END_ trong _TOTAL_ mục",
-    "infoEmpty": "Hiển thị từ 0 đến 0 trong 0 mục",
-    "infoFiltered": "(lọc từ tổng cộng _MAX_ mục)",
-    "loadingRecords": "Đang tải...",
-    "zeroRecords": "Không tìm thấy kết quả phù hợp",
+    "emptyTable": "No data",
+    "info": "Showing from _START_ to _END_ in _TOTAL_ items",
+    "infoEmpty": "Showing from 0 to 0 in 0 items",
+    "infoFiltered": "(filtered from total _MAX_ items)",
+    "loadingRecords": "Loading...",
+    "zeroRecords": "No item found",
     "paginate": {
-        "first": "Đầu",
-        "last": "Cuối",
-        "next": "Tiếp",
-        "previous": "Trước"
+        "first": "First",
+        "last": "Last",
+        "next": "Next",
+        "previous": "Previous"
     }
 };

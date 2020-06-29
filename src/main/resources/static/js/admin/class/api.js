@@ -12,7 +12,7 @@ const validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Chưa nhập tên lớp!'
+                prompt: 'Class name empty!'
             }
         ]
     },
@@ -21,7 +21,7 @@ const validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Chưa nhập giáo viên!'
+                prompt: 'Teacher not selected!'
             }
         ]
     },

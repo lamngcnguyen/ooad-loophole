@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Đăng nhập</title>
+    <title>Login</title>
     <link rel="stylesheet" th:href="@{/webjars/fomantic-ui/dist/semantic.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}">
     <script type="text/javascript" th:src="@{/js/libraries/jquery.min.js}"></script>
@@ -13,7 +13,7 @@
             <h3 class="ui image header">
                 <img th:src="@{/images/logo.png}" class="tiny image">
                 <div class="content">
-                    Đăng nhập OOAD Loophole
+                    Login to OOAD Loophole
                 </div>
             </h3>
             <form class="ui large form" action="/login" method="post">
@@ -21,13 +21,13 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="username" placeholder="Tên đăng nhập">
+                            <input type="text" name="username" placeholder="Username">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
-                            <input type="password" name="password" placeholder="Mật khẩu">
+                            <input type="password" name="password" placeholder="Password">
                         </div>
                     </div>
                     <div class="field">
@@ -41,9 +41,11 @@
                             <div class="ten wide field"></div>
                         </div>
                     </div>
-                    <button class="ui fluid large blue submit button" type="submit">Đăng nhập</button>
+                    <button class="ui fluid large blue submit button" type="submit">Login</button>
                 </div>
-                <div th:if="${#httpServletRequest.getParameter('error') != null}" class="ui error visible message">Sai tên đăng nhập hoặc mật khẩu</div>
+                <div th:if="${#httpServletRequest.getParameter('error') != null}" class="ui error visible message">Wrong
+                    username or password
+                </div>
             </form>
         </div>
     </div>

@@ -137,6 +137,7 @@ function createIterationForm() {
     });
     segment.append(form);
 
+    segmentContainer.children().hide();
     segmentContainer.append(segment);
     newIterationItem.before(navItem);
     newIterationItem.hide();

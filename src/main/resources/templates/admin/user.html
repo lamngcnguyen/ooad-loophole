@@ -11,7 +11,7 @@
         <div class="column">
             <div class="header">
                 <div class="ui large grey label">
-                    <i class="users icon nav-icon"></i><span>Quản lý người dùng</span>
+                    <i class="users icon nav-icon"></i><span>User management</span>
                 </div>
             </div>
         </div>
@@ -20,10 +20,10 @@
         <div class="column">
             <div class="ui top attached tabular menu">
                 <a class="active teacher-admin item">
-                    Giảng viên/Admin
+                    Teacher/Admin
                 </a>
                 <a class="student item">
-                    Sinh viên
+                    Student
                 </a>
             </div>
             <div class="ui active teacher-admin tab segment stackable grid">
@@ -31,13 +31,13 @@
                     <div class="column">
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-user')">
-                            Thêm mới<i
+                            Create new<i
                                 class="plus icon"></i></button>
                     </div>
                 </div>
                 <div class="row my-table-control">
                     <div class="four wide column">
-                        Hiển thị
+                        Show
                         &nbsp
                         <div class="ui compact selection dropdown page-length">
                             <input type="hidden">
@@ -51,10 +51,10 @@
                             </div>
                         </div>
                         &nbsp
-                        mục
+                        items
                     </div>
                     <div class="four wide column">
-                        Vai trò
+                        Role
                         &nbsp
                         <div class="ui compact selection dropdown" id="roleSelect" style="width: 150px;">
                             <input type="hidden">
@@ -62,12 +62,12 @@
                             <div class="text">Admin</div>
                             <div class="menu">
                                 <div class="item" data-value="admin" onclick="filterRole('admin')">Admin</div>
-                                <div class="item" data-value="teacher" onclick="filterRole('teacher')">Giảng viên</div>
+                                <div class="item" data-value="teacher" onclick="filterRole('teacher')">Teacher</div>
                             </div>
                         </div>
                     </div>
                     <div class="right aligned eight wide column">
-                        Tìm kiếm:&nbsp
+                        Search:&nbsp
                         <div class="ui icon input table-search">
                             <input type="text" placeholder="Search...">
                             <i class="search icon"></i>
@@ -80,12 +80,12 @@
                             <thead>
                             <tr>
                                 <th class="one wide">#</th>
-                                <th class="three wide">Thao tác</th>
-                                <th class="three wide">Họ tên</th>
-                                <th class="three wide">Tên đăng nhập</th>
+                                <th class="three wide">Actions</th>
+                                <th class="three wide">Full Name</th>
+                                <th class="three wide">Username</th>
                                 <th class="four wide">Email</th>
-                                <th class="one wide">SĐT</th>
-                                <th class="one wide">Đã kích hoạt</th>
+                                <th class="one wide">Phone number</th>
+                                <th class="one wide">Activation status</th>
                             </tr>
                             </thead>
                         </table>
@@ -97,17 +97,17 @@
                     <div class="column">
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-student')">
-                            Thêm mới<i
+                            Create new<i
                                 class="plus icon"></i></button>
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.import-student')">
-                            Nhập từ Excel<i
+                            Import from Excel<i
                                 class="file excel icon"></i></button>
                     </div>
                 </div>
                 <div class="row my-table-control">
                     <div class="eight wide column">
-                        Hiển thị
+                        Show
                         &nbsp
                         <div class="ui compact selection dropdown page-length">
                             <input type="hidden">
@@ -121,10 +121,10 @@
                             </div>
                         </div>
                         &nbsp
-                        mục
+                        items
                     </div>
                     <div class="right aligned eight wide column">
-                        Tìm kiếm:&nbsp
+                        Search:&nbsp
                         <div class="ui icon input table-search">
                             <input type="text" placeholder="Search...">
                             <i class="search icon"></i>
@@ -137,12 +137,12 @@
                             <thead>
                             <tr>
                                 <th class="one wide">#</th>
-                                <th class="three wide">Thao tác</th>
-                                <th class="three wide">MSSV</th>
-                                <th class="three wide">Họ tên</th>
-                                <th class="three wide">Lớp</th>
-                                <th class="two wide">SĐT</th>
-                                <th class="one wide">Đã kích hoạt</th>
+                                <th class="three wide">Actions</th>
+                                <th class="three wide">Student ID</th>
+                                <th class="three wide">Full name</th>
+                                <th class="three wide">Class</th>
+                                <th class="two wide">Phone number</th>
+                                <th class="one wide">Activation status</th>
                             </tr>
                             </thead>
                         </table>
@@ -157,18 +157,18 @@
         </div>
         <div class="ui large header">
             <i class="green user icon"></i>
-            Thêm mới
+            Create user
         </div>
         <div class="content">
             <div class="ui form create-user">
                 <div class="field">
                     <div class="fields">
                         <div class="eight wide required field">
-                            <label>Họ tên</label>
+                            <label>Full name</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
                         <div class="eight wide required field">
-                            <label>Tên đăng nhập</label>
+                            <label>Username</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
                     </div>
@@ -180,7 +180,7 @@
                             <input type="email" name="email" placeholder="Email">
                         </div>
                         <div class="eight wide field">
-                            <label>SĐT</label>
+                            <label>Phone number</label>
                             <div class="ui labeled input">
                                 <div class="ui label">
                                     <i class="vn flag"></i>
@@ -192,7 +192,7 @@
                     </div>
                 </div>
                 <div class="required field">
-                    <label class="ui dividing">Quyền</label>
+                    <label class="ui dividing">Role</label>
                     <div class="two fields">
                         <div class="six wide field">
                             <div class="ui toggle checkbox">
@@ -205,7 +205,7 @@
                             <div class="ui toggle checkbox">
                                 <input type="checkbox" id="checkboxTeacher" name="isTeacher" tabindex="0"
                                        class="hidden" data-validate="role-checkbox">
-                                <label for="checkboxTeacher">Giảng viên</label>
+                                <label for="checkboxTeacher">Teacher</label>
                             </div>
                         </div>
                     </div>
@@ -213,11 +213,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-user')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Add
                 </button>
             </div>
         </div>
@@ -228,7 +228,7 @@
         </div>
         <div class="ui large header">
             <i class="blue pencil icon"></i>
-            Chỉnh sửa
+            Edit
         </div>
         <div class="content">
             <div class="ui form edit-user">
@@ -236,11 +236,11 @@
                 <div class="field">
                     <div class="fields">
                         <div class="eight wide required field">
-                            <label>Họ tên</label>
+                            <label>Full name</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
                         <div class="eight wide required field">
-                            <label>Tên đăng nhập</label>
+                            <label>Username</label>
                             <input type="text" name="username" placeholder="Username">
                         </div>
                     </div>
@@ -252,7 +252,7 @@
                             <input type="email" name="email" placeholder="Email">
                         </div>
                         <div class="eight wide field">
-                            <label>SĐT</label>
+                            <label>Phone number</label>
                             <div class="ui labeled input">
                                 <div class="ui label">
                                     <i class="vn flag"></i>
@@ -264,7 +264,7 @@
                     </div>
                 </div>
                 <div class="required field">
-                    <label class="ui dividing">Quyền</label>
+                    <label class="ui dividing">Role</label>
                     <div class="two fields">
                         <div class="six wide field">
                             <div class="ui toggle checkbox">
@@ -277,7 +277,7 @@
                             <div class="ui toggle checkbox">
                                 <input type="checkbox" id="checkboxEditTeacher" name="isTeacher" tabindex="0"
                                        class="hidden" data-validate="role-checkbox">
-                                <label for="checkboxEditTeacher">Giảng viên</label>
+                                <label for="checkboxEditTeacher">Teacher</label>
                             </div>
                         </div>
                     </div>
@@ -285,11 +285,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-user')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated blue labeled icon submit button">
                     <i class="save icon"></i>
-                    Lưu
+                    Save
                 </button>
             </div>
         </div>
@@ -300,24 +300,24 @@
         </div>
         <div class="ui large header">
             <i class="green student icon"></i>
-            Thêm mới
+            Create student
         </div>
         <div class="content">
             <div class="ui form create-student">
                 <div class="field">
                     <div class="fields">
                         <div class="nine wide required field">
-                            <label>Họ tên</label>
+                            <label>Full name</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
                         <div class="seven wide required field">
-                            <label>MSSV</label>
+                            <label>Student ID</label>
                             <input type="text" name="studentId" placeholder="Student ID">
                         </div>
                     </div>
                 </div>
                 <div class="ten wide required field">
-                    <label>Lớp</label>
+                    <label>Class</label>
                     <div class="ui search selection dropdown assigned-class">
                         <input type="hidden" name="classId">
                         <i class="dropdown icon"></i>
@@ -331,7 +331,7 @@
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create
                 </button>
             </div>
         </div>
@@ -342,7 +342,7 @@
         </div>
         <div class="ui large header">
             <i class="green student icon"></i>
-            Chỉnh sửa
+            Edit
         </div>
         <div class="content">
             <div class="ui form edit-student">
@@ -350,17 +350,17 @@
                 <div class="field">
                     <div class="fields">
                         <div class="nine wide required field">
-                            <label>Họ tên</label>
+                            <label>Full name</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
                         <div class="seven wide required field">
-                            <label>MSSV</label>
+                            <label>Student ID</label>
                             <input type="text" name="studentId" placeholder="Student ID">
                         </div>
                     </div>
                 </div>
                 <div class="ten wide required field">
-                    <label>Lớp</label>
+                    <label>Class</label>
                     <div class="ui search selection dropdown assigned-class">
                         <input type="hidden" name="classId">
                         <i class="dropdown icon"></i>
@@ -374,7 +374,7 @@
                 </div>
                 <button class="ui right floated blue labeled icon submit button">
                     <i class="plus icon"></i>
-                    Lưu
+                    Save
                 </button>
             </div>
         </div>
@@ -385,22 +385,22 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-user">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa người dùng này không?</label>
+                    <label>Do you really want to delete this user?</label>
                 </div>
                 <div class="ui error message"></div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-user')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>
@@ -411,7 +411,7 @@
         </div>
         <div class="ui large header">
             <i class="green file excel icon"></i>
-            Nhập từ Excel
+            Import from Excel
         </div>
         <div class="content">
             <div class="ui form import-student">
@@ -419,16 +419,16 @@
                     <input type="file" name="uploadExcel" hidden>
                     <div class="ui red labeled icon mini button" onclick="openImportStudentDialog()">
                         <i class="upload icon"></i>
-                        Chọn tệp Excel
+                        Select Excel file
                     </div>
                     <div class="ui green labeled icon mini button" onclick="createStudentImportTemplate()">
                         <i class="download icon"></i>
-                        Tải tệp mẫu
+                        Download template
                     </div>
                 </div>
                 <div class="fields">
                     <div class="eight wide required field">
-                        <label>Nhập sinh viên cho lớp:</label>
+                        <label>Select class to import</label>
                         <div class="ui search selection dropdown assigned-class">
                             <input type="hidden" name="classId">
                             <i class="dropdown icon"></i>
@@ -441,8 +441,8 @@
                         <thead>
                         <tr>
                             <th class="one wide">#</th>
-                            <th class="two wide">MSSV</th>
-                            <th>Họ tên</th>
+                            <th class="two wide">Student ID</th>
+                            <th>Full name</th>
                         </tr>
                         </thead>
                     </table>
@@ -450,11 +450,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.import-student')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <div class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create
                 </div>
             </div>
         </div>
@@ -465,22 +465,22 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-student">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa sinh viên này không?</label>
+                    <label>Do you really want to delete this student?</label>
                 </div>
                 <div class="ui error message"></div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-student')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>

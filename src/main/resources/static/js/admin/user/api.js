@@ -24,7 +24,7 @@ var validationRules = {
         rules: [
             {
                 type: `regExp[/^[a-zA-Z\\s_${VN_ALPHABET}\s]+$/]`,
-                prompt: 'Họ tên không hợp lệ'
+                prompt: 'Full name invalid'
             }
         ]
     },
@@ -33,7 +33,7 @@ var validationRules = {
         rules: [
             {
                 type: 'regExp[/^[a-zA-Z0-9-_]+$/]',
-                prompt: 'Tên đăng nhập không hợp lệ'
+                prompt: 'Username invalid'
             }
         ]
     },
@@ -42,7 +42,7 @@ var validationRules = {
         rules: [
             {
                 type: 'email',
-                prompt: 'Email không hợp lệ'
+                prompt: 'Email invalid'
             }
         ]
     },
@@ -51,7 +51,7 @@ var validationRules = {
             identifier: 'role-checkbox',
             rules: [{
                 type: `oneRoleClaimed[${formId}]`,
-                prompt: 'Vui lòng chọn ít nhất một quyền'
+                prompt: 'Please select at least 1 role'
             }]
         }
     },
@@ -59,7 +59,7 @@ var validationRules = {
         identifier: 'studentId',
         rules: [{
             type: 'integer',
-            prompt: 'MSSV không hợp lệ'
+            prompt: 'Student ID invalid'
         }],
     },
     classId: {
@@ -67,7 +67,7 @@ var validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Vui lòng chọn lớp học'
+                prompt: 'Please select a class'
             }
         ]
     },
@@ -76,11 +76,11 @@ var validationRules = {
         rules: [
             {
                 type: 'number',
-                prompt: 'SĐT không hợp lệ'
+                prompt: 'Phone number invalid'
             },
             {
                 type: 'minLength[9]',
-                prompt: 'SĐT phải có ít nhất {ruleValue} chữ số'
+                prompt: 'Phone number must have at least {ruleValue} digits'
             }
         ]
     }
