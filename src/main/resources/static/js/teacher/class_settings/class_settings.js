@@ -1,5 +1,39 @@
 const classId = $("input[name='classId']").val();
 
+$('.form.general-settings').form({
+    onSuccess: function (evt, data) {
+        $.api({
+            action: 'update class',
+            urlData: {
+                id: classId,
+            },
+            on: 'now',
+            method: 'put',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            beforeXHR: (xhr) => {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            },
+            onFailure: function (response) {
+                $('.form.general-settings').form('add errors', [response]);
+            },
+            onSuccess: function (response) {
+                $('body').toast({
+                    position: 'bottom right',
+                    message: 'Class information updated',
+                    class: 'green'
+                });
+                $('#class-name').text(response.className)
+                window.history.replaceState('page2', response.className, `/teacher/class/${response.className}/settings`);
+            }
+        });
+    },
+    fields: {
+        className: validationRules.className,
+        scheduledDayOfWeek: validationRules.scheduledDayOfWeek
+    }
+})
+
 $('.form.group-setting').form({
     onSuccess: function (evt, data) {
         correctFormData('.form.group-setting', data);

@@ -188,9 +188,6 @@ public class ApiClassController {
         try {
             if (userCanNotCreateClass())
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            if (classService.classNameExists(ooadClass.getTeacherId(), ooadClass.getClassName()))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(
-                        new ResponseMessage("Class name already exists for this teacher")));
             Class updatedClass = classService.update(id, ooadClass);
             return ResponseEntity.status(HttpStatus.OK).body(updatedClass);
         } catch (BusinessServiceException e) {

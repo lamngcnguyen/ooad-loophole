@@ -1,4 +1,5 @@
 $.fn.api.settings.api = {
+    'update class': '/api/classes/{id}',
     'get class config': '/api/classes/{classId}/settings',
     'get class disciplines config': '/api/classes/{classId}/settings/disciplines',
     'group setting': '/api/classes/{classId}/settings/group',
@@ -42,4 +43,22 @@ const validationRules = {
             }
         ]
     },
+    className: {
+        identifier: 'className',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Class name empty!'
+            }
+        ]
+    },
+    scheduledDayOfWeek: {
+        identifier: 'scheduledDayOfWeek',
+        rules: [
+            {
+                type: 'empty',
+                prompt: 'Chưa nhập ngày học!'
+            }
+        ]
+    }
 }

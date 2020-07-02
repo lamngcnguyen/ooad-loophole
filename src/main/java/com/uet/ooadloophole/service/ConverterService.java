@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -117,7 +118,15 @@ public class ConverterService {
         dtoClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
         dtoClass.setStudentCount(studentService.countByClassId(ooadClass.get_id()));
         dtoClass.setActive(ooadClass.isActive());
-        return dtoClass;
+        try {
+            dtoClass.setConfig(convertToDTOClassConfig(ooadClass.getConfig()));
+            return dtoClass;
+        } catch (NullPointerException e) {
+            Date date = new Date();
+            classService.groupSetting(ooadClass, 3, 5, LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")).plusDays(14)));
+            classService.iterationSetting(ooadClass, 14, 21, LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")).plusDays(14)));
+            return dtoClass;
+        }
     }
 
     public Student convertToStudent(IStudent iStudent) {

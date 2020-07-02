@@ -10,6 +10,7 @@ public class DTOClass {
     private int scheduledDayOfWeek;
     private int studentCount;
     private boolean active;
+    private DTOClassConfig config;
 
     public String get_id() {
         return _id;
@@ -81,5 +82,13 @@ public class DTOClass {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public DTOClassConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(DTOClassConfig config) {
+        this.config = config;
     }
 }

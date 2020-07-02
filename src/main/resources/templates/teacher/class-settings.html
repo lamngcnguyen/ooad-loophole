@@ -13,7 +13,7 @@
                 <div class="ui large labels">
                     <div class="ui blue label">
                         <i class="users icon nav-icon"></i>
-                        <span th:text="${class.getClassName()}"></span>
+                        <span id="class-name" th:text="${class.getClassName()}"></span>
                     </div>
                     <div class="ui grey label">
                         <i class="cog icon"></i>
@@ -27,12 +27,36 @@
         <div class="twelve wide column">
             <div class="ui segment">
                 <div class="ui segment">
-                    <div class="ui class-name form">
+                    <div class="ui general-settings form">
                         <div class="ui blue large header">Class name</div>
                         <div class="ui divider"></div>
-                        <div class="required eight wide field">
-                            <label>Class name</label>
-                            <input type="text" name="name" placeholder="Class name">
+                        <input type="hidden" name="teacherId" th:value="${class.getTeacherId()}">
+                        <input type="hidden" name="semesterId" th:value="${class.getSemesterId()}">
+                        <div class="field">
+                            <div class="fields">
+                                <div class="required four wide field">
+                                    <label>Class</label>
+                                    <input type="text" name="className" placeholder="Class name"
+                                           th:value="${class.getClassName()}">
+                                </div>
+                                <div class="required four wide field">
+                                    <label>Ngày học</label>
+                                    <div class="ui selection dropdown dayOfWeek">
+                                        <input type="hidden" name="scheduledDayOfWeek"
+                                               th:value="${class.getScheduledDayOfWeek()}">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">Chọn ngày học</div>
+                                        <div class="menu">
+                                            <div class="item" data-value="1">Thứ 2</div>
+                                            <div class="item" data-value="2">Thứ 3</div>
+                                            <div class="item" data-value="3">Thứ 4</div>
+                                            <div class="item" data-value="4">Thứ 5</div>
+                                            <div class="item" data-value="5">Thứ 6</div>
+                                            <div class="item" data-value="6">Thứ 7</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="ui error message"></div>
                         <button class="ui small icon labeled green submit button">
@@ -48,11 +72,11 @@
                         <div class="field">
                             <div class="fields">
                                 <div class="required four wide field">
-                                    <label>Số thành viên tối thiểu</label>
+                                    <label>Minimum group member count</label>
                                     <input type="number" name="groupMin" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                                 <div class="required four wide field">
-                                    <label>Số thành viên tối đa</label>
+                                    <label>Maximum group member count</label>
                                     <input type="number" name="groupMax" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                             </div>
@@ -75,16 +99,16 @@
                 </div>
                 <div class="ui segment">
                     <div class="ui iteration-setting form">
-                        <div class="ui blue large header">Chu kỳ phát triển - Iteration</div>
+                        <div class="ui blue large header">Iteration</div>
                         <div class="ui divider"></div>
                         <div class="field">
                             <div class="fields">
                                 <div class="required five wide field">
-                                    <label>Thời lượng mặc định (ngày)</label>
+                                    <label>Default iteration length (days)</label>
                                     <input type="number" name="defaultLength" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                                 <div class="required five wide field">
-                                    <label>Thời lượng tối đa (ngày)</label>
+                                    <label>Maximum iteration length (days)</label>
                                     <input type="number" name="maxLength" min="1" max="100" pattern="[^0-9]+">
                                 </div>
                             </div>

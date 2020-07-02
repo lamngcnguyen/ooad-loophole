@@ -123,8 +123,7 @@ public class ClassServiceImpl implements ClassService {
             dbClass.setScheduledDayOfWeek(ooadClass.getScheduledDayOfWeek());
             dbClass.setSemesterId(ooadClass.getSemesterId());
             dbClass.setTeacherId(ooadClass.getTeacherId());
-            classRepository.save(dbClass);
-            return dbClass;
+            return classRepository.save(dbClass);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to update class: " + e.getMessage());
         }
