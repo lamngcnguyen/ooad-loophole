@@ -54,10 +54,9 @@ function createRequirementForm() {
         onSuccess: function (evt, data) {
             data['name'] = $('input[name=name]').val();
             data['groupId'] = groupId;
-            data['startDate'] = $('input[name=startDate]').val();
-            data['endDate'] = $('input[name=endDate]').val();
+            data['description'] = $('input[name=description]').val();
             $.api({
-                action: 'create iteration',
+                action: 'create requirement',
                 on: 'now',
                 method: 'post',
                 dataType: 'json',

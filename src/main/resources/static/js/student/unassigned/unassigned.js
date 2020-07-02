@@ -1,5 +1,6 @@
 $('.form.create-group').form({
     onSuccess: function (evt, data) {
+        //TODO: Invite student
         $.api({
             action: 'create group',
             on: 'now',
@@ -31,8 +32,8 @@ $('.dropdown.group-dropdown').dropdown({
         xhr.responseJSON.data.forEach(function (group) {
             values.push({
                 value: group._id,
-                name: group.name,
-                text: group.name,
+                name: group.groupName,
+                text: group.groupName,
             })
         });
         $(element).dropdown('change values', values);

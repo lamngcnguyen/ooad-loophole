@@ -43,9 +43,9 @@ public interface ClassService {
 
     List<ClassDisciplineConfig> getClassDisciplineConfig(String classId);
 
-    ClassConfig groupSetting(String classId, int min, int max, LocalDate deadline);
+    ClassConfig groupSetting(Class ooadClass, int min, int max, LocalDate deadline);
 
-    ClassConfig iterationSetting(String classId, int defaultLength, int maxLength, LocalDate deadline);
+    ClassConfig iterationSetting(Class ooadClass, int defaultLength, int maxLength, LocalDate deadline);
 
     ClassDisciplineConfig disciplineSetting(IClassDisciplineConfig iClassDisciplineConfig);
 }

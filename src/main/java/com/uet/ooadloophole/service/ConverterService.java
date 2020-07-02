@@ -252,8 +252,6 @@ public class ConverterService {
 
     public DTOClassConfig convertToDTOClassConfig(ClassConfig classSetting) {
         DTOClassConfig dtoClassConfig = new DTOClassConfig();
-        dtoClassConfig.set_id(classSetting.get_id());
-        dtoClassConfig.setClassId(classSetting.getClassId());
         dtoClassConfig.setGroupLimitMax(classSetting.getGroupLimitMax());
         dtoClassConfig.setGroupLimitMin(classSetting.getGroupLimitMin());
         dtoClassConfig.setGroupRegistrationDeadline(classSetting.getGroupRegistrationDeadline().toString());

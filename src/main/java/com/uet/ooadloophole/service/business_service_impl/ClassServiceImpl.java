@@ -1,7 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.controller.interface_model.interfaces.IClassDisciplineConfig;
-import com.uet.ooadloophole.database.class_repositories.ClassConfigRepository;
 import com.uet.ooadloophole.database.class_repositories.ClassDisciplineConfigRepository;
 import com.uet.ooadloophole.database.class_repositories.ClassRepository;
 import com.uet.ooadloophole.model.business.class_elements.Class;
@@ -29,8 +28,6 @@ public class ClassServiceImpl implements ClassService {
     private StudentService studentService;
     @Autowired
     private GroupService groupService;
-    @Autowired
-    private ClassConfigRepository classConfigRepository;
     @Autowired
     private ClassDisciplineConfigRepository classDisciplineConfigRepository;
 
@@ -77,8 +74,8 @@ public class ClassServiceImpl implements ClassService {
         Class newClass = classRepository.save(ooadClass);
         Date date = new Date();
         LocalDate defaultDeadline = LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")).plusDays(14));
-        groupSetting(newClass.get_id(), 3, 5, defaultDeadline);
-        iterationSetting(newClass.get_id(), 14, 21, defaultDeadline);
+        groupSetting(newClass, 3, 5, defaultDeadline);
+        iterationSetting(newClass, 14, 21, defaultDeadline);
         return ooadClass;
     }
 
@@ -160,7 +157,8 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public ClassConfig getClassConfig(String classId) {
-        return classConfigRepository.findByClassId(classId);
+        Class ooadClass = classRepository.findBy_id(classId);
+        return ooadClass.getConfig();
     }
 
     @Override
@@ -169,33 +167,33 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public ClassConfig groupSetting(String classId, int min, int max, LocalDate deadline) {
+    public ClassConfig groupSetting(Class ooadClass, int min, int max, LocalDate deadline) {
         ClassConfig classConfig;
-        if (classConfigRepository.findByClassId(classId) != null) {
-            classConfig = classConfigRepository.findByClassId(classId);
+        if (ooadClass.getConfig() != null) {
+            classConfig = ooadClass.getConfig();
         } else {
             classConfig = new ClassConfig();
-            classConfig.setClassId(classId);
         }
         classConfig.setGroupLimitMin(min);
         classConfig.setGroupLimitMax(max);
         classConfig.setGroupRegistrationDeadline(deadline);
-        return classConfigRepository.save(classConfig);
+        ooadClass.setConfig(classConfig);
+        return classRepository.save(ooadClass).getConfig();
     }
 
     @Override
-    public ClassConfig iterationSetting(String classId, int defaultLength, int maxLength, LocalDate deadline) {
+    public ClassConfig iterationSetting(Class ooadClass, int defaultLength, int maxLength, LocalDate deadline) {
         ClassConfig classConfig;
-        if (classConfigRepository.findByClassId(classId) != null) {
-            classConfig = classConfigRepository.findByClassId(classId);
+        if (ooadClass.getConfig() != null) {
+            classConfig = ooadClass.getConfig();
         } else {
             classConfig = new ClassConfig();
-            classConfig.setClassId(classId);
         }
         classConfig.setDefaultIterationLength(defaultLength);
         classConfig.setMaxIterationLength(maxLength);
         classConfig.setIterationSetupDeadline(deadline);
-        return classConfigRepository.save(classConfig);
+        ooadClass.setConfig(classConfig);
+        return classRepository.save(ooadClass).getConfig();
     }
 
     @Override

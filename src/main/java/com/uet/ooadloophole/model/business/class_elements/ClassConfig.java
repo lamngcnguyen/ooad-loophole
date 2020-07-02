@@ -1,35 +1,15 @@
 package com.uet.ooadloophole.model.business.class_elements;
 
-import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 
 public class ClassConfig {
-    @Id
-    private String _id;
-    private String classId;
     private int groupLimitMax;
     private int groupLimitMin;
     private LocalDate groupRegistrationDeadline;
     private int defaultIterationLength;
     private int maxIterationLength;
     private LocalDate iterationSetupDeadline;
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public String getClassId() {
-        return classId;
-    }
-
-    public void setClassId(String classId) {
-        this.classId = classId;
-    }
 
     public int getGroupLimitMax() {
         return groupLimitMax;

@@ -47,7 +47,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
     }
 
     @Override
-    public RequirementSpecFile upload(MultipartFile file) throws BusinessServiceException {
+    public RequirementSpecFile upload(MultipartFile file) {
         try {
             String saveLocation = Constants.REQ_FOLDER + "temp/";
             RequirementSpecFile requirementSpecFile = new RequirementSpecFile();
@@ -60,8 +60,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
             requirementSpecFile.setUploaderId(userFile.getUploaderId());
             requirementSpecFile.setPath(saveLocation);
 
-            requirementSpecFileRepository.save(requirementSpecFile);
-            return requirementSpecFile;
+            return requirementSpecFileRepository.save(requirementSpecFile);
         } catch (FileStorageException | BusinessServiceException e) {
             throw new FileStorageException("Unable to upload file. " + e.getMessage());
         }

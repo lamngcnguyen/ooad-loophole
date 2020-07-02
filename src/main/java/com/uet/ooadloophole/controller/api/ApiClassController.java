@@ -42,7 +42,7 @@ public class ApiClassController {
     @Autowired
     private ConverterService converterService;
 
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
 
     private boolean userCanNotCreateClass() throws BusinessServiceException {
         LoopholeUser user = secureUserService.getCurrentUser();
@@ -258,8 +258,12 @@ public class ApiClassController {
         if (groupMax < groupMin) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(gson.toJson(new ResponseMessage("Minimum group size must not be greater than maximum group size")));
         } else {
-            ClassConfig classConfig = classService.groupSetting(classId, groupMin, groupMax, LocalDate.parse(deadline, formatter));
-            return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+            try {
+                ClassConfig classConfig = classService.groupSetting(classService.getById(classId), groupMin, groupMax, LocalDate.parse(deadline, formatter));
+                return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+            } catch (BusinessServiceException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            }
         }
     }
 
@@ -269,8 +273,12 @@ public class ApiClassController {
         if (maxLength < defaultLength) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(gson.toJson(new ResponseMessage("Default iteration length must not be greater than minimum iteration length")));
         } else {
-            ClassConfig classConfig = classService.iterationSetting(classId, defaultLength, maxLength, LocalDate.parse(deadline, formatter));
-            return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+            try {
+                ClassConfig classConfig = classService.iterationSetting(classService.getById(classId), defaultLength, maxLength, LocalDate.parse(deadline, formatter));
+                return ResponseEntity.status(HttpStatus.OK).body(classConfig);
+            } catch (BusinessServiceException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            }
         }
     }
 

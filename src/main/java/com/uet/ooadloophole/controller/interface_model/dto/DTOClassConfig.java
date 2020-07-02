@@ -1,30 +1,12 @@
 package com.uet.ooadloophole.controller.interface_model.dto;
 
 public class DTOClassConfig {
-    private String _id;
-    private String classId;
     private int groupLimitMax;
     private int groupLimitMin;
     private String groupRegistrationDeadline;
     private int defaultIterationLength;
     private int maxIterationLength;
     private String iterationSetupDeadline;
-
-    public String get_id() {
-        return _id;
-    }
-
-    public void set_id(String _id) {
-        this._id = _id;
-    }
-
-    public String getClassId() {
-        return classId;
-    }
-
-    public void setClassId(String classId) {
-        this.classId = classId;
-    }
 
     public int getGroupLimitMax() {
         return groupLimitMax;

@@ -11,6 +11,7 @@ public class Class {
     private int scheduledDayOfWeek;
     private int limit;
     private boolean active;
+    private ClassConfig config;
 
     public Class() {
 
@@ -77,5 +78,13 @@ public class Class {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public ClassConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(ClassConfig config) {
+        this.config = config;
     }
 }
