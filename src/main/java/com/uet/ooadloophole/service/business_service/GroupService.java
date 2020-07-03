@@ -21,4 +21,6 @@ public interface GroupService {
     void deleteById(String id) throws BusinessServiceException;
 
     void deleteAllByClassId(String classId);
+
+    void removeMember(String groupId, String memberId) throws BusinessServiceException;
 }

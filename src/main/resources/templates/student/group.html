@@ -214,7 +214,8 @@
                                                     </div>
                                                     <div class="description">
                                                         <p></p>
-                                                        <div class="ui tiny red icon labeled button right floated">
+                                                        <div class="ui tiny red icon labeled button right floated"
+                                                             onclick="showModal('.modal.remove-member')">
                                                             <i class="futbol outline icon"></i>
                                                             Yeet
                                                         </div>
@@ -334,6 +335,31 @@
             </div>
         </div>
     </div>
+    <div class="ui small modal remove-member">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red sign out alternate icon"></i>
+            Warning
+        </div>
+        <div class="content">
+            <div class="ui form remove-member">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Do you want to remove this member?</label>
+                </div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Yes
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.remove-member')">
+                    <i class="close icon"></i>
+                    No
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="ui modal" id="templates">
         <table>
             <tbody>
@@ -362,7 +388,7 @@
             </div>
             <div class="description">
                 <p></p>
-                <div class="ui tiny red icon labeled button right floated">
+                <div class="ui tiny red icon labeled right floated remove-member button">
                     <i class="futbol outline icon kick-button"></i>
                     Yeet
                 </div>
@@ -379,9 +405,14 @@
     </style>
 </div>
 <div th:fragment="member-content" class="ui stackable grid">
+    <input type="hidden" class="group-id-input" th:value="${group.get_id()}">
     <div class="row">
         <div class="column">
             <div class="header">
+                <div class="ui large blue label">
+                    <i class="users icon nav-icon"></i>
+                    <span th:text="${group.getGroupName()}"></span>
+                </div>
                 <div class="ui large grey label">
                     <i class="users icon"></i>
                     Thông tin nhóm
@@ -390,14 +421,76 @@
         </div>
     </div>
     <div class="row">
-        <div class="column">
-            <div class="ui segment members">
+        <div class="four wide column">
+            <div class="ui tabular vertical fluid menu">
+                <a class="active blue item topic" onclick="showTab('topic')">
+                    <i class="book open icon"></i>
+                    Thông tin đề tài
+                </a>
+                <a class="blue item members" onclick="showTab('members')">
+                    <i class="users icon"></i>
+                    Thông tin thành viên
+                </a>
+            </div>
+        </div>
+        <div class="twelve wide stretched column">
+            <div class="ui active tab segment topic" th:if="${topic == null}">
+                <div class="ui huge center aligned header">
+                    Your group has no topic assigned
+                </div>
+                <div class="ui horizontal divider">
+                    <span style="color: #DB2828">
+                        <i class="clock icon"></i>
+                        Deadline: 12:00 18/09/2020
+                    </span>
+                </div>
+            </div>
+            <div class="ui active tab segment topic" th:unless="${topic == null}">
+                <div class="ui blue large header">
+                    Đề tài: <span class="topic-name" th:text="${topic.getName()}"></span>
+                </div>
+                <div class="ui divider"></div>
+                <div class="ui segment" style="padding-top: 30px">
+                    <a class="ui top attached icon grey label">
+                        <i class="list icon"></i>&nbsp
+                        Mô tả
+                    </a>
+                    <span class="detail-text"
+                          th:text="${topic.getDescriptions()}">Something something</span>
+                </div>
+                <div class="ui divider"></div>
+                <table class="ui grey celled table topic-file">
+                    <thead>
+                    <tr>
+                        <th class="one wide">#</th>
+                        <th class="seven wide">Name</th>
+                        <th class="four wide">Timestamp</th>
+                        <th class="three wide center aligned"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="topic-table">
+                    <tr class="file-cell" th:each="file, iter: ${topic.getFiles()}"
+                        th:id="${'file_' + file.get_id()}">
+                        <td class="number" th:text="${iter.count}"></td>
+                        <td class="name" th:text="${file.getFileName()}"></td>
+                        <td class="timestamp"
+                            th:text="${#temporals.format(file.getTimeStamp(), 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        <td class="center aligned">
+                            <!--                    <button class="ui green icon button preview-file" data-tooltip="Preview file"><i-->
+                            <!--                            class="eye icon"></i></button>-->
+                            <a class="ui green icon button download-file" data-tooltip="Download file"
+                               th:href="${'/api/files/spec/topic/' + file.get_id()}"><i
+                                    class="download icon"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="ui tab segment members">
                 <div class="ui stackable grid">
                     <div class="row">
                         <div class="column">
-                            <div class="ui divided items members-view">
-
-                            </div>
+                            <div class="ui divided items members-view"></div>
                         </div>
                     </div>
                 </div>

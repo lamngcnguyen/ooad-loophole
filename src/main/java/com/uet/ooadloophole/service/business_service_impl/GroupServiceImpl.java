@@ -3,8 +3,10 @@ package com.uet.ooadloophole.service.business_service_impl;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.group_repositories.BoardRepository;
 import com.uet.ooadloophole.database.group_repositories.GroupRepository;
+import com.uet.ooadloophole.database.system_repositories.StudentRepository;
 import com.uet.ooadloophole.model.business.group_elements.Board;
 import com.uet.ooadloophole.model.business.group_elements.Group;
+import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.StudentService;
@@ -18,15 +20,14 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
     @Autowired
     private BoardRepository boardRepository;
-
     @Autowired
     private GroupRepository groupRepository;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Override
     public Group getById(String id) throws BusinessServiceException {
@@ -109,5 +110,17 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void deleteAllByClassId(String classId) {
         groupRepository.deleteAllByClassId(classId);
+    }
+
+    @Override
+    public void removeMember(String groupId, String memberId) throws BusinessServiceException {
+        Student student = studentRepository.findBy_id(memberId);
+        if (student.getGroupId().equals(groupId)) {
+            student.setGroupId(null);
+            userService.removeRole(student.getUserId(), Constants.ROLE_MEMBER);
+            studentRepository.save(student);
+        } else {
+            throw new BusinessServiceException("This student is not a member of this group");
+        }
     }
 }

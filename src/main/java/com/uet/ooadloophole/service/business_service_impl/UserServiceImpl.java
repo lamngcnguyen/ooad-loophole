@@ -222,8 +222,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         try {
             LoopholeUser dbUser = getById(userId);
             Role dbRole = roleService.getByName(roleName);
-            dbUser.getRoles().remove(dbRole);
-            userRepository.save(dbUser);
+            if (dbUser.getRoles().removeIf(role -> role.getId().equals(dbRole.getId()))) {
+                userRepository.save(dbUser);
+            } else {
+                throw new BusinessServiceException("Role not removed");
+            }
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to remove role from user: " + e.getMessage());
         }

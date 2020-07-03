@@ -25,6 +25,4 @@ public interface TopicService {
     Topic assignToGroup(String topicId, String groupId) throws BusinessServiceException;
 
     void removeFromGroup(String topicId) throws BusinessServiceException;
-
-    boolean isAlreadyAssigned(String topicId) throws BusinessServiceException;
 }

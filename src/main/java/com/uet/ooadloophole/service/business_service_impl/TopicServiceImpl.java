@@ -110,14 +110,4 @@ public class TopicServiceImpl implements TopicService {
             throw new BusinessServiceException("Unable to remove topic from group: " + e.getMessage());
         }
     }
-
-    @Override
-    public boolean isAlreadyAssigned(String topicId) throws BusinessServiceException {
-        try {
-            Topic dbTopic = getById(topicId);
-            return dbTopic.getGroupId() != null;
-        } catch (BusinessServiceException e) {
-            throw new BusinessServiceException("Unable to get topic status: " + e.getMessage());
-        }
-    }
 }

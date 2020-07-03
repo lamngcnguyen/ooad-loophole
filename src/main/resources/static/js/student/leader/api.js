@@ -5,6 +5,7 @@ $.fn.api.settings.api = {
     'get topic files': '/api/files/spec/topics/{topicId}',
     'invite student': '/api/groups/invite',
     'get group members': '/api/groups/{id}/members',
+    'remove group member': '/api/groups/{id}/members',
     'get students with no group': '/api/classes/{classId}/students/withoutGroup',
     'get iterations': '/api/iterations/{groupId}/group',
     'get iteration': '/api/iterations/{id}',

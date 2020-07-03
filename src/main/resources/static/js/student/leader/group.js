@@ -136,3 +136,28 @@ $('.form.invite-student').form({
         members: validationRules.members,
     }
 });
+
+$('.form.remove-member').form({
+    onSuccess: function (evt, data) {
+        const memberId = data['id'];
+        $.api({
+            action: 'remove group member',
+            on: 'now',
+            method: 'delete',
+            urlData: {id: $('.group-id-input').val()},
+            data: {memberId: memberId},
+            onFailure: function (response) {
+                $('.form.invite-student').form('add errors', [response]);
+            },
+            onSuccess: function () {
+                hideModal('.modal.remove-member');
+                $(`.item#${memberId}`).remove();
+                $('.my-center.flex').toast({
+                    message: 'Member removed',
+                    position: 'bottom right',
+                    class: 'green'
+                })
+            }
+        })
+    }
+})

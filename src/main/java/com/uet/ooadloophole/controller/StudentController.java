@@ -90,10 +90,12 @@ public class StudentController {
 
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ModelAndView getGroupView() throws BusinessServiceException {
+        String pageTitle = "Group Setting";
+        ModelAndView modelAndView = getStudentView(pageTitle, new BodyFragment("student/group", "content"));
+
         Date date = new Date();
         LocalDate today = LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")));
         Student student = studentService.getByUserId(secureUserService.getCurrentUser().get_id());
-        Group group = groupService.getById(student.getGroupId());
         ClassConfig classConfig = classService.getById(student.getClassId()).getConfig();
         boolean groupSetupDeadlineMet;
         try {
@@ -102,14 +104,11 @@ public class StudentController {
             //TODO: Show class not configured page
             return new ModelAndView("error");
         }
-        String pageTitle = "Group Setting";
-        ModelAndView modelAndView = getStudentView(pageTitle, new BodyFragment("student/group", "content"));
-        modelAndView.addObject("group", group);
         modelAndView.addObject("isSetupPhase", !groupSetupDeadlineMet);
         try {
             DTOTopic topic = converterService.convertToDTOTopic(topicService.getByGroupId(student.getGroupId()));
             modelAndView.addObject("topic", topic);
-        } catch (BusinessServiceException e) {
+        } catch (Exception e) {
             modelAndView.addObject("topic", null);
         }
         return modelAndView;
@@ -210,9 +209,11 @@ public class StudentController {
                 if (student.getGroupId() == null) {
                     modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/unassigned", "body-content"), currentUser);
                 } else {
+                    Group group = groupService.getById(student.getGroupId());
                     String roleFolder = currentUser.hasRole("group_leader") ? "leader" : "member";
                     bodyFragment.setFragment(roleFolder + "-" + bodyFragment.getFragment());
                     modelAndView = masterPageService.getMasterPage(pageTitle, bodyFragment, currentUser);
+                    modelAndView.addObject("group", group);
                 }
                 modelAndView.addObject("student", student);
             } else {

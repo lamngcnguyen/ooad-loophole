@@ -64,15 +64,10 @@ public class ApiGroupController {
         return ResponseEntity.status(HttpStatus.OK).body(students);
     }
 
-    @RequestMapping(value = "/{userId}/members", method = RequestMethod.GET)
-    public ResponseEntity<Object> getGroupByUserId(@PathVariable String userId) {
-        try {
-            Student student = studentService.getByUserId(userId);
-            List<Student> students = studentService.getByGroup(student.getGroupId());
-            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(students)));
-        } catch (BusinessServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body((e.getMessage()));
-        }
+    @RequestMapping(value = "/{groupId}/members", method = RequestMethod.GET)
+    public ResponseEntity<String> getGroupMembers(@PathVariable String groupId) {
+        List<Student> students = studentService.getByGroup(groupId);
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(students)));
     }
 
     @RequestMapping(value = "/{id}/topic", method = RequestMethod.GET)
@@ -139,6 +134,16 @@ public class ApiGroupController {
         try {
             List<Request> requests = requestService.createInvitation(iInvitation.getGroupId(), iInvitation.getMembers(), iInvitation.getMessage());
             return ResponseEntity.status(HttpStatus.OK).body(requests);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/{id}/members", method = RequestMethod.DELETE)
+    public ResponseEntity<String> removeMember(@PathVariable String id, String memberId) {
+        try {
+            groupService.removeMember(id, memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("Removed")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
