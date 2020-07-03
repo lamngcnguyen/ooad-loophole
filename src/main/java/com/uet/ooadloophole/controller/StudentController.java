@@ -2,6 +2,7 @@ package com.uet.ooadloophole.controller;
 
 import com.uet.ooadloophole.controller.interface_model.BodyFragment;
 import com.uet.ooadloophole.controller.interface_model.dto.DTOAssignment;
+import com.uet.ooadloophole.controller.interface_model.dto.DTOTopic;
 import com.uet.ooadloophole.model.business.class_elements.Assignment;
 import com.uet.ooadloophole.model.business.class_elements.Class;
 import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
@@ -41,6 +42,8 @@ public class StudentController {
     private RequestService requestService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private TopicService topicService;
     @Autowired
     private WorkItemService workItemService;
     @Autowired
@@ -86,9 +89,30 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.GET)
-    public ModelAndView getGroupView() {
+    public ModelAndView getGroupView() throws BusinessServiceException {
+        Date date = new Date();
+        LocalDate today = LocalDate.from(date.toInstant().atZone(ZoneId.of("GMT+7")));
+        Student student = studentService.getByUserId(secureUserService.getCurrentUser().get_id());
+        Group group = groupService.getById(student.getGroupId());
+        ClassConfig classConfig = classService.getById(student.getClassId()).getConfig();
+        boolean groupSetupDeadlineMet;
+        try {
+            groupSetupDeadlineMet = today.compareTo(classConfig.getIterationSetupDeadline()) > 0;
+        } catch (Exception e) {
+            //TODO: Show class not configured page
+            return new ModelAndView("error");
+        }
         String pageTitle = "Group Setting";
-        return getStudentView(pageTitle, new BodyFragment("student/group", "content"));
+        ModelAndView modelAndView = getStudentView(pageTitle, new BodyFragment("student/group", "content"));
+        modelAndView.addObject("group", group);
+        modelAndView.addObject("isSetupPhase", !groupSetupDeadlineMet);
+        try {
+            DTOTopic topic = converterService.convertToDTOTopic(topicService.getByGroupId(student.getGroupId()));
+            modelAndView.addObject("topic", topic);
+        } catch (BusinessServiceException e) {
+            modelAndView.addObject("topic", null);
+        }
+        return modelAndView;
     }
 
     @RequestMapping(value = "/iteration", method = RequestMethod.GET)

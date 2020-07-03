@@ -43,6 +43,11 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public List<Topic> getUnassignedByClassId(String classId) {
+        return topicRepository.findAllByClassIdAndGroupIdNull(classId);
+    }
+
+    @Override
     public List<Topic> searchByNameOrDescription(String keyword) {
         return topicRepository.findAllByNameLikeOrDescriptionsLike(keyword, keyword);
     }
@@ -77,12 +82,19 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void assignToGroup(String topicId, String groupId) throws BusinessServiceException {
+    public Topic assignToGroup(String topicId, String groupId) throws BusinessServiceException {
         try {
             Topic dbTopic = getById(topicId);
             Group dbGroup = groupService.getById(groupId);
+            Topic groupTopic = getByGroupId(dbGroup.get_id());
+            if (dbTopic.getGroupId() != null) {
+                throw new BusinessServiceException("This topic is already assigned!");
+            } else if (groupTopic != null) {
+                groupTopic.setGroupId(null);
+                topicRepository.save(groupTopic);
+            }
             dbTopic.setGroupId(dbGroup.get_id());
-            topicRepository.save(dbTopic);
+            return topicRepository.save(dbTopic);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to assign topic to group: " + e.getMessage());
         }

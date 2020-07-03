@@ -216,6 +216,20 @@ public class ApiClassController {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoTopics)));
     }
 
+    @RequestMapping(value = "/{classId}/topics/unassigned", method = RequestMethod.GET)
+    public ResponseEntity<String> getUnassignedTopics(@PathVariable String classId) {
+        List<Topic> topics = topicService.getUnassignedByClassId(classId);
+        List<DTOTopic> dtoTopics = new ArrayList<>();
+        topics.forEach(topic -> {
+            try {
+                dtoTopics.add(converterService.convertToDTOTopic(topic));
+            } catch (BusinessServiceException e) {
+                System.out.println(e.getMessage());
+            }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoTopics)));
+    }
+
     @RequestMapping(value = "/{classId}/groups", method = RequestMethod.GET)
     public ResponseEntity<String> getGroups(@PathVariable String classId) {
         List<Group> groups = groupService.getAllByClassId(classId);

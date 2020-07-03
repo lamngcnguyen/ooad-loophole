@@ -1,4 +1,8 @@
 $.fn.api.settings.api = {
+    'get topics': '/api/classes/{classId}/topics/unassigned',
+    'select topic': '/api/topics/{topicId}/assign',
+    'get topic details': '/api/topics/{topicId}',
+    'get topic files': '/api/files/spec/topics/{topicId}',
     'invite student': '/api/groups/invite',
     'get group members': '/api/groups/{id}/members',
     'get students with no group': '/api/classes/{classId}/students/withoutGroup',

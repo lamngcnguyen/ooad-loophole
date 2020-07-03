@@ -1,3 +1,92 @@
+$('.dropdown.topic-dropdown').dropdown({
+    showOnFocus: false,
+}).api({
+    action: 'get topics',
+    method: 'get',
+    urlData: {classId: $('.class-id-input').val()},
+    on: 'now',
+    onSuccess(response, element, xhr) {
+        const values = [];
+        xhr.responseJSON.data.forEach(function (group) {
+            values.push({
+                value: group._id,
+                name: group.name,
+                text: group.name,
+            })
+        });
+        $(element).dropdown('change values', values);
+    }
+});
+
+$('.form.select-topic').form({
+    onSuccess: function (evt, data) {
+        $.api({
+            action: 'select topic',
+            on: 'now',
+            method: 'post',
+            urlData: {
+                topicId: data.topicId
+            },
+            data: {
+                groupId: $('.group-id-input').val()
+            },
+            onFailure: function (response) {
+                $('.form.select-topic').form('add errors', [response]);
+            },
+            onSuccess: function () {
+                window.location.reload();
+            }
+        })
+    }
+})
+
+function showTopicDetails() {
+    const topicId = $('.form.select-topic').form('get value', 'topicId');
+    if (topicId !== "") {
+        $.api({
+            action: 'get topic details',
+            on: 'now',
+            method: 'get',
+            urlData: {
+                topicId: topicId
+            },
+            onFailure: function (response) {
+                $('.form.select-topic').form('add errors', [response]);
+            },
+            onSuccess: function (topic) {
+                showModal('.modal.topic-details');
+                $('.modal.topic-details .topic-name').text(topic.name);
+                $('.modal.topic-details .description-text').text(topic.descriptions);
+                loadTopicFiles(topic)
+            }
+        })
+    } else {
+        $('.my-center.flex').toast({
+            message: 'No topic selected',
+            position: 'bottom right',
+            class: 'red'
+        })
+    }
+}
+
+function loadTopicFiles(topic) {
+    const topicFileTable = $('.topic-table');
+    topicFileTable.empty();
+    let fileCount = 0;
+    topic.files.forEach(function (file) {
+        const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+        fileCount++;
+        const fileCell = $('#templates .file-cell').clone();
+        fileCell.prop('id', 'file_' + file._id);
+        fileCell.find('.number').text(fileCount);
+        fileCell.find('.name').text(file.fileName);
+        fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+        fileCell.find('.download-file').prop('href', '/api/files/spec/topic/' + file._id);
+        topicFileTable.append(fileCell);
+        // $('#templates table').remove(fileCell);
+    })
+}
+
 $('.dropdown.unassigned-student-dropdown').dropdown({
     showOnFocus: false,
 }).api({

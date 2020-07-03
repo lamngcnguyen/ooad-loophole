@@ -12,6 +12,8 @@ public interface TopicRepository extends MongoRepository<Topic, String> {
 
     List<Topic> findAllByClassId(String classId);
 
+    List<Topic> findAllByClassIdAndGroupIdNull(String classId);
+
     List<Topic> deleteAllByClassId(String classId);
 
     List<Topic> findAllByNameLikeOrDescriptionsLike(String name, String descriptions);

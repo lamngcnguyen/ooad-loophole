@@ -8,9 +8,14 @@
 <div th:fragment="leader-content" class="ui stackable grid">
     <div class="ui blue toast" id="domtoast"></div>
     <input type="hidden" class="class-id-input" th:value="${student.getClassId()}">
+    <input type="hidden" class="group-id-input" th:value="${group.get_id()}">
     <div class="row">
         <div class="column">
             <div class="header">
+                <div class="ui large blue label">
+                    <i class="users icon nav-icon"></i>
+                    <span th:text="${group.getGroupName()}"></span>
+                </div>
                 <div class="ui large grey label">
                     <i class="users icon"></i>
                     Quản lý nhóm
@@ -24,11 +29,11 @@
                 <div class="row">
                     <div class="four wide column">
                         <div class="ui tabular vertical fluid menu">
-                            <a class="item topic-management" onclick="showTab('topic-management')">
+                            <a class="active blue item topic-management" onclick="showTab('topic-management')">
                                 <i class="book open icon"></i>
                                 Quản lí đề tài
                             </a>
-                            <a class="active blue item members" onclick="showTab('members')">
+                            <a class="blue item members" onclick="showTab('members')">
                                 <i class="users icon"></i>
                                 Quản lí thành viên
                             </a>
@@ -43,7 +48,89 @@
                         </div>
                     </div>
                     <div class="twelve wide stretched column">
-                        <div class="ui active tab segment members">
+                        <div class="ui active tab segment topic-management" th:if="${topic == null}">
+                            <div class="ui huge center aligned header">
+                                Your group has no topic assigned
+                            </div>
+                            <div class="ui horizontal divider">
+                                <span style="color: #DB2828">
+                                    <i class="clock icon"></i>
+                                    Deadline: 12:00 18/09/2020
+                                </span>
+                            </div>
+                            <div class="ui form select-topic">
+                                <div class="field">
+                                    <div class="fields">
+                                        <div class="eleven wide field">
+                                            <div class="ui search selection dropdown topic-dropdown">
+                                                <input type="hidden" name="topicId">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text">Select topic</div>
+                                            </div>
+                                        </div>
+                                        <div class="five wide field">
+                                            <div class="ui green right floated icon labeled submit button">
+                                                <i class="paper plane icon"></i>
+                                                Select topic
+                                            </div>
+                                            <div class="ui blue icon right floated labeled button"
+                                                 onclick="showTopicDetails()">
+                                                <i class="search icon"></i>
+                                                View details
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui error message"></div>
+                            </div>
+                        </div>
+                        <div class="ui active tab segment topic-management" th:unless="${topic == null}">
+                            <div class="ui blue large header">
+                                Đề tài: <span class="topic-name" th:text="${topic.getName()}"></span>
+                                <button class="ui right floated blue small basic icon edit-iteration button"
+                                        style="padding-top: 10px" data-tooltip="Change topic" th:if="${isSetupPhase}"
+                                        onclick="showModal('.modal.change-topic')">
+                                    <i class="pencil icon"></i>
+                                </button>
+                            </div>
+                            <div class="ui divider"></div>
+                            <div class="ui segment" style="padding-top: 30px">
+                                <a class="ui top attached icon grey label">
+                                    <i class="list icon"></i>&nbsp
+                                    Mô tả
+                                </a>
+                                <span class="detail-text"
+                                      th:text="${topic.getDescriptions()}">Something something</span>
+                            </div>
+                            <div class="ui divider"></div>
+                            <table class="ui grey celled table topic-file">
+                                <thead>
+                                <tr>
+                                    <th class="one wide">#</th>
+                                    <th class="seven wide">Name</th>
+                                    <th class="four wide">Timestamp</th>
+                                    <th class="three wide center aligned"></th>
+                                </tr>
+                                </thead>
+                                <tbody class="topic-table">
+                                <tr class="file-cell" th:each="file, iter: ${topic.getFiles()}"
+                                    th:id="${'file_' + file.get_id()}">
+                                    <td class="number" th:text="${iter.count}"></td>
+                                    <td class="name" th:text="${file.getFileName()}"></td>
+                                    <td class="timestamp"
+                                        th:text="${#temporals.format(file.getTimeStamp(), 'dd/MM/yyyy HH:mm:ss')}"></td>
+                                    <td class="center aligned">
+                                        <!--                    <button class="ui green icon button preview-file" data-tooltip="Preview file"><i-->
+                                        <!--                            class="eye icon"></i></button>-->
+                                        <a class="ui green icon button download-file" data-tooltip="Download file"
+                                           th:href="${'/api/files/spec/topic/' + file.get_id()}"><i
+                                                class="download icon"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="ui tab segment members">
                             <div class="ui stackable grid">
                                 <div class="row">
                                     <div class="column">
@@ -99,17 +186,6 @@
                             <div class="ui green icon labeled button">
                                 <i class="save icon"></i>
                                 Lưu
-                            </div>
-                        </div>
-                        <div class="ui tab segment topic-management">
-                            <div class="ui header">
-                                Đề tài: <span>Làm tool OOAD</span>
-                            </div>
-                            <div class="ui divider"></div>
-                            <div class="ui segment">
-                                <div class="content">
-                                    <span class="detail-text">something</span>
-                                </div>
                             </div>
                         </div>
                         <div class="ui tab segment guests">
@@ -189,6 +265,91 @@
                 </button>
             </div>
         </div>
+    </div>
+    <div class="ui small modal change-topic">
+        <div class="ui large header">
+            <i class="blue large pencil icon"></i>
+            Change topic
+        </div>
+        <div class="content">
+            <div class="ui form select-topic">
+                <div class="field">
+                    <div class="fields">
+                        <div class="eleven wide field">
+                            <div class="ui search selection dropdown topic-dropdown">
+                                <input type="hidden" name="topicId">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Select topic</div>
+                            </div>
+                        </div>
+                        <div class="five wide field">
+                            <div class="ui blue icon right floated labeled button"
+                                 onclick="showTopicDetails()">
+                                <i class="search icon"></i>
+                                View details
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.change-topic')">
+                    <i class="close icon"></i>
+                    Hủy
+                </div>
+                <div class="ui green right floated icon labeled submit button">
+                    <i class="paper plane icon"></i>
+                    Select topic
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui modal topic-details">
+        <div class="ui large header">
+            <i class="green large info circle icon"></i>
+            <span class="topic-name"></span>
+        </div>
+        <div class="content">
+            <div class="ui segment" style="padding-top: 30px">
+                <a class="ui top attached icon grey label">
+                    <i class="list icon"></i>&nbsp
+                    Mô tả
+                </a>
+                <span class="description-text">Something something</span>
+            </div>
+            <div class="ui divider"></div>
+            <table class="ui grey celled table topic-file">
+                <thead>
+                <tr>
+                    <th class="one wide">#</th>
+                    <th class="seven wide">Name</th>
+                    <th class="four wide">Timestamp</th>
+                    <th class="three wide center aligned"></th>
+                </tr>
+                </thead>
+                <tbody class="topic-table"></tbody>
+            </table>
+            <div class="ui grey labeled icon button" onclick="hideModal('.modal.topic-details')">
+                <i class="close icon"></i>
+                Close
+            </div>
+        </div>
+    </div>
+    <div class="ui modal" id="templates">
+        <table>
+            <tbody>
+            <tr class="file-cell">
+                <td class="number"></td>
+                <td class="name"></td>
+                <td class="timestamp"></td>
+                <td class="center aligned">
+                    <!--                    <button class="ui green icon button preview-file" data-tooltip="Preview file"><i-->
+                    <!--                            class="eye icon"></i></button>-->
+                    <a class="ui green icon button download-file" data-tooltip="Download file"><i
+                            class="download icon"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div class="item group-member-template" style="display: none">
         <div class="ui tiny circular image">

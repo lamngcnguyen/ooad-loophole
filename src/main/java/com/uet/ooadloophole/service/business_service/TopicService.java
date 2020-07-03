@@ -12,6 +12,8 @@ public interface TopicService {
 
     List<Topic> getAllByClassId(String classId);
 
+    List<Topic> getUnassignedByClassId(String classId);
+
     List<Topic> searchByNameOrDescription(String keyword);
 
     Topic create(Topic topic);
@@ -20,7 +22,7 @@ public interface TopicService {
 
     void delete(String topicId) throws BusinessServiceException;
 
-    void assignToGroup(String topicId, String groupId) throws BusinessServiceException;
+    Topic assignToGroup(String topicId, String groupId) throws BusinessServiceException;
 
     void removeFromGroup(String topicId) throws BusinessServiceException;
 
