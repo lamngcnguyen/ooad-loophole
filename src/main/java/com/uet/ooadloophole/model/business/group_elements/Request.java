@@ -6,7 +6,7 @@ public class Request {
     @Id
     private String _id;
     private String groupId;
-    private String receiverId;
+    private String userId;
     private String message;
     private String type;
 
@@ -26,12 +26,12 @@ public class Request {
         this.groupId = groupId;
     }
 
-    public String getReceiverId() {
-        return receiverId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getMessage() {

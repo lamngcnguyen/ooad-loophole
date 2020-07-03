@@ -20,9 +20,9 @@ public class ApiRequestController {
     Gson gson = new Gson();
 
     @RequestMapping(value = "/invitation/accept", method = RequestMethod.POST)
-    public ResponseEntity<String> acceptInvitation(String student_id, String invitationId) {
+    public ResponseEntity<String> acceptInvitation(String userId, String invitationId) {
         try {
-            requestService.acceptInvitation(student_id, invitationId);
+            requestService.acceptInvitation(userId, invitationId);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("accepted")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -30,9 +30,39 @@ public class ApiRequestController {
     }
 
     @RequestMapping(value = "/invitation/deny", method = RequestMethod.POST)
-    public ResponseEntity<String> denyInvitation(String student_id, String invitationId) {
+    public ResponseEntity<String> denyInvitation(String userId, String invitationId) {
         try {
-            requestService.denyInvitation(student_id, invitationId);
+            requestService.denyInvitation(userId, invitationId);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("denied")));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/request", method = RequestMethod.POST)
+    public ResponseEntity<Object> createRequest(String userId, String groupId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(requestService.createRequest(groupId, userId));
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/request/accept", method = RequestMethod.POST)
+    public ResponseEntity<String> acceptRequest(String userId, String requestId) {
+        try {
+            requestService.acceptRequest(userId, requestId);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("accepted")));
+        } catch (BusinessServiceException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/request/deny", method = RequestMethod.POST)
+    public ResponseEntity<String> denyRequest(String userId, String requestId) {
+        try {
+            requestService.denyRequest(userId, requestId);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("denied")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

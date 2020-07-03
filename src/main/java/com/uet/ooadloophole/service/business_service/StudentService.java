@@ -34,7 +34,7 @@ public interface StudentService {
 
     Student update(String id, Student student) throws BusinessServiceException;
 
-    void assignGroup(String id, String groupId) throws BusinessServiceException;
+    void assignGroup(Student student, String groupId) throws BusinessServiceException;
 
     void delete(String studentId) throws BusinessServiceException;
 

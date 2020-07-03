@@ -88,6 +88,32 @@ public class StudentController {
         }
     }
 
+    @RequestMapping(value = "/request/{id}", method = RequestMethod.GET)
+    public ModelAndView getRequestView(@PathVariable String id) {
+        try {
+            Request request = requestService.getById(id);
+            ModelAndView modelAndView;
+            LoopholeUser currentUser = secureUserService.getCurrentUser();
+            Student student = studentService.getByUserId(currentUser.get_id());
+            if (request != null) {
+                Student requester = studentService.getByUserId(request.getUserId());
+                Group group = groupService.getById(request.getGroupId());
+                String pageTitle = requester.getFullName() + " have requested to join " + group.getGroupName();
+                modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/request", "body-content"), currentUser);
+                modelAndView.addObject("request", request);
+                modelAndView.addObject("group", group);
+                modelAndView.addObject("student", student);
+                modelAndView.addObject("requester", requester);
+            } else {
+                String pageTitle = "Invalid Invitation";
+                modelAndView = masterPageService.getMasterPage(pageTitle, new BodyFragment("student/invitation", "invalid-content"), currentUser);
+            }
+            return modelAndView;
+        } catch (BusinessServiceException e) {
+            return new ModelAndView("forbidden");
+        }
+    }
+
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ModelAndView getGroupView() throws BusinessServiceException {
         String pageTitle = "Group Setting";

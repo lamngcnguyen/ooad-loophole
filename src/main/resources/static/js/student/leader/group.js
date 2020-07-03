@@ -147,7 +147,7 @@ $('.form.remove-member').form({
             urlData: {id: $('.group-id-input').val()},
             data: {memberId: memberId},
             onFailure: function (response) {
-                $('.form.invite-student').form('add errors', [response]);
+                $('.form.remove-member').form('add errors', [response]);
             },
             onSuccess: function () {
                 hideModal('.modal.remove-member');

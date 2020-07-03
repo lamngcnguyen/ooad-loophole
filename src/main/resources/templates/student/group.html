@@ -9,6 +9,7 @@
     <div class="ui blue toast" id="domtoast"></div>
     <input type="hidden" class="class-id-input" th:value="${student.getClassId()}">
     <input type="hidden" class="group-id-input" th:value="${group.get_id()}">
+    <input type="hidden" class="student-id-input" th:value="${student.get_id()}">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -406,6 +407,7 @@
 </div>
 <div th:fragment="member-content" class="ui stackable grid">
     <input type="hidden" class="group-id-input" th:value="${group.get_id()}">
+    <input type="hidden" class="student-id-input" th:value="${student.get_id()}">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -417,6 +419,11 @@
                     <i class="users icon"></i>
                     Thông tin nhóm
                 </div>
+                <button class="ui right floated red small icon leave-group button"
+                        style="padding-top: 10px" th:if="${isSetupPhase}"
+                        onclick="showModal('.modal.leave-group')">
+                    <i class="sign out alternate icon"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -493,6 +500,31 @@
                             <div class="ui divided items members-view"></div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui modal leave-group">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red sign out alternate icon"></i>
+            Warning
+        </div>
+        <div class="content">
+            <div class="ui form leave-group">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Do you want to leave this group?</label>
+                </div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Yes
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.leave-group')">
+                    <i class="close icon"></i>
+                    No
                 </div>
             </div>
         </div>

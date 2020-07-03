@@ -93,7 +93,7 @@ public class ApiGroupController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<String> addMember(String id, String groupId) {
         try {
-            studentService.assignGroup(id, groupId);
+            studentService.assignGroup(studentService.getById(id), groupId);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("Added")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

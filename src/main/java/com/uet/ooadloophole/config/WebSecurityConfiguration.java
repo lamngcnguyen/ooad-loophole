@@ -78,6 +78,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/files/upload/repo").hasAnyAuthority("STUDENT", "GROUP_LEADER", "GROUP_MEMBER")
                 .antMatchers("/api/files/upload/spec/topic").hasAuthority("TEACHER")
                 .antMatchers("/api/groups/**").hasAnyAuthority("ADMIN", "TEACHER", "STUDENT", "GROUP_LEADER", "GROUP_MEMBER")
+                .antMatchers("/api/invitation/**").hasAnyAuthority("STUDENT", "GROUP_LEADER", "GROUP_MEMBER")
+                .antMatchers("/api/request/**").hasAnyAuthority("STUDENT", "GROUP_LEADER", "GROUP_MEMBER")
                 .antMatchers("/register/**", "/", "/login").permitAll()
                 .antMatchers("/reset", "/resetAccount**").permitAll()
                 .antMatchers("/activate-account**").permitAll()

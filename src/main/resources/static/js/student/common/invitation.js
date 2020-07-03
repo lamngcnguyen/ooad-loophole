@@ -1,4 +1,4 @@
-const student_id = $("#student_id").val();
+const userId = $("#user-id").val();
 const invitationId = $("#invitationId").val();
 
 function acceptInvitation() {
@@ -7,7 +7,7 @@ function acceptInvitation() {
         on: 'now',
         method: 'post',
         data: {
-            student_id: student_id,
+            userId: userId,
             invitationId: invitationId
         },
         onSuccess: function () {
@@ -25,7 +25,7 @@ function denyInvitation() {
         on: 'now',
         method: 'post',
         data: {
-            student_id: student_id,
+            userId: userId,
             invitationId: invitationId
         },
         onSuccess: function () {

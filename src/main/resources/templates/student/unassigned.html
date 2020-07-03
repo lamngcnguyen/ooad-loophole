@@ -7,6 +7,7 @@
 <body>
 <div th:fragment="body-content" class="ui stackable grid">
     <input type="hidden" class="class-id-input" th:value="${student.getClassId()}">
+    <input type="hidden" class="student-id-input" th:value="${student.get_id()}">
     <div class="row">
         <div class="nine wide centered column">
             <div class="ui huge center aligned header">
@@ -22,24 +23,25 @@
     </div>
     <div class="row">
         <div class="nine wide centered column">
-            <div class="ui form">
+            <div class="ui form create-request">
                 <div class="field">
                     <div class="fields">
                         <div class="eleven wide field">
                             <div class="ui search selection dropdown group-dropdown">
-                                <input type="hidden">
+                                <input name="groupId" type="hidden">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">Chọn nhóm</div>
                             </div>
                         </div>
                         <div class="five wide field">
-                            <div class="ui green right floated icon labeled button">
+                            <div class="ui green right floated icon labeled submit button">
                                 <i class="paper plane icon"></i>
                                 Gửi yêu cầu
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="ui error message"></div>
             </div>
         </div>
     </div>

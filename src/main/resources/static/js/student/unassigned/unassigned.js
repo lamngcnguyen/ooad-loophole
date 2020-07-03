@@ -59,3 +59,27 @@ $('.dropdown.unassigned-student-dropdown').dropdown({
         $(element).dropdown('change values', values);
     }
 });
+
+$('.form.create-request').form({
+    onSuccess: function (evt, data) {
+        $.api({
+            action: 'create request',
+            on: 'now',
+            method: 'post',
+            data: {
+                userId: $('.student-id-input').val(),
+                groupId: data['groupId']
+            },
+            onFailure: function (response) {
+                $('.form.create-request').form('add errors', [response]);
+            },
+            onSuccess: function () {
+                $('body').toast({
+                    message: 'Request sent',
+                    position: 'bottom right',
+                    class: 'green'
+                })
+            }
+        })
+    },
+});

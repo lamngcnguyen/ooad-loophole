@@ -28,6 +28,24 @@ function loadGroupMember(data) {
     })
 }
 
+$('.form.leave-group').form({
+    onSuccess: function (evt, data) {
+        $.api({
+            action: 'remove group member',
+            on: 'now',
+            method: 'delete',
+            urlData: {id: $('.group-id-input').val()},
+            data: {memberId: $('.student-id-input').val()},
+            onFailure: function (response) {
+                $('.form.leave-group').form('add errors', [response]);
+            },
+            onSuccess: function () {
+                window.location.reload();
+            }
+        })
+    }
+})
+
 $(document).ready(function () {
     $.api({
         action: 'get group members',

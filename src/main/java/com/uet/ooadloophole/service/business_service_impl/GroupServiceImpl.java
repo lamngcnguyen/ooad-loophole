@@ -63,7 +63,7 @@ public class GroupServiceImpl implements GroupService {
             board.setGroupId(groupRepository.save(group).get_id());
             boardRepository.save(board);
             userService.assignRoles(group.getLeader().getUserId(), new String[]{Constants.ROLE_LEADER, Constants.ROLE_MEMBER});
-            studentService.assignGroup(group.getLeader().get_id(), group.get_id());
+            studentService.assignGroup(group.getLeader(), group.get_id());
             return group;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to createInvitation group: " + e.getMessage());

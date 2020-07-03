@@ -153,8 +153,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void assignGroup(String id, String groupId) throws BusinessServiceException {
-        Student student = getById(id);
+    public void assignGroup(Student student, String groupId) throws BusinessServiceException {
         student.setGroupId(groupId);
         userService.assignRole(student.getUserId(), Constants.ROLE_MEMBER);
         studentRepository.save(student);
