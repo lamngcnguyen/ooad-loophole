@@ -24,7 +24,7 @@ $('.form.general-settings').form({
                     class: 'green'
                 });
                 $('#class-name').text(response.className)
-                window.history.replaceState('page2', response.className, `/teacher/class/${response.className}/settings`);
+                window.history.replaceState('', response.className, `/teacher/class/${response.className}/settings`);
             }
         });
     },
