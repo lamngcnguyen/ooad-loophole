@@ -24,7 +24,8 @@ $.fn.api.settings.api = {
     'get assignment': '/api/assignments/{id}',
     'create assignment': '/api/assignments',
     'edit assignment': '/api/assignments/{id}',
-    'delete assignment': '/api/assignments/{id}'
+    'delete assignment': '/api/assignments/{id}',
+    'get grading templates': '/api/grading-template/teacher/{teacherId}'
 };
 
 const UPLOAD_TIMEOUT = 10000;
