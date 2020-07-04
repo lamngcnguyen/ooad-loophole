@@ -1,17 +1,14 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.group_repositories.BoardRepository;
-import com.uet.ooadloophole.database.group_repositories.GroupRepository;
 import com.uet.ooadloophole.database.group_repositories.WorkItemLogRepository;
 import com.uet.ooadloophole.database.group_repositories.WorkItemRepository;
 import com.uet.ooadloophole.database.system_repositories.StudentRepository;
-import com.uet.ooadloophole.model.business.group_elements.Board;
-import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.model.business.group_elements.WorkItemLog;
 import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.IterationService;
 import com.uet.ooadloophole.service.business_service.WorkItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,49 +21,36 @@ import java.util.List;
 @Service
 public class WorkItemServiceImpl implements WorkItemService {
     @Autowired
-    private BoardRepository boardRepository;
-    @Autowired
     private WorkItemRepository workItemRepository;
     @Autowired
     private SecureUserService secureUserService;
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
-    private GroupRepository groupRepository;
-    @Autowired
     private WorkItemLogRepository workItemLogRepository;
+    @Autowired
+    private IterationService iterationService;
 
     @Override
     public List<WorkItem> getByGroupAndStatus(String groupId, String status) {
         try {
-            Board board = getBoardByGroup(groupId);
-            return workItemRepository.findAllByBoardIdAndStatus(board.get_id(), status);
+            return workItemRepository.findAllByGroupIdAndStatus(groupId, status);
         } catch (NullPointerException e) {
             return new ArrayList<>();
         }
     }
 
     @Override
-    public Board getBoardByGroup(String groupId) {
-        return boardRepository.findByGroupId(groupId);
-    }
-
-    @Override
     public WorkItem createTask(String name) throws BusinessServiceException {
         Student creator = studentRepository.findByUserId(secureUserService.getCurrentUser().get_id());
-        Group group = groupRepository.findBy_id(creator.getGroupId());
-        Board board = boardRepository.findByGroupId(group.get_id());
         WorkItem workItem = new WorkItem();
         workItem.setName(name);
         workItem.setCreator(creator);
-        if (board == null) {
-            Board newBoard = new Board();
-            newBoard.setGroupId(group.get_id());
-            board = boardRepository.save(newBoard);
-        }
-        workItem.setCreatedDateTime(LocalDateTime.now());
+        workItem.setIteration(iterationService.getCurrentIteration(creator.getGroupId()));
+        workItem.setCreatedDate(LocalDateTime.now());
         workItem.setStatus("New");
-        workItem.setBoardId(board.get_id());
+        workItem.setPriority(1);
+        workItem.setGroupId(creator.getGroupId());
         return workItemRepository.save(workItem);
     }
 
@@ -76,14 +60,9 @@ public class WorkItemServiceImpl implements WorkItemService {
     }
 
     @Override
-    public WorkItem assignMember(List<String> studentIdList, String id) {
+    public WorkItem assignMember(String studentId, String id) {
         WorkItem dbWorkItem = getById(id);
-        List<Student> studentList = new ArrayList<>();
-        for (String studentId : studentIdList) {
-            Student student = studentRepository.findBy_id(studentId);
-            studentList.add(student);
-        }
-        dbWorkItem.setAssignedMember(studentList);
+        dbWorkItem.setAssignedMember(studentRepository.findBy_id(studentId));
         return workItemRepository.save(dbWorkItem);
     }
 
@@ -92,6 +71,7 @@ public class WorkItemServiceImpl implements WorkItemService {
         WorkItem dbWorkItem = getById(id);
         dbWorkItem.setName(workItem.getName());
         dbWorkItem.setAssignedMember(workItem.getAssignedMember());
+        dbWorkItem.setIteration(workItem.getIteration());
         dbWorkItem.setDescription(workItem.getDescription());
         dbWorkItem.setPriority(workItem.getPriority());
         dbWorkItem.setStatus(workItem.getStatus());
@@ -101,7 +81,7 @@ public class WorkItemServiceImpl implements WorkItemService {
         workItemLog.setDescription(workItem.getName() + " edited");
         workItemLog.setTimeStamp(LocalDate.now());
 //        workItemLog.setStudentId("");
-        workItemLogRepository.save(workItemLog);
+//        workItemLogRepository.save(workItemLog);
         return workItemRepository.save(dbWorkItem);
     }
 

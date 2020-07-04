@@ -8,5 +8,5 @@ import java.util.List;
 public interface WorkItemRepository extends MongoRepository<WorkItem, String> {
     WorkItem findBy_id(String _id);
 
-    List<WorkItem> findAllByBoardIdAndStatus(String boardId, String status);
+    List<WorkItem> findAllByGroupIdAndStatus(String groupId, String status);
 }

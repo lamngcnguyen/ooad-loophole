@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -52,6 +51,8 @@ public class ConverterService {
     private DisciplineRepository disciplineRepository;
     @Autowired
     private DisciplineFileTypeRepository disciplineFileTypeRepository;
+    @Autowired
+    private IterationService iterationService;
 
     public LoopholeUser convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -291,17 +292,13 @@ public class ConverterService {
     }
 
     public WorkItem convertWorkItemInterface(IWorkItem iWorkItem) throws BusinessServiceException {
-        List<Student> assignedMemberList = new ArrayList<>();
         WorkItem workItem = new WorkItem();
-        workItem.setBoardId(iWorkItem.getBoardId());
+        workItem.setGroupId(iWorkItem.getGroupId());
         workItem.setName(iWorkItem.getName());
         workItem.setDescription(iWorkItem.getDescription());
         workItem.setPriority(iWorkItem.getPriority());
-        for (String memberId : iWorkItem.getAssignedMember()) {
-            Student member = studentService.getById(memberId);
-            assignedMemberList.add(member);
-        }
-        workItem.setAssignedMember(assignedMemberList);
+        workItem.setIteration(iterationService.getById(iWorkItem.getIterationId()));
+        workItem.setAssignedMember(studentService.getById(iWorkItem.getAssigneeId()));
         workItem.setStatus(iWorkItem.getStatus());
         return workItem;
     }

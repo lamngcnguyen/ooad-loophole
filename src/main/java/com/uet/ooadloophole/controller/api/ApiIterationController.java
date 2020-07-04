@@ -50,6 +50,11 @@ public class ApiIterationController {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("deleted")));
     }
 
+    @RequestMapping(value = "/{groupId}/current", method = RequestMethod.GET)
+    public ResponseEntity<Iteration> getCurrentIteration(@PathVariable String groupId) {
+        return ResponseEntity.status(HttpStatus.OK).body(iterationService.getCurrentIteration(groupId));
+    }
+
     @RequestMapping(value = "/{groupId}/group", method = RequestMethod.GET)
     public ResponseEntity<String> getByGroup(@PathVariable String groupId) {
         List<DTOIteration> dtoIterations = new ArrayList<>();

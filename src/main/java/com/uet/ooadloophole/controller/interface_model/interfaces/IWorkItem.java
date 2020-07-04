@@ -1,22 +1,20 @@
 package com.uet.ooadloophole.controller.interface_model.interfaces;
 
-import java.util.List;
-
 public class IWorkItem {
-    private String boardId;
+    private String groupId;
     private String name;
     private String description;
-    private String priority;
-    private String creator;
-    private List<String> assignedMember;
+    private int priority;
+    private String iterationId;
+    private String assigneeId;
     private String status;
 
-    public String getBoardId() {
-        return boardId;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setBoardId(String boardId) {
-        this.boardId = boardId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getName() {
@@ -35,28 +33,28 @@ public class IWorkItem {
         this.description = description;
     }
 
-    public String getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getIterationId() {
+        return iterationId;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setIterationId(String iterationId) {
+        this.iterationId = iterationId;
     }
 
-    public List<String> getAssignedMember() {
-        return assignedMember;
+    public String getAssigneeId() {
+        return assigneeId;
     }
 
-    public void setAssignedMember(List<String> assignedMember) {
-        this.assignedMember = assignedMember;
+    public void setAssigneeId(String assigneeId) {
+        this.assigneeId = assigneeId;
     }
 
     public String getStatus() {

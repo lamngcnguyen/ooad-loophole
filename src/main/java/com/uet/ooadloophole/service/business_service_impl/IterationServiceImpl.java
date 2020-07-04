@@ -6,6 +6,7 @@ import com.uet.ooadloophole.service.business_service.IterationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -41,5 +42,10 @@ public class IterationServiceImpl implements IterationService {
     @Override
     public void delete(String id) {
         iterationRepository.delete(getById(id));
+    }
+
+    @Override
+    public Iteration getCurrentIteration(String groupId) {
+        return iterationRepository.findByStartDateTimeBeforeAndEndDateTimeAfterAndGroupId(LocalDate.now(), LocalDate.now(), groupId);
     }
 }

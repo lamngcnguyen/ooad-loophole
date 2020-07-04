@@ -62,8 +62,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
             topicSpecFile.setUploaderId(userFile.getUploaderId());
             topicSpecFile.setPath(saveLocation);
 
-            specFileRepository.save(topicSpecFile);
-            return topicSpecFile;
+            return specFileRepository.save(topicSpecFile);
         } catch (FileStorageException | BusinessServiceException e) {
             throw new FileStorageException("Unable to upload repo file. " + e.getMessage());
         }

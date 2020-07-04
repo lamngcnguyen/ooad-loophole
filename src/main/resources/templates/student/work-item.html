@@ -6,11 +6,19 @@
 </head>
 <body>
 <div th:fragment="leader-content" class="ui stackable grid">
+    <input type="hidden" name="workItemId" th:value="${workItem.get_id()}">
+    <input type="hidden" name="groupId" th:value="${group.get_id()}">
     <div class="row">
         <div class="column">
             <div class="header">
-                <div class="ui large black label">
-                    <i class="tasks icon"></i>Work item #1
+                <div class="ui large labels">
+                    <a class="ui small icon button" data-tooltip="Back to board" href="/student/boards">
+                        <i class="arrow circle left icon"></i>
+                    </a>
+                    <div class="ui large black label">
+                        <i class="tasks icon"></i>
+                        <span th:text="${workItem.getName()}">Work item #1</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,17 +29,34 @@
                 <div class="ui stackable grid">
                     <div class="row">
                         <div class="column">
-                            <div class="ui header">
-                                <i class="blue tasks icon"></i>Work Item #1
-                            </div>
-                            <div class="ui divider"></div>
-                            <div class="ui segment">
-                                <div class="ui form">
+                            <div class="ui work-item form">
+                                <div class="fields">
+                                    <div class="ten wide required field">
+                                        <label>Work item name</label>
+                                        <div class="ui fluid input">
+                                            <input type="text" name="name" th:value="${workItem.getName()}"
+                                                   placeholder="Iteration name">
+                                        </div>
+                                    </div>
+                                    <div class="six wide field">
+                                        <label>&nbsp;</label>
+                                        <div class="ui green icon labeled right floated submit button">
+                                            <i class="save icon"></i>
+                                            Save
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider"></div>
+                                <div class="ui segment">
                                     <div class="fields">
                                         <div class="four wide required field">
                                             <label>Iteration</label>
-                                            <div class="ui fluid selection dropdown">
-                                                <input type="hidden" name="iterationId">
+                                            <div class="ui fluid selection dropdown iteration-dropdown">
+                                                <input type="hidden" name="iterationId"
+                                                       th:if="${workItem.getIteration() == null}">
+                                                <input type="hidden" name="iterationId"
+                                                       th:value="${workItem.getIteration().get_id()}"
+                                                       th:unless="${workItem.getIteration() == null}">
                                                 <div class="default text">Iteration</div>
                                                 <i class="dropdown icon"></i>
                                                 <div class="menu">
@@ -43,8 +68,9 @@
                                         </div>
                                         <div class="four wide required field">
                                             <label>Priority</label>
-                                            <div class="ui fluid selection dropdown">
-                                                <input type="hidden" name="priorityId">
+                                            <div class="ui fluid selection dropdown priority-dropdown">
+                                                <input type="hidden" name="priority"
+                                                       th:value="${workItem.getPriority()}">
                                                 <div class="text">Priority</div>
                                                 <i class="dropdown icon"></i>
                                                 <div class="menu">
@@ -58,24 +84,24 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="four wide required field">
+                                        <div class="four wide required field status-dropdown">
                                             <label>Status</label>
                                             <div class="ui fluid selection dropdown">
-                                                <input type="hidden" name="statusId">
+                                                <input type="hidden" name="status" th:value="${workItem.getStatus()}">
                                                 <div class="text">Status</div>
                                                 <i class="dropdown icon"></i>
                                                 <div class="menu">
-                                                    <div class="item" data-value="1"><i
-                                                            class="grey circle icon"></i>New
+                                                    <div class="item" data-value="New">
+                                                        <i class="grey circle icon"></i>New
                                                     </div>
-                                                    <div class="item" data-value="2"><i
-                                                            class="orange circle icon"></i>Approved
+                                                    <div class="item" data-value="Approved">
+                                                        <i class="orange circle icon"></i>Approved
                                                     </div>
-                                                    <div class="item" data-value="3"><i
-                                                            class="blue circle icon"></i>Committed
+                                                    <div class="item" data-value="Committed">
+                                                        <i class="blue circle icon"></i>Committed
                                                     </div>
-                                                    <div class="item" data-value="4"><i
-                                                            class="green circle icon"></i>Done
+                                                    <div class="item" data-value="Done">
+                                                        <i class="green circle icon"></i>Done
                                                     </div>
                                                 </div>
                                             </div>
@@ -84,33 +110,22 @@
                                     <div class="fields">
                                         <div class="four wide required field">
                                             <label>Assignee</label>
-                                            <div class="ui fluid selection dropdown">
-                                                <input type="hidden" name="assigneeId">
-                                                <div class="text">Assignee</div>
+                                            <div class="ui fluid selection dropdown assignee-dropdown">
+                                                <input type="hidden" name="assigneeId"
+                                                       th:value="${workItem.getAssignedMember().get_id()}"
+                                                       th:unless="${workItem.getAssignedMember() == null}">
+                                                <input type="hidden" name="assigneeId"
+                                                       th:if="${workItem.getAssignedMember() == null}">
+                                                <div class="default text">Assignee</div>
                                                 <i class="dropdown icon"></i>
-                                                <div class="menu">
-                                                    <div class="item" data-value="1">
-                                                        <img class="ui avatar image"
-                                                             th:src="@{/images/default.png}">
-                                                        <span>Nguyen Ngoc Lam</span>
-                                                    </div>
-                                                    <div class="item" data-value="2">
-                                                        <img class="ui avatar image"
-                                                             th:src="@{/images/default.png}">
-                                                        <span>Ha Tuan Phong</span>
-                                                    </div>
-                                                    <div class="item" data-value="3">
-                                                        <img class="ui avatar image"
-                                                             th:src="@{/images/default.png}">
-                                                        <span>Nguyen Xuan Tung</span>
-                                                    </div>
-                                                </div>
+                                                <div class="menu"></div>
                                             </div>
                                         </div>
                                         <div class="four wide field">
                                             <label>Created date</label>
                                             <div class="ui fluid input">
-                                                <input disabled value="7/4/2020">
+                                                <input disabled
+                                                       th:value="${#temporals.format(workItem.getCreatedDate(), 'dd/MM/yyyy')}">
                                             </div>
                                         </div>
                                         <div class="four wide field">
@@ -119,93 +134,103 @@
                                                 <input type="hidden" name="creatorId">
                                                 <div class="text">
                                                     <img class="ui avatar image"
-                                                         th:src="@{/images/default.png}">
-                                                    <span>Nguyen Ngoc Lam</span>
+                                                         th:src="@{'/api/users/avatar/' + ${workItem.getCreator().getUserId()}}">
+                                                    <span th:text="${workItem.getCreator().getFullName()}">Nguyen Ngoc Lam</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="ui divider"></div>
-                            <div class="ui stackable grid">
-                                <div class="row">
-                                    <div class="column">
-                                        <div class="ui form">
-                                            <div class="fields">
-                                                <div class="eight wide field">
-                                                    <label>Description</label>
-                                                    <textarea name="description"
-                                                              placeholder="Enter description..."></textarea>
-                                                </div>
-                                                <div class="eight wide field">
-                                                    <label>Attachments <i class="paperclip icon"></i></label>
-                                                    <table class="ui celled small black table" style="margin-top: 0">
-                                                        <thead>
-                                                        <tr>
-                                                            <th class="twelve wide">File name</th>
-                                                            <th class="four wide center aligned">Actions</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td>Suck dick.mp4</td>
-                                                            <td class="center aligned">
-                                                                <div class="ui basic tiny blue icon button"><i
-                                                                        class="download icon"></i></div>
-                                                                <div class="ui basic tiny grey icon button"><i
-                                                                        class="trash icon"></i></div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">
-                                                                <div class="ui tiny green icon labeled button"><i
-                                                                        class="upload icon"></i>Add
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
+                                <div class="ui divider"></div>
+                                <div class="ui stackable grid">
+                                    <div class="row">
+                                        <div class="column">
+                                            <div class="ui form">
+                                                <div class="fields">
+                                                    <div class="eight wide field">
+                                                        <label>Description</label>
+                                                        <textarea name="description" placeholder="Enter description..."
+                                                                  th:text="${workItem.getDescription()}"></textarea>
+                                                    </div>
+                                                    <div class="eight wide field">
+                                                        <label>Submitted files <i class="paperclip icon"></i></label>
+                                                        <table class="ui celled small black table file-table"
+                                                               style="margin-top: 0">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="eight wide">File name</th>
+                                                                <th class="four wide">Timestamp</th>
+                                                                <th class="four wide center aligned">Actions</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>req_doc.docx</td>
+                                                                <td>01/06/2020 - 12:00:00</td>
+                                                                <td class="center aligned">
+                                                                    <div class="ui basic tiny blue icon button"
+                                                                         data-tooltip="Download file">
+                                                                        <i class="download icon"></i>
+                                                                    </div>
+                                                                    <div class="ui basic tiny grey icon button"
+                                                                         data-tooltip="Delete file">
+                                                                        <i class="trash icon"></i>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <input type="file" id="upload-file" hidden
+                                                                           onchange="uploadCode()">
+                                                                    <div class="ui tiny green icon labeled button"
+                                                                         onclick="$('#upload-file').click()">
+                                                                        <i class="upload icon"></i>Add
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="ui divider"></div>
-                            <div class="ui stackable grid">
-                                <div class="row">
-                                    <div class="four wide column">
-                                        <div class="ui vertical inverted grey menu" style="width: 100%">
-                                            <div class="header item">Change history<i class="clock icon"></i></div>
-                                            <div class="active item">
-                                                Ha Tuan Phong
-                                                <div class="ui teal label">7/4/2020 12:00</div>
-                                            </div>
-                                            <div class="item">
-                                                Nguyen Ngoc Lam
-                                                <div class="ui teal label">7/5/2020 13:00</div>
+                                <div class="ui divider"></div>
+                                <div class="ui stackable grid">
+                                    <div class="row">
+                                        <div class="four wide column">
+                                            <div class="ui vertical inverted grey menu" style="width: 100%">
+                                                <div class="header item">Change history<i class="clock icon"></i></div>
+                                                <div class="active item">
+                                                    Ha Tuan Phong
+                                                    <div class="ui teal label">7/4/2020 12:00</div>
+                                                </div>
+                                                <div class="item">
+                                                    Nguyen Ngoc Lam
+                                                    <div class="ui teal label">7/5/2020 13:00</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="twelve wide column">
-                                        <div class="ui inverted grey segment">
-                                            <div class="ui tiny header">Change description</div>
-                                            <div class="ui divider"></div>
-                                            <table class="ui inverted grey table">
-                                                <thead>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>Status</td>
-                                                    <td><i class="green circle icon"></i>Done</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Description</td>
-                                                    <td>Suck my dick</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                        <div class="twelve wide column">
+                                            <div class="ui inverted grey segment">
+                                                <div class="ui tiny header">Change description</div>
+                                                <div class="ui divider"></div>
+                                                <table class="ui inverted grey table">
+                                                    <thead>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Status</td>
+                                                        <td><i class="green circle icon"></i>Done</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Description</td>
+                                                        <td>Bruh</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -216,11 +241,28 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('.selection.dropdown').dropdown('set selected', 1);
-        });
-    </script>
+    <div class="ui modal" id="templates">
+        <table>
+            <tbody>
+            <tr class="file-cell">
+                <td class="name"></td>
+                <td class="timestamp"></td>
+                <td class="center aligned">
+                    <div class="ui basic tiny blue icon button download-file"
+                         data-tooltip="Download file">
+                        <i class="download icon"></i>
+                    </div>
+                    <div class="ui basic tiny grey icon button delete-file"
+                         data-tooltip="Delete file">
+                        <i class="trash icon"></i>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript" th:src="@{/js/student/common/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/student/common/work-item.js}"></script>
 </div>
 <div th:fragment="member-content" class="ui stackable grid">
     <div class="row">

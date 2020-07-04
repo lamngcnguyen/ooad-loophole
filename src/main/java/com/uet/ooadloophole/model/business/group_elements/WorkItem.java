@@ -11,16 +11,15 @@ import java.util.List;
 public class WorkItem {
     @Id
     private String _id;
-    private String boardId;
+    private String groupId;
     private String name;
     private String description;
-    private String priority;
-    private LocalDateTime assignedDate;
-    private LocalDateTime createdDateTime;
+    private int priority;
+    private LocalDateTime createdDate;
     @DBRef
     private Student creator;
     @DBRef
-    private List<Student> assignedMember;
+    private Student assignedMember;
     @DBRef
     private List<WorkItemFile> workItemFiles;
     @DBRef
@@ -35,12 +34,12 @@ public class WorkItem {
         this._id = _id;
     }
 
-    public String getBoardId() {
-        return boardId;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setBoardId(String boardId) {
-        this.boardId = boardId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getName() {
@@ -59,28 +58,20 @@ public class WorkItem {
         this.description = description;
     }
 
-    public String getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
-    public LocalDateTime getCreatedDateTime() {
-        return createdDateTime;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
-    public LocalDateTime getAssignedDate() {
-        return assignedDate;
-    }
-
-    public void setAssignedDate(LocalDateTime assignedDate) {
-        this.assignedDate = assignedDate;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Student getCreator() {
@@ -91,11 +82,11 @@ public class WorkItem {
         this.creator = creator;
     }
 
-    public List<Student> getAssignedMember() {
+    public Student getAssignedMember() {
         return assignedMember;
     }
 
-    public void setAssignedMember(List<Student> assignedMember) {
+    public void setAssignedMember(Student assignedMember) {
         this.assignedMember = assignedMember;
     }
 

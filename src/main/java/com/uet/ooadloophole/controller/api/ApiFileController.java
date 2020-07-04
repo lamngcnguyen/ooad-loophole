@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.group_elements.RepoFile;
+import com.uet.ooadloophole.model.business.group_elements.WorkItemFile;
 import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
 import com.uet.ooadloophole.model.business.class_elements.TopicSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.RequirementFileService;
 import com.uet.ooadloophole.service.business_service.TopicSpecFileService;
+import com.uet.ooadloophole.service.business_service.WorkItemFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +38,8 @@ public class ApiFileController {
     private TopicSpecFileService topicSpecFileService;
     @Autowired
     private RequirementFileService requirementFileService;
+    @Autowired
+    private WorkItemFileService workItemFileService;
 
     private Gson gson = new Gson();
 
@@ -209,6 +213,24 @@ public class ApiFileController {
     public ResponseEntity<Resource> findReqSpecFile(@PathVariable String id, HttpServletRequest request) {
         Resource resource = requirementFileService.download(id);
         String timeStamp = requirementFileService.findById(id).getFileTimeStamp();
+        return getResourceResponseEntity(request, resource, timeStamp);
+    }
+
+    //    ---------------------- Work items ----------------------
+    @RequestMapping(value = "/work-item", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadWorkItemFile(@RequestParam("file") MultipartFile file, String workItemId) {
+        try {
+            WorkItemFile workItemFile = workItemFileService.upload(file, workItemId);
+            return ResponseEntity.status(HttpStatus.OK).body(workItemFile);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/work-item/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Resource> getWorkItemFile(@PathVariable String id, HttpServletRequest request) {
+        Resource resource = workItemFileService.download(id);
+        String timeStamp = workItemFileService.getById(id).getFileTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
