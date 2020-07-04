@@ -5,6 +5,7 @@ public class IAssignment {
     private String classId;
     private String description;
     private String deadline;
+    private String gradingTemplateId;
 
     public String getName() {
         return name;
@@ -36,5 +37,13 @@ public class IAssignment {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public String getGradingTemplateId() {
+        return gradingTemplateId;
+    }
+
+    public void setGradingTemplateId(String gradingTemplateId) {
+        this.gradingTemplateId = gradingTemplateId;
     }
 }

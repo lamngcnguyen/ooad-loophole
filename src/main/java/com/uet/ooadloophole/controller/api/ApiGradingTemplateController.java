@@ -31,6 +31,16 @@ public class ApiGradingTemplateController {
         return (!user.hasRole("teacher") && !user.hasRole("admin"));
     }
 
+    @RequestMapping(value = "/{templateId}", method = RequestMethod.GET)
+    public ResponseEntity<GradingTemplate> getById(@PathVariable String templateId) {
+        try {
+            GradingTemplate template = gradingTemplateService.getById(templateId);
+            return ResponseEntity.status(HttpStatus.OK).body(template);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createGradingTemplate(@RequestBody GradingTemplate gradingTemplate) throws BusinessServiceException {
         gradingTemplate.setTeacherId(secureUserService.getCurrentUser().get_id());
@@ -38,7 +48,7 @@ public class ApiGradingTemplateController {
         return ResponseEntity.status(HttpStatus.OK).body(newGradingTemplate);
     }
 
-    @RequestMapping(value = "/teacher/{teacherId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/teacher/{teacherId}", method = RequestMethod.GET)
     public ResponseEntity<Object> getGradingTemplateByTeacherId(@PathVariable String teacherId) {
         try {
             List<GradingTemplate> result = gradingTemplateService.getByTeacherId(teacherId);
@@ -65,11 +75,11 @@ public class ApiGradingTemplateController {
 
     @RequestMapping(value = "/criteria/{criteriaId}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteCriteria(@PathVariable String criteriaId) {
-		try {
-			gradingTemplateService.deleteCriteria(criteriaId);
-			return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-		}
-	}
+        try {
+            gradingTemplateService.deleteCriteria(criteriaId);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

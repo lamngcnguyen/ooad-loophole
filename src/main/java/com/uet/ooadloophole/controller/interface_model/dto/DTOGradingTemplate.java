@@ -8,12 +8,18 @@ public class DTOGradingTemplate {
     private String name;
     private String _id;
     private String timestamp;
+    private int criteriaCount;
 
     public DTOGradingTemplate(GradingTemplate template) {
         this.name = template.getGradingTemplateName();
         this._id = template.get_id();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         this.timestamp = template.getTimestamp().format(dateTimeFormatter);
+        if(template.getCriteria() != null) {
+            this.criteriaCount = template.getCriteria().size();
+        } else {
+            this.criteriaCount = 0;
+        }
     }
 
     public String getName() {
@@ -38,5 +44,9 @@ public class DTOGradingTemplate {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public int getCriteriaCount() {
+        return criteriaCount;
     }
 }

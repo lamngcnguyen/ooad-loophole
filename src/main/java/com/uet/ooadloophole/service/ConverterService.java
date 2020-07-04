@@ -224,6 +224,7 @@ public class ConverterService {
         assignment.setDescription(iAssignment.getDescription());
         assignment.setClassId(iAssignment.getClassId());
         assignment.setDeadline(LocalDate.parse(iAssignment.getDeadline(), formatter));
+        assignment.setGradingTemplateId(iAssignment.getGradingTemplateId());
         return assignment;
     }
 

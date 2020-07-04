@@ -5,7 +5,9 @@ import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.controller.interface_model.interfaces.IAssignment;
 import com.uet.ooadloophole.model.business.class_elements.Assignment;
+import com.uet.ooadloophole.model.business.grading_elements.AssignmentGrade;
 import com.uet.ooadloophole.service.ConverterService;
+import com.uet.ooadloophole.service.business_service.AssignmentGradeService;
 import com.uet.ooadloophole.service.business_service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ public class ApiAssignmentController {
     private AssignmentService assignmentService;
     @Autowired
     private ConverterService converterService;
+    @Autowired
+    private AssignmentGradeService assignmentGradeService;
 
     Gson gson = new Gson();
 
@@ -48,5 +52,11 @@ public class ApiAssignmentController {
     @RequestMapping(value = "/{id}/student-work/{groupId}/{type}", method = RequestMethod.GET)
     public ResponseEntity<String> getStudentAssignmentWork(@PathVariable String id, @PathVariable String groupId, @PathVariable String type) {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(assignmentService.getStudentAssignmentWork(id, groupId, type))));
+    }
+
+    @RequestMapping(value = "/grade", method = RequestMethod.POST)
+    public ResponseEntity<String> grade(@RequestBody AssignmentGrade assignmentGrade) {
+        assignmentGradeService.create(assignmentGrade);
+        return ResponseEntity.status(HttpStatus.OK).body("success");
     }
 }

@@ -229,16 +229,15 @@
                             <div class="ui large fluid header">
                                 <span class="assignment-name"></span>
                                 <div class="ui right floated icon buttons" style="margin: inherit">
-                                    <a class="ui basic icon green button show-results"
-                                       data-tooltip="View assignment results">
-                                        <i class="poll icon"></i>
+                                    <a class="ui green button show-results">
+                                        Start evaluation
                                     </a>
-                                    <button class="ui basic icon blue button edit-assignment" type="button"
+                                    <button class="ui icon blue button edit-assignment" type="button"
                                             data-tooltip="Edit assignment"
                                             onclick="showModal('.modal.edit-assignment')">
                                         <i class="pencil icon"></i>
                                     </button>
-                                    <button class="ui basic icon red button delete-assignment" type="button"
+                                    <button class="ui icon red button delete-assignment" type="button"
                                             data-tooltip="Delete assignment"
                                             onclick="showModal('.modal.delete-assignment')">
                                         <i class="trash icon"></i>
@@ -253,7 +252,13 @@
                                 </span>
                                 <span class="deadline"></span>
                             </div>
-                            <div class="ui segment" style="padding-top: 30px">
+                            <div class="ui small header" style="margin-top: 1em">
+                                <span class="ui blue text"><i class="poll horizontal icon" style="margin: 0 !important;"></i>
+                                    Grading template:
+                                </span>
+                                <span class="template-name">abc</span>
+                            </div>
+                            <div class="ui segment" style="padding-top: 40px">
                                 <a class="ui top attached icon grey label">
                                     <i class="list icon"></i>&nbsp
                                     Description
@@ -777,11 +782,13 @@
                     <div class="fields">
                         <div class="nine wide field">
                             <label>Grading template</label>
-                            <select class="ui search dropdown grading-template-dropdown">
-                                <option value="">Grading template</option>
-                            </select>
+                            <div class="ui search selection dropdown grading-template-dropdown">
+                                <input type="hidden" name="gradingTemplateId">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Choose grading template</div>
+                                <div class="menu"></div>
+                            </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="field">
@@ -826,6 +833,15 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="nine wide field">
+                    <label>Grading template</label>
+                    <div class="ui search selection dropdown grading-template-dropdown">
+                        <input type="hidden" name="gradingTemplateId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Choose grading template</div>
+                        <div class="menu"></div>
                     </div>
                 </div>
                 <div class="field">

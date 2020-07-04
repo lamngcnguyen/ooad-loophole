@@ -4,15 +4,15 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
-public class Grade {
+public class AssignmentGrade {
     @Id
     private String _id;
-    private String graderId;
-    private String iterationId;
-    private int value;
+    private String assignmentId;
+    private String groupId;
+    private double value;
     private LocalDateTime timestamp;
 
-    Grade () {
+    public AssignmentGrade() {
 
     }
 
@@ -24,27 +24,19 @@ public class Grade {
         this._id = _Id;
     }
 
-    public String getGraderId() {
-        return graderId;
+    public String getAssignmentId() {
+        return assignmentId;
     }
 
-    public void setGraderId(String graderId) {
-        this.graderId = graderId;
+    public void setAssignmentId(String assignmentId) {
+        this.assignmentId = assignmentId;
     }
 
-    public String getIterationId() {
-        return iterationId;
-    }
-
-    public void setIterationId(String iterationId) {
-        this.iterationId = iterationId;
-    }
-
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
@@ -54,5 +46,13 @@ public class Grade {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

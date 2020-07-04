@@ -10,8 +10,8 @@
     <input hidden="" name="templateId" th:value="${template.get_id()}">
     <div class="row">
         <div class="column">
-            <div class="ui black icon label" id="template-name" th:text="${template.getGradingTemplateName()}"></div>
-            <button class="ui mini blue icon button" id="template-name-edit-button" onclick="editTemplateName()"><i
+            <div class="ui blue icon label" id="template-name" th:text="${template.getGradingTemplateName()}"></div>
+            <button class="ui mini grey icon button" id="template-name-edit-button" onclick="editTemplateName()"><i
                     class="pen icon"></i></button>
             <div class="ui mini input" id="template-name-input" style="display: none;">
                 <input type="text" placeholder="" style="width: 250px">  <!--Lấy template name-->
@@ -23,9 +23,10 @@
     <div class="row">
         <div class="column">
             <div class="ui segment">
+                <div class="ui blue header">List of criteria</div>
                 <div class="ui segments">
                 </div>
-                <div class="ui icon labeled blue button" onclick="addCriteria()"><i class="plus icon"></i>Add Criteria
+                <div class="ui icon labeled blue small button" onclick="addCriteria()"><i class="plus icon"></i>Add
                 </div>
             </div>
         </div>
@@ -33,75 +34,71 @@
     <div class="ui modal template">
         <div class="ui criteria segment">
             <div class="ui grid">
-                <div class="two column row">
+                <div class="row">
                     <div class="column">
-                        <div class="ui criteria header">
-                            New Criteria
+                        <div class="ui small criteria header">
+                            New criteria
                         </div>
-                    </div>
-                    <div class="column right aligned">
-                        <div class="ui red icon inverted button delete"><i class="trash icon"></i></div>
                     </div>
                 </div>
                 <div class="criteria-form row" style="display: none">
                     <div class="column">
-                        <div class="ui segment">
-                            <div class="ui grid">
-                                <div class="two column row">
-                                    <div class="column">
-                                        <div class="ui form">
-                                            <div class="fields">
-                                                <div class="eight wide required field">
-                                                    <label>Name</label>
-                                                    <input type="text" placeholder="New Criteria" name="name" >
-                                                </div>
-                                                <div class="eight wide required field">
-                                                    <label>Weight</label>
-                                                    <input type="number" placeholder="Weight" name="weight">
-                                                </div>
+                        <div class="ui grid">
+                            <div class="two column row">
+                                <div class="column">
+                                    <div class="ui form">
+                                        <div class="fields">
+                                            <div class="eight wide required field">
+                                                <label>Name</label>
+                                                <input type="text" placeholder="New Criteria" name="name">
                                             </div>
-                                            <div class="field">
-                                                <label>Description</label>
-                                                <textarea placeholder="Lorem ipsum..." name="description"></textarea>
+                                            <div class="eight wide required field">
+                                                <label>Weight</label>
+                                                <input type="number" placeholder="Weight" name="weight">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="column">
-                                        <div class="ui form">
-                                            <div class="required field">
-                                                <label>Level Definitions</label>
-                                                <table class="ui black celled table level-definition"
-                                                       style="margin-top: 0">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Level Name</th>
-                                                        <th>Weight</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td colspan="2">
-                                                            <div class="ui blue icon button add-level"><i
-                                                                    class="plus icon"></i></div>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="field">
+                                            <label>Description</label>
+                                            <textarea placeholder="Lorem ipsum..." name="description"></textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="column">
-                                        <div class="ui icon labeled blue button save"><i class="save icon"></i>Save
+                                <div class="column">
+                                    <div class="ui form">
+                                        <div class="required field">
+                                            <label>Level Definitions</label>
+                                            <table class="ui black celled table small level-definition"
+                                                   style="margin-top: 0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Level Name</th>
+                                                    <th>Weight</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="ui blue icon button add-level"><i
+                                                                class="plus icon"></i></div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div class="ui right floated grey button close">Close</div>
                                     </div>
                                 </div>
-                                <div class="row error" style="display: none">
-                                    <div class="column">
-                                        <div class="ui error message"></div>
+                            </div>
+                            <div class="row">
+                                <div class="column">
+                                    <div class="ui blue button save">Save
                                     </div>
+                                    <div class="ui right floated black button close">Close</div>
+                                    <div class="ui right floated grey button delete">Delete</div>
+                                </div>
+                            </div>
+                            <div class="row error" style="display: none">
+                                <div class="column">
+                                    <div class="ui error message"></div>
                                 </div>
                             </div>
                         </div>
@@ -111,21 +108,21 @@
         </div>
     </div>
     <script type="text/javascript" th:src="@{/js/teacher/edit_template/edit_template.js}"></script>
-<!--    <style>-->
-<!--        .criteria.header:hover {-->
-<!--            color: #008080;-->
-<!--            cursor: pointer;-->
-<!--            text-decoration: none;-->
-<!--        }-->
+    <!--    <style>-->
+    <!--        .criteria.header:hover {-->
+    <!--            color: #008080;-->
+    <!--            cursor: pointer;-->
+    <!--            text-decoration: none;-->
+    <!--        }-->
 
-<!--        .error {-->
-<!--            background-color: #fff6f6;-->
-<!--            border-color: #e0b4b4;-->
-<!--            color: #9f3a38;-->
-<!--            -webkit-box-shadow: none;-->
-<!--            box-shadow: none;-->
-<!--        }-->
-<!--    </style>-->
+    <!--        .error {-->
+    <!--            background-color: #fff6f6;-->
+    <!--            border-color: #e0b4b4;-->
+    <!--            color: #9f3a38;-->
+    <!--            -webkit-box-shadow: none;-->
+    <!--            box-shadow: none;-->
+    <!--        }-->
+    <!--    </style>-->
 </div>
 </body>
 </html>

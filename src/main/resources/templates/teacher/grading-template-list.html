@@ -18,14 +18,12 @@
             <div class="ui blue icon labeled button" onclick="$('.modal.create-template').modal('show')"><i
                     class="plus icon"></i>Add
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <div class="ui fluid cards">
+            <div class="ui divider"></div>
+            <div class="ui fluid blue cards">
                 <a class="card" th:each="template: ${templates}" th:href="@{'/teacher/template/' + ${template.get_id()}}">
                     <div class="content">
                         <div class="header" th:text="${template.getName()}"></div>
+                        <div class="description" th:text="${template.getCriteriaCount()} + ' criteria'"></div>
                     </div>
                     <div class="extra content" th:text="'Created on: ' + ${template.getTimestamp()}"></div>
                 </a>

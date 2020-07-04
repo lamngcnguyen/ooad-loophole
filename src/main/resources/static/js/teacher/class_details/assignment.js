@@ -141,7 +141,7 @@ $('.dropdown.grading-template-dropdown').dropdown({
 }).api({
     action: 'get grading templates',
     method: 'get',
-    urlData: {teacherId:  $('input[name="teacherId"]').val()},
+    urlData: {teacherId: $('input[name="teacherId"]').val()},
     on: 'now',
     onSuccess(response, element, xhr) {
         const values = [];
@@ -205,17 +205,33 @@ function loadAssignment(id) {
             $('.segment.assignment .assignment-name').text(res.name);
             $('.segment.assignment .deadline').text(deadline.toLocaleDateString('en-GB'));
             $('.segment.assignment .detail-text').text(res.description);
-            if (new Date() <= deadline) {
-                $('.segment.assignment .show-results').addClass('disabled');
+            // if (new Date() <= deadline) {
+            //     $('.segment.assignment .show-results').addClass('disabled');
+            // } else {
+            //     $('.segment.assignment .show-results').removeClass('disabled');
+            //     $('.segment.assignment .show-results').prop('href', `/teacher/assignment/${res._id}/results`);
+            // }
+            $('.segment.assignment .show-results').prop('href', `/teacher/assignment/${res._id}/results`);
+            if (res.gradingTemplateId != null || res.gradingTemplateId !== '') {
+                $.ajax({
+                    url: '/api/grading-template/' + res.gradingTemplateId,
+                    method: 'get',
+                    success: function (jqXHR) {
+                        $('.segment.assignment .template-name').text(jqXHR.gradingTemplateName);
+                    },
+                    error: function () {
+                        alert('unable to get grading template info');
+                    }
+                });
             } else {
-                $('.segment.assignment .show-results').removeClass('disabled');
-                $('.segment.assignment .show-results').prop('href', `/teacher/assignment/${res._id}/results`);
+                $('.segment.assignment .template-name').text("not chosen");
             }
             $('.form.edit-assignment').form('set values', {
                 id: res._id,
                 name: res.name,
                 deadline: res.deadline,
-                description: res.description
+                description: res.description,
+                gradingTemplateId: res.gradingTemplateId
             });
             $('.form.delete-assignment').form('set values', {
                 id: res._id

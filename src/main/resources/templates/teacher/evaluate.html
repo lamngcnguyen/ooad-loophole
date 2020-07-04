@@ -5,8 +5,116 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="body-content">
-    This is evaluate result view
+<div th:fragment="body-content" class="ui stackable grid">
+    <div class="row">
+        <div class="column">
+            <div class="header">
+                <div class="ui large black label">Grading</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui card">
+                <div class="content">
+                    <div class="header">Group 1</div>
+                    <div class="description">
+                        Iteration:&nbsp;<span class="ui teal text">Iteration 1</span>
+                        <br>
+                        Discipline:&nbsp;<span class="ui red text">Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <table class="ui celled black table">
+                <thead>
+                <tr>
+                    <th class="eight wide">Criteria</th>
+                    <th class="eight wide">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Các lớp có hợp lý hay không?</td>
+                    <td>
+                        <div style="width: 90%; margin-left: 5%">
+                            <div class="ui labeled slider"></div>
+                            <div class="ui input" style="display: none">
+                                <input type="text" id="slider-input-1" disabled="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tên của mỗi lớp có phản ảnh vai trò của nó không?</td>
+                    <td>
+                        <div style="width: 90%; margin-left: 5%">
+                            <div class="ui labeled slider"></div>
+                            <div class="ui input" style="display: none">
+                                <input type="text" id="slider-input-2" disabled="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lớp có đại diện cho một trừu tượng (abstraction - ) đơn lẻ được định nghĩa rõ ràng không?</td>
+                    <td>
+                        <div style="width: 90%; margin-left: 5%">
+                            <div class="ui labeled slider"></div>
+                            <div class="ui input" style="display: none">
+                                <input type="text" id="slider-input-3" disabled="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tất cả các thuộc tính và các hàm tác động đến nó có được liên kết theo chức năng hay không?</td>
+                    <td>
+                        <div style="width: 90%; margin-left: 5%">
+                            <div class="ui labeled slider"></div>
+                            <div class="ui input" style="display: none">
+                                <input type="text" id="slider-input-4" disabled="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lớp có cung cấp được các hành vi được yêu cầu hay không?</td>
+                    <td>
+                        <div style="width: 90%; margin-left: 5%">
+                            <div class="ui labeled slider"></div>
+                            <div class="ui input" style="display: none">
+                                <input type="text" id="slider-input-5" disabled="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="ui green labeled icon right floated button">
+                            <i class="save icon"></i> Submit
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        var labels = ["Không đạt", "Cần bổ sung", "Đạt"]
+        $('.slider').slider({
+            min: 0,
+            max: 2,
+            step: 1,
+            start: 1,
+            interpretLabel: function (value) {
+                return labels[value];
+            }
+        })
+    </script>
 </div>
 </body>
 </html>
