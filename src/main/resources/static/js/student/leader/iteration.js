@@ -9,7 +9,7 @@ let maxIterationLength;
 
 $(document).ready(function () {
     getClassConfigs();
-})
+});
 
 function getClassConfigs() {
     $.api({
@@ -33,7 +33,7 @@ function showIterationDetails(id) {
     $('.segment.iteration').hide();
     $(`#iteration_${id}`).show();
     $('.form.delete-iteration').form('set value', 'id', id);
-    $('input[name=iterationId]').val(id);
+    $('input[name="iterationId"]').val(id);
     getRepoFile(id);
     getDiagramFile(id);
     getDocumentationFile(id);
@@ -58,7 +58,7 @@ $('.new-iteration').on('keydown', function (e) {
     if (e.which === 27 || e.keyCode === 27) {
         cancelIterationInput()
     }
-})
+});
 
 function createIterationForm() {
     const name = $('#nameInput input').val().trim();
@@ -128,7 +128,7 @@ function createIterationForm() {
                 onSuccess: function (response) {
                     createIterationGrid(response)
                 }
-            })
+            });
             btnNewIteration.show();
             newIterationItem.show();
             $('#nameInput').hide();
@@ -172,7 +172,7 @@ function editIterationForm(data) {
     form.find('.grey.button').unbind().click(function () {
         segment.children('.iteration.grid').show();
         form.hide();
-    })
+    });
     form.find('.header input').val(name);
     form.find('.start-date-picker').calendar({
         type: 'date',
@@ -237,7 +237,7 @@ function editIterationForm(data) {
                     $('#item_' + response._id).text(response.name);
                     createIterationGrid(response)
                 }
-            })
+            });
             btnNewIteration.show();
             newIterationItem.show();
             $('#nameInput').hide();
@@ -318,13 +318,13 @@ function loadIterations() {
                 const iterationItem = $(`<a class="item" id="item_${iteration._id}">${iteration.name}</a>`)
                     .click(function () {
                         showIteration(iteration._id);
-                    })
+                    });
                 if (newIterationItem.length !== 0) {
                     newIterationItem.before(iterationItem);
                 } else {
                     navMenu.append(iterationItem);
                 }
-            })
+            });
             //Override iteration click event
             showIterationDetails(xhr.responseJSON.data[0]._id);
         }
@@ -589,4 +589,4 @@ function uploadDiagram() {
 
 $(document).ready(function () {
     loadIterations();
-})
+});

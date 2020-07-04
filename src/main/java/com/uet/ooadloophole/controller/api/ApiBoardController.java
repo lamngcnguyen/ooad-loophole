@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/board")
 public class ApiBoardController {
@@ -51,5 +54,15 @@ public class ApiBoardController {
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/priorities", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getPriorities() {
+        return ResponseEntity.status(HttpStatus.OK).body(Arrays.asList("Low", "Medium", "High"));
+    }
+
+    @RequestMapping(value = "/statuses", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getStatuses() {
+        return ResponseEntity.status(HttpStatus.OK).body(Arrays.asList("New", "Approved", "Committed", "Done"));
     }
 }
