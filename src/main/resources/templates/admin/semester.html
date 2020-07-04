@@ -11,7 +11,7 @@
         <div class="column">
             <div class="header">
                 <div class="ui large grey label">
-                    <i class="users icon nav-icon"></i><span>Quản lý học kì</span>
+                    <i class="users icon nav-icon"></i><span>Semester management</span>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
                     <div class="column">
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-semester')">
-                            Thêm mới<i
+                            Create new<i
                                 class="plus icon"></i></button>
                     </div>
                 </div>
@@ -60,9 +60,9 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="three wide">Actions</th>
-                                <th>Tên học kì</th>
-                                <th>Ngày bắt đầu</th>
-                                <th>Ngày kết thúc</th>
+                                <th>Semester name</th>
+                                <th>Start date</th>
+                                <th>End date</th>
                             </tr>
                             </thead>
                         </table>
@@ -77,19 +77,19 @@
         </div>
         <div class="ui large header">
             <i class="green user icon"></i>
-            Thêm mới
+            Create new
         </div>
         <div class="content">
             <div class="ui form create-semester">
                 <div class="fields">
                     <div class="required field sixteen wide">
-                        <label>Tên học kì</label>
+                        <label>Semester name</label>
                         <input type="text" name="name" placeholder="Semester name">
                     </div>
                 </div>
                 <div class="fields">
                     <div class="required field eight wide">
-                        <label>Ngày bắt đầu</label>
+                        <label>Start date</label>
                         <div class="ui calendar range-start">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
@@ -98,7 +98,7 @@
                         </div>
                     </div>
                     <div class="required field eight wide">
-                        <label>Ngày kết thúc</label>
+                        <label>End date</label>
                         <div class="ui calendar range-end">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
@@ -110,11 +110,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-semester')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create
                 </button>
             </div>
         </div>
@@ -125,20 +125,20 @@
         </div>
         <div class="ui large header">
             <i class="blue pencil icon"></i>
-            Chỉnh sửa
+            Edit semester
         </div>
         <div class="content">
             <div class="ui form edit-semester">
                 <input type="hidden" name="id">
                 <div class="fields">
                     <div class="required field sixteen wide">
-                        <label>Tên học kì</label>
+                        <label>Semester name</label>
                         <input type="text" name="name" placeholder="Semester name">
                     </div>
                 </div>
                 <div class="fields">
                     <div class="required field eight wide">
-                        <label>Ngày bắt đầu</label>
+                        <label>Start date</label>
                         <div class="ui calendar range-start">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
@@ -147,7 +147,7 @@
                         </div>
                     </div>
                     <div class="required field eight wide">
-                        <label>Ngày kết thúc</label>
+                        <label>End date</label>
                         <div class="ui calendar range-end">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
@@ -159,11 +159,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-semester')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="pencil icon"></i>
-                    Sửa
+                    Edit
                 </button>
             </div>
         </div>
@@ -174,21 +174,21 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-semester">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa học kì này không?</label>
+                    <label>Do you really want to delete this semester?</label>
                 </div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-semester')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>

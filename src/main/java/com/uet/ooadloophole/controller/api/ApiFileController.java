@@ -153,7 +153,7 @@ public class ApiFileController {
                     deletedSpecs.add(specFileId);
                 }
             }
-            return ResponseEntity.status(HttpStatus.OK).body("deleted " + deletedSpecs);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("deleted" + deletedSpecs)));
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

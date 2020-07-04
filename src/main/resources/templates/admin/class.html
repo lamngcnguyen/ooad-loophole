@@ -60,11 +60,11 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="three wide">Actions</th>
-                                <th>Tên lớp</th>
-                                <th>Giảng viên</th>
-                                <th>Học kì</th>
-                                <th>Ngày học</th>
-                                <th class="one wide">Số sinh viên</th>
+                                <th>Class name</th>
+                                <th>Teacher</th>
+                                <th>Semester</th>
+                                <th>Date</th>
+                                <th class="one wide">Student count</th>
                             </tr>
                             </thead>
                         </table>
@@ -80,46 +80,46 @@
         </div>
         <div class="ui large header">
             <i class="green user icon"></i>
-            Thêm mới
+            Create new
         </div>
         <div class="content">
             <div class="ui form create-class">
                 <div class="fields">
                     <div class="required field seven wide">
-                        <label>Tên lớp</label>
+                        <label>Class name</label>
                         <input type="text" name="className" placeholder="Class name">
                     </div>
                     <div class="required field nine wide">
-                        <label>Giảng viên</label>
+                        <label>Teacher</label>
                         <div class="ui selection dropdown teacher">
                             <input type="hidden" name="teacherId">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn giảng viên</div>
+                            <div class="default text">Select teacher</div>
                         </div>
                     </div>
                 </div>
                 <div class="fields">
                     <div class="required field seven wide">
-                        <label>Học kì</label>
+                        <label>Student</label>
                         <div class="ui selection dropdown semester">
                             <input type="hidden" name="semesterId">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn học kì</div>
+                            <div class="default text">Select semester</div>
                         </div>
                     </div>
                     <div class="required field nine wide">
-                        <label>Ngày học</label>
+                        <label>Date</label>
                         <div class="ui selection dropdown dayOfWeek">
                             <input type="hidden" name="scheduledDayOfWeek">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn ngày học</div>
+                            <div class="default text">Select date</div>
                             <div class="menu">
-                                <div class="item" data-value="1">Thứ 2</div>
-                                <div class="item" data-value="2">Thứ 3</div>
-                                <div class="item" data-value="3">Thứ 4</div>
-                                <div class="item" data-value="4">Thứ 5</div>
-                                <div class="item" data-value="5">Thứ 6</div>
-                                <div class="item" data-value="6">Thứ 7</div>
+                                <div class="item" data-value="1">Monday</div>
+                                <div class="item" data-value="2">Tuesday</div>
+                                <div class="item" data-value="3">Wednesday</div>
+                                <div class="item" data-value="4">Thursday</div>
+                                <div class="item" data-value="5">Friday</div>
+                                <div class="item" data-value="6">Saturday</div>
                             </div>
                         </div>
                     </div>
@@ -127,11 +127,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-class')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create new
                 </button>
             </div>
         </div>
@@ -143,47 +143,47 @@
         </div>
         <div class="ui large header">
             <i class="blue pencil icon"></i>
-            Chỉnh sửa
+            Edit class info
         </div>
         <div class="content">
             <div class="ui form edit-class">
                 <input type="hidden" name="id">
                 <div class="fields">
                     <div class="required field seven wide">
-                        <label>Tên lớp</label>
+                        <label>Class name</label>
                         <input type="text" name="className" placeholder="Class name">
                     </div>
                     <div class="required field nine wide">
-                        <label>Giảng viên</label>
+                        <label>Teacher</label>
                         <div class="ui selection dropdown teacher">
                             <input type="hidden" name="teacherId">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn giảng viên</div>
+                            <div class="default text">Select teacher</div>
                         </div>
                     </div>
                 </div>
                 <div class="fields">
                     <div class="required field seven wide">
-                        <label>Học kì</label>
+                        <label>Semester</label>
                         <div class="ui selection dropdown semester">
                             <input type="hidden" name="semesterId">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn học kì</div>
+                            <div class="default text">Select semester</div>
                         </div>
                     </div>
                     <div class="required field nine wide">
-                        <label>Ngày học</label>
+                        <label>Date</label>
                         <div class="ui selection dropdown dayOfWeek">
                             <input type="hidden" name="scheduledDayOfWeek">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn ngày học</div>
+                            <div class="default text">Select date</div>
                             <div class="menu">
-                                <div class="item" data-value="1">Thứ 2</div>
-                                <div class="item" data-value="2">Thứ 3</div>
-                                <div class="item" data-value="3">Thứ 4</div>
-                                <div class="item" data-value="4">Thứ 5</div>
-                                <div class="item" data-value="5">Thứ 6</div>
-                                <div class="item" data-value="6">Thứ 7</div>
+                                <div class="item" data-value="1">Monday</div>
+                                <div class="item" data-value="2">Tuesday</div>
+                                <div class="item" data-value="3">Wednesday</div>
+                                <div class="item" data-value="4">Thursday</div>
+                                <div class="item" data-value="5">Friday</div>
+                                <div class="item" data-value="6">Saturday</div>
                             </div>
                         </div>
                     </div>
@@ -191,11 +191,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-class')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="pencil icon"></i>
-                    Sửa
+                    Edit
                 </button>
             </div>
         </div>
@@ -207,21 +207,21 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-class">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa lớp học này không?</label>
+                    <label>Do you really want to delete this class?</label>
                 </div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-class')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>

@@ -28,20 +28,14 @@ public class AdminController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ModelAndView getUserManagementView() {
-        String pageTitle = "Users Management";
+        String pageTitle = "User Management";
         return getAdminPage(pageTitle, new BodyFragment("admin/user", "body-content"));
     }
 
     @RequestMapping(value = "/class", method = RequestMethod.GET)
     public ModelAndView getClassManagementView() {
-        String pageTitle = "Classes Management";
+        String pageTitle = "Class Management";
         return getAdminPage(pageTitle, new BodyFragment("admin/class", "body-content"));
-    }
-
-    @RequestMapping(value = "/site-config", method = RequestMethod.GET)
-    public ModelAndView getSiteConfigView() {
-        String pageTitle = "Site Configuration";
-        return getAdminPage(pageTitle, new BodyFragment("admin/site-config", "body-content"));
     }
 
     @RequestMapping(value = "/semester", method = RequestMethod.GET)

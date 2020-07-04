@@ -27,10 +27,10 @@
     <div class="row">
         <div class="column">
             <div class="ui top attached tabular menu">
-                <a class="active student item" onclick="showTab('student')">Sinh viên</a>
-                <a class="group item" onclick="showTab('group')">Nhóm</a>
-                <a class="topic item" onclick="showTab('topic')">Đề tài</a>
-                <a class="assignment item" onclick="showTab('assignment')">Bài tập</a>
+                <a class="active student item" onclick="showTab('student')">Students</a>
+                <a class="group item" onclick="showTab('group')">Groups</a>
+                <a class="topic item" onclick="showTab('topic')">Topics</a>
+                <a class="assignment item" onclick="showTab('assignment')">Assignments</a>
             </div>
             <!---------------------------------Student table--------------------------------->
             <div class="ui active student tab segment stackable grid">
@@ -39,12 +39,12 @@
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-student')">
                             <i class="plus icon"></i>
-                            Thêm mới
+                            Create new
                         </button>
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.import-student')">
                             <i class="file excel icon"></i>
-                            Nhập từ Excel
+                            Import from Excel
                         </button>
                     </div>
                 </div>
@@ -82,9 +82,9 @@
                                 <th class="one wide">#</th>
                                 <th class="two wide">Actions</th>
                                 <th class="three wide">Student ID</th>
-                                <th class="four wide">Họ tên</th>
-                                <th class="two wide">SĐT</th>
-                                <th class="one wide">Đã kích hoạt</th>
+                                <th class="four wide">Full name</th>
+                                <th class="two wide">Phone number</th>
+                                <th class="one wide">Activation status</th>
                             </tr>
                             </thead>
                         </table>
@@ -98,7 +98,7 @@
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-group')">
                             <i class="plus icon"></i>
-                            Thêm mới
+                            Create new
                         </button>
                     </div>
                 </div>
@@ -135,9 +135,9 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="two wide">Actions</th>
-                                <th class="three wide">Tên nhóm</th>
-                                <th class="five wide">Trưởng nhóm&nbsp<i class="orange star icon"></i></th>
-                                <th class="five wide">Thành viên&nbsp<i class="red dumbbell icon"></i></th>
+                                <th class="three wide">Group name</th>
+                                <th class="five wide">Group name&nbsp<i class="orange star icon"></i></th>
+                                <th class="five wide">Group member&nbsp<i class="red dumbbell icon"></i></th>
                             </tr>
                             </thead>
                         </table>
@@ -151,7 +151,7 @@
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-topic')">
                             <i class="plus icon"></i>
-                            Thêm mới
+                            Create new
                         </button>
                     </div>
                 </div>
@@ -188,10 +188,10 @@
                             <tr>
                                 <th class="one wide">#</th>
                                 <th class="two wide">Actions</th>
-                                <th class="three wide">Tên đề tài</th>
-                                <th class="four wide">Mô tả</th>
-                                <th class="two wide">Nhóm</th>
-                                <th class="four wide">Tệp đính kèm</th>
+                                <th class="three wide">Topic name</th>
+                                <th class="four wide">Description</th>
+                                <th class="two wide">Group</th>
+                                <th class="four wide">Specification files</th>
                             </tr>
                             </thead>
                         </table>
@@ -205,7 +205,7 @@
                         <button type="button" class="ui labeled icon green button"
                                 onclick="showModal('.modal.create-assignment')">
                             <i class="plus icon"></i>
-                            Add
+                            Create new
                         </button>
                     </div>
                 </div>
@@ -252,7 +252,11 @@
                                 </span>
                                 <span class="deadline"></span>
                             </div>
-                            <div class="content">
+                            <div class="ui segment" style="padding-top: 30px">
+                                <a class="ui top attached icon grey label">
+                                    <i class="list icon"></i>&nbsp
+                                    Description
+                                </a>
                                 <span class="detail-text"></span>
                             </div>
                         </div>
@@ -268,14 +272,14 @@
         </div>
         <div class="ui large header">
             <i class="green student icon"></i>
-            Thêm mới
+            Create new student
         </div>
         <div class="content">
             <div class="ui form create-student">
                 <div class="field">
                     <div class="fields">
                         <div class="nine wide required field">
-                            <label>Họ tên</label>
+                            <label>Full name</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
                         <div class="seven wide required field">
@@ -287,11 +291,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-student')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Add
                 </button>
             </div>
         </div>
@@ -302,7 +306,7 @@
         </div>
         <div class="ui large header">
             <i class="green student icon"></i>
-            Chỉnh sửa
+            Edit
         </div>
         <div class="content">
             <div class="ui form edit-student">
@@ -310,7 +314,7 @@
                 <div class="field">
                     <div class="fields">
                         <div class="nine wide required field">
-                            <label>Họ tên</label>
+                            <label>Full name</label>
                             <input type="text" name="fullName" placeholder="Full name">
                         </div>
                         <div class="seven wide required field">
@@ -322,11 +326,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-student')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated blue labeled icon submit button">
                     <i class="plus icon"></i>
-                    Lưu
+                    Save
                 </button>
             </div>
         </div>
@@ -337,7 +341,7 @@
         </div>
         <div class="ui large header">
             <i class="green file excel icon"></i>
-            Nhập từ Excel
+            Import from Excel
         </div>
         <div class="content">
             <div class="ui form import-student">
@@ -345,11 +349,11 @@
                     <input type="file" name="uploadExcel" hidden>
                     <div class="ui red labeled icon mini button" onclick="openImportStudentDialog()">
                         <i class="upload icon"></i>
-                        Chọn tệp Excel
+                        Select Excel file
                     </div>
                     <div class="ui green labeled icon mini button" onclick="createStudentImportTemplate()">
                         <i class="download icon"></i>
-                        Tải tệp mẫu
+                        Download template
                     </div>
                 </div>
                 <div class="field">
@@ -358,7 +362,7 @@
                         <tr>
                             <th class="one wide">#</th>
                             <th class="two wide">Student ID</th>
-                            <th>Họ tên</th>
+                            <th>Full name</th>
                         </tr>
                         </thead>
                     </table>
@@ -366,11 +370,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.import-student')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <div class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Add
                 </div>
             </div>
         </div>
@@ -381,13 +385,13 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-student">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa sinh viên này không?</label>
+                    <label>Do you want to delete this student's account?</label>
                 </div>
                 <div class="ui error message"></div>
                 <button class="ui red labeled icon submit button">
@@ -408,18 +412,18 @@
         </div>
         <div class="ui large header">
             <i class="green users icon"></i>
-            Thêm mới
+            Create new group
         </div>
         <div class="content">
             <div class="ui form create-group">
                 <div class="field">
                     <div class="fields">
                         <div class="eight wide required field">
-                            <label>Tên nhóm</label>
+                            <label>Group name</label>
                             <input type="text" name="name" placeholder="Group name">
                         </div>
                         <div class="eight wide required field">
-                            <label>Trưởng nhóm</label>
+                            <label>Group leader</label>
                             <div class="ui search selection dropdown leader">
                                 <input type="hidden" name="leaderId">
                                 <i class="dropdown icon"></i>
@@ -429,7 +433,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>Thành viên</label>
+                    <label>Member</label>
                     <div class="ui multiple search selection dropdown member">
                         <input type="hidden" name="memberId">
                         <i class="dropdown icon"></i>
@@ -439,11 +443,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-group')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create
                 </button>
             </div>
         </div>
@@ -454,7 +458,7 @@
         </div>
         <div class="ui large header">
             <i class="blue pencil icon"></i>
-            Sửa thông tin nhóm
+            Edit group info
         </div>
         <div class="content">
             <div class="ui form edit-group">
@@ -462,11 +466,11 @@
                     <div class="fields">
                         <input type="hidden" name="id">
                         <div class="eight wide required field">
-                            <label>Tên nhóm</label>
+                            <label>Group name</label>
                             <input type="text" name="name" placeholder="Group name">
                         </div>
                         <div class="eight wide required field">
-                            <label>Trưởng nhóm</label>
+                            <label>Group leader</label>
                             <div class="ui search selection dropdown leader">
                                 <input type="hidden" name="leaderId">
                                 <i class="dropdown icon"></i>
@@ -476,7 +480,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>Thành viên</label>
+                    <label>Group member</label>
                     <div class="ui multiple search selection dropdown member">
                         <input type="hidden" name="memberId">
                         <i class="dropdown icon"></i>
@@ -486,11 +490,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-group')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated blue labeled icon submit button">
                     <i class="pencil icon"></i>
-                    Sửa
+                    Edit
                 </button>
             </div>
         </div>
@@ -501,22 +505,22 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-group">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa nhóm này không?</label>
+                    <label>Do you really want to delete this group?</label>
                 </div>
                 <div class="ui error message"></div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-group')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>
@@ -528,7 +532,7 @@
         </div>
         <div class="ui large header">
             <i class="green lightbulb outline icon"></i>
-            Thêm mới
+            Create new topic
         </div>
         <div class="content">
             <div class="ui form create-topic">
@@ -538,11 +542,11 @@
                             <div class="field">
                                 <div class="fields">
                                     <div class="nine wide required field">
-                                        <label>Tên đề tài</label>
+                                        <label>Topic name</label>
                                         <input type="text" name="name" placeholder="Topic name">
                                     </div>
                                     <div class="seven wide field">
-                                        <label>Nhóm</label>
+                                        <label>Group</label>
                                         <div class="ui search selection dropdown assigned-group">
                                             <input type="hidden" name="groupId">
                                             <i class="dropdown icon"></i>
@@ -554,7 +558,7 @@
                             <div class="field">
                                 <div class="fields">
                                     <div class="sixteen wide field">
-                                        <label>Mô tả</label>
+                                        <label>Description</label>
                                         <textarea name="descriptions" placeholder="Description"></textarea>
                                     </div>
                                 </div>
@@ -563,13 +567,13 @@
                         <div class="seven wide field">
                             <div class="fields">
                                 <div class="sixteen wide field">
-                                    <label>Tệp đính kèm</label>
+                                    <label>Attach file</label>
                                     <div class="ui input">
                                         <table class="ui small celled red table attachments">
                                             <thead>
                                             <tr>
-                                                <th class="ten wide">Tên</th>
-                                                <th class="four wide center aligned">Trạng thái</th>
+                                                <th class="ten wide">Name</th>
+                                                <th class="four wide center aligned">Status</th>
                                                 <th class="two wide"></th>
                                             </tr>
                                             </thead>
@@ -598,11 +602,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-topic')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create new
                 </button>
             </div>
         </div>
@@ -613,7 +617,7 @@
         </div>
         <div class="ui large header">
             <i class="green lightbulb icon"></i>
-            Chỉnh sửa
+            Edit topic info
         </div>
         <div class="content">
             <div class="ui form edit-topic">
@@ -624,11 +628,11 @@
                             <div class="field">
                                 <div class="fields">
                                     <div class="nine wide required field">
-                                        <label>Tên đề tài</label>
+                                        <label>Topic name</label>
                                         <input type="text" name="name" placeholder="Topic name">
                                     </div>
                                     <div class="seven wide field">
-                                        <label>Nhóm</label>
+                                        <label>Group</label>
                                         <div class="ui search selection dropdown assigned-group">
                                             <input type="hidden" name="groupId">
                                             <i class="dropdown icon"></i>
@@ -640,7 +644,7 @@
                             <div class="field">
                                 <div class="fields">
                                     <div class="sixteen wide field">
-                                        <label>Mô tả</label>
+                                        <label>Description</label>
                                         <textarea name="descriptions" placeholder="Description"></textarea>
                                     </div>
                                 </div>
@@ -649,13 +653,14 @@
                         <div class="seven wide field">
                             <div class="fields">
                                 <div class="sixteen wide field">
-                                    <label>Tệp đính kèm</label>
+                                    <label>Attach file</label>
                                     <div class="ui input">
                                         <table class="ui small celled red table spec-files">
                                             <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Tên</th>
+                                                <th class="ten wide">Name</th>
+                                                <th class="four wide center aligned">Status</th>
+                                                <th class="two wide"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -680,11 +685,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-topic')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated blue labeled icon submit button">
                     <i class="plus icon"></i>
-                    Sửa
+                    Edit
                 </button>
             </div>
         </div>
@@ -695,22 +700,22 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-topic">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa đề tài này không?</label>
+                    <label>Do you really want to delete this topic?</label>
                 </div>
                 <div class="ui error message"></div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-topic')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>
@@ -721,22 +726,22 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-spec">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa file này không?</label>
+                    <label>Do you really want to delete this file?</label>
                 </div>
                 <div class="ui error message"></div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-spec')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>
@@ -748,14 +753,14 @@
         </div>
         <div class="ui large header">
             <i class="green book open icon"></i>
-            Thêm mới
+            Create new assignment
         </div>
         <div class="content">
             <div class="ui form create-assignment">
                 <div class="field">
                     <div class="fields">
                         <div class="nine wide required field">
-                            <label>Tên bài tập</label>
+                            <label>Assignment name</label>
                             <input type="text" name="name" placeholder="Assignment name">
                         </div>
                         <div class="seven wide required field">
@@ -770,17 +775,17 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>Mô tả</label>
+                    <label>Description</label>
                     <textarea name="description" placeholder="Description"></textarea>
                 </div>
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-assignment')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create new
                 </button>
             </div>
         </div>
@@ -791,7 +796,7 @@
         </div>
         <div class="ui large header">
             <i class="blue pencil icon"></i>
-            Sửa thông tin
+            Edit assignment
         </div>
         <div class="content">
             <div class="ui form edit-assignment">
@@ -799,7 +804,7 @@
                 <div class="field">
                     <div class="fields">
                         <div class="nine wide required field">
-                            <label>Tên bài tập</label>
+                            <label>Assignment name</label>
                             <input type="text" name="name" placeholder="Assignment name">
                         </div>
                         <div class="seven wide required field">
@@ -814,17 +819,17 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>Mô tả</label>
+                    <label>Description</label>
                     <textarea name="description" placeholder="Description"></textarea>
                 </div>
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-assignment')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated blue labeled icon submit button">
                     <i class="pencil icon"></i>
-                    Sửa
+                    Edit
                 </button>
             </div>
         </div>
@@ -835,22 +840,22 @@
         </div>
         <div class="ui large header">
             <i class="red trash icon"></i>
-            Cảnh báo
+            Warning
         </div>
         <div class="content">
             <div class="ui form delete-assignment">
                 <input type="hidden" name="id">
                 <div class="field">
-                    <label>Bạn có chắc chắn muốn xóa bài tập này không?</label>
+                    <label>Do you really want to delete this assignment?</label>
                 </div>
                 <div class="ui error message"></div>
                 <button class="ui red labeled icon submit button">
                     <i class="check icon"></i>
-                    Có
+                    Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-assignment')">
                     <i class="close icon"></i>
-                    Không
+                    No
                 </div>
             </div>
         </div>
