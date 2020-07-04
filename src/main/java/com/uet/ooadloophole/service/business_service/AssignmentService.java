@@ -18,5 +18,5 @@ public interface AssignmentService {
 
     void delete(String id);
 
-    List<RepoFile> getStudentAssignmentWork(String assignmentId, String groupId);
+    List<RepoFile> getStudentAssignmentWork(String assignmentId, String groupId, String type);
 }

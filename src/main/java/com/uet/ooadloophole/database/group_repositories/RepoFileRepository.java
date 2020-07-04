@@ -15,5 +15,5 @@ public interface RepoFileRepository extends MongoRepository<RepoFile, String> {
 
     RepoFile findBy_id(String _id);
 
-    List<RepoFile> findByGroupIdAndTimeStampBefore(String groupId, LocalDateTime timeStamp);
+    List<RepoFile> findByGroupIdAndTimeStampBeforeAndType(String groupId, LocalDateTime timeStamp, String type);
 }

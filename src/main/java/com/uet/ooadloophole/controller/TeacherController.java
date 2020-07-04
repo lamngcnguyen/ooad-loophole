@@ -125,6 +125,7 @@ public class TeacherController {
         ModelAndView modelAndView = getTeacherView(pageTitle, new BodyFragment("teacher/assignment-results", "body-content"));
         modelAndView.addObject("groups", groups);
         modelAndView.addObject("assignment", assignment);
+
         return modelAndView;
     }
 

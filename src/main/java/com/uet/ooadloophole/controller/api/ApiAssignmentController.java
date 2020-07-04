@@ -45,8 +45,8 @@ public class ApiAssignmentController {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("deleted")));
     }
 
-    @RequestMapping(value = "/{id}/student-work/{groupId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getStudentAssignmentWork(@PathVariable String id, @PathVariable String groupId) {
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(assignmentService.getStudentAssignmentWork(id, groupId))));
+    @RequestMapping(value = "/{id}/student-work/{groupId}/{type}", method = RequestMethod.GET)
+    public ResponseEntity<String> getStudentAssignmentWork(@PathVariable String id, @PathVariable String groupId, @PathVariable String type) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(assignmentService.getStudentAssignmentWork(id, groupId, type))));
     }
 }

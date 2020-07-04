@@ -24,7 +24,10 @@ $.fn.api.settings.api = {
     'get assignment': '/api/assignments/{id}',
     'create assignment': '/api/assignments',
     'edit assignment': '/api/assignments/{id}',
-    'delete assignment': '/api/assignments/{id}'
+    'delete assignment': '/api/assignments/{id}',
+    'get code': '/api/assignments/{id}/student-work/{groupId}/code',
+    'get diagram': '/api/assignments/{id}/student-work/{groupId}/diagram',
+    'get doc': '/api/assignments/{id}/student-work/{groupId}/doc',
 };
 
 const UPLOAD_TIMEOUT = 10000;

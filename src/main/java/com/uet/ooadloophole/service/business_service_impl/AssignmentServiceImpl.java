@@ -49,10 +49,10 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public List<RepoFile> getStudentAssignmentWork(String assignmentId, String groupId) {
+    public List<RepoFile> getStudentAssignmentWork(String assignmentId, String groupId, String type) {
         Assignment assignment = getById(assignmentId);
         LocalDate deadline = assignment.getDeadline();
         LocalDateTime dateTime = deadline.atTime(0, 0, 0);
-        return repoFileRepository.findByGroupIdAndTimeStampBefore(groupId, dateTime);
+        return repoFileRepository.findByGroupIdAndTimeStampBeforeAndType(groupId, dateTime, type);
     }
 }
