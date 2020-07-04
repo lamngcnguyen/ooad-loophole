@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
 import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.grading_elements.Criteria;
 import com.uet.ooadloophole.model.business.grading_elements.GradingTemplate;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
@@ -37,11 +38,11 @@ public class ApiGradingTemplateController {
         return ResponseEntity.status(HttpStatus.OK).body(newGradingTemplate);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Object> getGradingTemplateByTeacherId(String teacherId) {
+    @RequestMapping(value = "/teacher/{teacherId}",method = RequestMethod.GET)
+    public ResponseEntity<Object> getGradingTemplateByTeacherId(@PathVariable String teacherId) {
         try {
             List<GradingTemplate> result = gradingTemplateService.getByTeacherId(teacherId);
-            return ResponseEntity.status(HttpStatus.OK).body(result);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(result)));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

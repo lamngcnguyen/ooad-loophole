@@ -40,6 +40,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         dbAssignment.setName(assignment.getName());
         dbAssignment.setDescription(assignment.getDescription());
         dbAssignment.setDeadline(assignment.getDeadline());
+        dbAssignment.setGradingTemplateId(assignment.getGradingTemplateId());
         return assignmentRepository.save(dbAssignment);
     }
 

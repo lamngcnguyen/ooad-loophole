@@ -8,6 +8,7 @@
 <div th:fragment="body-content" class="ui stackable grid">
     <link rel="stylesheet" th:href="@{/css/teacher/class_setting.css}">
     <input type="hidden" th:value="${class.get_id()}" name="classId">
+    <input type="hidden" th:value="${class.getTeacherId()}" name="teacherId">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -772,6 +773,15 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="fields">
+                        <div class="nine wide field">
+                            <label>Grading template</label>
+                            <select class="ui search dropdown grading-template-dropdown">
+                                <option value="">Grading template</option>
+                            </select>
+                        </div>
+
                     </div>
                 </div>
                 <div class="field">

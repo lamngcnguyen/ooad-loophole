@@ -136,6 +136,26 @@ $(document).ready(function () {
     loadAssignments();
 });
 
+$('.dropdown.grading-template-dropdown').dropdown({
+    showOnFocus: false,
+}).api({
+    action: 'get grading templates',
+    method: 'get',
+    urlData: {teacherId:  $('input[name="teacherId"]').val()},
+    on: 'now',
+    onSuccess(response, element, xhr) {
+        const values = [];
+        xhr.responseJSON.data.forEach(function (gradingTemplate) {
+            values.push({
+                value: gradingTemplate._id,
+                name: gradingTemplate.gradingTemplateName,
+                text: gradingTemplate.gradingTemplateName,
+            })
+        });
+        $(element).dropdown('change values', values);
+    }
+});
+
 function loadAssignments() {
     $.api({
         action: 'get assignments',

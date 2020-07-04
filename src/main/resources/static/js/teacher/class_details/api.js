@@ -28,6 +28,7 @@ $.fn.api.settings.api = {
     'get code': '/api/assignments/{id}/student-work/{groupId}/code',
     'get diagram': '/api/assignments/{id}/student-work/{groupId}/diagram',
     'get doc': '/api/assignments/{id}/student-work/{groupId}/doc',
+    'get grading templates': '/api/grading-template/teacher/{teacherId}'
 };
 
 const UPLOAD_TIMEOUT = 10000;
