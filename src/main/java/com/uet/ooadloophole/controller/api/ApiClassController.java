@@ -51,36 +51,32 @@ public class ApiClassController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createClass(@RequestBody Class ooadClass) {
-        try {
-            if (userCanNotCreateClass())
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            if (classService.classNameExists(ooadClass.getTeacherId(), ooadClass.getClassName()))
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(
-                        new ResponseMessage("Class name already exists for this teacher")));
-            Class newClass = classService.create(ooadClass);
-            return ResponseEntity.status(HttpStatus.OK).body(newClass);
-        } catch (BusinessServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        //            if (userCanNotCreateClass())
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (classService.classNameExists(ooadClass.getTeacherId(), ooadClass.getClassName()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(gson.toJson(
+                    new ResponseMessage("Class name already exists for this teacher")));
+        Class newClass = classService.create(ooadClass);
+        return ResponseEntity.status(HttpStatus.OK).body(newClass);
     }
 
     @RequestMapping(value = "/teacher/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getClassesByTeacherId(@PathVariable String id) {
         try {
-            if (userCanNotCreateClass()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            } else {
-                List<DTOClass> dtoClasses = new ArrayList<>();
-                classService.getByTeacherId(id).forEach(ooadClass -> {
-                    try {
-                        dtoClasses.add(converterService.convertToDTOClass(ooadClass));
-                    } catch (BusinessServiceException e) {
-                        e.printStackTrace();
-                        //TODO: add logger here
-                    }
-                });
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClasses)));
-            }
+//            if (userCanNotCreateClass()) {
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//            } else {
+            List<DTOClass> dtoClasses = new ArrayList<>();
+            classService.getByTeacherId(id).forEach(ooadClass -> {
+                try {
+                    dtoClasses.add(converterService.convertToDTOClass(ooadClass));
+                } catch (BusinessServiceException e) {
+                    e.printStackTrace();
+                    //TODO: add logger here
+                }
+            });
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClasses)));
+//            }
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -88,24 +84,24 @@ public class ApiClassController {
 
     @RequestMapping(value = "/teacher/{id}/semester/{semesterId}", method = RequestMethod.GET)
     public ResponseEntity<String> getClassesBySemester(@PathVariable String id, @PathVariable String semesterId) {
-        try {
-            if (userCanNotCreateClass()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            } else {
-                List<DTOClass> dtoClasses = new ArrayList<>();
-                classService.getByTeacherIdAndSemesterId(id, semesterId).forEach(ooadClass -> {
-                    try {
-                        dtoClasses.add(converterService.convertToDTOClass(ooadClass));
-                    } catch (BusinessServiceException e) {
-                        e.printStackTrace();
-                        //TODO: add logger here
-                    }
-                });
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClasses)));
+//        try {
+//            if (userCanNotCreateClass()) {
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//            } else {
+        List<DTOClass> dtoClasses = new ArrayList<>();
+        classService.getByTeacherIdAndSemesterId(id, semesterId).forEach(ooadClass -> {
+            try {
+                dtoClasses.add(converterService.convertToDTOClass(ooadClass));
+            } catch (BusinessServiceException e) {
+                e.printStackTrace();
+                //TODO: add logger here
             }
-        } catch (BusinessServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(dtoClasses)));
+//            }
+//        } catch (BusinessServiceException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+//        }
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -125,8 +121,8 @@ public class ApiClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteClass(@PathVariable String id) {
         try {
-            if (userCanNotCreateClass())
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//            if (userCanNotCreateClass())
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             classService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("success")));
         } catch (BusinessServiceException e) {
@@ -186,8 +182,8 @@ public class ApiClassController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateClass(@PathVariable String id, @RequestBody Class ooadClass) {
         try {
-            if (userCanNotCreateClass())
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//            if (userCanNotCreateClass())
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             Class updatedClass = classService.update(id, ooadClass);
             return ResponseEntity.status(HttpStatus.OK).body(updatedClass);
         } catch (BusinessServiceException e) {
