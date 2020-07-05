@@ -21,18 +21,25 @@
         <div class="ui inverted dropdown item notification">
             <div class="borderless item" style="padding: 0 !important;">
                 <i class="large bell icon" style="margin: 0 !important;"></i>
-                <div class="floating ui red circular label unseen">
-                    <span>1</span>
+                <div class="floating ui red circular label unseen" th:if="${unreadCount > 0}">
+                    <span class="unread-count" th:text="${unreadCount}"></span>
                 </div>
             </div>
             <div class="ui left menu">
-                <a class="item notification">
+                <a class="item empty-notification" th:if="${notifications == null or notifications.isEmpty()}">
                     <div class="header">
-                        <span class="subject">New Member</span>
-                        <span class="timestamp"><i class="clock icon"></i>12:00</span>
+                        <div class="subject">No notifications</div>
+                    </div>
+                </a>
+                <a class="item notification" th:each="notification: ${notifications}"
+                   th:href="${notification.getUrl()}">
+                    <div class="header">
+                        <span class="subject" th:text="${notification.getSubject()}"></span>
+                        <i class="clock icon"></i><span class="timestamp"
+                                                        th:text="${#temporals.format(notification.getTimeStamp(), 'dd/MM HH:mm')}"></span>
                     </div>
                     <div class="content">
-                        <div class="description"><span class="ui blue text">Nguyen Ngoc Lam</span> has invited you to join <span class="ui red text">Weebs</span>!</div>
+                        <div class="description" th:text="${notification.getContent()}"></div>
                     </div>
                 </a>
             </div>
@@ -57,6 +64,22 @@
             </div>
         </div>
     </div>
+    <script>
+        $('.notification.dropdown').on('click', function () {
+            const userId = Cookies.get("userId");
+            if ($('.unread-count').text() !== '') {
+                $.ajax({
+                    url: `/api/notifications/${userId}/seen/all`,
+                    method: 'put',
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        $('.unseen.label').remove();
+                    }
+                });
+            }
+        })
+    </script>
 </div>
 </body>
 </html>

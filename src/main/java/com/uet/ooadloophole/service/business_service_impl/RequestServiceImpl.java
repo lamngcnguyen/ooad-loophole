@@ -8,15 +8,14 @@ import com.uet.ooadloophole.model.business.system_elements.Notification;
 import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.GroupService;
-import com.uet.ooadloophole.service.business_service.RequestService;
 import com.uet.ooadloophole.service.business_service.NotificationService;
+import com.uet.ooadloophole.service.business_service.RequestService;
 import com.uet.ooadloophole.service.business_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -40,7 +39,6 @@ public class RequestServiceImpl implements RequestService {
         List<Request> requests = new ArrayList<>();
         Group group = groupService.getById(groupId);
         for (String studentId : studentIdList) {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
             Request request = new Request();
             request.setGroupId(groupId);
             request.setUserId(studentService.getById(studentId).getUserId());
@@ -50,9 +48,9 @@ public class RequestServiceImpl implements RequestService {
             Request createdRequest = requestRepository.save(request);
 
             Notification notification = new Notification();
-            notification.setSubject("Lời mời vào nhóm");
-            notification.setContent("Bạn đã được mời vào nhóm " + group.getGroupName());
-            notification.setTimeStamp(timeStamp);
+            notification.setSubject("New invitation");
+            notification.setContent("You have been invited to join " + group.getGroupName());
+            notification.setTimeStamp(LocalDateTime.now());
             notification.setReceiverId(studentService.getById(studentId).getUserId());
             notification.setUrl("/student/invitation/" + createdRequest.get_id());
             notification.setSeen(false);
@@ -101,9 +99,7 @@ public class RequestServiceImpl implements RequestService {
      */
     @Override
     public Request createRequest(String groupId, String studentId) throws BusinessServiceException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         Student student = studentService.getById(studentId);
-
         Request request = new Request();
         request.setGroupId(groupId);
         request.setUserId(student.getUserId()); //Student making the request
@@ -112,9 +108,9 @@ public class RequestServiceImpl implements RequestService {
 
         Group group = groupService.getById(groupId);
         Notification notification = new Notification();
-        notification.setSubject("Yêu cầu tham gia vào nhóm");
-        notification.setContent(student.getFullName() + " đã gửi yêu cầu tham gia nhóm " + group.getGroupName());
-        notification.setTimeStamp(timeStamp);
+        notification.setSubject("New request");
+        notification.setContent(student.getFullName() + " has sent request to join " + group.getGroupName());
+        notification.setTimeStamp(LocalDateTime.now());
         notification.setReceiverId(group.getLeader().getUserId()); //Leader receiving the request
         notification.setUrl("/student/request/" + createdRequest.get_id());
         notification.setSeen(false);

@@ -25,17 +25,21 @@ public class ApiNotificationController {
     public ResponseEntity<Object> create(@RequestBody INotification iNotification) {
         Notification notification = converterService.convertToNotification(iNotification);
         Notification response = notificationService.create(notification);
-        return ResponseEntity.status(HttpStatus.OK).body(notification);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @RequestMapping(value = "/{notificationId}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> markAsSeen(@PathVariable String notificationId) {
+    @RequestMapping(value = "/{id}/seen", method = RequestMethod.PUT)
+    public ResponseEntity<Object> markAsSeen(@PathVariable String id) {
         try {
-            notificationService.markAsSeen(notificationId);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(notificationService.markAsSeen(id));
         } catch (BusinessServiceException ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/{userId}/seen/all", method = RequestMethod.PUT)
+    public ResponseEntity<Object> markAllAsSeen(@PathVariable String userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(notificationService.markAllAsSeen(userId));
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)

@@ -130,6 +130,7 @@ public class StudentController {
         boolean groupSetupDeadlineMet;
         try {
             groupSetupDeadlineMet = today.compareTo(classConfig.getIterationSetupDeadline()) > 0;
+            modelAndView.addObject("config", classConfig);
         } catch (Exception e) {
             //TODO: Show class not configured page
             return new ModelAndView("error");

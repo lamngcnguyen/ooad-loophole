@@ -12,7 +12,7 @@ function loadGroupMember(data) {
             .css('display', 'flex')
             .prop('id', c._id);
         member.find('.header').text(c.fullName);
-        member.find('.member-description').text(`Mã số sinh viên: ${c.studentId}`);
+        member.find('.member-description').text(`Student ID: ${c.studentId}`);
         member.find('img').attr('src', `/api/users/avatar/${c.userId}`);
         if (Cookies.get('userId') !== c.userId) {
             member.find('.remove-member').click(function () {

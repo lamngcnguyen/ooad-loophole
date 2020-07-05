@@ -10,5 +10,7 @@ public interface NotificationService {
 
     List<Notification> getAllByReceiverId(String receiverId);
 
-    void markAsSeen(String notificationId) throws BusinessServiceException;
+    Notification markAsSeen(String notificationId) throws BusinessServiceException;
+
+    List<Notification> markAllAsSeen(String userId);
 }

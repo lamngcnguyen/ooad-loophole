@@ -11,7 +11,7 @@
         <div class="six wide centered column">
             <div class="ui labeled icon button" onclick="window.history.back()">
                 <i class="arrow left icon"></i>
-                Quay lại
+                Return
             </div>
             <div class="ui form invitation-form">
                 <div class="ui grid segment">
@@ -23,7 +23,7 @@
                                 <i class="envelope icon"></i>
                                 <div class="content">
                                     <span th:text="${group.getLeader().getFullName()}"></span>
-                                    đã gửi bạn lời mời vào nhóm
+                                    has invited you to join
                                     <span th:text="${group.getGroupName()}"></span>
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                     <div class="ui divider"></div>
                     <div class="row">
                         <div class="column">
-                            <div class="ui medium header">Nội dung lời mời</div>
+                            <div class="ui medium header">Invitation message</div>
                             <p th:text="${invitation.getMessage()}"></p>
                         </div>
                     </div>
@@ -41,12 +41,12 @@
                     <div class="row">
                         <div class="eight wide column">
                             <div class="ui red fluid button" onclick="denyInvitation()">
-                                Từ chối
+                                Deny
                             </div>
                         </div>
                         <div class="eight wide column">
                             <button class="ui green fluid button" onclick="acceptInvitation()">
-                                Chấp nhận
+                                Accept
                             </button>
                         </div>
                     </div>

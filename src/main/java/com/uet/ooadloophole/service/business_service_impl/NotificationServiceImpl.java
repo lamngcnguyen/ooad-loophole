@@ -26,12 +26,22 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void markAsSeen(String notificationId) throws BusinessServiceException {
+    public Notification markAsSeen(String notificationId) throws BusinessServiceException {
         Notification notification = notificationRepository.findBy_id(notificationId);
-        if(notification == null) {
+        if (notification == null) {
             throw new BusinessServiceException("No notification found for this id: " + notificationId);
         }
         notification.setSeen(true);
-        notificationRepository.save(notification);
+        return notificationRepository.save(notification);
+    }
+
+    @Override
+    public List<Notification> markAllAsSeen(String userId) {
+        List<Notification> notifications = notificationRepository.findAllByReceiverId(userId);
+        notifications.forEach(notification -> {
+            notification.setSeen(true);
+            notificationRepository.save(notification);
+        });
+        return notifications;
     }
 }

@@ -19,7 +19,7 @@
                 </div>
                 <div class="ui large grey label">
                     <i class="users icon"></i>
-                    Quản lý nhóm
+                    Group management
                 </div>
             </div>
         </div>
@@ -32,20 +32,20 @@
                         <div class="ui tabular vertical fluid menu">
                             <a class="active blue item topic-management" onclick="showTab('topic-management')">
                                 <i class="book open icon"></i>
-                                Quản lí đề tài
+                                Topic management
                             </a>
                             <a class="blue item members" onclick="showTab('members')">
                                 <i class="users icon"></i>
-                                Quản lí thành viên
+                                Member management
                             </a>
-                            <a class="item roles" onclick="showTab('roles')">
-                                <i class="user tag icon"></i>
-                                Quản lí quyền
-                            </a>
-                            <a class="item guests" onclick="showTab('guests')">
-                                <i class="eye icon"></i>
-                                Quản lí khách
-                            </a>
+                            <!--                            <a class="item roles" onclick="showTab('roles')">-->
+                            <!--                                <i class="user tag icon"></i>-->
+                            <!--                                Role management-->
+                            <!--                            </a>-->
+                            <!--                            <a class="item guests" onclick="showTab('guests')">-->
+                            <!--                                <i class="eye icon"></i>-->
+                            <!--                                Quản lí khách-->
+                            <!--                            </a>-->
                         </div>
                     </div>
                     <div class="twelve wide stretched column">
@@ -87,7 +87,7 @@
                         </div>
                         <div class="ui active tab segment topic-management" th:unless="${topic == null}">
                             <div class="ui blue large header">
-                                Đề tài: <span class="topic-name" th:text="${topic.getName()}"></span>
+                                Topic: <span class="topic-name" th:text="${topic.getName()}"></span>
                                 <button class="ui right floated blue small basic icon edit-iteration button"
                                         style="padding-top: 10px" data-tooltip="Change topic" th:if="${isSetupPhase}"
                                         onclick="showModal('.modal.change-topic')">
@@ -98,10 +98,10 @@
                             <div class="ui segment" style="padding-top: 30px">
                                 <a class="ui top attached icon grey label">
                                     <i class="list icon"></i>&nbsp
-                                    Mô tả
+                                    Description
                                 </a>
                                 <span class="detail-text"
-                                      th:text="${topic.getDescriptions()}">Something something</span>
+                                      th:text="${topic.getDescriptions()}"></span>
                             </div>
                             <div class="ui divider"></div>
                             <table class="ui grey celled table topic-file">
@@ -138,10 +138,11 @@
                                         <div class="ui icon labeled teal button"
                                              onclick="showModal('.modal.invite-student')">
                                             <i class="paper plane icon"></i>
-                                            Mời
+                                            Invite
                                         </div>
                                         <div class="ui black right floated button">
-                                            Giới hạn: 3-5
+                                            Member limit: <span th:text="${config.getGroupLimitMin()}"></span> - <span
+                                                th:text="${config.getGroupLimitMax()}"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -239,13 +240,13 @@
         </div>
         <div class="ui large header">
             <i class="green paper plane icon"></i>
-            Mời
+            Invite student
         </div>
         <div class="content">
             <div class="ui form invite-student">
                 <input type="hidden" name="groupId" th:value="${student.getGroupId()}">
                 <div class="required field">
-                    <label>Thành viên</label>
+                    <label>Member</label>
                     <div class="ui search selection multiple dropdown unassigned-student-dropdown">
                         <input type="hidden" name="members">
                         <i class="dropdown icon"></i>
@@ -253,17 +254,17 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>Nội dung lời mời</label>
-                    <textarea name="message" placeholder="Nội dung..."></textarea>
+                    <label>Invitation message</label>
+                    <textarea name="message" placeholder="Message..."></textarea>
                 </div>
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.invite-student')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Add
                 </button>
             </div>
         </div>
@@ -296,7 +297,7 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.change-topic')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <div class="ui green right floated icon labeled submit button">
                     <i class="paper plane icon"></i>
@@ -314,7 +315,7 @@
             <div class="ui segment" style="padding-top: 30px">
                 <a class="ui top attached icon grey label">
                     <i class="list icon"></i>&nbsp
-                    Mô tả
+                    Description
                 </a>
                 <span class="description-text">Something something</span>
             </div>
@@ -417,7 +418,7 @@
                 </div>
                 <div class="ui large grey label">
                     <i class="users icon"></i>
-                    Thông tin nhóm
+                    Group details
                 </div>
                 <button class="ui right floated red small icon leave-group button"
                         style="padding-top: 10px" th:if="${isSetupPhase}"
@@ -432,11 +433,11 @@
             <div class="ui tabular vertical fluid menu">
                 <a class="active blue item topic" onclick="showTab('topic')">
                     <i class="book open icon"></i>
-                    Thông tin đề tài
+                    Topic information
                 </a>
                 <a class="blue item members" onclick="showTab('members')">
                     <i class="users icon"></i>
-                    Thông tin thành viên
+                    Members information
                 </a>
             </div>
         </div>
@@ -454,16 +455,16 @@
             </div>
             <div class="ui active tab segment topic" th:unless="${topic == null}">
                 <div class="ui blue large header">
-                    Đề tài: <span class="topic-name" th:text="${topic.getName()}"></span>
+                    Topic: <span class="topic-name" th:text="${topic.getName()}"></span>
                 </div>
                 <div class="ui divider"></div>
                 <div class="ui segment" style="padding-top: 30px">
                     <a class="ui top attached icon grey label">
                         <i class="list icon"></i>&nbsp
-                        Mô tả
+                        Description
                     </a>
                     <span class="detail-text"
-                          th:text="${topic.getDescriptions()}">Something something</span>
+                          th:text="${topic.getDescriptions()}"></span>
                 </div>
                 <div class="ui divider"></div>
                 <table class="ui grey celled table topic-file">

@@ -21,8 +21,8 @@ import com.uet.ooadloophole.service.business_service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -207,13 +207,12 @@ public class ConverterService {
     }
 
     public Notification convertToNotification(INotification iNotification) {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         Notification notification = new Notification();
         notification.setSeen(false);
         notification.setSubject(iNotification.getSubject());
         notification.setContent(NotificationTemplateFactory.getContent(iNotification.getType(), iNotification.getTemplateValues()));
         notification.setReceiverId(iNotification.getReceiverId());
-        notification.setTimeStamp(timeStamp);
+        notification.setTimeStamp(LocalDateTime.now());
         notification.setUrl("/home");
         return notification;
     }
