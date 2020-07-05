@@ -208,6 +208,27 @@ $('.form.delete-file').form({
     },
 });
 
+$('.form.delete-work-item').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-work-item');
+        $.api({
+            action: 'delete work item',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                window.location.replace("/student/boards")
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-work-item');
+                $('.form.delete-work-item').form('add errors', [res]);
+            }
+        });
+    },
+});
+
 $('.log-item').on('click', function () {
     $('a.item').removeClass('active');
     $('.log-table').hide();

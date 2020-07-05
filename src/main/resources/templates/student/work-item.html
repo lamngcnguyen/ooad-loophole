@@ -19,6 +19,10 @@
                         <i class="tasks icon"></i>
                         <span th:text="${workItem.getName()}">Work item #1</span>
                     </div>
+                    <a class="ui red small right floated icon button" data-tooltip="Delete work item"
+                       onclick="showModal('.modal.delete-work-item')" th:if="${workItem.getStatus() == 'New'}">
+                        <i class="trash icon"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -266,6 +270,32 @@
                     Yes
                 </button>
                 <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-file')">
+                    <i class="close icon"></i>
+                    No
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui small modal delete-work-item">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Warning
+        </div>
+        <div class="content">
+            <div class="ui form delete-work-item">
+                <input type="hidden" name="id" th:value="${workItem.get_id()}">
+                <div class="field">
+                    <label>Do you really want to delete this work item?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Yes
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-work-item')">
                     <i class="close icon"></i>
                     No
                 </div>

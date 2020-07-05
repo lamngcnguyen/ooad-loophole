@@ -1,5 +1,7 @@
 package com.uet.ooadloophole.controller.api;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.interfaces.IWorkItem;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.service.ConverterService;
@@ -23,6 +25,8 @@ public class ApiBoardController {
     private WorkItemLogService workItemLogService;
     @Autowired
     private ConverterService converterService;
+
+    private Gson gson = new Gson();
 
     @RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
     public ResponseEntity<WorkItem> getItem(@PathVariable String id) {
@@ -53,7 +57,7 @@ public class ApiBoardController {
     public ResponseEntity<String> deleteItem(@PathVariable String id) {
         try {
             workItemService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).body("deleted");
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ResponseMessage("deleted")));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
