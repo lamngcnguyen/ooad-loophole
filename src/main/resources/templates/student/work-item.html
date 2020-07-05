@@ -166,7 +166,8 @@
                                                             <tbody>
                                                             <tr th:each="file: ${workItem.getWorkItemFiles()}"
                                                                 th:id="${'file_' + file.get_id()}">
-                                                                <td th:text="${file.getFileName()}"></td>
+                                                                <td class="file-name"
+                                                                    th:text="${file.getFileName()}"></td>
                                                                 <td th:text="${#temporals.format(file.getTimeStamp(), 'dd/MM/yyyy HH:mm:ss')}"></td>
                                                                 <td class="center aligned">
                                                                     <a class="ui basic tiny blue icon button"
@@ -202,19 +203,19 @@
                                 <div class="ui stackable grid">
                                     <div class="row">
                                         <div class="four wide column">
-                                            <div class="ui vertical inverted grey menu" style="width: 100%">
+                                            <div class="ui vertical inverted grey menu log-menu" style="width: 100%">
                                                 <div class="header item">Change history<i class="clock icon"></i></div>
                                                 <a class="item log-item" th:each="log: ${logs}" th:id="${log.get_id()}">
-                                                    <span th:text="${log.getType()}"></span>
-                                                    <div class="ui teal label"
-                                                         th:text="${#temporals.format(log.getTimeStamp(), 'dd/MM/yyyy HH:mm')}">
-                                                        7/4/2020 12:00
+                                                    <span class="type-text" th:text="${log.getType()}"></span>
+                                                    <div class="ui teal label">
+                                                        <span class="timestamp"
+                                                              th:text="${#temporals.format(log.getTimeStamp(), 'dd/MM/yyyy HH:mm')}"></span>
                                                     </div>
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="twelve wide column">
-                                            <div class="ui inverted grey segment">
+                                            <div class="ui inverted grey segment log-segment">
                                                 <div class="ui tiny header">Change description</div>
                                                 <div class="ui divider"></div>
                                                 <table class="ui inverted grey table log-table" th:each="log: ${logs}"
@@ -223,12 +224,14 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr>
-                                                        <td>Member name</td>
-                                                        <td th:text="${log.getStudent().getFullName()}"></td>
+                                                        <td>Changed by</td>
+                                                        <td class="member-name"
+                                                            th:text="${log.getStudent().getFullName()}"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Description</td>
-                                                        <td th:text="${log.getDescription()}"></td>
+                                                        <td class="description-text"
+                                                            th:text="${log.getDescription()}"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

@@ -4,6 +4,7 @@ import com.uet.ooadloophole.controller.interface_model.interfaces.IWorkItem;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.WorkItemLogService;
 import com.uet.ooadloophole.service.business_service.WorkItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.util.List;
 public class ApiBoardController {
     @Autowired
     private WorkItemService workItemService;
+    @Autowired
+    private WorkItemLogService workItemLogService;
     @Autowired
     private ConverterService converterService;
 
@@ -47,13 +50,18 @@ public class ApiBoardController {
     }
 
     @RequestMapping(value = "/item/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> editItem(@PathVariable String id) {
+    public ResponseEntity<String> deleteItem(@PathVariable String id) {
         try {
             workItemService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body("deleted");
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/item/{id}/logs", method = RequestMethod.GET)
+    public ResponseEntity<Object> getLogs(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(workItemLogService.getByTask(workItemService.getById(id)));
     }
 
     @RequestMapping(value = "/priorities", method = RequestMethod.GET)

@@ -2,6 +2,7 @@ const groupId = $("input[name='groupId']").val();
 const workItemId = $("input[name='workItemId']").val();
 
 $(document).ready(function () {
+    $('.log-menu').children().get(1).click();
     $('.selection.dropdown').dropdown();
     $('.dropdown.assignee-dropdown').dropdown({
         showOnFocus: false,
@@ -67,12 +68,33 @@ $('.form.work-item').form({
                     class: 'red'
                 });
             },
-            onSuccess: function () {
+            onSuccess: function (logs) {
                 $('body').toast({
                     position: 'bottom right',
                     message: 'Work item updated',
                     class: 'green'
                 });
+                logs.forEach(function (log) {
+                    const logMenu = $('.log-menu');
+                    const logSegment = $('.log-segment');
+                    const logItem = $(logMenu.children().get(1)).clone();
+                    logItem.on('click', function () {
+                        $('a.item').removeClass('active');
+                        $('.log-table').hide();
+                        $('a.item#' + $(this).attr('id')).addClass('active');
+                        $('#log_' + $(this).attr('id')).show();
+                    })
+                    logItem.prop('id', log._id);
+                    logItem.removeClass('active');
+                    logItem.find('.type-text').text(log.type);
+                    logItem.find('.timestamp').text(moment(log.timeStamp, 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
+                    logMenu.append(logItem);
+                    const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
+                    logTable.prop('id', `log_${log._id}`);
+                    logTable.find('.member-name').text(log.student.fullName);
+                    logTable.find('.description-text').text(log.description);
+                    logSegment.append(logTable);
+                })
             }
         });
     }
@@ -114,6 +136,25 @@ function uploadFile() {
                 showModal('.modal.delete-file');
             });
             fileTable.prepend(fileCell);
+            const logMenu = $('.log-menu');
+            const logSegment = $('.log-segment');
+            const logItem = $(logMenu.children().get(1)).clone();
+            logItem.on('click', function () {
+                $('a.item').removeClass('active');
+                $('.log-table').hide();
+                $('a.item#' + $(this).attr('id')).addClass('active');
+                $('#log_' + $(this).attr('id')).show();
+            })
+            logItem.prop('id', file._id);
+            logItem.removeClass('active');
+            logItem.find('.type-text').text("File uploaded");
+            logItem.find('.timestamp').text(moment(new Date(), 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
+            logMenu.append(logItem);
+            const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
+            logTable.prop('id', `log_${file._id}`);
+            logTable.find('.member-name').text($('.full-name').text());
+            logTable.find('.description-text').text("Uploaded " + file.fileName);
+            logSegment.append(logTable);
         },
         onFailure: function (response) {
             $('body').toast({
@@ -126,6 +167,7 @@ function uploadFile() {
 
 $('.form.delete-file').form({
     onSuccess: function (evt, data) {
+        const fileName = $(`#file_${data.id} .file-name`).text()
         showDimmer('.modal.delete-file');
         $.api({
             action: 'delete file',
@@ -138,6 +180,25 @@ $('.form.delete-file').form({
                 hideDimmer('.modal.delete-file');
                 hideModal('.modal.delete-file');
                 $(`#file_${data.id}`).remove();
+                const logMenu = $('.log-menu');
+                const logSegment = $('.log-segment');
+                const logItem = $(logMenu.children().get(1)).clone();
+                logItem.on('click', function () {
+                    $('a.item').removeClass('active');
+                    $('.log-table').hide();
+                    $('a.item#' + $(this).attr('id')).addClass('active');
+                    $('#log_' + $(this).attr('id')).show();
+                })
+                logItem.prop('id', data.id);
+                logItem.removeClass('active');
+                logItem.find('.type-text').text("File deleted");
+                logItem.find('.timestamp').text(moment(new Date(), 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
+                logMenu.append(logItem);
+                const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
+                logTable.prop('id', `log_${data.id}`);
+                logTable.find('.member-name').text($('.full-name').text());
+                logTable.find('.description-text').text("Deleted " + fileName);
+                logSegment.append(logTable);
             },
             onFailure: function (res) {
                 hideDimmer('.modal.delete-file');

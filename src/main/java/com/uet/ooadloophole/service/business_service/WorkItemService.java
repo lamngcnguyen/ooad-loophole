@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.service.business_service;
 
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
+import com.uet.ooadloophole.model.business.group_elements.WorkItemLog;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public interface WorkItemService {
 
     WorkItem assignMember(String studentId, String id);
 
-    WorkItem edit(String id, WorkItem workItem);
+    List<WorkItemLog> edit(String id, WorkItem workItem) throws BusinessServiceException;
 
     void delete(String id) throws BusinessServiceException;
 }

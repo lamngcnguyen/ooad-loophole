@@ -1,6 +1,5 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
-import com.uet.ooadloophole.database.group_repositories.WorkItemLogRepository;
 import com.uet.ooadloophole.database.group_repositories.WorkItemRepository;
 import com.uet.ooadloophole.database.system_repositories.StudentRepository;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
@@ -9,6 +8,7 @@ import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.IterationService;
+import com.uet.ooadloophole.service.business_service.WorkItemLogService;
 import com.uet.ooadloophole.service.business_service.WorkItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class WorkItemServiceImpl implements WorkItemService {
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
-    private WorkItemLogRepository workItemLogRepository;
+    private WorkItemLogService workItemLogService;
     @Autowired
     private IterationService iterationService;
 
@@ -66,22 +66,35 @@ public class WorkItemServiceImpl implements WorkItemService {
     }
 
     @Override
-    public WorkItem edit(String id, WorkItem workItem) {
+    public List<WorkItemLog> edit(String id, WorkItem workItem) throws BusinessServiceException {
         WorkItem dbWorkItem = getById(id);
-        dbWorkItem.setName(workItem.getName());
-        dbWorkItem.setAssignedMember(workItem.getAssignedMember());
-        dbWorkItem.setIteration(workItem.getIteration());
-        dbWorkItem.setDescription(workItem.getDescription());
-        dbWorkItem.setPriority(workItem.getPriority());
-        dbWorkItem.setStatus(workItem.getStatus());
-
-        WorkItemLog workItemLog = new WorkItemLog();
-        workItemLog.setTask(dbWorkItem);
-        workItemLog.setDescription(workItem.getName() + " edited");
-        workItemLog.setTimeStamp(LocalDateTime.now());
-//        workItemLog.setStudentId("");
-//        workItemLogRepository.save(workItemLog);
-        return workItemRepository.save(dbWorkItem);
+        List<WorkItemLog> workItemLogs = new ArrayList<>();
+        if (!dbWorkItem.getName().equals(workItem.getName())) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Name changed from " + dbWorkItem.getName() + " to " + workItem.getName(), "Name edited"));
+            dbWorkItem.setName(workItem.getName());
+        }
+        if (!dbWorkItem.getAssignedMember().get_id().equals(workItem.getAssignedMember().get_id())) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Assignee changed from " + dbWorkItem.getAssignedMember().getFullName() + " to " + workItem.getAssignedMember().getFullName(), "Assignee changed"));
+            dbWorkItem.setAssignedMember(workItem.getAssignedMember());
+        }
+        if (!dbWorkItem.getIteration().get_id().equals(workItem.getIteration().get_id())) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Iteration changed from " + dbWorkItem.getIteration().getName() + " to " + workItem.getIteration().getName(), "Iteration changed"));
+            dbWorkItem.setIteration(workItem.getIteration());
+        }
+        if (!dbWorkItem.getIteration().equals(workItem.getIteration())) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Changed from \"" + dbWorkItem.getDescription() + "\" to \"" + workItem.getDescription() + "\"", "Description changed"));
+            dbWorkItem.setDescription(workItem.getDescription());
+        }
+        if (dbWorkItem.getPriority() != workItem.getPriority()) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Priority changed from " + dbWorkItem.getPriority() + " to " + workItem.getPriority(), "Priority changed"));
+            dbWorkItem.setPriority(workItem.getPriority());
+        }
+        if (!dbWorkItem.getStatus().equals(workItem.getStatus())) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Status changed from " + dbWorkItem.getStatus() + " to " + workItem.getStatus(), "Status changed"));
+            dbWorkItem.setStatus(workItem.getStatus());
+        }
+        workItemRepository.save(dbWorkItem);
+        return workItemLogs;
     }
 
     @Override
