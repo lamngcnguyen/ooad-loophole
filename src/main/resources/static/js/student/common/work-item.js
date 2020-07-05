@@ -2,7 +2,9 @@ const groupId = $("input[name='groupId']").val();
 const workItemId = $("input[name='workItemId']").val();
 
 $(document).ready(function () {
-    $('.log-menu').children().get(1).click();
+    if ($('.log-menu').children().get(1) !== undefined) {
+        $('.log-menu').children().get(1).click();
+    }
     $('.selection.dropdown').dropdown();
     $('.dropdown.assignee-dropdown').dropdown({
         showOnFocus: false,
@@ -88,12 +90,13 @@ $('.form.work-item').form({
                     logItem.removeClass('active');
                     logItem.find('.type-text').text(log.type);
                     logItem.find('.timestamp').text(moment(log.timeStamp, 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
-                    logMenu.append(logItem);
+                    logItem.insertAfter($('.log-menu-header'));
                     const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
                     logTable.prop('id', `log_${log._id}`);
                     logTable.find('.member-name').text(log.student.fullName);
                     logTable.find('.description-text').text(log.description);
                     logSegment.append(logTable);
+                    logItem.click();
                 })
             }
         });
@@ -135,7 +138,7 @@ function uploadFile() {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');
             });
-            fileTable.prepend(fileCell);
+            fileCell.insertBefore($('.upload-row'));
             const logMenu = $('.log-menu');
             const logSegment = $('.log-segment');
             const logItem = $(logMenu.children().get(1)).clone();
@@ -149,12 +152,13 @@ function uploadFile() {
             logItem.removeClass('active');
             logItem.find('.type-text').text("File uploaded");
             logItem.find('.timestamp').text(moment(new Date(), 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
-            logMenu.append(logItem);
+            logItem.insertAfter($('.log-menu-header'));
             const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
             logTable.prop('id', `log_${file._id}`);
             logTable.find('.member-name').text($('.full-name').text());
             logTable.find('.description-text').text("Uploaded " + file.fileName);
             logSegment.append(logTable);
+            logItem.click();
         },
         onFailure: function (response) {
             $('body').toast({
@@ -193,12 +197,13 @@ $('.form.delete-file').form({
                 logItem.removeClass('active');
                 logItem.find('.type-text').text("File deleted");
                 logItem.find('.timestamp').text(moment(new Date(), 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
-                logMenu.append(logItem);
+                logItem.insertAfter($('.log-menu-header'));
                 const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
                 logTable.prop('id', `log_${data.id}`);
                 logTable.find('.member-name').text($('.full-name').text());
                 logTable.find('.description-text').text("Deleted " + fileName);
                 logSegment.append(logTable);
+                logItem.click()
             },
             onFailure: function (res) {
                 hideDimmer('.modal.delete-file');

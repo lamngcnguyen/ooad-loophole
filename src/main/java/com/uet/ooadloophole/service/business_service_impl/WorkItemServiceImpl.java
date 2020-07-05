@@ -50,7 +50,9 @@ public class WorkItemServiceImpl implements WorkItemService {
         workItem.setStatus("New");
         workItem.setPriority(1);
         workItem.setGroupId(creator.getGroupId());
-        return workItemRepository.save(workItem);
+        WorkItem dbWorkItem = workItemRepository.save(workItem);
+        workItemLogService.createLog(dbWorkItem, "Work item \"" + dbWorkItem.getName() + "\" created", "Created");
+        return dbWorkItem;
     }
 
     @Override
@@ -70,18 +72,24 @@ public class WorkItemServiceImpl implements WorkItemService {
         WorkItem dbWorkItem = getById(id);
         List<WorkItemLog> workItemLogs = new ArrayList<>();
         if (!dbWorkItem.getName().equals(workItem.getName())) {
-            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Name changed from " + dbWorkItem.getName() + " to " + workItem.getName(), "Name edited"));
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Name changed from \"" + dbWorkItem.getName() + "\" to \"" + workItem.getName() + "\"", "Name edited"));
             dbWorkItem.setName(workItem.getName());
         }
-        if (!dbWorkItem.getAssignedMember().get_id().equals(workItem.getAssignedMember().get_id())) {
+        if (dbWorkItem.getAssignedMember() == null && workItem.getAssignedMember() != null) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Work item assigned to " + workItem.getAssignedMember().getFullName(), "Assigned to member"));
+            dbWorkItem.setAssignedMember(workItem.getAssignedMember());
+        } else if (dbWorkItem.getAssignedMember() != null && !dbWorkItem.getAssignedMember().get_id().equals(workItem.getAssignedMember().get_id())) {
             workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Assignee changed from " + dbWorkItem.getAssignedMember().getFullName() + " to " + workItem.getAssignedMember().getFullName(), "Assignee changed"));
             dbWorkItem.setAssignedMember(workItem.getAssignedMember());
         }
-        if (!dbWorkItem.getIteration().get_id().equals(workItem.getIteration().get_id())) {
+        if (dbWorkItem.getIteration() == null) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Work item iteration set to " + workItem.getIteration().getName(), "Iteration set"));
+            dbWorkItem.setIteration(workItem.getIteration());
+        } else if (!dbWorkItem.getIteration().get_id().equals(workItem.getIteration().get_id())) {
             workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Iteration changed from " + dbWorkItem.getIteration().getName() + " to " + workItem.getIteration().getName(), "Iteration changed"));
             dbWorkItem.setIteration(workItem.getIteration());
         }
-        if (!dbWorkItem.getIteration().equals(workItem.getIteration())) {
+        if (!dbWorkItem.getDescription().equals(workItem.getDescription())) {
             workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Changed from \"" + dbWorkItem.getDescription() + "\" to \"" + workItem.getDescription() + "\"", "Description changed"));
             dbWorkItem.setDescription(workItem.getDescription());
         }
@@ -89,7 +97,7 @@ public class WorkItemServiceImpl implements WorkItemService {
             workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Priority changed from " + dbWorkItem.getPriority() + " to " + workItem.getPriority(), "Priority changed"));
             dbWorkItem.setPriority(workItem.getPriority());
         }
-        if (!dbWorkItem.getStatus().equals(workItem.getStatus())) {
+        if (!dbWorkItem.getStatus().equals(workItem.getStatus()) && workItem.getStatus() != null) {
             workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Status changed from " + dbWorkItem.getStatus() + " to " + workItem.getStatus(), "Status changed"));
             dbWorkItem.setStatus(workItem.getStatus());
         }

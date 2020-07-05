@@ -9,6 +9,7 @@ import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
 import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.model.business.group_elements.Request;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
+import com.uet.ooadloophole.model.business.group_elements.WorkItemLog;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.ConverterService;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -224,8 +226,10 @@ public class StudentController {
     public ModelAndView getWorkItemView(@PathVariable String id) {
         WorkItem workItem = workItemService.getById(id);
         ModelAndView modelAndView = getStudentView("Work Item", new BodyFragment("student/work-item", "content"));
+        List<WorkItemLog> logs = workItemLogService.getByTask(workItem);
+        Collections.reverse(logs);
         modelAndView.addObject("workItem", workItem);
-        modelAndView.addObject("logs", workItemLogService.getByTask(workItem));
+        modelAndView.addObject("logs", logs);
         return modelAndView;
     }
 

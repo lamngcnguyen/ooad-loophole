@@ -31,6 +31,11 @@ $('.form.add-item').form({
                     '   </div>' +
                     '</a>';
                 newItemCards.append(card);
+                $('input[name="name"]').val('')
+                $('body').toast({
+                    message: `Work item "${item.name}" created`,
+                    class: 'green'
+                });
             }
         })
     },

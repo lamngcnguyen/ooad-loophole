@@ -291,14 +291,18 @@ public class ConverterService {
         return dtoDiscipline;
     }
 
-    public WorkItem convertWorkItemInterface(IWorkItem iWorkItem) throws BusinessServiceException {
+    public WorkItem convertWorkItemInterface(IWorkItem iWorkItem) {
         WorkItem workItem = new WorkItem();
         workItem.setGroupId(iWorkItem.getGroupId());
         workItem.setName(iWorkItem.getName());
         workItem.setDescription(iWorkItem.getDescription());
         workItem.setPriority(iWorkItem.getPriority());
         workItem.setIteration(iterationService.getById(iWorkItem.getIterationId()));
-        workItem.setAssignedMember(studentService.getById(iWorkItem.getAssigneeId()));
+        try {
+            workItem.setAssignedMember(studentService.getById(iWorkItem.getAssigneeId()));
+        } catch (BusinessServiceException e) {
+            workItem.setAssignedMember(null);
+        }
         workItem.setStatus(iWorkItem.getStatus());
         return workItem;
     }
