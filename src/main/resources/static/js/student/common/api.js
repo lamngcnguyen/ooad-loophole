@@ -3,5 +3,6 @@ $.fn.api.settings.api = {
     'deny invitation': '/api/invitation/deny',
     'get group members': '/api/groups/{groupId}/members',
     'get iterations': '/api/iterations/{groupId}/group',
-    'edit work item': '/api/board/item/{id}'
+    'edit work item': '/api/board/item/{id}',
+    'upload file': '/api/files/work-item'
 };

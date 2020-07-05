@@ -234,6 +234,15 @@ public class ApiFileController {
         return getResourceResponseEntity(request, resource, timeStamp);
     }
 
+    @RequestMapping(value = "/work-item/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteWorkItemFile(@PathVariable String id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(workItemFileService.deleteFile(id));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     private ResponseEntity<Resource> getResourceResponseEntity(HttpServletRequest request, Resource resource, String timeStamp) {
         String contentType = null;
         String fileName = Objects.requireNonNull(resource.getFilename()).replace("_" + timeStamp, "");

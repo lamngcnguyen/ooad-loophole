@@ -78,39 +78,43 @@ $('.form.work-item').form({
     }
 });
 
+$('input#upload-file').on('change', function () {
+    uploadFile();
+})
+
 function uploadFile() {
+    console.log('called')
     const file = $('#upload-file').prop('files')[0];
-    const iterationId = $('input[name=iterationId]').val();
     const fd = new FormData();
     fd.append('file', file, file.name);
-    fd.append('path', '');
-    fd.append('iterationId', iterationId);
+    fd.append('workItemId', workItemId);
     $.api({
-        action: 'upload code',
+        action: 'upload file',
         on: 'now',
         method: 'POST',
         data: fd,
         contentType: false,
         processData: false,
         onSuccess: function (file) {
-            const repoTable = $('#iteration_' + file.iterationId).find('.repo-table');
-            console.log($(repoTable).length);
+            const fileTable = $('.file-table');
             const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
-            const fileCell = $('#templates .code-cell').clone();
+            const fileCell = $('#templates .file-cell').clone();
             fileCell.prop('id', 'file_' + file._id);
-            fileCell.find('.number').text($(repoTable).children().length + 1);
+            fileCell.find('.number').text($(fileTable).children().length + 1);
             fileCell.find('.name').text(file.fileName);
             fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
             fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
-            fileCell.find('.preview-file').remove();
             fileCell.find('.delete-file').click(function () {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');
             });
-            repoTable.append(fileCell);
+            fileTable.prepend(fileCell);
         },
-        onFailure: function (xhr) {
-            $('.form').form('add errors', [xhr]);
+        onFailure: function (response) {
+            $('body').toast({
+                message: response,
+                class: 'red'
+            });
         }
     });
 }

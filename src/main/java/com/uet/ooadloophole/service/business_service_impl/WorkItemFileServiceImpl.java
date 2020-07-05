@@ -19,6 +19,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,7 +39,12 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
     @Override
     public WorkItemFile upload(MultipartFile file, String workItemId) throws BusinessServiceException {
         WorkItem workItem = workItemRepository.findBy_id(workItemId);
-        List<WorkItemFile> workItemFiles = workItem.getWorkItemFiles();
+        List<WorkItemFile> workItemFiles;
+        if (workItem.getWorkItemFiles() == null) {
+            workItemFiles = new ArrayList<>();
+        } else {
+            workItemFiles = workItem.getWorkItemFiles();
+        }
         Group group = groupService.getById(workItem.getGroupId());
         String saveLocation = Constants.WORK_ITEM_FOLDER + group.get_id() + "/" + workItemId;
 
@@ -51,11 +58,12 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
         workItemFile.setPath(saveLocation);
         workItemFile.setTaskId(workItemId);
 
-        workItemFiles.add(workItemFile);
+        WorkItemFile savedFile = workItemFileRepository.save(workItemFile);
+        workItemFiles.add(savedFile);
         workItem.setWorkItemFiles(workItemFiles);
         workItem.setStatus("Committed");
         workItemRepository.save(workItem);
-        return workItemFileRepository.save(workItemFile);
+        return savedFile;
     }
 
     @Override
@@ -69,5 +77,21 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
     @Override
     public WorkItemFile getById(String id) {
         return workItemFileRepository.findBy_id(id);
+    }
+
+    @Override
+    public boolean deleteFile(String id) throws IOException {
+        WorkItemFile workItemFile = workItemFileRepository.findBy_id(id);
+        WorkItem workItem = workItemRepository.findBy_id(workItemFile.getTaskId());
+        if (fileService.deleteFile(workItemFile.getPath() + "/" + converterService.formatFileName(workItemFile.getFileName(), workItemFile.getFileTimeStamp(), workItemFile.getFileExtension()))) {
+            workItemFileRepository.delete(workItemFile);
+            List<WorkItemFile> workItemFiles = workItem.getWorkItemFiles();
+            workItemFiles.removeIf(workItemFile1 -> workItemFile1.get_id().equals(workItemFile.get_id()));
+            workItem.setWorkItemFiles(workItemFiles);
+            workItemRepository.save(workItem);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
