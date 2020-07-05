@@ -135,7 +135,7 @@
                                                 <div class="text">
                                                     <img class="ui avatar image"
                                                          th:src="@{'/api/users/avatar/' + ${workItem.getCreator().getUserId()}}">
-                                                    <span th:text="${workItem.getCreator().getFullName()}">Nguyen Ngoc Lam</span>
+                                                    <span th:text="${workItem.getCreator().getFullName()}"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -164,7 +164,8 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr th:each="file: ${workItem.getWorkItemFiles()}">
+                                                            <tr th:each="file: ${workItem.getWorkItemFiles()}"
+                                                                th:id="${'file_' + file.get_id()}">
                                                                 <td th:text="${file.getFileName()}"></td>
                                                                 <td th:text="${#temporals.format(file.getTimeStamp(), 'dd/MM/yyyy HH:mm:ss')}"></td>
                                                                 <td class="center aligned">
@@ -173,7 +174,7 @@
                                                                        th:href="${'/api/files/work-item/' + file.get_id()}">
                                                                         <i class="download icon"></i>
                                                                     </a>
-                                                                    <div class="ui basic tiny grey icon button"
+                                                                    <div class="ui basic tiny grey icon button delete-file"
                                                                          data-tooltip="Delete file"
                                                                          th:id="${file.get_id()}">
                                                                         <i class="trash icon"></i>
@@ -203,31 +204,31 @@
                                         <div class="four wide column">
                                             <div class="ui vertical inverted grey menu" style="width: 100%">
                                                 <div class="header item">Change history<i class="clock icon"></i></div>
-                                                <div class="active item">
-                                                    Ha Tuan Phong
-                                                    <div class="ui teal label">7/4/2020 12:00</div>
-                                                </div>
-                                                <div class="item">
-                                                    Nguyen Ngoc Lam
-                                                    <div class="ui teal label">7/5/2020 13:00</div>
-                                                </div>
+                                                <a class="item log-item" th:each="log: ${logs}" th:id="${log.get_id()}">
+                                                    <span th:text="${log.getType()}"></span>
+                                                    <div class="ui teal label"
+                                                         th:text="${#temporals.format(log.getTimeStamp(), 'dd/MM/yyyy HH:mm')}">
+                                                        7/4/2020 12:00
+                                                    </div>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="ui inverted grey segment">
                                                 <div class="ui tiny header">Change description</div>
                                                 <div class="ui divider"></div>
-                                                <table class="ui inverted grey table">
+                                                <table class="ui inverted grey table log-table" th:each="log: ${logs}"
+                                                       th:id="${'log_' + log.get_id()}" hidden>
                                                     <thead>
                                                     </thead>
                                                     <tbody>
                                                     <tr>
-                                                        <td>Status</td>
-                                                        <td><i class="green circle icon"></i>Done</td>
+                                                        <td>Member name</td>
+                                                        <td th:text="${log.getStudent().getFullName()}"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Description</td>
-                                                        <td>Bruh</td>
+                                                        <td th:text="${log.getDescription()}"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

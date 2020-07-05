@@ -52,6 +52,8 @@ public class StudentController {
     private AssignmentService assignmentService;
     @Autowired
     private ConverterService converterService;
+    @Autowired
+    private WorkItemLogService workItemLogService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -223,6 +225,7 @@ public class StudentController {
         WorkItem workItem = workItemService.getById(id);
         ModelAndView modelAndView = getStudentView("Work Item", new BodyFragment("student/work-item", "content"));
         modelAndView.addObject("workItem", workItem);
+        modelAndView.addObject("logs", workItemLogService.getByTask(workItem));
         return modelAndView;
     }
 

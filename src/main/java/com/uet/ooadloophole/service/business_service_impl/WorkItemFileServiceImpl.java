@@ -3,7 +3,6 @@ package com.uet.ooadloophole.service.business_service_impl;
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.group_repositories.WorkItemFileRepository;
 import com.uet.ooadloophole.database.group_repositories.WorkItemRepository;
-import com.uet.ooadloophole.model.business.class_elements.TopicSpecFile;
 import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.model.business.group_elements.WorkItemFile;
@@ -13,7 +12,7 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.GroupService;
 import com.uet.ooadloophole.service.business_service.WorkItemFileService;
-import com.uet.ooadloophole.service.business_service.WorkItemService;
+import com.uet.ooadloophole.service.business_service.WorkItemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,8 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
     private WorkItemFileRepository workItemFileRepository;
     @Autowired
     private WorkItemRepository workItemRepository;
+    @Autowired
+    private WorkItemLogService workItemLogService;
     @Autowired
     private FileService fileService;
     @Autowired
@@ -63,6 +64,8 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
         workItem.setWorkItemFiles(workItemFiles);
         workItem.setStatus("Committed");
         workItemRepository.save(workItem);
+
+        workItemLogService.createLog(workItem, "Uploaded " + workItemFile.getFileName(), "File uploaded");
         return savedFile;
     }
 
@@ -80,7 +83,7 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
     }
 
     @Override
-    public boolean deleteFile(String id) throws IOException {
+    public boolean deleteFile(String id) throws IOException, BusinessServiceException {
         WorkItemFile workItemFile = workItemFileRepository.findBy_id(id);
         WorkItem workItem = workItemRepository.findBy_id(workItemFile.getTaskId());
         if (fileService.deleteFile(workItemFile.getPath() + "/" + converterService.formatFileName(workItemFile.getFileName(), workItemFile.getFileTimeStamp(), workItemFile.getFileExtension()))) {
@@ -89,6 +92,7 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
             workItemFiles.removeIf(workItemFile1 -> workItemFile1.get_id().equals(workItemFile.get_id()));
             workItem.setWorkItemFiles(workItemFiles);
             workItemRepository.save(workItem);
+            workItemLogService.createLog(workItem, "Deleted file " + workItemFile.getFileName(), "File deleted");
             return true;
         } else {
             return false;

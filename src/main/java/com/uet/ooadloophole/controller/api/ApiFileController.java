@@ -238,7 +238,7 @@ public class ApiFileController {
     public ResponseEntity<Object> deleteWorkItemFile(@PathVariable String id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(workItemFileService.deleteFile(id));
-        } catch (IOException e) {
+        } catch (IOException | BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

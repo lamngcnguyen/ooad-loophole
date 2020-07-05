@@ -13,7 +13,6 @@ import com.uet.ooadloophole.service.business_service.WorkItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +76,9 @@ public class WorkItemServiceImpl implements WorkItemService {
         dbWorkItem.setStatus(workItem.getStatus());
 
         WorkItemLog workItemLog = new WorkItemLog();
-        workItemLog.setTaskId(dbWorkItem.get_id());
+        workItemLog.setTask(dbWorkItem);
         workItemLog.setDescription(workItem.getName() + " edited");
-        workItemLog.setTimeStamp(LocalDate.now());
+        workItemLog.setTimeStamp(LocalDateTime.now());
 //        workItemLog.setStudentId("");
 //        workItemLogRepository.save(workItemLog);
         return workItemRepository.save(dbWorkItem);

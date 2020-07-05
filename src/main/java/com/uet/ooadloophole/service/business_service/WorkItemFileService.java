@@ -16,5 +16,5 @@ public interface WorkItemFileService {
 
     WorkItemFile getById(String id);
 
-    boolean deleteFile(String id) throws IOException;
+    boolean deleteFile(String id) throws IOException, BusinessServiceException;
 }

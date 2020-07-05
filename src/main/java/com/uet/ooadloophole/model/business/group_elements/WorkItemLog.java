@@ -1,16 +1,21 @@
 package com.uet.ooadloophole.model.business.group_elements;
 
+import com.uet.ooadloophole.model.business.system_elements.Student;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class WorkItemLog {
     @Id
     private String _id;
-    private String studentId;
-    private String taskId;
+    @DBRef
+    private Student student;
+    @DBRef
+    private WorkItem task;
+    private String type;
     private String description;
-    private LocalDate timeStamp;
+    private LocalDateTime timeStamp;
 
     public String get_id() {
         return _id;
@@ -20,20 +25,28 @@ public class WorkItemLog {
         this._id = _id;
     }
 
-    public String getStudentId() {
-        return studentId;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
-    public String getTaskId() {
-        return taskId;
+    public WorkItem getTask() {
+        return task;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
+    public void setTask(WorkItem task) {
+        this.task = task;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -44,11 +57,11 @@ public class WorkItemLog {
         this.description = description;
     }
 
-    public LocalDate getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDate timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 }

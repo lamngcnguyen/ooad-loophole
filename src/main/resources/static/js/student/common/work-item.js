@@ -82,6 +82,11 @@ $('input#upload-file').on('change', function () {
     uploadFile();
 })
 
+$('.button.delete-file').on('click', function () {
+    showModal('.modal.delete-file');
+    $('.form.delete-file').form('set value', 'id', $(this).attr('id'));
+})
+
 function uploadFile() {
     console.log('called')
     const file = $('#upload-file').prop('files')[0];
@@ -118,3 +123,33 @@ function uploadFile() {
         }
     });
 }
+
+$('.form.delete-file').form({
+    onSuccess: function (evt, data) {
+        showDimmer('.modal.delete-file');
+        $.api({
+            action: 'delete file',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-file');
+                hideModal('.modal.delete-file');
+                $(`#file_${data.id}`).remove();
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-file');
+                $('.form.delete-file').form('add errors', [res]);
+            }
+        });
+    },
+});
+
+$('.log-item').on('click', function () {
+    $('a.item').removeClass('active');
+    $('.log-table').hide();
+    $('a.item#' + $(this).attr('id')).addClass('active');
+    $('#log_' + $(this).attr('id')).show();
+});
