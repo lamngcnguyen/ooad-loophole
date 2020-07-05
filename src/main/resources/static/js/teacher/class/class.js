@@ -78,15 +78,35 @@ $(document).ready(function () {
 function createClassCards(data) {
     $('.card-view').find('.class.row').remove();
     $('.card-view').append($('<div class="class four column row"></div>'));
+    let dayOfWeek;
     let colCount = 1;
     data.forEach(function (c) {
+        switch (c.scheduledDayOfWeek) {
+            case 1:
+                dayOfWeek = "Monday"
+                break;
+            case 2:
+                dayOfWeek = "Tuesday"
+                break;
+            case 3:
+                dayOfWeek = "Wednesday"
+                break;
+            case 4:
+                dayOfWeek = "Thursday"
+                break;
+            case 5:
+                dayOfWeek = "Friday"
+                break;
+            case 6:
+                dayOfWeek = "Saturday"
+        }
         const card = $('.card-template').clone()
             .removeClass('card-template')
             .css('display', 'block')
             .addClass(card_colors[colCount - 1])
             .prop('href', `/teacher/class/${c.className}`);
         card.find('.header').text(c.className);
-        card.find('.class-description').text(`Thứ ${c.scheduledDayOfWeek + 1}`);
+        card.find('.class-description').text(dayOfWeek);
         card.find('.student-count').text(c.studentCount);
         card.find('.semester').text(c.semesterName);
         card.find('.button.student').addClass(card_colors[colCount - 1]).click(function () {

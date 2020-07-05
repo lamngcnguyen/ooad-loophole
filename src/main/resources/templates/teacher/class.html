@@ -13,7 +13,7 @@
             <div class="header">
                 <div class="ui large grey label">
                     <i class="chalkboard teacher icon"></i>
-                    Lớp của tôi
+                    My classes
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="ui segment stackable grid card-view">
                 <div class="row">
                     <div class="six wide column">
-                        <label>Học kì</label>&nbsp
+                        <label>Semester</label>&nbsp
                         <div class="ui search selection dropdown semester filter">
                             <input type="hidden" name="semesterId">
                             <i class="dropdown icon"></i>
@@ -35,7 +35,7 @@
                              onclick="showModal('.modal.create-class')">
                             <i class="plus icon">
                             </i>
-                            Thêm mới
+                            Create new
                         </div>
                     </div>
                 </div>
@@ -75,39 +75,39 @@
         </div>
         <div class="ui large header">
             <i class="green user icon"></i>
-            Thêm mới
+            Create new class
         </div>
         <div class="content">
             <div class="ui form create-class">
                 <input type="hidden" th:value="${user.get_id()}" name="teacherId">
                 <div class="fields">
                     <div class="required seven wide field">
-                        <label>Tên lớp</label>
+                        <label>Class name</label>
                         <input type="text" name="className" placeholder="Class name">
                     </div>
                     <div class="required nine wide field">
-                        <label>Học kì</label>
+                        <label>Semester</label>
                         <div class="ui selection dropdown semester">
                             <input type="hidden" name="semesterId">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn học kì</div>
+                            <div class="default text">Select semester</div>
                         </div>
                     </div>
                 </div>
                 <div class="fields">
                     <div class="required seven wide field">
-                        <label>Ngày học</label>
+                        <label>Date</label>
                         <div class="ui selection dropdown dayOfWeek">
                             <input type="hidden" name="scheduledDayOfWeek">
                             <i class="dropdown icon"></i>
-                            <div class="default text">Chọn ngày học</div>
+                            <div class="default text">Select date</div>
                             <div class="menu">
-                                <div class="item" data-value="1">Thứ 2</div>
-                                <div class="item" data-value="2">Thứ 3</div>
-                                <div class="item" data-value="3">Thứ 4</div>
-                                <div class="item" data-value="4">Thứ 5</div>
-                                <div class="item" data-value="5">Thứ 6</div>
-                                <div class="item" data-value="6">Thứ 7</div>
+                                <div class="item" data-value="1">Monday</div>
+                                <div class="item" data-value="2">Tuesday</div>
+                                <div class="item" data-value="3">Wednesday</div>
+                                <div class="item" data-value="4">Thursday</div>
+                                <div class="item" data-value="5">Friday</div>
+                                <div class="item" data-value="6">Saturday</div>
                             </div>
                         </div>
                     </div>
@@ -115,11 +115,11 @@
                 <div class="ui error message"></div>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.create-class')">
                     <i class="close icon"></i>
-                    Hủy
+                    Cancel
                 </div>
                 <button class="ui right floated green labeled icon submit button">
                     <i class="plus icon"></i>
-                    Thêm
+                    Create
                 </button>
             </div>
         </div>
