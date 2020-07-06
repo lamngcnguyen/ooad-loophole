@@ -212,6 +212,42 @@
             </div>
         </div>
     </div>
+    <div class="ui modal edit-file">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="blue pencil icon"></i>
+            Edit file
+        </div>
+        <div class="content">
+            <div class="ui form edit-file">
+                <input type="hidden" name="id">
+                <input type="file" id="edit-file-input" hidden onchange="editFile()">
+                <a class="ui blue icon labeled button" onclick="$('#edit-file-input').click()">
+                    <i class="code icon"></i>
+                    Edit file
+                </a>
+                <div class="ui divider"></div>
+                <div class="ui small header">Edit history</div>
+                <table class="ui grey celled table edit-file">
+                    <thead>
+                    <tr>
+                        <th class="one wide">#</th>
+                        <th class="seven wide">Name</th>
+                        <th class="four wide">Timestamp</th>
+                        <th class="three wide center aligned"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="edit-table"></tbody>
+                </table>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-file')">
+                    <i class="close icon"></i>
+                    Cancel
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="ui small modal delete-file">
         <div class="ui dimmer">
             <div class="ui loader"></div>
@@ -369,6 +405,42 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="ui modal edit-file">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="blue pencil icon"></i>
+            Edit file
+        </div>
+        <div class="content">
+            <div class="ui form edit-file">
+                <input type="hidden" name="id">
+                <input type="file" id="edit-file-input" hidden onchange="editFile()">
+                <a class="ui blue icon labeled button" onclick="$('#edit-file-input').click()">
+                    <i class="code icon"></i>
+                    Edit file
+                </a>
+                <div class="ui divider"></div>
+                <div class="ui small header">Edit history</div>
+                <table class="ui grey celled table edit-file">
+                    <thead>
+                    <tr>
+                        <th class="one wide">#</th>
+                        <th class="seven wide">Name</th>
+                        <th class="four wide">Timestamp</th>
+                        <th class="three wide center aligned"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="edit-table"></tbody>
+                </table>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-file')">
+                    <i class="close icon"></i>
+                    Cancel
+                </div>
+            </div>
+        </div>
     </div>
     <div class="ui small modal delete-file">
         <div class="ui dimmer">

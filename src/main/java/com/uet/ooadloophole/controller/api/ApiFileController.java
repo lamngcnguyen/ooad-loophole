@@ -69,8 +69,8 @@ public class ApiFileController {
     }
 
     @RequestMapping(value = "/repo/{id}/previous", method = RequestMethod.GET)
-    public ResponseEntity<List<RepoFile>> getPreviousVersions(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(repoFileService.getPreviousVersions(id));
+    public ResponseEntity<String> getPreviousVersions(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getPreviousVersions(id))));
     }
 
     @RequestMapping(value = "/repo/{iterationId}/iteration/{type}", method = RequestMethod.GET)

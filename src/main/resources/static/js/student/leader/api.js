@@ -19,7 +19,9 @@ $.fn.api.settings.api = {
     'get diagram': '/api/files/repo/{iterationId}/iteration/diagram',
     'upload doc': '/api/files/repo/doc',
     'get doc': '/api/files/repo/{iterationId}/iteration/doc',
+    'edit file': '/api/files/repo',
     'delete file': '/api/files/repo/{id}',
+    'get previous versions': '/api/files/repo/{id}/previous',
     'create item': '/api/board/item',
     'accept request': '/api/request/accept',
     'deny request': '/api/request/deny'

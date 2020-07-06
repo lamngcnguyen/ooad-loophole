@@ -90,7 +90,13 @@ public class RepoFileServiceImpl implements RepoFileService {
     public RepoFile updateFile(MultipartFile file, String previousVersionId) throws BusinessServiceException {
         try {
             RepoFile previousVersion = getById(previousVersionId);
-            String saveLocation = previousVersion.getPath();
+            String path = previousVersion.getPath();
+            String saveLocation;
+            if (path == null) {
+                saveLocation = Constants.REPO_FOLDER + previousVersion.getClassId() + "/" + previousVersion.getGroupId() + "/" + previousVersion.getType();
+            } else {
+                saveLocation = Constants.REPO_FOLDER + previousVersion.getClassId() + "/" + previousVersion.getGroupId() + "/" + previousVersion.getType() + "/" + path;
+            }
             String userId = secureUserService.getCurrentUser().get_id();
             Student currentStudent = studentService.getByUserId(userId);
             String groupId = currentStudent.getGroupId();
@@ -106,7 +112,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setUploaderId(userFile.getUploaderId());
             repoFile.setTimeStamp(userFile.getTimeStamp());
             repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
-            repoFile.setPath(userFile.getPath());
+            repoFile.setPath(path);
             repoFile.setIterationId(previousVersion.getIterationId());
             repoFile.setClassId(classId);
             repoFile.setGroupId(groupId);
@@ -119,6 +125,8 @@ public class RepoFileServiceImpl implements RepoFileService {
                 previousVersions = previousVersion.getPreviousVersionIdList();
             previousVersions.add(previousVersionId);
             repoFile.setPreviousVersionIdList(previousVersions);
+            previousVersion.setDeleted(true);
+            repoFileRepository.save(previousVersion);
             return repoFileRepository.save(repoFile);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to update repo file. " + e.getMessage());
