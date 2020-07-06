@@ -31,7 +31,7 @@ const validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Chưa nhập thành viên!'
+                prompt: 'Members selection is empty!'
             }
         ]
     },

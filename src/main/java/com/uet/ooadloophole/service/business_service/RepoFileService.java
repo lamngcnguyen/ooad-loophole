@@ -23,4 +23,6 @@ public interface RepoFileService {
     boolean checkExists(String filename, String groupId, String path);
 
     RepoFile delete(String id);
+
+    List<RepoFile> getPreviousVersions(String id);
 }

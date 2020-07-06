@@ -57,7 +57,7 @@ const validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Chưa nhập ngày học!'
+                prompt: 'Date field is empty!'
             }
         ]
     }

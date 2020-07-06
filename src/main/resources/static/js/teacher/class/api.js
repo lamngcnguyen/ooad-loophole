@@ -15,7 +15,7 @@ const validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Chưa nhập tên lớp!'
+                prompt: 'Class field is empty!'
             }
         ]
     },
@@ -24,7 +24,7 @@ const validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Chưa nhập học kì!'
+                prompt: 'Semester field is empty!'
             }
         ]
     },
@@ -33,7 +33,7 @@ const validationRules = {
         rules: [
             {
                 type: 'empty',
-                prompt: 'Chưa nhập ngày học!'
+                prompt: 'Date field is empty!'
             }
         ]
     }

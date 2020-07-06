@@ -16,7 +16,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RepoFileServiceImpl implements RepoFileService {
@@ -108,7 +110,15 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setIterationId(previousVersion.getIterationId());
             repoFile.setClassId(classId);
             repoFile.setGroupId(groupId);
-            repoFile.setPreviousVersionId(previousVersionId);
+            repoFile.setType(previousVersion.getType());
+
+            List<String> previousVersions;
+            if (previousVersion.getPreviousVersionIdList() == null)
+                previousVersions = new ArrayList<>();
+            else
+                previousVersions = previousVersion.getPreviousVersionIdList();
+            previousVersions.add(previousVersionId);
+            repoFile.setPreviousVersionIdList(previousVersions);
             return repoFileRepository.save(repoFile);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to update repo file. " + e.getMessage());
@@ -126,5 +136,19 @@ public class RepoFileServiceImpl implements RepoFileService {
         RepoFile repoFile = getById(id);
         repoFile.setDeleted(true);
         return repoFileRepository.save(repoFile);
+    }
+
+    @Override
+    public List<RepoFile> getPreviousVersions(String id) {
+        RepoFile repoFile = getById(id);
+        List<RepoFile> repoFiles = new ArrayList<>();
+        if (repoFile.getPreviousVersionIdList() == null) {
+            return new ArrayList<>();
+        } else {
+            for (String previousVersionId : repoFile.getPreviousVersionIdList()) {
+                repoFiles.add(getById(previousVersionId));
+            }
+        }
+        return repoFiles;
     }
 }

@@ -1,6 +1,7 @@
 package com.uet.ooadloophole.model.business.system_elements;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserFile {
     private String fileName;
@@ -9,7 +10,7 @@ public class UserFile {
     private LocalDateTime timeStamp;
     private String uploaderId;
     private String path;
-    private String previousVersionId;
+    private List<String> previousVersionIdList;
     private boolean deleted;
 
     public String getFileName() {
@@ -60,12 +61,12 @@ public class UserFile {
         this.path = path;
     }
 
-    public String getPreviousVersionId() {
-        return previousVersionId;
+    public List<String> getPreviousVersionIdList() {
+        return previousVersionIdList;
     }
 
-    public void setPreviousVersionId(String previousVersionId) {
-        this.previousVersionId = previousVersionId;
+    public void setPreviousVersionIdList(List<String> previousVersionIdList) {
+        this.previousVersionIdList = previousVersionIdList;
     }
 
     public boolean isDeleted() {

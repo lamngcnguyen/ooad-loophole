@@ -3,10 +3,9 @@ package com.uet.ooadloophole.controller.api;
 import com.google.gson.Gson;
 import com.uet.ooadloophole.controller.interface_model.ResponseMessage;
 import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
+import com.uet.ooadloophole.model.business.class_elements.TopicSpecFile;
 import com.uet.ooadloophole.model.business.group_elements.RepoFile;
 import com.uet.ooadloophole.model.business.group_elements.WorkItemFile;
-import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
-import com.uet.ooadloophole.model.business.class_elements.TopicSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.RequirementFileService;
@@ -23,11 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 @RestController
 @RequestMapping(value = "/api/files")
@@ -69,6 +66,11 @@ public class ApiFileController {
         Resource resource = repoFileService.download(id);
         String timeStamp = repoFileService.getById(id).getFileTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
+    }
+
+    @RequestMapping(value = "/repo/{id}/previous", method = RequestMethod.GET)
+    public ResponseEntity<List<RepoFile>> getPreviousVersions(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(repoFileService.getPreviousVersions(id));
     }
 
     @RequestMapping(value = "/repo/{iterationId}/iteration/{type}", method = RequestMethod.GET)

@@ -8,14 +8,14 @@ $('.form.activate').form({
             identifier: 'password',
             rules: [{
                 type: 'minLength[8]',
-                prompt: 'Mật khẩu phải có ít nhất 8 kí tự'
+                prompt: 'Password must have at least 8 characters'
             }]
         },
         confirmPassword: {
             identifier: 'confirmPassword',
             rules: [{
                 type: 'match[password]',
-                prompt: 'Mật khẩu không khớp!'
+                prompt: 'Passwords not matched!'
             }]
         }
     },

@@ -24,7 +24,7 @@
 
                             </div>
                             <a class="item new">
-                                <div class="ui fluid blue button" id="newRequirement">New</div>
+                                <div class="ui fluid blue button" id="newRequirement" onclick="showModal('.modal.create-requirement')">New</div>
                                 <div class="ui fluid input" id="nameInput" style="display: none">
                                     <input class="new-requirement" type="text" style="margin-right: 0.5em"
                                            placeholder="Requirement name...">
@@ -193,6 +193,12 @@
                     Cancel
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="ui modal create-requirement">
+        <div class="ui large header">
+            <i class="glasses icon"></i>
+            New requirement
         </div>
     </div>
     <style>
