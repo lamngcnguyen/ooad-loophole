@@ -89,7 +89,10 @@ public class WorkItemServiceImpl implements WorkItemService {
             workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Iteration changed from " + dbWorkItem.getIteration().getName() + " to " + workItem.getIteration().getName(), "Iteration changed"));
             dbWorkItem.setIteration(workItem.getIteration());
         }
-        if (!dbWorkItem.getDescription().equals(workItem.getDescription())) {
+        if (dbWorkItem.getDescription() == null && workItem.getDescription() != null) {
+            workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Added description \"" + workItem.getDescription() + "\"", "Description added"));
+            dbWorkItem.setDescription(workItem.getDescription());
+        } else if (!dbWorkItem.getDescription().equals(workItem.getDescription())) {
             workItemLogs.add(workItemLogService.createLog(dbWorkItem, "Changed from \"" + dbWorkItem.getDescription() + "\" to \"" + workItem.getDescription() + "\"", "Description changed"));
             dbWorkItem.setDescription(workItem.getDescription());
         }

@@ -259,24 +259,25 @@ function assignSpecsToTopic(topicId, specIds, modal) {
 }
 
 function clearTempSpecs(specIds, modal) {
-    $.api({
-        action: 'delete multiple spec',
-        on: 'now',
-        method: 'delete',
-        dataType: 'json',
-        data: JSON.stringify(specIds),
-        beforeXHR: function (xhr) {
-            xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
-        },
-        onSuccess: function () {
-            hideDimmer(modal);
-            hideModal(modal);
-        },
-        onFailure: function (res) {
-            hideDimmer(modal);
-            $(`${modal} .form`).form('add errors', [res]);
-        }
-    });
+    if(specIds !== []) {
+        $.api({
+            action: 'delete multiple spec',
+            on: 'now',
+            method: 'delete',
+            dataType: 'json',
+            data: JSON.stringify(specIds),
+            beforeXHR: function (xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            },
+            onSuccess: function () {
+                hideDimmer(modal);
+            },
+            onFailure: function (res) {
+                hideDimmer(modal);
+                $(`${modal} .form`).form('add errors', [res]);
+            }
+        });
+    }
 }
 
 $('.form.delete-topic').form({
