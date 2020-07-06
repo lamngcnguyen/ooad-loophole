@@ -2,19 +2,23 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.requirement_repositories.RequirementsRepository;
 import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
+import com.uet.ooadloophole.model.business.requirement_elements.RequirementLog;
 import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
+import com.uet.ooadloophole.service.business_service.RequirementLogService;
 import com.uet.ooadloophole.service.business_service.RequirementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
     @Autowired
     private RequirementsRepository requirementsRepository;
-
+    @Autowired
+    private RequirementLogService requirementLogService;
 
     @Override
     public Requirement getById(String id) throws BusinessServiceException {
@@ -33,6 +37,9 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public void create(Requirement requirement) throws BusinessServiceException {
         try {
+            if (requirement.getParentReq() == null) {
+                requirement.setLevel(0);
+            } else requirement.setLevel(requirement.getParentReq().getLevel() + 1);
             requirementsRepository.save(requirement);
         } catch (Exception e) {
             throw new BusinessServiceException("Error creating requirement: " + e.getMessage());
@@ -40,14 +47,29 @@ public class RequirementServiceImpl implements RequirementService {
     }
 
     @Override
-    public Requirement update(String id, Requirement requirement) throws BusinessServiceException {
+    public List<RequirementLog> update(String id, Requirement requirement) throws BusinessServiceException {
+        List<RequirementLog> log = new ArrayList<>();
         try {
             Requirement dbRequirement = getById(id);
-            dbRequirement.setName(requirement.getName());
-            dbRequirement.setDescription(requirement.getDescription());
-            dbRequirement.setChildRequirements(requirement.getChildRequirements());
+            if(!dbRequirement.getName().equals(requirement.getName())){
+                log.add(requirementLogService.createLog(dbRequirement, "Change name from "
+                        + dbRequirement.getName() +" to " + requirement.getName(),"Name Changed"));
+                dbRequirement.setName(requirement.getName());
+            }
+            if(!dbRequirement.getDescription().equals(requirement.getDescription())){
+                log.add(requirementLogService.createLog(dbRequirement, "Change description from "
+                        + dbRequirement.getDescription() +" to " + requirement.getDescription(),"Desc Changed"));
+                dbRequirement.setDescription(requirement.getDescription());
+            }
+            //dbRequirement.setChildRequirements(requirement.getChildRequirements());
+            if(dbRequirement.getLevel()!=requirement.getLevel()){
+                log.add(requirementLogService.createLog(dbRequirement, "","Level Changed"));
+                dbRequirement.setLevel(setLevel(requirement));
+            }
+
+            dbRequirement.setParentReq(requirement.getParentReq());
             dbRequirement.setRequirementSpecFile(requirement.getRequirementSpecFile());
-            return requirementsRepository.save(dbRequirement);
+            return log;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Error updating requirement: " + e.getMessage());
         }
@@ -70,20 +92,16 @@ public class RequirementServiceImpl implements RequirementService {
         return requirementsRepository.findAll();
     }
 
-    @Override
-    public List<Requirement> getAllChildRequirement(String id) throws BusinessServiceException {
-        Requirement requirement = getById(id);
-        return requirement.getChildRequirements();
+//    @Override
+//    public List<Requirement> getAllChildRequirement(String id) throws BusinessServiceException {
+//        Requirement requirement = getById(id);
+//        return requirement.getChildRequirements();
+//    }
+
+    public int setLevel(Requirement requirement) throws BusinessServiceException {
+        if (requirement.getParentReq() == null) return 0;
+        return requirement.getParentReq().getLevel() + 1;
+
     }
 
-
-    @Override
-    public Requirement getParentRequirement(String id) throws BusinessServiceException {
-        Requirement child = getById(id);
-        String parentId = child.getParentId();
-        if (parentId == null) {
-            return null;
-        }
-        return getById(parentId);
-    }
 }

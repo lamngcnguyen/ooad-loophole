@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Service
 public interface RequirementFileService {
-    RequirementSpecFile upload(MultipartFile file) throws BusinessServiceException;
+    RequirementSpecFile upload(MultipartFile file, String id) throws BusinessServiceException;
 
     RequirementSpecFile findById(String id);
 

@@ -1,8 +1,11 @@
 package com.uet.ooadloophole.model.business.rup_elements;
 
+import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Iteration {
     @Id
@@ -12,6 +15,8 @@ public class Iteration {
     private String objective;
     private LocalDate endDateTime;
     private LocalDate startDateTime;
+    @DBRef
+    private List<Requirement> requirements;
 
     public String get_id() {
         return _id;
@@ -59,5 +64,13 @@ public class Iteration {
 
     public void setEndDateTime(LocalDate endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public List<Requirement> getRequirements() {
+        return requirements;
+    }
+
+    public void setRequirements(List<Requirement> requirements) {
+        this.requirements = requirements;
     }
 }

@@ -164,28 +164,28 @@ public class ApiFileController {
     }
 
     //    ---------------------- REQUIREMENTS ----------------------
-    @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file) {
-        try {
-            RequirementSpecFile requirementSpecFile = requirementFileService.upload(file);
-            return ResponseEntity.status(HttpStatus.OK).body(requirementSpecFile);
-        } catch (BusinessServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
+//    @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
+//    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file) {
+//        try {
+//            RequirementSpecFile requirementSpecFile = requirementFileService.upload(file);
+//            return ResponseEntity.status(HttpStatus.OK).body(requirementSpecFile);
+//        } catch (BusinessServiceException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+//        }
+//    }
 
-    @RequestMapping(value = "/spec/req/multi", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadMultipleRequirementSpecFiles(@RequestParam("files") List<MultipartFile> files) {
-        try {
-            List<RequirementSpecFile> requirementSpecFiles = new ArrayList<>();
-            for (MultipartFile file : files) {
-                requirementSpecFiles.add(requirementFileService.upload(file));
-            }
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(requirementSpecFiles);
-        } catch (BusinessServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
+//    @RequestMapping(value = "/spec/req/multi", method = RequestMethod.POST)
+//    public ResponseEntity<Object> uploadMultipleRequirementSpecFiles(@RequestParam("files") List<MultipartFile> files) {
+//        try {
+//            List<RequirementSpecFile> requirementSpecFiles = new ArrayList<>();
+//            for (MultipartFile file : files) {
+//                requirementSpecFiles.add(requirementFileService.upload(file,));
+//            }
+//            return ResponseEntity.status(HttpStatus.ACCEPTED).body(requirementSpecFiles);
+//        } catch (BusinessServiceException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+//        }
+//    }
 
     @RequestMapping(value = "/spec/req/assign/{id}", method = RequestMethod.PUT)
     public ResponseEntity<String> assignRequirementIdToSpecFile(@RequestParam String specFileId, @PathVariable String id) {

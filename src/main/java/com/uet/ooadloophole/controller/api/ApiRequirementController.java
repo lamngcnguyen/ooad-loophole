@@ -41,8 +41,8 @@ public class ApiRequirementController {
         return requirementService.getById(id);
     }
 
-    @RequestMapping(value = "/{id}/child", method = RequestMethod.GET)
-    public List<Requirement> getChildRequirement(@PathVariable String id) throws BusinessServiceException {
-        return requirementService.getById(id).getChildRequirements();
-    }
+//    @RequestMapping(value = "/{id}/child", method = RequestMethod.GET)
+//    public List<Requirement> getChildRequirement(@PathVariable String id) throws BusinessServiceException {
+//        return requirementService.getById(id).getChildRequirements();
+//    }
 }

@@ -1,5 +1,7 @@
 package com.uet.ooadloophole.model.business.requirement_elements;
 
+import com.uet.ooadloophole.model.business.group_elements.WorkItem;
+import com.uet.ooadloophole.model.business.rup_elements.Iteration;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -9,11 +11,16 @@ public class Requirement {
     @Id
     private String _id;
     private String name;
-    private String parentId;
     private String description;
+    private String type;
+    private int level;
     @DBRef
-    private List<Requirement> childRequirements;
-    private RequirementSpecFile requirementSpecFile;
+    private Iteration iteration;
+    @DBRef
+    private Requirement parentReq;
+    @DBRef
+    private WorkItem task;
+    private List<RequirementSpecFile> requirementSpecFile;
 
     public String get_id() {
         return _id;
@@ -31,14 +38,6 @@ public class Requirement {
         this.name = name;
     }
 
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -47,19 +46,51 @@ public class Requirement {
         this.description = description;
     }
 
-    public List<Requirement> getChildRequirements() {
-        return childRequirements;
+    public String getType() {
+        return type;
     }
 
-    public void setChildRequirements(List<Requirement> childRequirements) {
-        this.childRequirements = childRequirements;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public RequirementSpecFile getRequirementSpecFile() {
+    public Iteration getIteration() {
+        return iteration;
+    }
+
+    public void setIteration(Iteration iteration) {
+        this.iteration = iteration;
+    }
+
+    public Requirement getParentReq() {
+        return parentReq;
+    }
+
+    public void setParentReq(Requirement parentReq) {
+        this.parentReq = parentReq;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public List<RequirementSpecFile> getRequirementSpecFile() {
         return requirementSpecFile;
     }
 
-    public void setRequirementSpecFile(RequirementSpecFile requirementSpecFile) {
+    public void setRequirementSpecFile(List<RequirementSpecFile> requirementSpecFile) {
         this.requirementSpecFile = requirementSpecFile;
+    }
+
+    public WorkItem getTask() {
+        return task;
+    }
+
+    public void setTask(WorkItem task) {
+        this.task = task;
     }
 }

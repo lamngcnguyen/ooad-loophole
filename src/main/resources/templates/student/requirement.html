@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="leader-content" class="ui stackable grid">
+    <link rel="stylesheet" th:href="@{/css/student/requirement.css}">
     <div class="row">
         <div class="column">
             <div class="header">
@@ -18,49 +19,9 @@
             <div class="ui segment">
                 <div class="ui stackable grid">
                     <div class="four wide column">
-                        <div class="ui segment">
+                        <div class="ui segment" style="overflow: auto">
                             <div class="ui large bulleted relaxed list">
-                                <div class="item">
-                                    <div class="content">
-                                        <div class="header"><span class="requirement bullet">1</span>.<span
-                                                class="requirement title">Title 1</span><i
-                                                class="angle right icon right floated" onclick="$('#1').show()"></i>
-                                        </div>
-                                        <div class="list" id="1">
-                                            <div class="item">
-                                                <div class="content">
-                                                    <div class="header"><span
-                                                            class="requirement bullet">1.1</span>.<span
-                                                            class="requirement title">Title 1.1</span><i
-                                                            class="angle right icon right floated"
-                                                            onclick="$('#1').show()"></i></div>
-                                                </div>
-                                                <div class="list">
-                                                    <div class="item">
-                                                        <div class="header"><span
-                                                                class="requirement bullet">1.1.1</span>.<span
-                                                                class="requirement title">Title 1.1.1</span><i
-                                                                class="angle right icon right floated"
-                                                                onclick="$('#1').show()"></i></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <div class="content">
-                                                    <div class="header"><span
-                                                            class="requirement bullet">1.2</span>.<span
-                                                            class="requirement title">Title 1.2</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="content">
-                                        <div class="header"><span class="requirement bullet">2</span>.<span
-                                                class="requirement title">Title 2</span></div>
-                                    </div>
-                                </div>
+
                             </div>
                             <a class="item new">
                                 <div class="ui fluid blue button" id="newRequirement">New</div>
@@ -75,7 +36,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="twelve wide column">
+                    <div class="twelve wide column" id="reqContainer">
                         <div class="ui segment" id="segmentContainer">
                             <div class="ui grid">
                                 <div class="row">
@@ -223,7 +184,8 @@
                     <label>Description</label>
                     <textarea name="description" placeholder="Description"></textarea>
                 </div>
-                <div class="ui blue icon labeled submit button"><i class="save icon"></i>
+                <div class="ui blue icon labeled submit button" onClick="createRequirementForm()"><i
+                        class="save icon"></i>
                     Save
                 </div>
                 <div class="ui red icon labeled button right floated" onclick="cancelRequirementForm()"><i

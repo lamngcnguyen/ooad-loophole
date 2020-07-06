@@ -2,6 +2,8 @@ package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.config.Constants;
 import com.uet.ooadloophole.database.requirement_repositories.RequirementSpecFileRepository;
+import com.uet.ooadloophole.database.requirement_repositories.RequirementsRepository;
+import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
 import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
 import com.uet.ooadloophole.model.business.system_elements.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
@@ -9,12 +11,15 @@ import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException
 import com.uet.ooadloophole.service.business_exceptions.FileStorageException;
 import com.uet.ooadloophole.service.business_service.FileService;
 import com.uet.ooadloophole.service.business_service.RequirementFileService;
+import com.uet.ooadloophole.service.business_service.RequirementLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RequirementFileServiceImpl implements RequirementFileService {
@@ -24,6 +29,10 @@ public class RequirementFileServiceImpl implements RequirementFileService {
     private FileService fileService;
     @Autowired
     private RequirementSpecFileRepository requirementSpecFileRepository;
+    @Autowired
+    private RequirementsRepository requirementsRepository;
+    @Autowired
+    private RequirementLogService requirementLogService;
 
     @Override
     public RequirementSpecFile findById(String id) {
@@ -47,8 +56,13 @@ public class RequirementFileServiceImpl implements RequirementFileService {
     }
 
     @Override
-    public RequirementSpecFile upload(MultipartFile file) {
+    public RequirementSpecFile upload(MultipartFile file, String id) {
         try {
+            Requirement requirement = requirementsRepository.findBy_id(id);
+            List<RequirementSpecFile> files;
+            if(requirement.getRequirementSpecFile() == null) files = new ArrayList<>();
+            else files = requirement.getRequirementSpecFile();
+
             String saveLocation = Constants.REQ_FOLDER + "temp/";
             RequirementSpecFile requirementSpecFile = new RequirementSpecFile();
             UserFile userFile = fileService.storeFile(file, saveLocation);
@@ -60,7 +74,14 @@ public class RequirementFileServiceImpl implements RequirementFileService {
             requirementSpecFile.setUploaderId(userFile.getUploaderId());
             requirementSpecFile.setPath(saveLocation);
 
-            return requirementSpecFileRepository.save(requirementSpecFile);
+            RequirementSpecFile saved = requirementSpecFileRepository.save(requirementSpecFile);
+            files.add(saved);
+            requirement.setRequirementSpecFile(files);
+            requirementsRepository.save(requirement);
+
+            requirementLogService.createLog(requirement,"Uploaded "
+                    + requirementSpecFile.getFileName(), "File uploaded");
+            return saved;
         } catch (FileStorageException | BusinessServiceException e) {
             throw new FileStorageException("Unable to upload file. " + e.getMessage());
         }
