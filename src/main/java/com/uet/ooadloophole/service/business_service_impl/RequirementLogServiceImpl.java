@@ -28,9 +28,10 @@ public class RequirementLogServiceImpl implements RequirementLogService {
         Student student = studentService.getByUserId(secureUserService.getCurrentUser().get_id());
         RequirementLog log = new RequirementLog();
         log.setRequirement(requirement);
-        log.setCreator(student);
+        //log.setCreator(student);
+        //log.setType(type);
         log.setWhatChanged(description);
-        log.setDatetimeModified(LocalDateTime.now());
+        //log.setTime(LocalDateTime.now());
         return requirementLogRepository.save(log);
     }
 
