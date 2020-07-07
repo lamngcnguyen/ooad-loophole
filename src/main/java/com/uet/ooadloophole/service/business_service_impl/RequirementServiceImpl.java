@@ -37,9 +37,9 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public void create(Requirement requirement) throws BusinessServiceException {
         try {
-            if (requirement.getParentReq() == null) {
-                requirement.setLevel(0);
-            } else requirement.setLevel(requirement.getParentReq().getLevel() + 1);
+//            if (requirement.getParentReq() == null) {
+//                requirement.setLevel(0);
+//            } else requirement.setLevel(requirement.getParentReq().getLevel() + 1);
             requirementsRepository.save(requirement);
         } catch (Exception e) {
             throw new BusinessServiceException("Error creating requirement: " + e.getMessage());
@@ -51,21 +51,21 @@ public class RequirementServiceImpl implements RequirementService {
         List<RequirementLog> log = new ArrayList<>();
         try {
             Requirement dbRequirement = getById(id);
-            if(!dbRequirement.getName().equals(requirement.getName())){
+            if (!dbRequirement.getName().equals(requirement.getName())) {
                 log.add(requirementLogService.createLog(dbRequirement, "Change name from "
-                        + dbRequirement.getName() +" to " + requirement.getName(),"Name Changed"));
+                        + dbRequirement.getName() + " to " + requirement.getName(), "Name Changed"));
                 dbRequirement.setName(requirement.getName());
             }
-            if(!dbRequirement.getDescription().equals(requirement.getDescription())){
+            if (!dbRequirement.getDescription().equals(requirement.getDescription())) {
                 log.add(requirementLogService.createLog(dbRequirement, "Change description from "
-                        + dbRequirement.getDescription() +" to " + requirement.getDescription(),"Desc Changed"));
+                        + dbRequirement.getDescription() + " to " + requirement.getDescription(), "Desc Changed"));
                 dbRequirement.setDescription(requirement.getDescription());
             }
             //dbRequirement.setChildRequirements(requirement.getChildRequirements());
-            if(dbRequirement.getLevel()!=requirement.getLevel()){
-                log.add(requirementLogService.createLog(dbRequirement, "","Level Changed"));
-                dbRequirement.setLevel(setLevel(requirement));
-            }
+//            if (dbRequirement.getLevel() != requirement.getLevel()) {
+//                log.add(requirementLogService.createLog(dbRequirement, "", "Level Changed"));
+//                dbRequirement.setLevel(setLevel(requirement));
+//            }
 
             dbRequirement.setParentReq(requirement.getParentReq());
             dbRequirement.setRequirementSpecFile(requirement.getRequirementSpecFile());
@@ -100,8 +100,8 @@ public class RequirementServiceImpl implements RequirementService {
 
     public int setLevel(Requirement requirement) throws BusinessServiceException {
         if (requirement.getParentReq() == null) return 0;
-        return requirement.getParentReq().getLevel() + 1;
-
+        //return requirement.getParentReq().getLevel() + 1;
+        return 0;
     }
 
 }
