@@ -669,7 +669,11 @@ function editFile() {
                 getPreviousVersion(file._id);
                 showModal('.modal.edit-file');
             })
-            $(`#file_${previousVersionId}`).prop('id', `#file_${file._id}`);
+            $(`#file_${previousVersionId} .delete-file`).on('click', function () {
+                $('.form.delete-file').form('set value', 'id', file._id);
+                showModal('.modal.delete-file');
+            })
+            $(`#file_${previousVersionId}`).prop('id', `file_${file._id}`);
             hideModal('.modal.edit-file');
         },
         onFailure: function (xhr) {
