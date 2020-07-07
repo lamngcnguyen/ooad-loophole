@@ -22,6 +22,8 @@ $.fn.api.settings.api = {
     'edit file': '/api/files/repo',
     'delete file': '/api/files/repo/{id}',
     'get previous versions': '/api/files/repo/{id}/previous',
+    'get deleted files': '/api/files/repo/{iterationId}/iteration/deleted',
+    'restore files': '/api/files/repo/{id}/restore',
     'create item': '/api/board/item',
     'accept request': '/api/request/accept',
     'deny request': '/api/request/deny'

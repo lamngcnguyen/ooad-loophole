@@ -11,6 +11,7 @@ public class UserFile {
     private String uploaderId;
     private String path;
     private List<String> previousVersionIdList;
+    private boolean latestVersion;
     private boolean deleted;
 
     public String getFileName() {
@@ -67,6 +68,14 @@ public class UserFile {
 
     public void setPreviousVersionIdList(List<String> previousVersionIdList) {
         this.previousVersionIdList = previousVersionIdList;
+    }
+
+    public boolean isLatestVersion() {
+        return latestVersion;
+    }
+
+    public void setLatestVersion(boolean latestVersion) {
+        this.latestVersion = latestVersion;
     }
 
     public boolean isDeleted() {

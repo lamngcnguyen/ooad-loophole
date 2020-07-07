@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RepoFileServiceImpl implements RepoFileService {
@@ -40,7 +39,7 @@ public class RepoFileServiceImpl implements RepoFileService {
 
     @Override
     public List<RepoFile> getAllByIteration(String iterationId, String type) {
-        return repoFileRepository.findAllByIterationIdAndDeletedAndType(iterationId, false, type);
+        return repoFileRepository.findAllByIterationIdAndDeletedAndLatestVersionAndType(iterationId, false, true, type);
     }
 
     @Override
@@ -72,6 +71,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setIterationId(iterationId);
             repoFile.setClassId(classId);
             repoFile.setGroupId(groupId);
+            repoFile.setLatestVersion(true);
             return repoFileRepository.save(repoFile);
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Unable to upload repo file. " + e.getMessage());
@@ -117,6 +117,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setClassId(classId);
             repoFile.setGroupId(groupId);
             repoFile.setType(previousVersion.getType());
+            repoFile.setLatestVersion(true);
 
             List<String> previousVersions;
             if (previousVersion.getPreviousVersionIdList() == null)
@@ -125,7 +126,7 @@ public class RepoFileServiceImpl implements RepoFileService {
                 previousVersions = previousVersion.getPreviousVersionIdList();
             previousVersions.add(previousVersionId);
             repoFile.setPreviousVersionIdList(previousVersions);
-            previousVersion.setDeleted(true);
+            previousVersion.setLatestVersion(false);
             repoFileRepository.save(previousVersion);
             return repoFileRepository.save(repoFile);
         } catch (BusinessServiceException e) {
@@ -158,5 +159,17 @@ public class RepoFileServiceImpl implements RepoFileService {
             }
         }
         return repoFiles;
+    }
+
+    @Override
+    public List<RepoFile> getDeletedFiles(String iterationId) {
+        return repoFileRepository.findAllByIterationIdAndDeletedAndLatestVersion(iterationId, true, true);
+    }
+
+    @Override
+    public RepoFile restoreFile(String id) {
+        RepoFile repoFile = repoFileRepository.findBy_id(id);
+        repoFile.setDeleted(false);
+        return repoFileRepository.save(repoFile);
     }
 }

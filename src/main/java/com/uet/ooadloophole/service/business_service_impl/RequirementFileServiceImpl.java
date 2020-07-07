@@ -73,6 +73,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
             requirementSpecFile.setFileTimeStamp(userFile.getFileTimeStamp());
             requirementSpecFile.setUploaderId(userFile.getUploaderId());
             requirementSpecFile.setPath(saveLocation);
+            requirementSpecFile.setLatestVersion(true);
 
             RequirementSpecFile saved = requirementSpecFileRepository.save(requirementSpecFile);
             files.add(saved);

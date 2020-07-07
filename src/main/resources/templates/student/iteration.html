@@ -98,6 +98,10 @@
                                 style="padding-top: 10px" data-tooltip="Edit iteration">
                             <i class="pencil icon"></i>
                         </button>
+                        <button class="ui right floated teal small basic icon button restore-file" style="padding-top: 10px"
+                                data-tooltip="Restore files" onclick="showModal('.modal.restore-file')">
+                            <i class="history icon"></i>
+                        </button>
                     </div>
                     <input type="hidden" name="iterationId">
                     <div class="ui divider"></div>
@@ -181,6 +185,8 @@
                     </button>
                     <button class="ui red icon button delete-file" data-tooltip="Delete file"><i class="trash icon"></i>
                     </button>
+                    <button class="ui teal icon button restore-file" data-tooltip="Restore file"><i class="history icon"></i>
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -242,6 +248,35 @@
                     <tbody class="edit-table"></tbody>
                 </table>
                 <div class="ui grey labeled icon button" onclick="hideModal('.modal.edit-file')">
+                    <i class="close icon"></i>
+                    Cancel
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui modal restore-file">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="teal history icon"></i>
+            Restore file
+        </div>
+        <div class="content">
+            <div class="ui form restore-file">
+                <input type="hidden" name="id">
+                <table class="ui grey celled table restore-file">
+                    <thead>
+                    <tr>
+                        <th class="one wide">#</th>
+                        <th class="seven wide">Name</th>
+                        <th class="four wide">Timestamp</th>
+                        <th class="three wide center aligned"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="restore-table"></tbody>
+                </table>
+                <div class="ui grey labeled icon button" onclick="hideModal('.modal.restore-file')">
                     <i class="close icon"></i>
                     Cancel
                 </div>

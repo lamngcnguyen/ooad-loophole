@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 public class WorkItemFile extends UserFile {
     @Id
     private String _id;
-    private String taskId;
+    private String workItemId;
 
     public String get_id() {
         return _id;
@@ -16,11 +16,11 @@ public class WorkItemFile extends UserFile {
         this._id = _id;
     }
 
-    public String getTaskId() {
-        return taskId;
+    public String getWorkItemId() {
+        return workItemId;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
+    public void setWorkItemId(String workItemId) {
+        this.workItemId = workItemId;
     }
 }

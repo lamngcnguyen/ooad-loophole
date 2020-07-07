@@ -61,6 +61,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
             topicSpecFile.setFileTimeStamp(userFile.getFileTimeStamp());
             topicSpecFile.setUploaderId(userFile.getUploaderId());
             topicSpecFile.setPath(saveLocation);
+            topicSpecFile.setLatestVersion(true);
 
             return specFileRepository.save(topicSpecFile);
         } catch (FileStorageException | BusinessServiceException e) {

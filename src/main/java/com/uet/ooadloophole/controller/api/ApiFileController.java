@@ -85,6 +85,16 @@ public class ApiFileController {
         return ResponseEntity.status(HttpStatus.OK).body(repoFile);
     }
 
+    @RequestMapping(value = "/repo/{iterationId}/iteration/deleted", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllDeletedFiles(@PathVariable String iterationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(repoFileService.getDeletedFiles(iterationId))));
+    }
+
+    @RequestMapping(value = "/repo/{id}/restore", method = RequestMethod.PUT)
+    public ResponseEntity<RepoFile> restoreRepoFile(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(repoFileService.restoreFile(id));
+    }
+
     //    ---------------------- Topic specifications  ----------------------
     @RequestMapping(value = "/spec/topic", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadTopicSpecFile(@RequestParam("file") MultipartFile file) {

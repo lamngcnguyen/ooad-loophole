@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RepoFileRepository extends MongoRepository<RepoFile, String> {
-    List<RepoFile> findAllByIterationId(String iterationId);
+    List<RepoFile> findAllByIterationIdAndDeletedAndLatestVersion(String iterationId, boolean deleted, boolean latestVersion);
 
-    List<RepoFile> findAllByIterationIdAndDeletedAndType(String iterationId, boolean deleted, String type);
+    List<RepoFile> findAllByIterationIdAndDeletedAndLatestVersionAndType(String iterationId, boolean deleted, boolean latestVersion, String type);
 
     List<RepoFile> findAllByGroupIdAndFileNameAndPath(String groupId, String fileName, String path);
 

@@ -25,4 +25,8 @@ public interface RepoFileService {
     RepoFile delete(String id);
 
     List<RepoFile> getPreviousVersions(String id);
+
+    List<RepoFile> getDeletedFiles(String iterationId);
+
+    RepoFile restoreFile(String id);
 }

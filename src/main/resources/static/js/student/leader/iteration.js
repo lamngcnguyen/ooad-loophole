@@ -410,6 +410,7 @@ function getRepoFile(iterationId) {
                     $('.form.delete-file').form('set value', 'id', file._id);
                     showModal('.modal.delete-file');
                 });
+                fileCell.find('.restore-file').remove();
                 repoTable.append(fileCell);
                 $('#templates table').remove(fileCell);
             })
@@ -448,6 +449,7 @@ function getDocumentationFile(iterationId) {
                     $('.form.delete-file').form('set value', 'id', file._id);
                     showModal('.modal.delete-file');
                 });
+                fileCell.find('.restore-file').remove();
                 docTable.append(fileCell);
                 $('#templates table').remove(fileCell);
             })
@@ -485,6 +487,7 @@ function getDiagramFile(iterationId) {
                     $('.form.delete-file').form('set value', 'id', file._id);
                     showModal('.modal.delete-file');
                 });
+                fileCell.find('.restore-file').remove();
                 diagramTable.append(fileCell);
                 $('#templates table').remove(fileCell);
             })
@@ -526,6 +529,7 @@ function uploadCode() {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');
             });
+            fileCell.find('.restore-file').remove();
             repoTable.append(fileCell);
         },
         onFailure: function (xhr) {
@@ -567,6 +571,7 @@ function uploadDoc() {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');
             });
+            fileCell.find('.restore-file').remove();
             docTable.append(fileCell);
         },
         onFailure: function (xhr) {
@@ -608,6 +613,7 @@ function uploadDiagram() {
                 $('.form.delete-file').form('set value', 'id', file._id);
                 showModal('.modal.delete-file');
             });
+            fileCell.find('.restore-file').remove();
             diagramTable.append(fileCell);
         },
         onFailure: function (xhr) {
@@ -640,6 +646,7 @@ function getPreviousVersion(fileId) {
                 fileCell.find('.download-file').prop('href', '/api/files/repo/' + file._id);
                 fileCell.find('.edit-file').remove();
                 fileCell.find('.delete-file').remove();
+                fileCell.find('.restore-file').remove();
                 fileTable.append(fileCell);
                 $('#templates table').remove(fileCell);
             })
@@ -680,6 +687,37 @@ function editFile() {
             $('.form').form('add errors', [xhr]);
         }
     });
+}
+
+function showRestoreFileModal(iterationId) {
+    $.api({
+        action: 'get deleted files',
+        on: 'now',
+        method: 'get',
+        urlData: {
+            iterationId: iterationId
+        },
+        onSuccess: function (res, element, xhr) {
+            const fileTable = $('.restore-table');
+            fileTable.empty();
+            let fileCount = 0;
+            xhr.responseJSON.data.forEach(function (file) {
+                const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+                fileCount++;
+                const fileCell = $('#templates .code-cell').clone();
+                fileCell.prop('id', 'file_' + file._id);
+                fileCell.find('.number').text(fileCount);
+                fileCell.find('.name').text(file.fileName);
+                fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+                fileCell.find('.preview-file').remove();
+                fileCell.find('.download-file').remove();
+                fileCell.find('.edit-file').remove();
+                fileCell.find('.delete-file').remove();
+                fileTable.append(fileCell);
+                $('#templates table').remove(fileCell);
+            })
+        }
+    })
 }
 
 $(document).ready(function () {

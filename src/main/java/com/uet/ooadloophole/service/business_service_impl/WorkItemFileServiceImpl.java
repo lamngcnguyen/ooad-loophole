@@ -57,7 +57,8 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
         workItemFile.setFileTimeStamp(userFile.getFileTimeStamp());
         workItemFile.setUploaderId(userFile.getUploaderId());
         workItemFile.setPath(saveLocation);
-        workItemFile.setTaskId(workItemId);
+        workItemFile.setWorkItemId(workItemId);
+        workItemFile.setLatestVersion(true);
 
         WorkItemFile savedFile = workItemFileRepository.save(workItemFile);
         workItemFiles.add(savedFile);
@@ -85,7 +86,7 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
     @Override
     public boolean deleteFile(String id) throws IOException, BusinessServiceException {
         WorkItemFile workItemFile = workItemFileRepository.findBy_id(id);
-        WorkItem workItem = workItemRepository.findBy_id(workItemFile.getTaskId());
+        WorkItem workItem = workItemRepository.findBy_id(workItemFile.getWorkItemId());
         if (fileService.deleteFile(workItemFile.getPath() + "/" + converterService.formatFileName(workItemFile.getFileName(), workItemFile.getFileTimeStamp(), workItemFile.getFileExtension()))) {
             workItemFileRepository.delete(workItemFile);
             List<WorkItemFile> workItemFiles = workItem.getWorkItemFiles();
