@@ -113,7 +113,6 @@ $('.button.delete-file').on('click', function () {
 })
 
 function uploadFile() {
-    console.log('called')
     const file = $('#upload-file').prop('files')[0];
     const fd = new FormData();
     fd.append('file', file, file.name);

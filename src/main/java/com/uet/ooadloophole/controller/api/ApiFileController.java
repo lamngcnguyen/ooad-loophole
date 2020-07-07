@@ -178,7 +178,7 @@ public class ApiFileController {
 
     //    ---------------------- REQUIREMENTS ----------------------
     @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
-    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file, @PathVariable String reqId) {
+    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file, String reqId) {
         try {
             RequirementSpecFile requirementSpecFile = requirementFileService.upload(file, reqId);
             return ResponseEntity.status(HttpStatus.OK).body(requirementSpecFile);

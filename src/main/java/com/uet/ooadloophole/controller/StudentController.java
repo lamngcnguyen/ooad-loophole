@@ -6,13 +6,12 @@ import com.uet.ooadloophole.controller.interface_model.dto.DTOTopic;
 import com.uet.ooadloophole.model.business.class_elements.Assignment;
 import com.uet.ooadloophole.model.business.class_elements.Class;
 import com.uet.ooadloophole.model.business.class_elements.ClassConfig;
-import com.uet.ooadloophole.model.business.group_elements.Group;
-import com.uet.ooadloophole.model.business.group_elements.Request;
-import com.uet.ooadloophole.model.business.group_elements.WorkItem;
-import com.uet.ooadloophole.model.business.group_elements.WorkItemLog;
+import com.uet.ooadloophole.model.business.group_elements.*;
 import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
+import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.model.business.system_elements.Student;
+import com.uet.ooadloophole.model.business.system_elements.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.MasterPageService;
 import com.uet.ooadloophole.service.SecureUserService;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -190,9 +190,16 @@ public class StudentController {
     @RequestMapping(value = "/requirement/{id}", method = RequestMethod.GET)
     public ModelAndView getNewRequirementView(@PathVariable String id) throws BusinessServiceException {
         Requirement requirement = requirementService.getById(id);
+        List<RequirementSpecFile> files = requirement.getRequirementSpecFile();
+        if(files != null) {
+            files.removeIf(RequirementSpecFile::isDeleted);
+        } else {
+            files = new ArrayList<>();
+        }
         String pageTitle = "New requirement";
         ModelAndView modelAndView = getStudentView(pageTitle, new BodyFragment("student/new-requirement", "content"));
         modelAndView.addObject("requirement", requirement);
+        modelAndView.addObject("files", files);
         return modelAndView;
     }
 

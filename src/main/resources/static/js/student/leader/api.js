@@ -28,7 +28,9 @@ $.fn.api.settings.api = {
     'accept request': '/api/request/accept',
     'deny request': '/api/request/deny',
     'get requirements': '/api/requirement/group/{groupId}',
-    'edit requirement': '/api/requirement/{id}'
+    'edit requirement': '/api/requirement/{id}',
+    'upload req file': '/api/files/spec/req',
+    'delete req file': '/api/files/spec/req/{id}'
 };
 
 const validationRules = {

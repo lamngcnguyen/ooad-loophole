@@ -80,3 +80,110 @@ $('.form.requirement-form').form({
         });
     }
 });
+
+function uploadFile() {
+    console.log('called')
+    const file = $('#upload-file').prop('files')[0];
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    fd.append('reqId', requirementId);
+    $.api({
+        action: 'upload req file',
+        on: 'now',
+        method: 'POST',
+        data: fd,
+        contentType: false,
+        processData: false,
+        onSuccess: function (file) {
+            const fileTable = $('.requirement-table');
+            const date = moment(file.fileTimeStamp, 'YYYYMMDD_HHmmss').toDate();
+            const fileCell = $('#templates .file-cell').clone();
+            fileCell.prop('id', file._id);
+            fileCell.find('.number').text($(fileTable).children().length + 1);
+            fileCell.find('.name').text(file.fileName);
+            fileCell.find('.uploader').text(file.uploader.fullName);
+            fileCell.find('.timestamp').text(date.toLocaleString("en-GB"));
+            fileCell.find('.download-file').prop('href', '/api/files/spec/req/' + file._id);
+            fileCell.find('.delete-file').click(function () {
+                $('.form.delete-file').form('set value', 'id', file._id);
+                showModal('.modal.delete-file');
+            });
+            fileCell.insertBefore($('.upload-row'));
+            // const logMenu = $('.log-menu');
+            // const logSegment = $('.log-segment');
+            // const logItem = $(logMenu.children().get(1)).clone();
+            // logItem.on('click', function () {
+            //     $('a.item').removeClass('active');
+            //     $('.log-table').hide();
+            //     $('a.item#' + $(this).attr('id')).addClass('active');
+            //     $('#log_' + $(this).attr('id')).show();
+            // })
+            // logItem.prop('id', file._id);
+            // logItem.removeClass('active');
+            // logItem.find('.type-text').text("File uploaded");
+            // logItem.find('.timestamp').text(moment(new Date(), 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
+            // logItem.insertAfter($('.log-menu-header'));
+            // const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
+            // logTable.prop('id', `log_${file._id}`);
+            // logTable.find('.member-name').text($('.full-name').text());
+            // logTable.find('.description-text').text("Uploaded " + file.fileName);
+            // logSegment.append(logTable);
+            // logItem.click();
+        },
+        onFailure: function (response) {
+            $('body').toast({
+                message: response,
+                class: 'red'
+            });
+        }
+    });
+}
+
+$('.button.delete-file').on('click', function () {
+    showModal('.modal.delete-file');
+    $('.form.delete-file').form('set value', 'id', $(this).attr('id'));
+})
+
+$('.form.delete-file').form({
+    onSuccess: function (evt, data) {
+        const fileName = $(`#file_${data.id} .file-name`).text()
+        showDimmer('.modal.delete-file');
+        $.api({
+            action: 'delete req file',
+            urlData: {
+                id: data.id
+            },
+            on: 'now',
+            method: 'delete',
+            onSuccess: function () {
+                hideDimmer('.modal.delete-file');
+                hideModal('.modal.delete-file');
+                $(`#${data.id}`).remove();
+                // const logMenu = $('.log-menu');
+                // const logSegment = $('.log-segment');
+                // const logItem = $(logMenu.children().get(1)).clone();
+                // logItem.on('click', function () {
+                //     $('a.item').removeClass('active');
+                //     $('.log-table').hide();
+                //     $('a.item#' + $(this).attr('id')).addClass('active');
+                //     $('#log_' + $(this).attr('id')).show();
+                // })
+                // logItem.prop('id', data.id);
+                // logItem.removeClass('active');
+                // logItem.find('.type-text').text("File deleted");
+                // logItem.find('.timestamp').text(moment(new Date(), 'YYYYMMDD_HHmm').toDate().toLocaleString("en-GB").slice(0, -3).replace(",", ""));
+                // logItem.insertAfter($('.log-menu-header'));
+                // const logTable = $(logSegment.children().get(2)).clone().css('display', 'none');
+                // logTable.prop('id', `log_${data.id}`);
+                // logTable.find('.member-name').text($('.full-name').text());
+                // logTable.find('.description-text').text("Deleted " + fileName);
+                // logSegment.append(logTable);
+                // logItem.click()
+            },
+            onFailure: function (res) {
+                hideDimmer('.modal.delete-file');
+                $('.form.delete-file').form('add errors', [res]);
+            }
+        });
+    },
+});

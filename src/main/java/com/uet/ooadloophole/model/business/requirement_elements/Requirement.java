@@ -19,6 +19,7 @@ public class Requirement {
     private Requirement parentReq;
     @DBRef
     private LoopholeUser creator;
+    @DBRef
     private List<RequirementSpecFile> requirementSpecFile;
 
     public String get_id() {

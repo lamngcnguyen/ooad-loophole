@@ -64,20 +64,30 @@
                     <thead>
                     <tr>
                         <th class="one wide center aligned">#</th>
-                        <th class="eight wide">File name</th>
+                        <th class="seven wide">File name</th>
                         <th class="three wide">Uploaded by</th>
-                        <th class="four wide">Date uploaded</th>
-                        <th class="onw wide"></th>
+                        <th class="three wide">Date uploaded</th>
+                        <th class="three wide"></th>
                     </tr>
                     </thead>
                     <tbody class="requirement-table">
-                    <tr th:each="file, iter: ${requirement.getRequirementSpecFile()}" th:id="${file.get_id()}">
-                        <td class="center aligned" th:text="${iter.count}">1</td>
-                        <td th:text="${file.getName()}">vopc.jpg</td>
-                        <td th:text="${file.getUploader.getFullName()}">Ha Tuan Phong</td>
-                        <td th:text="${#temporals.format(file.getTimeStamp(), 'dd/MM/yyyy HH:mm:ss')}">7/7/2020</td>
+                    <tr th:each="file, iter: ${files}" th:id="${file.get_id()}">
+                        <td class="center aligned number" th:text="${iter.count}">1</td>
+                        <td class="name" th:text="${file.getFileName()}">vopc.jpg</td>
+                        <td class="uploader" th:text="${file.getUploader().getFullName()}">Ha Tuan Phong</td>
+                        <td class="timestamp" th:text="${#temporals.format(file.getTimeStamp(), 'dd/MM/yyyy HH:mm:ss')}">7/7/2020</td>
                         <td class="center aligned">
-                            <a class="ui grey icon button delete-file"><i class="trash icon"></i></a>
+                            <a class="ui green icon button download-file" th:href="${'/api/files/spec/req/' + file.get_id()}"><i class="download icon"></i></a>
+                            <a class="ui red icon button delete-file" th:id="${file.get_id()}"><i class="trash icon"></i></a>
+                        </td>
+                    </tr>
+                    <tr class="upload-row">
+                        <td colspan="5">
+                            <input type="file" id="upload-file" hidden onchange="uploadFile()">
+                            <div class="ui tiny green icon labeled button"
+                                 onclick="$('#upload-file').click()">
+                                <i class="upload icon"></i>Add
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -137,6 +147,48 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="ui small modal delete-file">
+        <div class="ui dimmer">
+            <div class="ui loader"></div>
+        </div>
+        <div class="ui large header">
+            <i class="red trash icon"></i>
+            Warning
+        </div>
+        <div class="content">
+            <div class="ui form delete-file">
+                <input type="hidden" name="id">
+                <div class="field">
+                    <label>Do you really want to delete this file?</label>
+                </div>
+                <div class="ui error message"></div>
+                <button class="ui red labeled icon submit button">
+                    <i class="check icon"></i>
+                    Yes
+                </button>
+                <div class="ui grey labeled right floated icon button" onclick="hideModal('.modal.delete-file')">
+                    <i class="close icon"></i>
+                    No
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui modal" id="templates">
+        <table>
+            <tbody>
+            <tr class="file-cell">
+                <td class="center aligned number"></td>
+                <td class="name"></td>
+                <td class="uploader"></td>
+                <td class="timestamp"></td>
+                <td class="center aligned">
+                    <a class="ui green icon button download-file" ><i class="download icon"></i></a>
+                    <a class="ui red icon button delete-file"><i class="trash icon"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript" src="/js/student/leader/api.js"></script>
     <script type="text/javascript" src="/js/student/leader/new-requirement.js"></script>
