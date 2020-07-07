@@ -18,7 +18,6 @@ public class Requirement {
     private Requirement parentReq;
     @DBRef
     private LoopholeUser creator;
-
     private List<RequirementSpecFile> requirementSpecFile;
 
     public String get_id() {
@@ -75,5 +74,13 @@ public class Requirement {
 
     public void setDatetimeCreated(LocalDateTime datetimeCreated) {
         this.datetimeCreated = datetimeCreated;
+    }
+
+    public LoopholeUser getCreator() {
+        return creator;
+    }
+
+    public void setCreator(LoopholeUser creator) {
+        this.creator = creator;
     }
 }

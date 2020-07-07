@@ -17,4 +17,6 @@ public interface RequirementFileService {
     void updateRequirementId(String specFileId, String requirementId) throws BusinessServiceException, IOException;
 
     Resource download(String id);
+
+    RequirementSpecFile deleteFile(String id) throws IOException, BusinessServiceException;
 }

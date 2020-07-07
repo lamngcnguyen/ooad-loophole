@@ -94,4 +94,11 @@ public class RequirementFileServiceImpl implements RequirementFileService {
         String fileName = converterService.formatFileName(requirementSpecFile.getFileName(), requirementSpecFile.getFileTimeStamp(), requirementSpecFile.getFileExtension());
         return fileService.loadFileAsResource(fileName, saveLocation);
     }
+
+    @Override
+    public RequirementSpecFile deleteFile(String id) throws IOException, BusinessServiceException {
+        RequirementSpecFile requirementSpecFile = requirementSpecFileRepository.findBy_id(id);
+        requirementSpecFile.setDeleted(true);
+        return requirementSpecFileRepository.save(requirementSpecFile);
+    }
 }

@@ -6,6 +6,7 @@ import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
 import com.uet.ooadloophole.model.business.class_elements.TopicSpecFile;
 import com.uet.ooadloophole.model.business.group_elements.RepoFile;
 import com.uet.ooadloophole.model.business.group_elements.WorkItemFile;
+import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RepoFileService;
 import com.uet.ooadloophole.service.business_service.RequirementFileService;
@@ -166,15 +167,15 @@ public class ApiFileController {
     }
 
     //    ---------------------- REQUIREMENTS ----------------------
-//    @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
-//    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file) {
-//        try {
-//            RequirementSpecFile requirementSpecFile = requirementFileService.upload(file);
-//            return ResponseEntity.status(HttpStatus.OK).body(requirementSpecFile);
-//        } catch (BusinessServiceException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-//        }
-//    }
+    @RequestMapping(value = "/spec/req", method = RequestMethod.POST)
+    public ResponseEntity<Object> uploadRequirementSpecFile(@RequestParam("file") MultipartFile file, @PathVariable String reqId) {
+        try {
+            RequirementSpecFile requirementSpecFile = requirementFileService.upload(file, reqId);
+            return ResponseEntity.status(HttpStatus.OK).body(requirementSpecFile);
+        } catch (BusinessServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 //    @RequestMapping(value = "/spec/req/multi", method = RequestMethod.POST)
 //    public ResponseEntity<Object> uploadMultipleRequirementSpecFiles(@RequestParam("files") List<MultipartFile> files) {
@@ -216,6 +217,15 @@ public class ApiFileController {
         Resource resource = requirementFileService.download(id);
         String timeStamp = requirementFileService.findById(id).getFileTimeStamp();
         return getResourceResponseEntity(request, resource, timeStamp);
+    }
+
+    @RequestMapping(value = "/spec/req/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<RequirementSpecFile> deleteReqSpecFile(@PathVariable String id) throws IOException, BusinessServiceException {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(requirementFileService.deleteFile(id));
+        } catch (BusinessServiceException | IOException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(requirementFileService.deleteFile(id));
+        }
     }
 
     //    ---------------------- Work items ----------------------

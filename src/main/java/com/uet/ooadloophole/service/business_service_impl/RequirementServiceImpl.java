@@ -4,12 +4,14 @@ import com.uet.ooadloophole.database.requirement_repositories.RequirementsReposi
 import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
 import com.uet.ooadloophole.model.business.requirement_elements.RequirementLog;
 import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
+import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RequirementLogService;
 import com.uet.ooadloophole.service.business_service.RequirementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,8 @@ public class RequirementServiceImpl implements RequirementService {
     private RequirementsRepository requirementsRepository;
     @Autowired
     private RequirementLogService requirementLogService;
+    @Autowired
+    private SecureUserService secureUserService;
 
     @Override
     public Requirement getById(String id) throws BusinessServiceException {
@@ -37,9 +41,8 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public void create(Requirement requirement) throws BusinessServiceException {
         try {
-            if (requirement.getParentReq() == null) {
-                requirement.setLevel(0);
-            } else requirement.setLevel(requirement.getParentReq().getLevel() + 1);
+            requirement.setCreator(secureUserService.getCurrentUser());
+            requirement.setDatetimeCreated(LocalDateTime.now());
             requirementsRepository.save(requirement);
         } catch (Exception e) {
             throw new BusinessServiceException("Error creating requirement: " + e.getMessage());
@@ -51,23 +54,25 @@ public class RequirementServiceImpl implements RequirementService {
         List<RequirementLog> log = new ArrayList<>();
         try {
             Requirement dbRequirement = getById(id);
-            if(!dbRequirement.getName().equals(requirement.getName())){
+            if (!dbRequirement.getName().equals(requirement.getName())) {
                 log.add(requirementLogService.createLog(dbRequirement, "Change name from "
-                        + dbRequirement.getName() +" to " + requirement.getName(),"Name Changed"));
+                        + dbRequirement.getName() + " to " + requirement.getName(), "Name Changed"));
                 dbRequirement.setName(requirement.getName());
             }
-            if(!dbRequirement.getDescription().equals(requirement.getDescription())){
+            if (!dbRequirement.getType().equals(requirement.getType())) {
+                log.add(requirementLogService.createLog(dbRequirement, "Change type from "
+                        + dbRequirement.getType() + " to " + requirement.getType(), "Type Changed"));
+                dbRequirement.setType(requirement.getType());
+            }
+            if (!dbRequirement.getDescription().equals(requirement.getDescription())) {
                 log.add(requirementLogService.createLog(dbRequirement, "Change description from "
-                        + dbRequirement.getDescription() +" to " + requirement.getDescription(),"Desc Changed"));
+                        + dbRequirement.getDescription() + " to " + requirement.getDescription(), "Desc Changed"));
                 dbRequirement.setDescription(requirement.getDescription());
             }
-            //dbRequirement.setChildRequirements(requirement.getChildRequirements());
-            if(dbRequirement.getLevel()!=requirement.getLevel()){
-                log.add(requirementLogService.createLog(dbRequirement, "","Level Changed"));
-                dbRequirement.setLevel(setLevel(requirement));
+            if (!dbRequirement.getParentReq().equals(requirement.getParentReq())) {
+                log.add(requirementLogService.createLog(dbRequirement, "Change parent requirement", "Level Changed"));
+                dbRequirement.setParentReq(requirement.getParentReq());
             }
-
-            dbRequirement.setParentReq(requirement.getParentReq());
             dbRequirement.setRequirementSpecFile(requirement.getRequirementSpecFile());
             return log;
         } catch (BusinessServiceException e) {
@@ -90,18 +95,6 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public List<Requirement> getAllRequirement() {
         return requirementsRepository.findAll();
-    }
-
-//    @Override
-//    public List<Requirement> getAllChildRequirement(String id) throws BusinessServiceException {
-//        Requirement requirement = getById(id);
-//        return requirement.getChildRequirements();
-//    }
-
-    public int setLevel(Requirement requirement) throws BusinessServiceException {
-        if (requirement.getParentReq() == null) return 0;
-        return requirement.getParentReq().getLevel() + 1;
-
     }
 
 }
