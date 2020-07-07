@@ -43,11 +43,14 @@ public class RequirementServiceImpl implements RequirementService {
     }
 
     @Override
+    public List<Requirement> searchRequirement(String groupId, String keyword) {
+        return requirementsRepository.findByNameContainsIgnoreCaseAndGroupId(keyword,groupId);
+    }
+
+    @Override
     public Requirement create(Requirement requirement) throws BusinessServiceException {
         try {
-//            if (requirement.getParentReq() == null) {
-//                requirement.setLevel(0);
-//            } else requirement.setLevel(requirement.getParentReq().getLevel() + 1);
+            requirement.setCreator(secureUserService.getCurrentUser());
             requirement.setDatetimeCreated(LocalDateTime.now());
             return requirementsRepository.save(requirement);
         } catch (Exception e) {
@@ -81,14 +84,10 @@ public class RequirementServiceImpl implements RequirementService {
                         + dbRequirement.getDescription() + " to " + requirement.getDescription(), "Desc Changed"));
                 dbRequirement.setDescription(requirement.getDescription());
             }
-            //dbRequirement.setChildRequirements(requirement.getChildRequirements());
-//            if (dbRequirement.getLevel() != requirement.getLevel()) {
-//                log.add(requirementLogService.createLog(dbRequirement, "", "Level Changed"));
-//                dbRequirement.setLevel(setLevel(requirement));
-//            }
 
             dbRequirement.setParentReq(requirement.getParentReq());
             dbRequirement.setRequirementSpecFile(requirement.getRequirementSpecFile());
+            requirementsRepository.save(dbRequirement);
             return log;
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Error updating requirement: " + e.getMessage());
@@ -124,17 +123,4 @@ public class RequirementServiceImpl implements RequirementService {
         requirement.setGroupId(student.getGroupId());
         return requirementsRepository.save(requirement);
     }
-
-//    @Override
-//    public List<Requirement> getAllChildRequirement(String id) throws BusinessServiceException {
-//        Requirement requirement = getById(id);
-//        return requirement.getChildRequirements();
-//    }
-
-    public int setLevel(Requirement requirement) throws BusinessServiceException {
-        if (requirement.getParentReq() == null) return 0;
-        //return requirement.getParentReq().getLevel() + 1;
-        return 0;
-    }
-
 }

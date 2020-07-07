@@ -18,8 +18,6 @@ public interface RequirementService {
 
     Requirement createByName(String name) throws BusinessServiceException;
 
-   // List<Requirement> getAllChildRequirement(String id) throws BusinessServiceException;
-
     List<RequirementLog> update(String id, Requirement requirement) throws BusinessServiceException;
 
     void delete(String id) throws BusinessServiceException;
@@ -27,4 +25,6 @@ public interface RequirementService {
     Requirement getById(String id) throws BusinessServiceException;
 
     void assignRequirementIdToFile(String id, RequirementSpecFile file);
+
+    List<Requirement> searchRequirement(String groupId, String keyword);
 }

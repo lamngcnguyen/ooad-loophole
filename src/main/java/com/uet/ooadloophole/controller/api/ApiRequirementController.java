@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/requirement")
 public class ApiRequirementController {
@@ -68,5 +70,10 @@ public class ApiRequirementController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Requirement> getRequirement(@PathVariable String id) throws BusinessServiceException {
         return ResponseEntity.status(HttpStatus.OK).body(requirementService.getById(id));
+    }
+
+    @RequestMapping(value = "/group/{groupId}/search", method = RequestMethod.GET)
+    public ResponseEntity<List<Requirement>> searchRequirements(@PathVariable String groupId, @RequestParam String keyword) {
+        return ResponseEntity.status(HttpStatus.OK).body(requirementService.searchRequirement(groupId,keyword));
     }
 }

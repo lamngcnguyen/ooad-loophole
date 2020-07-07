@@ -9,4 +9,6 @@ public interface RequirementsRepository extends MongoRepository<Requirement, Str
     Requirement findBy_id(String id);
 
     List<Requirement> findByGroupId(String groupId);
+
+    List<Requirement> findByNameContainsIgnoreCaseAndGroupId(String name, String groupId);
 }
