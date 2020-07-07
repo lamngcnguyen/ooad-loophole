@@ -10,67 +10,158 @@
     <div class="row">
         <div class="column">
             <div class="header">
-                <div class="ui large blue label"><i class="glasses icon"></i>Requirement Management</div>
+                <div class="ui large black label"><i class="glasses icon"></i>Requirement Management</div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="column">
-            <div class="ui segment">
-                <div class="ui stackable grid">
-                    <div class="row">
-                        <div class="column">
-                            <div class="ui blue button">Add</div>
+            <div class="ui stackable grid">
+                <div class="row">
+                    <div class="five wide column">
+                        <div class="ui blue segment">
+                            <div class="ui tertiary blue button">
+                                Req Explorer
+                            </div>
+                            <div class="ui blue small icon labeled right floated button" onclick="showModal('.modal.create-requirement')"><i class="plus icon"></i>New
+                            </div>
+                            <div class="ui segments">
+                                <div class="ui segment">
+                                    <a class="ui header">
+                                        <span class="numbering">1.</span>&nbsp<span
+                                            class="title">Requirement Title</span>
+                                    </a>
+                                    <div class="ui divided relaxed list" style="margin-left: 2em">
+                                        <div class="item">
+                                            <div class="content">
+                                                <a class="header"><span class="numbering">1.1</span>
+                                                    &nbsp<span class="title">Requirement Title</span></a>
+                                                <div class="description">
+                                                    <div class="ui divided relaxed list" style="margin-left: 2em">
+                                                        <div class="item">
+                                                            <a class="header"><span
+                                                                    class="numbering">1.1.1</span>&nbsp<span
+                                                                    class="title">Req title</span></a>
+                                                        </div>
+                                                        <div class="item">
+                                                            <a class="header"><span
+                                                                    class="numbering">1.1.1</span>&nbsp<span
+                                                                    class="title">Req title</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="content">
+                                                <a class="header"><span class="numbering">1.1</span>
+                                                    &nbsp<span class="title">Requirement Title</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui segment">
+                                    <a class="ui header">
+                                        <span class="numbering">2.</span>&nbsp<span
+                                            class="title">Requirement Title</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="ui segments"></div>
+                    <div class="eleven wide column">
+                        <div class="ui blue segment">
+                            <div class="ui tertiary blue button">
+                                <span>1.1.</span>&nbsp;<span>Requirement Title</span>
+                            </div>
+                            <a class="ui icon basic orange right floated button">
+                                <i class="pencil icon"></i>
+                            </a>
+                            <div class="ui segment">
+                                <div class="ui top attached grey label">Date created: 7/7/2020</div>
+                                <div class="ul bulleted relaxed list">
+                                    <div class="item">Created by: Ha Tuan Phong</div>
+                                    <div class="item">Type: <span class="ui green text">Functional</span></div>
+                                    <div class="item">This is a sub requirement of: <a class="ui green text">Requirement
+                                        Title</a></div>
+                                </div>
+                            </div>
+                            <div class="ui segment">
+                                <div class="ui top attached grey label">Description</div>
+                                <p>
+                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+                                    unknown printer took a galley of type and scrambled it to make a type specimen book.
+                                    It has survived not only five centuries, but also the leap into electronic
+                                    typesetting, remaining essentially unchanged. It was popularised in the 1960s with
+                                    the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+                                    with desktop publishing software like Aldus PageMaker including versions of Lorem
+                                    Ipsum.
+                                </p>
+                            </div>
+                            <div class="ui segment">
+                                <div class="ui top attached grey label">Related tasks</div>
+                                <div class="ui fluid raised blue cards">
+                                    <a class="card">
+                                        <div class="content">
+                                            <div class="header">Work item #1</div>
+                                            <div class="meta">Assignee: Ha Tuan Phong</div>
+                                            <div class="description">Do some shit</div>
+                                        </div>
+                                        <div class="extra content">State: Approved</div>
+                                    </a>
+                                    <a class="card">
+                                        <div class="content">
+                                            <div class="header">Work item #1</div>
+                                            <div class="meta">Assignee: Ha Tuan Phong</div>
+                                            <div class="description">Do some shit</div>
+                                        </div>
+                                        <div class="extra content">State: Approved</div>
+                                    </a>
+                                    <a class="card">
+                                        <div class="content">
+                                            <div class="header">Work item #1</div>
+                                            <div class="meta">Assignee: Ha Tuan Phong</div>
+                                            <div class="description">Do some shit</div>
+                                        </div>
+                                        <div class="extra content">State: Approved</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui tiny modal create-requirement">
+        <div class="ui header">
+            New requirement
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="required field">
+                    <label>Title</label>
+                    <input name="title" placeholder="title..." type="text">
+                </div>
+                <div class="field">
+                    <label>This is a sub requirement of</label>
+                    <div class="ui fluid search selection dropdown">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">None</div>
+                        <div class="menu">
+                            <div class="item">Requirement title</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui grey button">Cancel</div>
+                <div class="ui green right floated button">Create</div>
             </div>
         </div>
     </div>
     <div class="ui modal" id="templates">
-        <div class="ui requirement form" id="new-requirement">
-            <div class="ui large blue header">
-                <div class="ui fluid input">
-                    <input type="text" name="name" placeholder="Iteration name">
-                </div>
-            </div>
-            <div class="ui divider"></div>
-            <div class="ui form">
-                <div class="ten wide required field">
-                    <label>Title</label>
-                    <input type="text" name="title" placeholder="Title">
-                </div>
-                <div class="required field">
-                    <label>Description</label>
-                    <textarea name="description" placeholder="Description"></textarea>
-                </div>
-                <div class="ui blue icon labeled submit button" onClick="createRequirementForm()"><i
-                        class="save icon"></i>
-                    Save
-                </div>
-                <div class="ui red icon labeled button right floated" onclick="cancelRequirementForm()"><i
-                        class="trash icon"></i>
-                    Cancel
-                </div>
-            </div>
-        </div>
+
     </div>
-    <div class="ui modal create-requirement">
-        <div class="ui large header">
-            <i class="glasses icon"></i>
-            New requirement
-        </div>
-    </div>
-    <style>
-        .list .header:hover > span {
-            color: #2185D0 !important;
-            text-decoration: underline !important;
-            cursor: pointer;
-        }
-    </style>
     <script th:src="@{/js/student/leader/requirement.js}" type="text/javascript"></script>
 </div>
 <div th:fragment="member-content">
