@@ -1,9 +1,11 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
 import com.uet.ooadloophole.database.requirement_repositories.RequirementsRepository;
+import com.uet.ooadloophole.database.system_repositories.StudentRepository;
 import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
 import com.uet.ooadloophole.model.business.requirement_elements.RequirementLog;
 import com.uet.ooadloophole.model.business.requirement_elements.RequirementSpecFile;
+import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.SecureUserService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RequirementLogService;
@@ -23,6 +25,8 @@ public class RequirementServiceImpl implements RequirementService {
     private RequirementLogService requirementLogService;
     @Autowired
     private SecureUserService secureUserService;
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Override
     public Requirement getById(String id) throws BusinessServiceException {
@@ -39,12 +43,13 @@ public class RequirementServiceImpl implements RequirementService {
     }
 
     @Override
-    public void create(Requirement requirement) throws BusinessServiceException {
+    public Requirement create(Requirement requirement) throws BusinessServiceException {
         try {
 //            if (requirement.getParentReq() == null) {
 //                requirement.setLevel(0);
 //            } else requirement.setLevel(requirement.getParentReq().getLevel() + 1);
-            requirementsRepository.save(requirement);
+            requirement.setDatetimeCreated(LocalDateTime.now());
+            return requirementsRepository.save(requirement);
         } catch (Exception e) {
             throw new BusinessServiceException("Error creating requirement: " + e.getMessage());
         }
@@ -60,7 +65,6 @@ public class RequirementServiceImpl implements RequirementService {
                         + dbRequirement.getName() + " to " + requirement.getName(), "Name Changed"));
                 dbRequirement.setName(requirement.getName());
             }
-            if (!dbRequirement.getDescription().equals(requirement.getDescription())) {
             if (!dbRequirement.getType().equals(requirement.getType())) {
                 log.add(requirementLogService.createLog(dbRequirement, "Change type from "
                         + dbRequirement.getType() + " to " + requirement.getType(), "Type Changed"));
@@ -83,7 +87,6 @@ public class RequirementServiceImpl implements RequirementService {
         } catch (BusinessServiceException e) {
             throw new BusinessServiceException("Error updating requirement: " + e.getMessage());
         }
-
     }
 
     @Override
@@ -100,6 +103,20 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public List<Requirement> getAllRequirement() {
         return requirementsRepository.findAll();
+    }
+
+    @Override
+    public List<Requirement> getByGroup(String groupId) {
+        return requirementsRepository.findByGroupId(groupId);
+    }
+
+    @Override
+    public Requirement createByName(String name) throws BusinessServiceException {
+        Student student = studentRepository.findByUserId(secureUserService.getCurrentUser().get_id());
+        Requirement requirement = new Requirement();
+        requirement.setName(name);
+        requirement.setGroupId(student.getGroupId());
+        return requirementsRepository.save(requirement);
     }
 
 //    @Override

@@ -1,5 +1,6 @@
 package com.uet.ooadloophole.service.business_service_impl;
 
+import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.model.business.system_elements.UserFile;
 import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.SecureUserService;
@@ -82,7 +83,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public UserFile storeFile(MultipartFile file, String saveLocation) throws FileStorageException, BusinessServiceException {
         UserFile uploadedUserFile = new UserFile();
-        String userId = secureUserService.getCurrentUser().get_id();
+        LoopholeUser user = secureUserService.getCurrentUser();
 
         Path savePath = createPath(saveLocation);
         String fileTimeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
@@ -104,7 +105,7 @@ public class FileServiceImpl implements FileService {
             uploadedUserFile.setFileExtension(extension);
             uploadedUserFile.setFileTimeStamp(fileTimeStamp);
             uploadedUserFile.setTimeStamp(timeStamp);
-            uploadedUserFile.setUploaderId(userId);
+            uploadedUserFile.setUploader(user);
             uploadedUserFile.setPath(saveLocation);
             return uploadedUserFile;
         } catch (IOException ex) {
@@ -113,7 +114,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public String storeAvatar(MultipartFile file, String saveLocation) throws FileStorageException, BusinessServiceException {
+    public String storeAvatar(MultipartFile file, String saveLocation) throws FileStorageException {
         Path savePath = createPath(saveLocation);
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {

@@ -64,7 +64,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             repoFile.setFileName(userFile.getFileName());
             repoFile.setFileExtension(userFile.getFileExtension());
             repoFile.setType(type);
-            repoFile.setUploaderId(userFile.getUploaderId());
+            repoFile.setUploader(userFile.getUploader());
             repoFile.setTimeStamp(userFile.getTimeStamp());
             repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
             repoFile.setPath(path);
@@ -109,7 +109,7 @@ public class RepoFileServiceImpl implements RepoFileService {
             RepoFile repoFile = new RepoFile();
             repoFile.setFileName(userFile.getFileName());
             repoFile.setFileExtension(userFile.getFileExtension());
-            repoFile.setUploaderId(userFile.getUploaderId());
+            repoFile.setUploader(userFile.getUploader());
             repoFile.setTimeStamp(userFile.getTimeStamp());
             repoFile.setFileTimeStamp(userFile.getFileTimeStamp());
             repoFile.setPath(path);

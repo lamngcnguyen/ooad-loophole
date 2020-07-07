@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RequirementsRepository extends MongoRepository<Requirement, String> {
     Requirement findBy_id(String id);
+
+    List<Requirement> findByGroupId(String groupId);
 }

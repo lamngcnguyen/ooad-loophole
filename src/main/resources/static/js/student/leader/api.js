@@ -26,7 +26,8 @@ $.fn.api.settings.api = {
     'restore files': '/api/files/repo/{id}/restore',
     'create item': '/api/board/item',
     'accept request': '/api/request/accept',
-    'deny request': '/api/request/deny'
+    'deny request': '/api/request/deny',
+    'get requirements': '/api/requirement'
 };
 
 const validationRules = {

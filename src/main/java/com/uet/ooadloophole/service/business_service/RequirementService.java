@@ -10,9 +10,13 @@ import java.util.List;
 
 @Service
 public interface RequirementService {
-    void create(Requirement requirement) throws BusinessServiceException;
+    Requirement create(Requirement requirement) throws BusinessServiceException;
 
     List<Requirement> getAllRequirement();
+
+    List<Requirement> getByGroup(String groupId);
+
+    Requirement createByName(String name) throws BusinessServiceException;
 
    // List<Requirement> getAllChildRequirement(String id) throws BusinessServiceException;
 

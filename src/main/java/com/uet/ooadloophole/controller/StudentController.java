@@ -10,6 +10,7 @@ import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.model.business.group_elements.Request;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
 import com.uet.ooadloophole.model.business.group_elements.WorkItemLog;
+import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
 import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import com.uet.ooadloophole.model.business.system_elements.Student;
 import com.uet.ooadloophole.service.ConverterService;
@@ -56,6 +57,8 @@ public class StudentController {
     private ConverterService converterService;
     @Autowired
     private WorkItemLogService workItemLogService;
+    @Autowired
+    private RequirementService requirementService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -185,9 +188,12 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/requirement/{id}", method = RequestMethod.GET)
-    public ModelAndView getNewRequirementView(@PathVariable String id) {
+    public ModelAndView getNewRequirementView(@PathVariable String id) throws BusinessServiceException {
+        Requirement requirement = requirementService.getById(id);
         String pageTitle = "New requirement";
-        return getStudentView(pageTitle, new BodyFragment("student/new-requirement", "content"));
+        ModelAndView modelAndView = getStudentView(pageTitle, new BodyFragment("student/new-requirement", "content"));
+        modelAndView.addObject("requirement", requirement);
+        return modelAndView;
     }
 
 

@@ -55,7 +55,7 @@ public class WorkItemFileServiceImpl implements WorkItemFileService {
         workItemFile.setFileExtension(userFile.getFileExtension());
         workItemFile.setTimeStamp(userFile.getTimeStamp());
         workItemFile.setFileTimeStamp(userFile.getFileTimeStamp());
-        workItemFile.setUploaderId(userFile.getUploaderId());
+        workItemFile.setUploader(userFile.getUploader());
         workItemFile.setPath(saveLocation);
         workItemFile.setWorkItemId(workItemId);
         workItemFile.setLatestVersion(true);

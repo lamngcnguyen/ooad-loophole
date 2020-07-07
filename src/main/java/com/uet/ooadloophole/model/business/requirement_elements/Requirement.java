@@ -13,6 +13,7 @@ public class Requirement {
     private String name;
     private String description;
     private String type;
+    private String groupId;
     private LocalDateTime datetimeCreated;
     @DBRef
     private Requirement parentReq;
@@ -50,6 +51,14 @@ public class Requirement {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public Requirement getParentReq() {

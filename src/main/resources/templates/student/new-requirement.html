@@ -6,6 +6,8 @@
 </head>
 <body>
 <div th:fragment="leader-content" class="ui stackable grid">
+    <input type="hidden" name="requirementId" th:value="${requirement.get_id()}">
+    <input type="hidden" name="groupId" th:value="${group.get_id()}">
     <div class="row">
         <div class="column">
             <div class="ui segment">
@@ -13,15 +15,16 @@
                     <i class="blue info icon"></i>
                     Specification
                 </div>
-                <div class="ui form">
+                <div class="ui form requirement-form">
                     <div class="fields">
                         <div class="eight wide required field">
                             <label>Title</label>
-                            <input name="title" placeholder="Title...">
+                            <input name="title" placeholder="Title..." th:value="${requirement.getName()}">
                         </div>
                         <div class="eight wide field">
                             <label>Parent requirement</label>
-                            <div class="ui search selection dropdown">
+                            <div class="ui search selection dropdown parent-requirement">
+                                <input type="hidden" name="parentRequirement">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">None</div>
                                 <div class="menu">
@@ -33,6 +36,7 @@
                     <div class="eight wide required field">
                         <label>Type</label>
                         <div class="ui selection dropdown">
+                            <input type="hidden" name="type">
                             <i class="dropdown icon"></i>
                             <div class="default text">None</div>
                             <div class="menu">
@@ -43,7 +47,8 @@
                     </div>
                     <div class="field">
                         <label>Description</label>
-                        <textarea name="description" placeholder="Description..."></textarea>
+                        <textarea name="description" placeholder="Description..."
+                                  th:value="${requirement.getDescription()}"></textarea>
                     </div>
                     <div class="ui blue button">Save</div>
                 </div>
@@ -64,14 +69,14 @@
                         <th class="onw wide"></th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td class="center aligned">1</td>
-                        <td>vopc.jpg</td>
-                        <td>Ha Tuan Phong</td>
-                        <td>7/7/2020</td>
+                    <tbody class="requirement-table">
+                    <tr th:each="file, iter: ${requirement.getRequirementSpecFile()}" th:id="${file.get_id()}">
+                        <td class="center aligned" th:text="${iter.count}">1</td>
+                        <td th:text="${file.getName()}">vopc.jpg</td>
+                        <td th:text="${file.getUploader.getFullName()}">Ha Tuan Phong</td>
+                        <td th:text="${#temporals.format(file.getTimeStamp(), 'dd/MM/yyyy HH:mm:ss')}">7/7/2020</td>
                         <td class="center aligned">
-                            <div class="ui grey icon button"><i class="trash icon"></i></div>
+                            <a class="ui grey icon button delete-file"><i class="trash icon"></i></a>
                         </td>
                     </tr>
                     </tbody>
@@ -174,6 +179,8 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="/js/student/leader/api.js"></script>
+    <script type="text/javascript" src="/js/student/leader/new-requirement.js"></script>
 </div>
 <div th:fragment="member-content" class="ui stackable grid"></div>
 </body>

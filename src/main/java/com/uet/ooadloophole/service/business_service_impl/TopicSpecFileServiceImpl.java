@@ -59,7 +59,7 @@ public class TopicSpecFileServiceImpl implements TopicSpecFileService {
             topicSpecFile.setFileExtension(userFile.getFileExtension());
             topicSpecFile.setTimeStamp(userFile.getTimeStamp());
             topicSpecFile.setFileTimeStamp(userFile.getFileTimeStamp());
-            topicSpecFile.setUploaderId(userFile.getUploaderId());
+            topicSpecFile.setUploader(userFile.getUploader());
             topicSpecFile.setPath(saveLocation);
             topicSpecFile.setLatestVersion(true);
 

@@ -1,5 +1,7 @@
 package com.uet.ooadloophole.model.business.system_elements;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,7 +10,8 @@ public class UserFile {
     private String fileExtension;
     private String fileTimeStamp;
     private LocalDateTime timeStamp;
-    private String uploaderId;
+    @DBRef
+    private LoopholeUser uploader;
     private String path;
     private List<String> previousVersionIdList;
     private boolean latestVersion;
@@ -46,12 +49,12 @@ public class UserFile {
         this.timeStamp = timeStamp;
     }
 
-    public String getUploaderId() {
-        return uploaderId;
+    public LoopholeUser getUploader() {
+        return uploader;
     }
 
-    public void setUploaderId(String uploaderId) {
-        this.uploaderId = uploaderId;
+    public void setUploader(LoopholeUser uploader) {
+        this.uploader = uploader;
     }
 
     public String getPath() {
