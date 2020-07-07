@@ -14,7 +14,7 @@ $(document).ready(function () {
     });
     loadGradingTemplate();
 });
-
+-
 function showTab(groupId) {
     //$('.menu .item').removeClass('blue active');
     $('.tab').removeClass('active');
