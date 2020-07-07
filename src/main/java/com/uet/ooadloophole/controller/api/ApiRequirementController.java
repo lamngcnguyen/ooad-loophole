@@ -1,6 +1,10 @@
 package com.uet.ooadloophole.controller.api;
 
+import com.google.gson.Gson;
+import com.uet.ooadloophole.controller.interface_model.TableDataWrapper;
+import com.uet.ooadloophole.controller.interface_model.interfaces.IRequirement;
 import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
+import com.uet.ooadloophole.service.ConverterService;
 import com.uet.ooadloophole.service.business_exceptions.BusinessServiceException;
 import com.uet.ooadloophole.service.business_service.RequirementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +12,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/api/requirement")
 public class ApiRequirementController {
     @Autowired
     private RequirementService requirementService;
+    @Autowired
+    private ConverterService converterService;
+
+    private Gson gson = new Gson();
 
     @RequestMapping(value = "/group/{groupId}", method = RequestMethod.GET)
-    public ResponseEntity<List<Requirement>> findAllRequirement(@PathVariable String groupId) {
-        return ResponseEntity.status(HttpStatus.OK).body(requirementService.getByGroup(groupId));
+    public ResponseEntity<String> findAllRequirement(@PathVariable String groupId) {
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new TableDataWrapper(requirementService.getByGroup(groupId))));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -49,9 +55,10 @@ public class ApiRequirementController {
         }
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateRequirement(@RequestParam String id, @RequestBody Requirement requirement) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateRequirement(@PathVariable String id, @RequestBody IRequirement iRequirement) {
         try {
+            Requirement requirement = converterService.convertRequirementInterface(iRequirement);
             return ResponseEntity.status(HttpStatus.OK).body(requirementService.update(id, requirement));
         } catch (BusinessServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

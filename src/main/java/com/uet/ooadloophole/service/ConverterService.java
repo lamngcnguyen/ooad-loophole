@@ -9,6 +9,7 @@ import com.uet.ooadloophole.model.business.class_elements.*;
 import com.uet.ooadloophole.model.business.class_elements.Class;
 import com.uet.ooadloophole.model.business.group_elements.Group;
 import com.uet.ooadloophole.model.business.group_elements.WorkItem;
+import com.uet.ooadloophole.model.business.requirement_elements.Requirement;
 import com.uet.ooadloophole.model.business.rup_elements.Discipline;
 import com.uet.ooadloophole.model.business.rup_elements.DisciplineFileType;
 import com.uet.ooadloophole.model.business.rup_elements.Iteration;
@@ -53,6 +54,8 @@ public class ConverterService {
     private DisciplineFileTypeRepository disciplineFileTypeRepository;
     @Autowired
     private IterationService iterationService;
+    @Autowired
+    private RequirementService requirementService;
 
     public LoopholeUser convertUserInterface(IUser iUser) throws BusinessServiceException {
         Set<Role> roles = new HashSet<>();
@@ -304,5 +307,20 @@ public class ConverterService {
         }
         workItem.setStatus(iWorkItem.getStatus());
         return workItem;
+    }
+
+    public Requirement convertRequirementInterface(IRequirement iRequirement) {
+        Requirement requirement = new Requirement();
+        requirement.setName(iRequirement.getName());
+        requirement.setDescription(iRequirement.getDescription());
+        requirement.setType(iRequirement.getType());
+        requirement.setGroupId(iRequirement.getGroupId());
+        try {
+            Requirement parent = requirementService.getById(iRequirement.getParentReqId());
+            requirement.setParentReq(parent);
+        } catch (BusinessServiceException e) {
+            requirement.setParentReq(null);
+        }
+        return requirement;
     }
 }

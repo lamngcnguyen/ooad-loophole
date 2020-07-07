@@ -19,12 +19,12 @@
                     <div class="fields">
                         <div class="eight wide required field">
                             <label>Title</label>
-                            <input name="title" placeholder="Title..." th:value="${requirement.getName()}">
+                            <input name="name" placeholder="Title..." th:value="${requirement.getName()}">
                         </div>
                         <div class="eight wide field">
                             <label>Parent requirement</label>
                             <div class="ui search selection dropdown parent-requirement">
-                                <input type="hidden" name="parentRequirement">
+                                <input type="hidden" name="parentReq" th:value="${requirement.getParentReq()}">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">None</div>
                                 <div class="menu">
@@ -50,7 +50,8 @@
                         <textarea name="description" placeholder="Description..."
                                   th:value="${requirement.getDescription()}"></textarea>
                     </div>
-                    <div class="ui blue button">Save</div>
+                    <div class="ui error message"></div>
+                    <div class="ui blue submit button">Save</div>
                 </div>
             </div>
             <div class="ui divider"></div>
@@ -81,48 +82,6 @@
                     </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="ui divider"></div>
-            <div class="ui segment">
-                <div class="ui header"><i class="blue linkify icon"></i>Work items</div>
-                <div class="ui grid">
-                    <div class="row">
-                        <div class="column">
-                            <div class="ui raised cards">
-                                <a class="card">
-                                    <div class="content">
-                                        <div class="header">Work item #1</div>
-                                        <div class="description">
-                                            Assigned to:
-                                            <div class="ui avatar image">
-                                                <img th:src="@{/images/default.png}">
-                                            </div>
-                                            Vo Le Minh Tam
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        State:<span style="float: right">Approved</span>
-                                    </div>
-                                </a>
-                                <a class="card">
-                                    <div class="content">
-                                        <div class="header">Work item #2</div>
-                                        <div class="description">
-                                            Assigned to:
-                                            <div class="ui avatar image">
-                                                <img th:src="@{/images/default.png}">
-                                            </div>
-                                            Vo Le Minh Tam
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        State:<span style="float: right">Approved</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="ui divider"></div>
             <div class="ui header"><i class="blue clock icon"></i>Change history</div>

@@ -65,12 +65,18 @@ public class RequirementServiceImpl implements RequirementService {
                         + dbRequirement.getName() + " to " + requirement.getName(), "Name Changed"));
                 dbRequirement.setName(requirement.getName());
             }
-            if (!dbRequirement.getType().equals(requirement.getType())) {
+            if (dbRequirement.getType() == null && requirement.getType() != null) {
+                log.add(requirementLogService.createLog(dbRequirement, "Set type to " + requirement.getType(), "Type Set"));
+                dbRequirement.setType(requirement.getType());
+            } else if (!dbRequirement.getType().equals(requirement.getType())) {
                 log.add(requirementLogService.createLog(dbRequirement, "Change type from "
                         + dbRequirement.getType() + " to " + requirement.getType(), "Type Changed"));
                 dbRequirement.setType(requirement.getType());
             }
-            if (!dbRequirement.getDescription().equals(requirement.getDescription())) {
+            if (dbRequirement.getDescription() == null && requirement.getDescription() != null) {
+                log.add(requirementLogService.createLog(dbRequirement, "Set description to " + requirement.getDescription(), "Desc Set"));
+                dbRequirement.setDescription(requirement.getDescription());
+            } else if (!dbRequirement.getDescription().equals(requirement.getDescription())) {
                 log.add(requirementLogService.createLog(dbRequirement, "Change description from "
                         + dbRequirement.getDescription() + " to " + requirement.getDescription(), "Desc Changed"));
                 dbRequirement.setDescription(requirement.getDescription());

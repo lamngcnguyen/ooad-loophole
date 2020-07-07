@@ -27,7 +27,8 @@ $.fn.api.settings.api = {
     'create item': '/api/board/item',
     'accept request': '/api/request/accept',
     'deny request': '/api/request/deny',
-    'get requirements': '/api/requirement'
+    'get requirements': '/api/requirement/group/{groupId}',
+    'edit requirement': '/api/requirement/{id}'
 };
 
 const validationRules = {
