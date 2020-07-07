@@ -1,10 +1,10 @@
 package com.uet.ooadloophole.model.business.requirement_elements;
 
-import com.uet.ooadloophole.model.business.group_elements.WorkItem;
-import com.uet.ooadloophole.model.business.rup_elements.Iteration;
+import com.uet.ooadloophole.model.business.system_elements.LoopholeUser;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Requirement {
@@ -13,13 +13,12 @@ public class Requirement {
     private String name;
     private String description;
     private String type;
-    private int level;
-    @DBRef
-    private Iteration iteration;
+    private LocalDateTime datetimeCreated;
     @DBRef
     private Requirement parentReq;
     @DBRef
-    private WorkItem task;
+    private LoopholeUser creator;
+
     private List<RequirementSpecFile> requirementSpecFile;
 
     public String get_id() {
@@ -54,28 +53,12 @@ public class Requirement {
         this.type = type;
     }
 
-    public Iteration getIteration() {
-        return iteration;
-    }
-
-    public void setIteration(Iteration iteration) {
-        this.iteration = iteration;
-    }
-
     public Requirement getParentReq() {
         return parentReq;
     }
 
     public void setParentReq(Requirement parentReq) {
         this.parentReq = parentReq;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public List<RequirementSpecFile> getRequirementSpecFile() {
@@ -86,11 +69,11 @@ public class Requirement {
         this.requirementSpecFile = requirementSpecFile;
     }
 
-    public WorkItem getTask() {
-        return task;
+    public LocalDateTime getDatetimeCreated() {
+        return datetimeCreated;
     }
 
-    public void setTask(WorkItem task) {
-        this.task = task;
+    public void setDatetimeCreated(LocalDateTime datetimeCreated) {
+        this.datetimeCreated = datetimeCreated;
     }
 }

@@ -184,6 +184,13 @@ public class StudentController {
         return getStudentView(pageTitle, new BodyFragment("student/requirement", "content"));
     }
 
+    @RequestMapping(value = "/requirement/{id}", method = RequestMethod.GET)
+    public ModelAndView getNewRequirementView(@PathVariable String id) {
+        String pageTitle = "New requirement";
+        return getStudentView(pageTitle, new BodyFragment("student/new-requirement", "content"));
+    }
+
+
     @RequestMapping(value = "/assignment", method = RequestMethod.GET)
     public ModelAndView getAssignmentView() {
         try {
