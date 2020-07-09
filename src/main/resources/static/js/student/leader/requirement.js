@@ -77,7 +77,7 @@ function loadRequirements(res) {
             });
         });
         reqList.append(segment);
-        numbering++;
+        numbering+=1;
     });
 
     $.each(hasParents, function (i, r) {
