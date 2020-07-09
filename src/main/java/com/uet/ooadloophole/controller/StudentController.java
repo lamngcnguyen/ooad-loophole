@@ -59,6 +59,8 @@ public class StudentController {
     private WorkItemLogService workItemLogService;
     @Autowired
     private RequirementService requirementService;
+    @Autowired
+    private RequirementFileService requirementFileService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getHomeView() {
@@ -190,7 +192,7 @@ public class StudentController {
     @RequestMapping(value = "/requirement/{id}", method = RequestMethod.GET)
     public ModelAndView getNewRequirementView(@PathVariable String id) throws BusinessServiceException {
         Requirement requirement = requirementService.getById(id);
-        List<RequirementSpecFile> files = requirement.getRequirementSpecFile();
+        List<RequirementSpecFile> files = requirementFileService.getByReq(requirement.get_id());
         if(files != null) {
             files.removeIf(RequirementSpecFile::isDeleted);
         } else {
