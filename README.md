@@ -4,13 +4,13 @@
 
 #### **Members**
 
-Nguyễn Ngọc Lâm: **Leader**
+Nguyễn Ngọc Lâm
 
-Hà Tuấn Phong: **bú ké**
+Hà Tuấn Phong
 
-Võ Lê Minh Tâm: **YOLO**
+Võ Lê Minh Tâm
 
-Nguyễn Xuân Tùng: **Less YOLO**
+Nguyễn Xuân Tùng
 
 #### Default admin account (created on deploy)
 
