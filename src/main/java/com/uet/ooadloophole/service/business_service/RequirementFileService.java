@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public interface RequirementFileService {
@@ -19,4 +20,6 @@ public interface RequirementFileService {
     Resource download(String id);
 
     RequirementSpecFile deleteFile(String id) throws IOException, BusinessServiceException;
+
+    List<RequirementSpecFile> getByReq(String requirementId);
 }

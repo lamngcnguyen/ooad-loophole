@@ -63,7 +63,7 @@ public class RequirementFileServiceImpl implements RequirementFileService {
             if(requirement.getRequirementSpecFile() == null) files = new ArrayList<>();
             else files = requirement.getRequirementSpecFile();
 
-            String saveLocation = Constants.REQ_FOLDER + "temp/";
+            String saveLocation = Constants.REQ_FOLDER + requirement.get_id();
             RequirementSpecFile requirementSpecFile = new RequirementSpecFile();
             UserFile userFile = fileService.storeFile(file, saveLocation);
 
@@ -102,5 +102,10 @@ public class RequirementFileServiceImpl implements RequirementFileService {
         RequirementSpecFile requirementSpecFile = requirementSpecFileRepository.findBy_id(id);
         requirementSpecFile.setDeleted(true);
         return requirementSpecFileRepository.save(requirementSpecFile);
+    }
+
+    @Override
+    public List<RequirementSpecFile> getByReq(String requirementId) {
+        return requirementSpecFileRepository.findByRequirementId(requirementId);
     }
 }
