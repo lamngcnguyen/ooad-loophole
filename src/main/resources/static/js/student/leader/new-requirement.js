@@ -2,6 +2,7 @@ const groupId = $("input[name='groupId']").val();
 const requirementId = $("input[name='requirementId']").val();
 
 $(document).ready(function () {
+    $('textarea[name="description"]').text($('input[name="desc-alt"]').val());
     $('.selection.dropdown').dropdown();
     $('.dropdown.parent-requirement').dropdown({
         showOnFocus: false,
@@ -13,7 +14,7 @@ $(document).ready(function () {
         onSuccess(response, element, xhr) {
             const values = [];
             xhr.responseJSON.data.forEach(function (requirement) {
-                if(requirement._id !== requirementId) {
+                if (requirement._id !== requirementId) {
                     values.push({
                         value: requirement._id,
                         name: requirement.name,
@@ -25,7 +26,7 @@ $(document).ready(function () {
             $(element).dropdown('restore default value');
         }
     });
-})
+});
 
 $('.form.requirement-form').form({
     onSuccess: function (evt, data) {
@@ -146,7 +147,7 @@ $('.button.delete-file').on('click', function () {
 
 $('.form.delete-file').form({
     onSuccess: function (evt, data) {
-        const fileName = $(`#file_${data.id} .file-name`).text()
+        const fileName = $(`#file_${data.id} .file-name`).text();
         showDimmer('.modal.delete-file');
         $.api({
             action: 'delete req file',

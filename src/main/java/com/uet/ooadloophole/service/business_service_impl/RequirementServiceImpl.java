@@ -52,6 +52,7 @@ public class RequirementServiceImpl implements RequirementService {
         try {
             requirement.setCreator(secureUserService.getCurrentUser());
             requirement.setDatetimeCreated(LocalDateTime.now());
+            requirement.setRequirementSpecFile(new ArrayList<>());
             return requirementsRepository.save(requirement);
         } catch (Exception e) {
             throw new BusinessServiceException("Error creating requirement: " + e.getMessage());

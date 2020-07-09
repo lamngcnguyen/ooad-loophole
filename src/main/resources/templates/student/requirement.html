@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="leader-content" class="ui stackable grid">
+    <input type="hidden" name="groupId" th:value="${group.get_id()}">
     <link rel="stylesheet" th:href="@{/css/student/requirement.css}">
     <div class="row">
         <div class="column">
@@ -25,70 +26,60 @@
                             </div>
                             <div class="ui blue small icon labeled right floated button" onclick="showModal('.modal.create-requirement')"><i class="plus icon"></i>New
                             </div>
-                            <div class="ui segments">
-                                <div class="ui segment">
-                                    <a class="ui header">
-                                        <span class="numbering">1.</span>&nbsp<span
-                                            class="title">Requirement Title</span>
-                                    </a>
-                                    <div class="ui divided relaxed list" style="margin-left: 2em">
-                                        <div class="item">
-                                            <div class="content">
-                                                <a class="header"><span class="numbering">1.1</span>
-                                                    &nbsp<span class="title">Requirement Title</span></a>
-                                                <div class="description">
-                                                    <div class="ui divided relaxed list" style="margin-left: 2em">
-                                                        <div class="item">
-                                                            <a class="header"><span
-                                                                    class="numbering">1.1.1</span>&nbsp<span
-                                                                    class="title">Req title</span></a>
-                                                        </div>
-                                                        <div class="item">
-                                                            <a class="header"><span
-                                                                    class="numbering">1.1.1</span>&nbsp<span
-                                                                    class="title">Req title</span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div class="ui fluid search" style="margin-top: 0.5em">
+                                <div class="ui icon fluid input">
+                                    <input class="prompt" type="text" placeholder="search title...">
+                                    <i class="search icon"></i>
+                                </div>
+                                <div class="results"></div>
+                            </div>
+                            <div class="ui divider"></div>
+                            <div class="ui form filter">
+                                <div class="inline fields">
+                                    <label>Filter requirements</label>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="type" checked="checked" data-type="none">
+                                            <label>None</label>
                                         </div>
-                                        <div class="item">
-                                            <div class="content">
-                                                <a class="header"><span class="numbering">1.1</span>
-                                                    &nbsp<span class="title">Requirement Title</span></a>
-                                            </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="type" data-type="functional">
+                                            <label>Functional</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="type" data-type="non-functional">
+                                            <label>Non-functional</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="ui segment">
-                                    <a class="ui header">
-                                        <span class="numbering">2.</span>&nbsp<span
-                                            class="title">Requirement Title</span>
-                                    </a>
-                                </div>
+                            </div>
+                            <div class="ui segments req-list">
                             </div>
                         </div>
                     </div>
                     <div class="eleven wide column">
-                        <div class="ui blue segment">
+                        <div class="ui blue segment" id="reqInfo">
                             <div class="ui tertiary blue button">
-                                <span>1.1.</span>&nbsp;<span>Requirement Title</span>
+                                <span class="req-index">1.1.</span>&nbsp;<span class="req-title">Requirement Title</span>
                             </div>
-                            <a class="ui icon basic orange right floated button">
+                            <a class="ui icon basic orange right floated button edit-link">
                                 <i class="pencil icon"></i>
                             </a>
                             <div class="ui segment">
-                                <div class="ui top attached grey label">Date created: 7/7/2020</div>
+                                <div class="ui top attached grey label">Date created: <span class="date-created">7/7/2020</span></div>
                                 <div class="ul bulleted relaxed list">
-                                    <div class="item">Created by: Ha Tuan Phong</div>
-                                    <div class="item">Type: <span class="ui green text">Functional</span></div>
-                                    <div class="item">This is a sub requirement of: <a class="ui green text">Requirement
-                                        Title</a></div>
+                                    <div class="item">Created by: <span class="created-by">Ha Tuan Phong</span></div>
+                                    <div class="item">Type: <span class="ui green text req-type">Functional</span></div>
+                                    <div class="item">This is a sub requirement of: <a class="ui green text parent-req">None</a></div>
                                 </div>
                             </div>
                             <div class="ui segment">
                                 <div class="ui top attached grey label">Description</div>
-                                <p>
+                                <p class="req-description">
                                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
                                     Ipsum has been the industry's standard dummy text ever since the 1500s, when an
                                     unknown printer took a galley of type and scrambled it to make a type specimen book.
@@ -102,30 +93,30 @@
                             <div class="ui segment">
                                 <div class="ui top attached grey label">Related tasks</div>
                                 <div class="ui fluid raised blue cards">
-                                    <a class="card">
-                                        <div class="content">
-                                            <div class="header">Work item #1</div>
-                                            <div class="meta">Assignee: Ha Tuan Phong</div>
-                                            <div class="description">Do some shit</div>
-                                        </div>
-                                        <div class="extra content">State: Approved</div>
-                                    </a>
-                                    <a class="card">
-                                        <div class="content">
-                                            <div class="header">Work item #1</div>
-                                            <div class="meta">Assignee: Ha Tuan Phong</div>
-                                            <div class="description">Do some shit</div>
-                                        </div>
-                                        <div class="extra content">State: Approved</div>
-                                    </a>
-                                    <a class="card">
-                                        <div class="content">
-                                            <div class="header">Work item #1</div>
-                                            <div class="meta">Assignee: Ha Tuan Phong</div>
-                                            <div class="description">Do some shit</div>
-                                        </div>
-                                        <div class="extra content">State: Approved</div>
-                                    </a>
+<!--                                    <a class="card">-->
+<!--                                        <div class="content">-->
+<!--                                            <div class="header">Work item #1</div>-->
+<!--                                            <div class="meta">Assignee: Ha Tuan Phong</div>-->
+<!--                                            <div class="description">Do some shit</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="extra content">State: Approved</div>-->
+<!--                                    </a>-->
+<!--                                    <a class="card">-->
+<!--                                        <div class="content">-->
+<!--                                            <div class="header">Work item #1</div>-->
+<!--                                            <div class="meta">Assignee: Ha Tuan Phong</div>-->
+<!--                                            <div class="description">Do some shit</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="extra content">State: Approved</div>-->
+<!--                                    </a>-->
+<!--                                    <a class="card">-->
+<!--                                        <div class="content">-->
+<!--                                            <div class="header">Work item #1</div>-->
+<!--                                            <div class="meta">Assignee: Ha Tuan Phong</div>-->
+<!--                                            <div class="description">Do some shit</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="extra content">State: Approved</div>-->
+<!--                                    </a>-->
                                 </div>
                             </div>
                         </div>
@@ -139,28 +130,31 @@
             New requirement
         </div>
         <div class="content">
-            <div class="ui form">
+            <div class="ui form create-requirement">
                 <div class="required field">
                     <label>Title</label>
                     <input name="title" placeholder="title..." type="text">
                 </div>
-                <div class="field">
-                    <label>This is a sub requirement of</label>
-                    <div class="ui fluid search selection dropdown">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">None</div>
-                        <div class="menu">
-                            <div class="item">Requirement title</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ui grey button">Cancel</div>
-                <div class="ui green right floated button">Create</div>
+                <div class="ui error message"></div>
+                <div class="ui grey button" onclick="hideModal('.modal.create-requirement')">Cancel</div>
+                <div class="ui green right floated submit button">Create</div>
             </div>
         </div>
     </div>
     <div class="ui modal" id="templates">
-
+        <div class="ui segment explorer-item">
+            <a class="ui header">
+                <span class="numbering">1.</span>&nbsp<span
+                    class="title">Requirement Title</span>
+            </a>
+            <div class="ui divided relaxed list" style="margin-left: 2em; display: none">
+            </div>
+        </div>
+        <div class="item explorer-sub-item">
+            <a class="header"><span
+                    class="sub-numbering">1.1.1</span>&nbsp<span
+                    class="title">Req title</span></a>
+        </div>
     </div>
     <script th:src="@{/js/student/leader/requirement.js}" type="text/javascript"></script>
 </div>

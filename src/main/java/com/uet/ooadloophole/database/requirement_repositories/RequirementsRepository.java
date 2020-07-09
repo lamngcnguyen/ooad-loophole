@@ -8,7 +8,7 @@ import java.util.List;
 public interface RequirementsRepository extends MongoRepository<Requirement, String> {
     Requirement findBy_id(String id);
 
-    List<Requirement> findByGroupId(String groupId);
-
     List<Requirement> findByNameContainsIgnoreCaseAndGroupId(String name, String groupId);
+
+    List<Requirement> findByGroupId(String groupId);
 }

@@ -39,16 +39,7 @@ public class ApiRequirementController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Object> createRequirement(@RequestBody Requirement requirement) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(requirementService.create(requirement));
-        } catch (BusinessServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Object> createRequirementWithName(@RequestParam String name) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(requirementService.createByName(name));

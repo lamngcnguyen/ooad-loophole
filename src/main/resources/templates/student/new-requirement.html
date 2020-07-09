@@ -24,7 +24,8 @@
                         <div class="eight wide field">
                             <label>Parent requirement</label>
                             <div class="ui search selection dropdown parent-requirement">
-                                <input type="hidden" name="parentReq" th:value="${requirement.getParentReq()}">
+                                <input type="hidden" name="parentReqId"
+                                       th:value="${requirement.getParentReq()?.get_id()}">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">None</div>
                                 <div class="menu">
@@ -36,7 +37,7 @@
                     <div class="eight wide required field">
                         <label>Type</label>
                         <div class="ui selection dropdown">
-                            <input type="hidden" name="type">
+                            <input type="hidden" name="type" th:value="${requirement.getType()}">
                             <i class="dropdown icon"></i>
                             <div class="default text">None</div>
                             <div class="menu">
@@ -47,8 +48,8 @@
                     </div>
                     <div class="field">
                         <label>Description</label>
-                        <textarea name="description" placeholder="Description..."
-                                  th:value="${requirement.getDescription()}"></textarea>
+                        <input type="hidden" name="desc-alt" th:value="${requirement.getDescription()}">
+                        <textarea name="description" placeholder="Description..."></textarea>
                     </div>
                     <div class="ui error message"></div>
                     <div class="ui blue submit button">Save</div>
