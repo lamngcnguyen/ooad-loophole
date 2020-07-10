@@ -102,6 +102,7 @@ function showRequirementInfo(req, index) {
     segment.find('.req-index').text(index);
     segment.find('.req-title').text(req.name);
     segment.find('.edit-link').attr('href', '/student/requirement/' + req._id);
+    segment.find('.req-type').text(req.type)
     segment.find('.date-created').text("9/7/2020");
     segment.find('.created-by').text("Võ Lê Minh Tâm");
     if (req.parentReq != null) {
